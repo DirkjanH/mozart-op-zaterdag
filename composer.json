@@ -1,0 +1,20 @@
+{
+  "name": "djh/autoload",
+  "minimum-stability": "stable",
+  "description": "dependencies voor Dirkjan",
+  "license": "proprietary",
+  "require": {
+    "phpmailer/phpmailer": "^6.0",
+    "pelago/emogrifier": "^7.1",
+    "tinymce/tinymce": "^6.7",
+    "league/oauth2-google": "^1.0",
+    "paragonie/random_compat": "^2.0",
+    "mollie/mollie-api-php": "^2.0",
+    "php81_bc/strftime": "^0.5.0",
+    "chillerlan/php-qrcode": "^5.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9",
+    "kint-php/kint": "^5.0"
+  }
+}
