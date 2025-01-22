@@ -22,5 +22,4 @@
         <p>P.S. het is de bedoeling hier een maandelijkse traditie van te maken op de vierde zaterdag van de maand. Dus de volgende keren zijn op 22 maart, 26 april en 24 mei. In het formulier kun je aangeven dat je voor die keren belangstelling hebt, ook als je op 22 februari niet kunt.</p>
     </div>
 </body>
-
 </html>
