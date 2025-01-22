@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <div class="w3-container">
+    <div class="w3-content w3-white">
         <h3>Mozart op Zaterdag</h3>
         <p>Ik vind dit een erg leuke en inspirerende formule, die me aanzet om iets vergelijkbaars te bedenken: <i>Mozart op Zaterdag</i> in Utrecht!</p>
         <p>Mozart heeft weliswaar 'slechts' 41 symfonieën geschreven, maar ook 20 pianoconcerten en tal van concerten voor viool, voor blazers en voor diverse combinaties van soloinstrumenten. Al die stukken hebben hun eigen charme én uitdagingen, maar de ervaring leert dat goed voorbereide spelers ze snel heel redelijk kunnen spelen. Daarbij helpt het als er in diverse groepen een professional (als aanvoerder) meespeelt. Met de concerten heb ik inmiddels veel ervaring door het <i>Mozart Concerto Event</i>, een onderdeel van mijn La Pellegrina zomercursus in Tsjechië. We organiseren daar een avond waarin deelnemers van de cursus, bijvoorbeeld pianostudenten, een door hen voorbereid deel uit een concert spelen; de overige deelnemers vormen een orkest dat hen à vue begeleidt. Voor veel mensen is dat een kans die ze anders niet gauw krijgen en het resultaat is meestal verrassend goed.</span></p>
@@ -23,4 +23,5 @@
         <p>P.S. het is de bedoeling hier een maandelijkse traditie van te maken op de vierde zaterdag van de maand. Dus de volgende keren zijn op 22 maart, 26 april en 24 mei. In het formulier kun je aangeven dat je voor die keren belangstelling hebt, ook als je op 22 februari niet kunt.</p>
     </div>
 </body>
+
 </html>
