@@ -17,11 +17,9 @@
         <p>De ideale repetitie- en concertruimte voor dit project is het <a href="https://stadskloosterutrecht.nl/" target="_blank">Stadsklooster</a>, een mooie, goed klinkende zaal (een voormalige kerk) met ook een vleugel. Het Stadsklooster ligt in de wijk Lombok, op nog geen kwartier lopen van het station. Je kunt er ook met openbaar vervoer komen.</p>
         <h4>Mozarts Kleine g-moll symfonie op zaterdagochtend 22 februari</h4>
         <p>De eerste aflevering van <i>Mozart op Zaterdag</i> vindt plaats op zaterdagochtend 22 februari. We trappen af met Mozarts 25e symfonie KV 183. Het is een van de twee symfonieën in mineur die hij schreef. De andere is de beroemde 40e symfonie KV 550; beide staan in de dramatische toonsoort g-klein. Nr. 25 wordt daarom ook wel de ‘kleine g-mineur symfonie’ genoemd. Sinds de film Amadeus uitkwam, waarin in de opening de gejaagde muziek van het eerste deel klinkt, zou deze symfonie waarschijnlijk beter de 'Amadeus-symfonie' kunnen worden genoemd. Ik heb het stuk bijna veertig jaar geleden gedirigeerd bij mijn examen orkestdirectie bij David Porcelijn en heb daar bijzonder goede herinneringen aan. <a href="https://www.youtube.com/watch?v=NuQcFC8rink" target="_blank">Een bijzonder fraaie uitvoering van het stuk is deze door Concentus Musicus Wien o.l.v. Harnoncourt</a>. De symfonie duurt ca. 27 minuten. De bezetting is 2 hobo's, 2 fagotten, 4 hoorns (waaronder moeilijke hoge partijen voor hoorn 1/2) en strijkers (6.6.4.4.2). <a href="kv183.htm" target="_blank">De partijen vind je hier (strijkers helaas op dit moment nog niet betekend)</a>.</p>
-        <p>Er zijn momenteel nog vacatures voor:</p>
+        <p>Voor 22 februari zijn er momenteel nog vacatures voor:</p>
         <ul>
-            <li>drie 1e violen</li>
-            <li>drie 2e violen</li>
-            <li>twee altviolen</li>
+            <li>twee 1e violen</li>
         </ul>
         <p>Qua tijden stellen we ons dit voor: binnenkomen om 9:45, repeteren van 10:00 tot 12:30 met een korte pauze en dan om 13:00 een concertje van een half uur geven. Er wordt koffie en thee geschonken in de zaal.</p>
         <p>Heb je belangstelling om mee te doen? We formeren een bezetting van serieuze en ervaren spelers die zich natuurlijk goed voorbereiden. We leveren op tijd (betekende) partijen als PDF's aan. Deelname is gratis; wel wordt aan het eind om een vrijwillige bijdrage in de kosten van de zaal e.d. gevraagd. T.z.t. hopen we de professionele deelnemers ook wat te kunnen betalen.</p>
