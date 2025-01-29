@@ -23,7 +23,7 @@
             <li>22 maart: Symfonie nr. 29 in A-groot KV 201 (30') voor 2 hobo's, 2 hoorns en strijkers</li>
             <li>26 april: Symfonie nr. 4 in D KV 19 (10') en het klarinetconcert in A-groot KV 622 (29') voor 2 fluiten, 2 fagotten, 2 hoorns en strijkers</li>
         </ul>
-        <p>Aan de programma's voor deze volgende afleveringen wordt nog gewerkt. Waarschijnlijk gaan er dan ook (solo)concerten van Mozart. In het formulier kun je aangeven dat je voor die keren belangstelling hebt.</p>
+        <p>Aan de programma's voor deze volgende afleveringen wordt nog gewerkt. Waarschijnlijk gaan er dan naar symfonieën ook weer (solo)concerten van Mozart. In het formulier kun je aangeven dat je voor die keren belangstelling hebt.</p>
         <p>Heb je belangstelling om eens mee te doen met Mozart op Zaterdag? We formeren een bezetting van serieuze en ervaren spelers die zich natuurlijk goed voorbereiden. We leveren op tijd (betekende) partijen als PDF's aan. Deelname is gratis; wel wordt aan het eind om een vrijwillige bijdrage in de kosten van de zaal e.d. gevraagd. T.z.t. hopen we de professionele deelnemers ook wat te kunnen betalen.</p>
         <p>We hopen dat je deze geweldige muziek met ons wilt spelen! <a href="https://docs.google.com/forms/d/16TwM3A4ixtP7bencKsjhTANf00DTrFqtUdDzuXSRYRE/preview" target="_blank">In dit formulier kun je aangeven of je wilt meedoen</a>. Mogelijk zijn er meer inschrijvingen dan plaatsen. <b>Reageer daarom snel.</b></p>
     </div>
