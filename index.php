@@ -20,7 +20,7 @@
         <p><a href="kv183.htm" target="_blank">De partijen vind je hier</a>. Voor de strijkers is daar ook een betekende partituur, met het verzoek de streken even over te nemen in je eigen partij.</p>
         <h4>Volgende afleveringen van Mozart op Zaterdag</h4>
         <p>Voor 22 februari zijn er momenteel geen vacatures meer. Het is wel mogelijk je op te geven voor de volgende afleveringen. Het is de bedoeling hier een maandelijkse traditie van te maken op de vierde zaterdag van de maand. Dus de volgende keren zijn op 22 maart, 26 april en 24 mei, en daarna weer op 27 september, 25 oktober en 22 november. We hopen dat je dan deze geweldige muziek met ons wilt spelen! <a href="https://docs.google.com/forms/d/16TwM3A4ixtP7bencKsjhTANf00DTrFqtUdDzuXSRYRE/preview" target="_blank">In dit formulier kun je aangeven of je wilt meedoen</a>. Mogelijk zijn er meer inschrijvingen dan plaatsen. <b>Reageer daarom snel!</b></p>
-        <p>Voor de eerste keren staan deze stukken op het programma:</p>
+        <h4>Voor de eerste keren staan deze stukken op het programma:</h4>
         <ul>
             <li>22 maart: Symfonie nr. 29 in A-groot KV 201 (30') voor 2 hobo's, 2 hoorns en strijkers</li>
             <li>26 april: Symfonie nr. 4 in D KV 19 (10') en het klarinetconcert in A-groot KV 622 (29') voor 2 fluiten, 2 fagotten, 2 hoorns en strijkers. Solist: Marta Xavier (Portugal)</li>
