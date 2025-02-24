@@ -27,7 +27,7 @@
         <ul>
             <li>22 maart: Symfonie nr. 29 in A-groot KV 201 (30') voor 2 hobo's, 1 fagot, 2 hoorns en strijkers</li>
             <li>26 april: Symfonie nr. 4 in D KV 19 (10') en het klarinetconcert in A-groot KV 622 (29') voor 2 fluiten, 2 fagotten, 2 hoorns en strijkers. Solist: Marta Xavier (Portugal)</li>
-            <li>24 mei: Symfonie nr. 15 in G-groot, KV 124 (onder voorbehoud) voor 2 hobo's, 1 fagot, 2 hoorns en strijkers en een nog te bepalen vioolconcert</li>
+            <li>24 mei: Symfonie nr. 15 in G-groot KV 124 (14', onder voorbehoud) voor 2 hobo's, 1 fagot, 2 hoorns en strijkers en een nog te bepalen vioolconcert</li>
             <li>27 september: Sinfonia Concertante in Eb KV 364 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. Solisten: Valentina Bernardone (viool, onder voorbehoud) en Anna Smith (altviool) </li>
         </ul>
         <p>Aan de programma's voor de volgende afleveringen wordt nog gewerkt. Waarschijnlijk gaan er dan naast symfonieën ook weer (solo)concerten van Mozart.</p>
