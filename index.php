@@ -21,7 +21,7 @@
         <h4>Voor de komende keren staan deze stukken op het programma:</h4>
         <ul>
             <li><b>22 maart</b> in de <a href="/marnixzaal.htm" target="_blank">Marnixzaal</a>: Symfonie nr. 29 in A-groot KV 201 (30') voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. <a href="/kv201.htm" target="_blank">Meer informatie en de partijen vind je hier</a></li>
-            <li><b>26 april</b> in het <a href="/stadsklooster.htm" target="_blank">Stadsklooster</a>: Symfonie nr. 4 in D KV 19 (10') en het klarinetconcert in A-groot KV 622 (29') voor 2 fluiten, 2 fagotten, 2 hoorns en strijkers. Solist: Marta Xavier (Portugal)</li>
+            <li><b>26 april (koningsdag)</b> in het <a href="/stadsklooster.htm" target="_blank">Stadsklooster</a>: Symfonie nr. 4 in D KV 19 (10') en het klarinetconcert in A-groot KV 622 (29') voor 2 fluiten, 2 fagotten, 2 hoorns en strijkers. Solist: Marta Xavier (Portugal)</li>
             <li><b>24 mei</b> in de <a href="/marnixzaal.htm" target="_blank">Marnixzaal</a>: Symfonie nr. 15 in G-groot KV 124 (14', onder voorbehoud) voor 2 hobo's, 1 fagot, 2 hoorns en strijkers en een nog te bepalen vioolconcert</li>
             <li><b>27 september</b> in de <a href="/marnixzaal.htm" target="_blank">Marnixzaal</a>: Sinfonia Concertante in Eb KV 364 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. Solisten: Valentina Bernardone (viool, onder voorbehoud) en Anna Smith (altviool) </li>
         </ul>
