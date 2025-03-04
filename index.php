@@ -10,7 +10,7 @@
 
 <body>
     <div class="w3-content w3-white w3-panel">
-        <h3>Mozart op Zaterdag</h3>
+        <h2>Mozart op Zaterdag</h2>
         <p><img src="images/Mozart.jpg" alt="Mozart" class="w3-image w3-left w3-margin-right" style="max-width: 350px;">Er is een nieuw orkest-inititatief in Utrecht: <i>Mozart op Zaterdag</i>! Iedere maand komt een orkest van professionals en goede amateurs bijeen op een zaterdagochtend om een symfonie en/of een (solo)concert van Mozart te repeteren en meteen uit te voeren.</p>
         <p>Mozart heeft 41 symfonieën geschreven, maar ook 20 pianoconcerten en tal van concerten voor viool, voor blazers en voor diverse combinaties van soloinstrumenten. Al die stukken hebben hun eigen charme én uitdagingen, maar de ervaring leert dat goed voorbereide spelers ze snel heel redelijk kunnen spelen. Daarbij helpt het als er in diverse groepen een professional (als aanvoerder) meespeelt. Vakstudenten en professionals worden aangetrokken om een van de concerten te spelen. Zo ontstaat iedere keer een programma van 30 à 45 minuten muziek.</p>
         <p><img src="images/MoZ_foto_buigen_Yo.jpg" alt="Mozart" class="w3-image w3-right w3-margin-left w3-margin-bottom" style="max-width: 500px;">De eerste keer vond plaats op zaterdag 22 februari in het <a href="/stadsklooster.htm">Stadsklooster</a>, met Mozarts 'kleine g-moll' symfonie nr. 25 KV 183 als onderwerp en een orkest van zo'n 30 strijkers en blazers als deelnemers, onder leiding van dirigent en initiatiefnemer <a href="https://www.horringa.net/index.php" target="_blank">Dirkjan Horringa</a>. Een 50-tal mensen kwam luisteren en was enthousiast.</p>
