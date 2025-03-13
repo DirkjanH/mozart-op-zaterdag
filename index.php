@@ -19,7 +19,7 @@
         <h4>Voor de komende keren staan deze stukken op het programma:</h4>
         <ul>
             <li><b>22 maart</b> is helaas gecanceld wegens te weinig strijkers. Er waren te veel concurrerende Passie- en andere projecten. We bewaren symfonie nr. 29 KV 201 voor een volgende keer</li>
-            <li><b>26 april (koningsdag)</b> in het <a href="/stadsklooster.htm" target="_blank">Stadsklooster</a>: Symfonie nr. 4 in D KV 19 (10') en het klarinetconcert in A-groot KV 622 (29') voor 2 fluiten, 2 fagotten, 2 hoorns en strijkers. Solist: Marta Xavier (Portugal)</li>
+            <li><b>26 april (koningsdag)</b> in het <a href="/stadsklooster.htm" target="_blank">Stadsklooster</a>: Symfonie nr. 4 in D KV 19 (10') en het klarinetconcert in A-groot KV 622 (29') voor 2 fluiten, 2 fagotten, 2 hoorns en strijkers. Solist: Marta Xavier (Portugal)</li>. <a href="Moz_2025-04-26.htm">Meer info & partijen vind je hier</a>
             <li><b>24 mei</b> in de <a href="/marnixzaal.htm" target="_blank">Marnixzaal</a>: Symfonie nr. 15 in G-groot KV 124 (14') voor 2 hobo's, 1 fagot, 2 hoorns en strijkers en het vioolconcert nr. 4 in D KV 218 (solist: Evelyn Tjon-En-Fa)</li>
             <li><b>27 september</b> in de <a href="/marnixzaal.htm" target="_blank">Marnixzaal</a>: Sinfonia Concertante in Eb KV 364 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. Solisten: Valentina Bernardone (viool, onder voorbehoud) en Anna Smith (altviool) </li>
         </ul>
