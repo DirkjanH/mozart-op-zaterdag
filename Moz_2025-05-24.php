@@ -11,8 +11,8 @@
 <body>
     <div class="w3-content w3-white w3-panel">
         <?php include_once 'navigatie.htm'; ?>
-        <h3>Mozart op Zaterdag op 24 mei 2025:</h3>
-        <h1>Symfonie nr. 15 in G-groot KV 124 en het vioolconcert nr. 4 in D KV 218</h1>
+        <h3>24 mei 2025:</h3>
+        <h2>Symfonie nr. 15 in G-groot KV 124 en het vioolconcert nr. 4 in D KV 218</h2>
         <p>
             De derde aflevering van
             <i>Mozart op Zaterdag</i>
