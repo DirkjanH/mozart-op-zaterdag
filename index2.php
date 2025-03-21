@@ -10,11 +10,10 @@
 </head>
 
 <body>
-    <div class="w3-container">
-        <div class="w3-content w3-white w3-panel">
+    <div class="w3-container w3-flex">
         <?php include_once 'navigatie.htm'; ?>
+        <div class="w3-content w3-white w3-panel">
             <h2>Mozart op Zaterdag</h2>
-            <De>
                 <img
                     src="images/Mozart.jpg"
                     alt="Mozart"
