@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <div class="w3-container w3-mobile">
+    <div class="w3-container w3-mobile w3-panel">
         <?php include_once 'navigatie.htm'; ?>
         <div class="w3-content w3-white w3-panel">
                 <img
