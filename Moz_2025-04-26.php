@@ -12,7 +12,7 @@
     <div class="w3-content w3-white w3-panel">
         <?php include_once 'navigatie.htm'; ?>
         <h3>26 april 2025:</h3>
-        <h1>Symfonie nr. 4 in D KV 19 en het klarinetconcert in A-groot KV 622</h1>
+        <h2>Symfonie nr. 4 in D KV 19 en het klarinetconcert in A-groot KV 622</h2>
         <p>
             De tweede aflevering van
             <i>Mozart op Zaterdag</i>
