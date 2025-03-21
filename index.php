@@ -24,8 +24,8 @@
             </p>
             <h4>Meespelen?</h4>
             <p>Heb je belangstelling om eens mee te doen met Mozart op Zaterdag? Het is mogelijk je op te geven voor de volgende afleveringen. Het is de bedoeling hier een maandelijkse traditie van te maken op de vierde zaterdag van de maand. Dus de volgende keren zijn op 26 april en 24 mei, en daarna weer op 27 september, 25 oktober en 22 november. We werken in de
-                <a href="/marnixzaal.htm" target="_blank">Marnixzaal</a> van de vroegere Utrechtse Muziekschool aan het Domplein of in het
-                <a href="/stadsklooster.htm" target="_blank">Stadsklooster</a> in de wijk Lombok. Er wordt koffie en thee geschonken in de zaal.
+                <a href="/marnixzaal.php" target="_blank">Marnixzaal</a> van de vroegere Utrechtse Muziekschool aan het Domplein of in het
+                <a href="/stadsklooster.php" target="_blank">Stadsklooster</a> in de wijk Lombok. Er wordt koffie en thee geschonken in de zaal.
             </p>
             <h4>Tijden</h4>
             <p>We werken als volgt: binnenkomen om 9:45, repeteren van 10:00 tot 12:30 met een korte pauze. Om 13:00 sluiten we af met een concertje van een half uur.
@@ -39,16 +39,16 @@
             <ul>
                 <li>
                     <b>26 april (koningsdag)</b> in het
-                    <a href="/stadsklooster.htm" target="_blank">Stadsklooster</a>: Symfonie nr. 4 in D KV 19 (10') en het klarinetconcert in A-groot KV 622 (29') voor 2 fluiten, 2 fagotten, 2 hoorns en strijkers. Solist: Marta Xavier (Portugal)
+                    <a href="/stadsklooster.php" target="_blank">Stadsklooster</a>: Symfonie nr. 4 in D KV 19 (10') en het klarinetconcert in A-groot KV 622 (29') voor 2 fluiten, 2 fagotten, 2 hoorns en strijkers. Solist: Marta Xavier (Portugal)
                 </li>.
                 <a href="Moz_2025-04-26.php">Meer info & partijen vind je hier</a>
                 <li>
                     <b>24 mei</b> in de
-                    <a href="/marnixzaal.htm" target="_blank">Marnixzaal</a>: Symfonie nr. 15 in G-groot KV 124 (14') voor 2 hobo's, 1 fagot, 2 hoorns en strijkers en het vioolconcert nr. 4 in D KV 218 (solist: Evelyn Tjon-En-Fa). <a href="Moz_2025-05-24.php">Meer info & partijen vind je hier</a>
+                    <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Symfonie nr. 15 in G-groot KV 124 (14') voor 2 hobo's, 1 fagot, 2 hoorns en strijkers en het vioolconcert nr. 4 in D KV 218 (solist: Evelyn Tjon-En-Fa). <a href="Moz_2025-05-24.php">Meer info & partijen vind je hier</a>
                 </li>
                 <li>
                     <b>27 september</b> in de
-                    <a href="/marnixzaal.htm" target="_blank">Marnixzaal</a>: Sinfonia Concertante in Eb KV 364 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. Solisten: Valentina Bernardone (viool, onder voorbehoud) en Anna Smith (altviool)
+                    <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Sinfonia Concertante in Eb KV 364 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. Solisten: Valentina Bernardone (viool, onder voorbehoud) en Anna Smith (altviool)
                 </li>
             </ul>
             <p>Aan de programma's voor de volgende afleveringen wordt nog gewerkt. Waarschijnlijk gaan er dan naast symfonieën ook weer (solo)concerten van Mozart. Er is al contact met professionele pianisten die graag een pianoconcert van Mozart voor hun rekening willen nemen</p>
