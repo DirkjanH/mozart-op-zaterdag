@@ -21,8 +21,7 @@
         <p>
             Het klarinetconcert is een van Mozarts laatste werken, voltooid in oktober 1791, slechts twee maanden voor zijn dood. Het is geschreven voor de klarinettist Anton Stadler, die ook de klarinetpartij speelde bij de première op 16 oktober 1791 in Praag. Het is een van de bekendste werken voor klarinet. Het klarinetconcert bestaat uit drie delen, een Allegro, een Adagio en een Rondo - Allegro. Het duurt ongeveer 30 minuten.
         </p>
-        <h4>Partijen</h4>
-        <h5>Symfonie nr. 4 in D KV 19</h5>
+        <h5>Partijen Symfonie nr. 4 in D KV 19</h5>
         <ul style="column-count: 3;">
             <li>
                 <a href="\2025-04-26\KV19-Oboe.pdf" target="_blank">Hobo 1-2 (worden gespeeld door de fluiten)</a>
@@ -49,7 +48,7 @@
                 </b>
             </li>
         </ul>
-        <h5>Klarinetconcert in A KV 622</h5>
+        <h5>Partijen Klarinetconcert in A KV 622</h5>
         <ul style="column-count: 3;">
             <li>
                 <a href="2025-04-26\KV622-Flute1.pdf" target="_blank">Fluit 1</a>
@@ -93,7 +92,7 @@
         </ul>
 
         <p>
-            NB. <b>Strijkers, neem tzt SVP de streken uit de betekende partituur over in je eigen partij.</b>
+            NB. <b>Strijkers, neem SVP tzt de streken uit de betekende partituur over in je eigen partij.</b>
         </p>
     </div>
 </body>
