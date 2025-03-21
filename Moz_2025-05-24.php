@@ -16,10 +16,10 @@
         <p>
             De derde aflevering van
             <i>Mozart op Zaterdag</i>
-            vindt plaats op zaterdagochtend 24 mei. We werken dan aan Mozarts Symfonie nr. 10 in G KV 124 en het vierde vioolconcert in D KV 218. Mozart schreef zijn 10e symfonie in de eerste weken van 1772 in Salzburg. Hij was toen 16 jaar jong. De symfonie bestaat uit vier korte delen, een Allegro, een Andante, een Menuet en Trio, en een Presto, en duurt ongeveer 10 minuten. We spelen het zonder herhalingen. Soliste in het vioolconcert is Evelyn Tjon-En-Fa.
+            vindt plaats op zaterdagochtend 24 mei. We werken dan aan Mozarts Symfonie nr. 10 in G KV 124 en het vierde vioolconcert in D KV 218. Mozart schreef zijn 10e symfonie in de eerste weken van 1772 in Salzburg. Hij was toen 16 jaar jong. De symfonie bestaat uit vier korte delen, een Allegro, een Andante, een Menuet en Trio, en een Presto, en duurt ongeveer 10 minuten. We spelen het zonder herhalingen.
         </p>
         <p>
-            Mozart schreef zijn vierde vioolconcert in D groot KV 218 in 1775 in Salzburg. Hij schijnt het oorspronkelijk gecomponeerd te hebben om zelf te spelen, maar na zijn vertrek uit het Salzburgse Hoforkest veranderde hij het concert zodat zijn opvolger in het hoforkest, Antonio Brunetti, het kon spelen. Het is discutabel of het concert boven Mozarts niveau lag of dat hij het met opzet moeilijk maakte voor Brunetti vanwege diens grotere vaardigheid. Het eerste deel is een virtuoos Allegro, terwijl het tweede deel, een Andante cantabile uit zangerige melodische lijnen bestaat. Het derde deel, een Rondeau, is vrolijk en vol plezier. Het concert duurt ongeveer 23 minuten.
+            Mozart schreef zijn vierde vioolconcert in D groot KV 218 in 1775 in Salzburg. Hij schijnt het oorspronkelijk gecomponeerd te hebben om zelf te spelen, maar na zijn vertrek uit het Salzburgse Hoforkest veranderde hij het concert zodat zijn opvolger in het hoforkest, Antonio Brunetti, het kon spelen. Het is discutabel of het concert boven Mozarts niveau lag of dat hij het met opzet moeilijk maakte voor Brunetti vanwege diens grotere vaardigheid. Het eerste deel is een virtuoos Allegro, terwijl het tweede deel, een Andante cantabile uit zangerige melodische lijnen bestaat. Het derde deel, een Rondeau, is vrolijk en vol plezier. Het concert duurt ongeveer 23 minuten. Soliste in het vioolconcert is Evelyn Tjon-En-Fa.
         </p>
         <div class="onzichtbaar">
             <h4>Partijen</h4>
