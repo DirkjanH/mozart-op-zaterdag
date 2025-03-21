@@ -10,9 +10,9 @@
 </head>
 
 <body>
-    <div class="w3-container w3-panel w3-mobile w3-row-padding" style="width: 100%; max-width: 1000px;">
+    <div class="w3-container w3-mobile" style="width: 100%; max-width: 1000px;">
         <?php include_once 'navigatie.htm'; ?>
-        <div class="w3-content w3-white w3-panel w3-rest">
+        <div class="w3-content w3-white w3-panel">
             <h2>Mozart op Zaterdag</h2>
                 <img
                     src="images/Mozart.jpg"
