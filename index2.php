@@ -7,13 +7,12 @@
     <title>Mozart op Zaterdag</title>
     <link href="css/moz.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <?php include_once 'java.htm'; ?>
 </head>
 
 <body>
     <div class="w3-container">
-        <?php include_once 'navigatie.htm'; ?>
         <div class="w3-content w3-white w3-panel">
+        <?php include_once 'navigatie.htm'; ?>
             <h2>Mozart op Zaterdag</h2>
             <De>
                 <img

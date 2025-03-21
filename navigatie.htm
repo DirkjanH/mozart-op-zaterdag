@@ -1,3 +1,12 @@
+<script>
+    function w3_open() {
+        document.getElementById("mySidebar").style.display = "block";
+    }
+
+    function w3_close() {
+        document.getElementById("mySidebar").style.display = "none";
+    }
+</script>
 <button class="w3-button w3-yellow w3-xlarge w3-right w3-hide-large" onclick="w3_open()">&#9776;</button>
 <div class="w3-sidebar w3-bar-block w3-collapse" style="width:200px;left:0" id="mySidebar">
                 <button class="w3-bar-item w3-button w3-hide-large" onclick="w3_close()">Sluit &times;</button>
