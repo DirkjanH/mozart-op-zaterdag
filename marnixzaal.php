@@ -9,6 +9,7 @@
         </head>
         <body>
             <div class="w3-content w3-white w3-panel">
+                <?php include_once 'navigatie.htm'; ?>
                 <h4>Marnixzaal</h4>
                 <img src="https://cultureelpersbureau.nl/wp-content/uploads/2018/12/marnixzaal.jpg" alt="Marnixzaal" class="w3-image" style="width: 100%; max-width: 1040px;">
                 <p>Een prettige repetitie- en concertruimte voor dit project is de Marnixzaal, de 'grote zaal' van de vroegere Utrechtse Muziekschool. Het is een goed klinkende zaal met een Yamaha-concertvleugel. Opvallend detail is de achterwand van glas-in-lood. De Marnixzaal ligt in aan het Domplein, op nog geen kwartier lopen van het station. Je kunt er ook met bus 2 vanaf het station komen. Parkeren is er niet mogelijk, maar er zijn diverse P&R locaties, o.a. bij het station.</p>
