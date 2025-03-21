@@ -27,7 +27,7 @@
                 <a href="/marnixzaal.htm" target="_blank">Marnixzaal</a> van de vroegere Utrechtse Muziekschool aan het Domplein of in het
                 <a href="/stadsklooster.htm" target="_blank">Stadsklooster</a> in de wijk Lombok. Er wordt koffie en thee geschonken in de zaal.</p>
             <h4>Tijden</h4>
-            <p>We werken als volgt: binnenkomen om 9:45, repeteren van 10:00 tot 12:30 met een korte pauze en dan om 13:00 een concertje van een half uur geven. 
+            <p>We werken als volgt: binnenkomen om 9:45, repeteren van 10:00 tot 12:30 met een korte pauze. Om 13:00 sluiten we af met een concertje van een half uur. 
             </p>
             <h4>Meld je aan met het formulier</h4>
             <p>We hopen dat je deze geweldige muziek met ons wilt spelen! We formeren een bezetting van serieuze en ervaren spelers die zich natuurlijk goed voorbereiden. We leveren op tijd (betekende) partijen als PDF's aan.
