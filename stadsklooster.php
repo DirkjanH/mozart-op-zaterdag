@@ -10,6 +10,7 @@
         <body>
             <div class="w3-content w3-white w3-panel">
                 <?php include_once 'navigatie.htm'; ?>
+                <h2>Stadsklooster</h2>
                 <img src="images/Stadsklooster.jpg" alt="Stadsklooster" class="w3-image">
                 <p>
                     Een fijne repetitie- en concertruimte voor dit project is het
