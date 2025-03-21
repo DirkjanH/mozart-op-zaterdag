@@ -23,11 +23,12 @@
             <a href="/vorige_afleveringen.php" target="_blank">zaterdag 22 februari</a>, met de 'kleine g-moll' symfonie nr. 25 KV 183 als onderwerp.
             </p>
             <h4>Meespelen?</h4>
-            <p>Heb je belangstelling om eens mee te doen met Mozart op Zaterdag? Het is mogelijk je op te geven voor de volgende afleveringen. Het is de bedoeling hier een maandelijkse traditie van te maken op de vierde zaterdag van de maand. Dus de volgende keren zijn op 22 maart, 26 april en 24 mei, en daarna weer op 27 september, 25 oktober en 22 november. We werken in de
+            <p>Heb je belangstelling om eens mee te doen met Mozart op Zaterdag? Het is mogelijk je op te geven voor de volgende afleveringen. Het is de bedoeling hier een maandelijkse traditie van te maken op de vierde zaterdag van de maand. Dus de volgende keren zijn op 26 april en 24 mei, en daarna weer op 27 september, 25 oktober en 22 november. We werken in de
                 <a href="/marnixzaal.htm" target="_blank">Marnixzaal</a> van de vroegere Utrechtse Muziekschool aan het Domplein of in het
-                <a href="/stadsklooster.htm" target="_blank">Stadsklooster</a> in de wijk Lombok. Er wordt koffie en thee geschonken in de zaal.</p>
+                <a href="/stadsklooster.htm" target="_blank">Stadsklooster</a> in de wijk Lombok. Er wordt koffie en thee geschonken in de zaal.
+            </p>
             <h4>Tijden</h4>
-            <p>We werken als volgt: binnenkomen om 9:45, repeteren van 10:00 tot 12:30 met een korte pauze. Om 13:00 sluiten we af met een concertje van een half uur. 
+            <p>We werken als volgt: binnenkomen om 9:45, repeteren van 10:00 tot 12:30 met een korte pauze. Om 13:00 sluiten we af met een concertje van een half uur.
             </p>
             <h4>Meld je aan met het formulier</h4>
             <p>We hopen dat je deze geweldige muziek met ons wilt spelen! We formeren een bezetting van serieuze en ervaren spelers die zich natuurlijk goed voorbereiden. We leveren op tijd (betekende) partijen als PDF's aan.
@@ -36,9 +37,6 @@
             </p>
             <h4>Voor de komende keren staan deze stukken op het programma:</h4>
             <ul>
-                <li>
-                    <b>22 maart</b> is helaas gecanceld wegens te weinig strijkers. Er waren te veel concurrerende Passie- en andere projecten. We bewaren symfonie nr. 29 KV 201 voor een volgende keer
-                </li>
                 <li>
                     <b>26 april (koningsdag)</b> in het
                     <a href="/stadsklooster.htm" target="_blank">Stadsklooster</a>: Symfonie nr. 4 in D KV 19 (10') en het klarinetconcert in A-groot KV 622 (29') voor 2 fluiten, 2 fagotten, 2 hoorns en strijkers. Solist: Marta Xavier (Portugal)
