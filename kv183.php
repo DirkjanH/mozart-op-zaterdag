@@ -8,6 +8,7 @@
     </head>
     <body>
         <div class="w3-content w3-white w3-panel">
+            <?php include_once 'navigatie.htm'; ?>
             <h3>Mozart op Zaterdag op 22 februari 2025:</h3>
             <h1>Symfonie nr. 25 in g klein KV 183</h1>
             <h4>Partijen</h4>
