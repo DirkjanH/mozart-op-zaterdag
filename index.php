@@ -10,10 +10,9 @@
 </head>
 
 <body>
-    <div class="w3-content w3-mobile w3-panel">
-        <?php include_once 'navigatie.htm'; ?>
-        <div class="w3-white w3-panel w3-padding-16">
-            <img
+    <div class="w3-content w3-mobile w3-white w3-panel">
+         <?php include_once 'navigatie.htm'; ?>
+            <p><img
                 src="images/Mozart.jpg"
                 alt="Mozart"
                 class="w3-image w3-left w3-margin-right"
