@@ -16,7 +16,7 @@
                 src="images/Mozart.jpg"
                 alt="Mozart"
                 class="w3-display-container w3-left w3-margin-right"
-                style="max-width: 350px;">Er is een nieuw orkest-inititatief in Utrecht:
+                style="width: 100%; max-width: 350px; ">Er is een nieuw orkest-inititatief in Utrecht:
             <i>Mozart op Zaterdag</i>! Iedere maand komt een orkest van professionals en goede amateurs bijeen op een zaterdagochtend om een symfonie en/of een (solo)concert van Mozart te repeteren en meteen uit te voeren. Dirigent en initiatiefnemer is
             <a href="https://www.horringa.net/index.php" target="_blank">Dirkjan Horringa</a>. De eerste aflevering vond plaats op
             <a href="/vorige_afleveringen.php" target="_blank">zaterdag 22 februari</a>, met de 'kleine g-moll' symfonie nr. 25 KV 183 als onderwerp.
