@@ -42,8 +42,8 @@
                 <a href="2025-04-26\KV19-Violoncelo_y_Contrabajo.pdf" target="_blank">Cello, fagot, contrabas</a>
             </li>
             <li>
-                <a href="2025-04-26\KV19-partituur-NMA.pdf" target="_blank">
-                    <b>nog niet betekende partituur</b>
+                <a href="2025-04-26\KV19-partituur-NMA-betekend.pdf" target="_blank">
+                    <b>Betekende partituur</b>
                 </a>
                 </b>
             </li>
@@ -92,7 +92,7 @@
         </ul>
 
         <p>
-            NB. <b>Strijkers, neem SVP tzt de streken uit de betekende partituur over in je eigen partij.</b>
+            NB. <b>Strijkers, neem SVP de streken uit de betekende partituur over in je eigen partij.</b>
         </p>
     </div>
 </body>
