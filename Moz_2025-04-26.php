@@ -84,8 +84,8 @@
                 <a href="2025-04-26\KV622-Contrebasse.pdf" target="_blank">Contrabas</a>
             </li>
             <li>
-                <a href="2025-04-26\KV622-partituur-NMA.pdf" target="_blank">
-                    <b>nog niet betekende partituur</b>
+                <a href="2025-04-26\KV622-partituur-NMA-betekend.pdf" target="_blank">
+                    <b>Betekende partituur</b>
                 </a>
                 </b>
             </li>
