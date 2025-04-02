@@ -92,7 +92,7 @@
         </ul>
 
         <p>
-            NB. <b>Strijkers, neem SVP de streken uit de betekende partituur over in je eigen partij.</b>
+            NB. <b>Strijkers, neem SVP de streken uit de betekende partituren over in je eigen partij.</b>
         </p>
     </div>
 </body>
