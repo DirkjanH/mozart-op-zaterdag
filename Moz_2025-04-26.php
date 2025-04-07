@@ -48,7 +48,7 @@
                 <a href="2025-04-26\KV19-Violoncello.pdf" target="_blank">Cello</a>
             </li>
             <li>
-                <a href="2025-04-26\KV19-Contrabasso.pdf" target="_blank">Contrabas en fagot, </a>
+                <a href="2025-04-26\KV19-Contrabasso.pdf" target="_blank">Contrabas en fagot</a>
             </li>
             <li>
                 <a href="2025-04-26\KV19-partituur-NMA-betekend.pdf" target="_blank">
