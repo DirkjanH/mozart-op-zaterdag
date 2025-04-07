@@ -24,22 +24,31 @@
         <h5>Partijen Symfonie nr. 4 in D KV 19</h5>
         <ul style="column-count: 3;">
             <li>
-                <a href="\2025-04-26\KV19-Oboe.pdf" target="_blank">Hobo 1-2 (worden gespeeld door de fluiten)</a>
+                <a href="\2025-04-26\KV19-Oboe_1.pdf" target="_blank">Hobo 1 (wordt gespeeld door fluit 1)</a>
             </li>
             <li>
-                <a href="\2025-04-26\KV19-Trompa_en_Re.pdf" target="_blank">Hoorn 1-2</a>
+                <a href="\2025-04-26\KV19-Oboe_2.pdf" target="_blank">Hobo 2 (wordt gespeeld door fluit 2)</a>
             </li>
             <li>
-                <a href="2025-04-26\KV19-Violín_1.pdf" target="_blank">Viool 1</a>
+                <a href="\2025-04-26\KV19-Corno_in_F1" target="_blank">Hoorn 1 in F</a>
             </li>
             <li>
-                <a href="2025-04-26\KV19-Violín_2.pdf" target="_blank">Viool 2</a>
+                <a href="\2025-04-26\KV19-Corno_in_F2" target="_blank">Hoorn 2 in F</a>
+            </li>
+            <li>
+                <a href="2025-04-26\KV19-Violino_1.pdf" target="_blank">Viool 1</a>
+            </li>
+            <li>
+                <a href="2025-04-26\KV19-Violino_2.pdf" target="_blank">Viool 2</a>
             </li>
             <li>
                 <a href="2025-04-26\KV19-Viola.pdf" target="_blank">Altviool</a>
             </li>
             <li>
-                <a href="2025-04-26\KV19-Violoncelo_y_Contrabajo.pdf" target="_blank">Cello, fagot, contrabas</a>
+                <a href="2025-04-26\KV19-Violoncello.pdf" target="_blank">Cello</a>
+            </li>
+            <li>
+                <a href="2025-04-26\KV19-Contrabasso.pdf" target="_blank">Contrabas en fagot, </a>
             </li>
             <li>
                 <a href="2025-04-26\KV19-partituur-NMA-betekend.pdf" target="_blank">
