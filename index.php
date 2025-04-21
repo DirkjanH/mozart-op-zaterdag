@@ -46,7 +46,7 @@
             </li>
             <li>
                 <b>27 september</b> in de
-                <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Sinfonia Concertante in Eb KV 364 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. Solisten: Valentina Bernardone (viool, onder voorbehoud) en Anna Smith (altviool)
+                <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Sinfonia Concertante in Eb KV 364 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. Solisten: Valentina Bernardone (viool) en Anna Smith (altviool)
             </li>
         </ul>
         <p>Aan de programma's voor de volgende afleveringen wordt nog gewerkt. Waarschijnlijk gaan er dan naast symfonieën ook weer (solo)concerten van Mozart. Er is al contact met professionele pianisten die graag een pianoconcert van Mozart voor hun rekening willen nemen</p>
