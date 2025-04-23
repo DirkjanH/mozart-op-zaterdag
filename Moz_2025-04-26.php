@@ -37,7 +37,7 @@
                 <a href="\2025-04-26\KV19-Corno_in_F2" target="_blank">Hoorn 2 in F</a>
             </li>
             <li>
-                <a href="2025-04-26\KV19-Violino_1.pdf" target="_blank">Viool 1</a>
+                <a href="/2025-04-26/KV19_viool1_betekend.pdf" target="_blank">Viool 1 (betekend)</a>
             </li>
             <li>
                 <a href="2025-04-26\KV19-Violino_2.pdf" target="_blank">Viool 2</a>
@@ -80,7 +80,7 @@
                 <a href="2025-04-26\KV622-Cor2.pdf" target="_blank">Hoorn 2</a>
             </li>
             <li>
-                <a href="2025-04-26\KV622-Violon1.pdf" target="_blank">Viool 1</a>
+                <a href="2025-04-26\KV622_viool1_betekend.pdf" target="_blank">Viool 1 (betekend)</a>
             </li>
             <li>
                 <a href="2025-04-26\KV622-Violon2.pdf" target="_blank">Viool 2</a>
