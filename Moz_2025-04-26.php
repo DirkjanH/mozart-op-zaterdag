@@ -43,7 +43,7 @@
                 <a href="2025-04-26\KV19-Violino_2.pdf" target="_blank">Viool 2</a>
             </li>
             <li>
-                <a href="2025-04-26\KV19-Viola.pdf" target="_blank">Altviool</a>
+                <a href="2025-04-26\KV19-Viola.pdf" target="_blank">Altviool (betekend)</a>
             </li>
             <li>
                 <a href="2025-04-26\KV19-Violoncello.pdf" target="_blank">Cello (betekend)</a>
@@ -86,7 +86,7 @@
                 <a href="2025-04-26\KV622-Violon2.pdf" target="_blank">Viool 2</a>
             </li>
             <li>
-                <a href="2025-04-26\KV622-Alto.pdf" target="_blank">Altviool</a>
+                <a href="2025-04-26\KV622-Alto.pdf" target="_blank">Altviool (betekend)</a>
             </li>
             <li>
                 <a href="2025-04-26\KV622-Violoncelle.pdf" target="_blank">Cello (betekend)</a>
