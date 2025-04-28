@@ -4,31 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mozart op Zaterdag op 24 mei 2025</title>
+    <title>Mozart op Zaterdag op 27 september 2025</title>
     <link href="/css/moz.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
     <div class="w3-content w3-white w3-panel">
         <?php include_once 'navigatie.htm'; ?>
-        <h3>24 mei 2025:</h3>
-        <h2>Symfonie nr. 15 in G-groot KV 124 en het vioolconcert nr. 4 in D KV 218</h2>
+        <h3>27 september 2025:</h3>
+        <h2>Sinfonia concertante in Eb KV 364</h2>
         <p>
-            De derde aflevering van
+            De vierde aflevering van
             <i>Mozart op Zaterdag</i>
-            vindt plaats op zaterdagochtend 24 mei. We werken dan aan Mozarts Symfonie nr. 10 in G KV 124 en het vierde
-            vioolconcert in D KV 218. Mozart schreef zijn 10e symfonie in de eerste weken van 1772 in Salzburg. Hij was
-            toen 16 jaar jong. De symfonie bestaat uit vier korte delen, een Allegro, een Andante, een Menuet en Trio,
-            en een Presto, en duurt ongeveer 10 minuten. We spelen het zonder herhalingen.
-        </p>
-        <p>
-            Mozart schreef zijn vierde vioolconcert in D groot KV 218 in 1775 in Salzburg. Hij schijnt het
-            oorspronkelijk gecomponeerd te hebben om zelf te spelen, maar na zijn vertrek uit het Salzburgse Hoforkest
-            veranderde hij het concert zodat zijn opvolger in het hoforkest, Antonio Brunetti, het kon spelen. Het is
-            discutabel of het concert boven Mozarts niveau lag of dat hij het met opzet moeilijk maakte voor Brunetti
-            vanwege diens grotere vaardigheid. Het eerste deel is een virtuoos Allegro, terwijl het tweede deel, een
-            Andante cantabile uit zangerige melodische lijnen bestaat. Het derde deel, een Rondeau, is vrolijk en vol
-            plezier. Het concert duurt ongeveer 23 minuten. Soliste in het vioolconcert is Evelyn Tjon-En-Fa.
+            vindt plaats op zaterdagochtend 27 september. We werken dan aan Mozarts Sinfonia concertante in Eb KV 364
+            voor viool, altviool en orkest. De sinfonia bestaat uit drie delen, een Allegro maestoso, een Andante en een
+            Presto, en duurt ongeveer 30 minuten.
+            De Sinfonia concertante is een van de meest geliefde werken van Mozart. Het orkest bestaat uit twee hobo's
+            twee hoorns, fagot en strijkers, met gedeelde altviolen. Het werk is een prachtig
+            voorbeeld van muzikale interactie tussen de solisten en het orkest. De solisten zijn Valentina Bernardone
+            (viool) en Anna Smith (altviool)
         </p>
         <div class="onzichtbaar">
             <h4>Partijen</h4>
