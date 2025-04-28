@@ -15,22 +15,20 @@
         <h3>24 mei 2025:</h3>
         <h2>Vioolconcert nr. 4 in D KV 218</h2>
         <p>
-            De derde aflevering van
-            <i>Mozart op Zaterdag</i>
-            vindt plaats op zaterdagochtend 24 mei. We werken dan aan Mozarts vierde
-            vioolconcert in D KV 218. Mozart schreef zijn vierde vioolconcert in D groot KV 218 in 1775 in Salzburg. Hij
-            schijnt het oorspronkelijk gecomponeerd te hebben om zelf te spelen, maar na zijn vertrek uit het Salzburgse
+            De derde aflevering van <i>Mozart op Zaterdag</i>
+            vindt plaats op zaterdagochtend 24 mei. We werken dan aan Mozarts vierde vioolconcert in D KV 218. Mozart
+            schreef zijn vierde vioolconcert in D groot KV 218 in 1775 in Salzburg. Hij schijnt het oorspronkelijk
+            gecomponeerd te hebben om zelf te spelen, maar na zijn vertrek uit het Salzburgse
             Hoforkest veranderde hij het concert zodat zijn opvolger in het hoforkest, Antonio Brunetti, het kon spelen.
-            Het
-            is
-            discutabel of het concert boven Mozarts niveau lag of dat hij het met opzet moeilijk maakte voor Brunetti
-            vanwege diens grotere vaardigheid. Het eerste deel is een virtuoos Allegro, terwijl het tweede deel, een
-            Andante cantabile uit zangerige melodische lijnen bestaat. Het derde deel, een Rondeau, is vrolijk en vol
-            plezier. Het concert duurt ongeveer 25 minuten.
+            Het is discutabel of het concert boven Mozarts niveau lag of dat hij het met opzet moeilijk maakte voor
+            Brunetti vanwege diens grotere vaardigheid. Het eerste deel is een virtuoos Allegro, terwijl het tweede
+            deel, een Andante cantabile uit zangerige melodische lijnen bestaat. Het derde deel, een Rondeau, is vrolijk
+            en vol plezier. Het concert duurt ongeveer 25 minuten.
         </p>
         <p><img src="evelyn.jpg" alt="Evelyn Tjon-En-Fa" class="w3-image w3-left w3-margin-right">Soliste is Evelyn
             Tjon-En-Fa. Zij werkte
-            eerder mee als concertmeester. In 2001 studeerde Evelyn cum laude af als uitvoerend musicus aan het
+            eerder mee als concertmeester aan Mozart op Zaterdag. In 2001 studeerde Evelyn cum laude af als uitvoerend
+            musicus aan het
             conservatorium in Tilburg (Fontys Hogescholen). Evelyn heeft sinds 1997 regelmatig opgetreden als solist met
             orkesten waarvan zij deel uitmaakt en heeft een ruime ervaring in kamermuziek. Evelyn heeft parallel aan
             haar
