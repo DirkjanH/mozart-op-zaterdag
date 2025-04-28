@@ -26,7 +26,7 @@
             en vol plezier. Het concert duurt ongeveer 25 minuten.
         </p>
         <p><img src="evelyn.jpg" alt="Evelyn Tjon-En-Fa"
-                class="w3-image w3-left w3-margin-right w3-margin-bottom">Soliste is Evelyn
+                class="w3-image w3-left w3-margin-right w3-margin-bottom geenlijn">Soliste is Evelyn
             Tjon-En-Fa. Zij werkte
             eerder mee als concertmeester aan Mozart op Zaterdag. In 2001 studeerde Evelyn cum laude af als uitvoerend
             musicus aan het
