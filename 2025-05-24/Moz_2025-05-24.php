@@ -53,8 +53,7 @@
                 <a href="/2025-05-24/K218.Viola.pdf" target="_blank">Altviool</a>
             </li>
             <li>
-                <a href="\2025-03-22\Mozart - Symfonie nr. 29 in A KV 201 - bas.pdfK218.Cello.pdf"
-                    target="_blank">Cello, fagot, contrabas</a>
+                <a href="/2025-05-24/K218.Cello.pdf" target="_blank">Cello, fagot, contrabas</a>
             </li>
             <li>
                 <a href="K218_NMA_score.pdf" target="_blank">
@@ -64,9 +63,7 @@
             </li>
         </ul>
         <p>
-            NB.
-            <b>
-                Strijkers, neem SVP tzt de streken uit de betekende partituur over in je eigen partij.
+            <b>NB.Strijkers, neem SVP tzt de streken uit de betekende partituur over in je eigen partij.</b>
         </p>
     </div>
     </div>
