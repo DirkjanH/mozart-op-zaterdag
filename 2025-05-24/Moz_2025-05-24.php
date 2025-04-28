@@ -26,55 +26,49 @@
             en vol plezier. Het concert duurt ongeveer 25 minuten.
         </p>
         <p><img src="evelyn.jpg" alt="Evelyn Tjon-En-Fa"
-                class="w3-image w3-left w3-margin-right w3-margin-bottom geenlijn">Soliste is Evelyn
-            Tjon-En-Fa. Zij werkte
-            eerder mee als concertmeester aan Mozart op Zaterdag. In 2001 studeerde Evelyn cum laude af als uitvoerend
-            musicus aan het
-            conservatorium in Tilburg (Fontys Hogescholen). Evelyn heeft sinds 1997 regelmatig opgetreden als solist met
-            orkesten waarvan zij deel uitmaakt en heeft een ruime ervaring in kamermuziek. Evelyn heeft parallel aan
-            haar
-            conservatoriumstudie Nederlands recht gestudeerd. Naast haar optredens als violiste werkt Evelyn sinds 2001
-            ook
-            als advocaat.
+                class="w3-image w3-left w3-margin-right w3-margin-bottom geenlijn">
+            Soliste is Evelyn Tjon-En-Fa. Zij werkte eerder mee als concertmeester aan Mozart op Zaterdag. In 2001
+            studeerde Evelyn cum
+            laude af als uitvoerend musicus aan het conservatorium in Tilburg (Fontys Hogescholen). Evelyn heeft sinds
+            1997 regelmatig opgetreden als solist met orkesten waarvan zij deel uitmaakt en heeft een ruime ervaring in
+            kamermuziek. Evelyn heeft parallel aan haar conservatoriumstudie Nederlands recht gestudeerd. Naast haar
+            optredens als violiste werkt Evelyn sinds 2001 ook als advocaat.
         </p>
-        <div class="onzichtbaar">
-            <h4>Partijen</h4>
-            <ul style="column-count: 3;">
-                <li>
-                    <a href="" target="_blank">Hobo 1-2</a>
-                </li>
-                <li>
-                    <a href="\2025-05-24\" target="_blank">Hoorn 1-2</a>
-                </li>
-                <li>
-                    <a href="\2025-03-22\Mozart - Symfonie nr. 29 in A KV 201 - hoorn 2.pdf" target="_blank">Hoorn 2</a>
-                </li>
-                <li>
-                    <a href="\2025-03-22\Mozart - Symfonie nr. 29 in A KV 201 - viool 1.pdf" target="_blank">Viool 1</a>
-                </li>
-                <li>
-                    <a href="\2025-03-22\Mozart - Symfonie nr. 29 in A KV 201 - viool 2.pdf" target="_blank">Viool 2</a>
-                </li>
-                <li>
-                    <a href="\2025-03-22\Mozart - Symfonie nr. 29 in A KV 201 - viola.pdf" target="_blank">Altviool</a>
-                </li>
-                <li>
-                    <a href="\2025-03-22\Mozart - Symfonie nr. 29 in A KV 201 - bas.pdf" target="_blank">Cello, fagot,
-                        contrabas</a>
-                </li>
-                <li>
-                    <a href="\2025-03-22\Mozart - Symfonie nr. 29 in A KV 201 - partituur NMA.pdf" target="_blank">
-                        <b>nog niet betekende partituur</b>
-                    </a>
-                    </b>
-                </li>
-            </ul>
-            <p>
-                NB.
-                <b>
-                    Strijkers, neem SVP de streken uit de betekende partituur over in je eigen partij.
-            </p>
-        </div>
+        <div class="" style="clear:both;"></div>
+        <h4>Partijen</h4>
+        <ul style="column-count: 3;">
+            <li>
+                <a href="/2025-05-24/K218.Oboe.pdf" target="_blank">Hobo 1-2</a>
+            </li>
+            <li>
+                <a href="/2025-05-24/K218.Horn.pdf" target="_blank">Hoorn 1-2</a>
+            </li>
+            <li>
+                <a href="/2025-05-24/K218.Violin1.pdf" target="_blank">Viool 1</a>
+            </li>
+            <li>
+                <a href="/2025-05-24/K218.Violin2.pdf" target="_blank">Viool 2</a>
+            </li>
+            <li>
+                <a href="/2025-05-24/K218.Viola.pdf" target="_blank">Altviool</a>
+            </li>
+            <li>
+                <a href="\2025-03-22\Mozart - Symfonie nr. 29 in A KV 201 - bas.pdfK218.Cello.pdf"
+                    target="_blank">Cello, fagot, contrabas</a>
+            </li>
+            <li>
+                <a href="K218_NMA_score.pdf" target="_blank">
+                    <b>nog niet betekende partituur</b>
+                </a>
+                </b>
+            </li>
+        </ul>
+        <p>
+            NB.
+            <b>
+                Strijkers, neem SVP tzt de streken uit de betekende partituur over in je eigen partij.
+        </p>
+    </div>
     </div>
 </body>
 
