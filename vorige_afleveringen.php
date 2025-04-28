@@ -15,7 +15,7 @@
         <h4>22 februari 2025 - symfonie nr. 25 KV 183</h4>
         <p><img src="images/MoZ_foto_buigen_Yo.jpg" alt="Mozart"
                 class="w3-image w3-right w3-margin-left w3-margin-bottom" style="max-width: 500px;">De <a
-                href="2025-02-22\kv183.php" target="_blank">eerste
+                href="\2025-02-22\kv183.php" target="_blank">eerste
                 keer</a> vond
             plaats op zaterdag 22 februari in het <a href="/stadsklooster.htm">Stadsklooster</a>, met Mozarts 'kleine
             g-moll' symfonie nr. 25 KV 183 als onderwerp en een orkest van zo'n 30 strijkers en blazers als deelnemers,
@@ -27,7 +27,7 @@
             <a href="/stadsklooster.php" target="_blank">Stadsklooster</a>. Gespeeld werd Symfonie nr. 4 in D KV 19
             (10') en het
             klarinetconcert in A-groot KV 622 (29') voor 2 fluiten, 2 fagotten, 2 hoorns en strijkers. Soliste was <a
-                href="2025-04-26\marta_xavier.php" target="_blank">Marta
+                href="\2025-04-26\marta_xavier.php" target="_blank">Marta
                 Xavier (Portugal)</a>. Er speelden 26 mensen in het orkest. Er waren een kleine 40 bezoekers.
         </p>
 

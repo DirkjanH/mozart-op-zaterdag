@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 
 <head>
     <meta charset="UTF-8">
@@ -39,13 +39,10 @@
         <h4>Partijen</h4>
         <ul style="column-count: 3;">
             <li>
-                <a href="\2025-03-22\Mozart - Symfonie nr. 29 in A KV 201 - hobo 1.pdf" target="_blank">Hobo 1</a>
+                <a href="" target="_blank">Hobo 1-2</a>
             </li>
             <li>
-                <a href="\2025-03-22\Mozart - Symfonie nr. 29 in A KV 201 - hobo 2.pdf" target="_blank">Hobo 2</a>
-            </li>
-            <li>
-                <a href="\2025-03-22\Mozart - Symfonie nr. 29 in A KV 201 - hoorn 1.pdf" target="_blank">Hoorn 1</a>
+                <a href="\2025-05-24\" target="_blank">Hoorn 1-2</a>
             </li>
             <li>
                 <a href="\2025-03-22\Mozart - Symfonie nr. 29 in A KV 201 - hoorn 2.pdf" target="_blank">Hoorn 2</a>
