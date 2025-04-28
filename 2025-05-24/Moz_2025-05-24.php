@@ -25,7 +25,8 @@
             deel, een Andante cantabile uit zangerige melodische lijnen bestaat. Het derde deel, een Rondeau, is vrolijk
             en vol plezier. Het concert duurt ongeveer 25 minuten.
         </p>
-        <p><img src="evelyn.jpg" alt="Evelyn Tjon-En-Fa" class="w3-image w3-left w3-margin-right">Soliste is Evelyn
+        <p><img src="evelyn.jpg" alt="Evelyn Tjon-En-Fa"
+                class="w3-image w3-left w3-margin-right w3-margin-bottom">Soliste is Evelyn
             Tjon-En-Fa. Zij werkte
             eerder mee als concertmeester aan Mozart op Zaterdag. In 2001 studeerde Evelyn cum laude af als uitvoerend
             musicus aan het
