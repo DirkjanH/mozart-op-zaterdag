@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mozart op Zaterdag op 26 april 2025</title>
-    <link href="css/moz.css" rel="stylesheet" type="text/css">
+    <link href="/css/moz.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -16,10 +16,18 @@
         <p>
             De tweede aflevering van
             <i>Mozart op Zaterdag</i>
-            vond plaats op zaterdagochtend 26 april. We werkten aan Mozarts Symfonie nr. 4 in D KV 19 en het klarinetconcert in A-groot KV 622. De vierde symfonie is een kort jeugdwerk. Hij schreef het stuk in 1765 in Londen op 9-jarige leeftijd tijdens de Europese tour van de familie Mozart. De symfonie bestaat uit drie charmante delen, een Allegro, een Andante en een Presto, en duurt ongeveer 10 minuten. We speelden het zonder herhalingen.
+            vond plaats op zaterdagochtend 26 april. We werkten aan Mozarts Symfonie nr. 4 in D KV 19 en het
+            klarinetconcert in A-groot KV 622. De vierde symfonie is een kort jeugdwerk. Hij schreef het stuk in 1765 in
+            Londen op 9-jarige leeftijd tijdens de Europese tour van de familie Mozart. De symfonie bestaat uit drie
+            charmante delen, een Allegro, een Andante en een Presto, en duurt ongeveer 10 minuten. We speelden het
+            zonder herhalingen.
         </p>
         <p>
-            Het klarinetconcert is een van Mozarts laatste werken, voltooid in oktober 1791, slechts twee maanden voor zijn dood. Het is geschreven voor de klarinettist Anton Stadler, die ook de klarinetpartij speelde bij de première op 16 oktober 1791 in Praag. Het is een van de bekendste werken voor klarinet. Het klarinetconcert bestaat uit drie delen, een Allegro, een Adagio en een Rondo - Allegro. Het duurt ongeveer 30 minuten. Soliste was de <a href="marta_xavier.php" target="_blank">Portugese klarinettiste Marta Xavier</a>.
+            Het klarinetconcert is een van Mozarts laatste werken, voltooid in oktober 1791, slechts twee maanden voor
+            zijn dood. Het is geschreven voor de klarinettist Anton Stadler, die ook de klarinetpartij speelde bij de
+            première op 16 oktober 1791 in Praag. Het is een van de bekendste werken voor klarinet. Het klarinetconcert
+            bestaat uit drie delen, een Allegro, een Adagio en een Rondo - Allegro. Het duurt ongeveer 30 minuten.
+            Soliste was de <a href="marta_xavier.php" target="_blank">Portugese klarinettiste Marta Xavier</a>.
         </p>
         <h5>Partijen Symfonie nr. 4 in D KV 19</h5>
         <p>Tempi: 1. kwart = 132; 2. achtste = 88; 3. gepuncteerde kwart = 66.</p>
