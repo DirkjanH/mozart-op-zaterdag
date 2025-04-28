@@ -27,7 +27,8 @@
                 <b>24 mei</b> in de
                 <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Vioolconcert nr. 4 in D KV 218 voor 2
                 hobo's, 1 fagot, 2 hoorns en strijkers (solist: Evelyn
-                Tjon-En-Fa). <a href="/2025-05-24/Moz_2025-05-24.php">Meer info & partijen vind je hier</a>
+                Tjon-En-Fa). <a href="/2025-05-24/Moz_2025-05-24.php" target="_blank">Meer info & partijen vind je
+                    hier</a>
             </li>
             <li>
                 <b>27 september</b> in de
