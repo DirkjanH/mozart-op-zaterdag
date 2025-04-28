@@ -35,7 +35,7 @@
             optredens als violiste werkt Evelyn sinds 2001 ook als advocaat.
         </p>
         <div class="" style="clear:both;"></div>
-        <h4>Partijen</h4>
+        <h4>Partijen (nog niet betekend)</h4>
         <ul style="column-count: 3;">
             <li>
                 <a href="/2025-05-24/K218.Oboe.pdf" target="_blank">Hobo 1-2</a>
