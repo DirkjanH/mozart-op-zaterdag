@@ -32,7 +32,8 @@
             conservatorium in Tilburg (Fontys Hogescholen). Evelyn heeft sinds 1997 regelmatig opgetreden als solist met
             orkesten waarvan zij deel uitmaakt en heeft een ruime ervaring in kamermuziek. Evelyn heeft parallel aan
             haar
-            conservatoriumstudie Nederlands recht gestudeerd. Zij werkt sinds 2001 ook als advocaat.
+            conservatoriumstudie Nederlands recht gestudeerd. Naast optreden als violiste werkt Evelyn sinds 2001 ook
+            als advocaat.
         </p>
         <div class="onzichtbaar">
             <h4>Partijen</h4>
