@@ -12,7 +12,7 @@
     <div class="w3-content w3-white w3-panel">
         <?php include_once 'navigatie.htm'; ?>
         <h3>Marta Xavier</h3>
-        <p><img src="/images/Marta Xavier.jpg" alt="Marta Xavier, klarinet" width=300
+        <p><img src="Marta Xavier.jpg" alt="Marta Xavier, klarinet" width=300
                 style="float: left; margin: 0 20px 20px 0;" class="w3-image">De Portugese klarinettiste Marta Xavier
             heeft het voorrecht gehad om op te treden op het Iberisch schiereiland, in Nederland, Frankrijk, Duitsland,
             de VS en Japan. Als solist heeft Xavier samengewerkt met het Cascais en Oeiras Kamerorkest, het Lisbon Youth
