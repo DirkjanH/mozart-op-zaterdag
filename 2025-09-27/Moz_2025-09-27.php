@@ -29,7 +29,7 @@
                 class="w3-image w3-panel w3-left geenlijn">
         </div>
         </p>
-        <div class="">
+        <div class="" style="clear: both;">
             <h4>Partijen (nog niet betekend)</h4>
             <ul style="column-count: 3;">
                 <li>
