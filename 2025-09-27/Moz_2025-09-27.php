@@ -19,7 +19,7 @@
             vindt plaats op zaterdagochtend 27 september. We werken dan aan Mozarts Sinfonia concertante in Eb KV 364
             voor viool, altviool en orkest. De sinfonia bestaat uit drie delen, een Allegro maestoso, een Andante en een
             Presto, en duurt ongeveer 30 minuten.
-            De Sinfonia concertante is een van de meest geliefde werken van Mozart. Het orkest bestaat uit twee hobo's
+            De Sinfonia concertante is een van de meest geliefde werken van Mozart. Het orkest bestaat uit twee hobo's,
             twee hoorns, fagot en strijkers, met gedeelde altviolen. Het werk is een prachtig
             voorbeeld van muzikale interactie tussen de solisten en het orkest. De solisten zijn Valentina Bernardone
             (viool) en Anna Smith (altviool)
