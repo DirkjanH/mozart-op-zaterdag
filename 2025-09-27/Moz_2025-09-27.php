@@ -23,7 +23,7 @@
             twee hoorns, fagot en strijkers, met gedeelde altviolen. Het werk is een prachtig
             voorbeeld van muzikale interactie tussen de solisten en het orkest. De solisten zijn Valentina Bernardone
             (viool) en Anna Smith (altviool)
-        <div style="clear: both; display: table;">
+        <div style="clear: both; display: table;" class="w3-center">
             <div style="display: table-cell;" class="w3-small w3-center"><img
                     src="/2025-09-27/valentina-bernardone-nederlands-.ed8ef09e.fill-1280x1280.jpg" width="350"
                     alt="Valentina Bernardone" class="w3-image w3-panel w3-left geenlijn"><br>Valentina Bernardone,
