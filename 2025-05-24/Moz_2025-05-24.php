@@ -35,7 +35,7 @@
             optredens als violiste werkt Evelyn sinds 2001 ook als advocaat.
         </p>
         <div class="" style="clear:both;"></div>
-        <h4>Partijen (nog niet betekend)</h4>
+        <h4>Partijen</h4>
         <ul style="column-count: 3;">
             <li>
                 <a href="/2025-05-24/K218.Oboe.pdf" target="_blank">Hobo 1-2</a>
@@ -44,21 +44,19 @@
                 <a href="/2025-05-24/K218.Horn.pdf" target="_blank">Hoorn 1-2</a>
             </li>
             <li>
-                <a href="/2025-05-24/K218.Violin1.pdf" target="_blank">Viool 1</a>
+                <a href="/2025-05-24/Mozart-KV218-Viool 1-Betekend.pdf" target="_blank">Viool 1 <b>(betekend)</b></a>
             </li>
             <li>
-                <a href="/2025-05-24/K218.Violin2.pdf" target="_blank">Viool 2</a>
+                <a href="/2025-05-24/K218.Violin2.pdf" target="_blank">Viool 2 (nog niet betekend)</a>
             </li>
             <li>
-                <a href="/2025-05-24/K218.Viola.pdf" target="_blank">Altviool</a>
+                <a href="/2025-05-24/K218.Viola.pdf" target="_blank">Altviool (nog niet betekend)</a>
             </li>
             <li>
-                <a href="/2025-05-24/K218.Cello.pdf" target="_blank">Cello, fagot, contrabas</a>
+                <a href="/2025-05-24/K218.Cello.pdf" target="_blank">Cello, fagot, contrabas (nog niet betekend)</a>
             </li>
             <li>
-                <a href="K218_NMA_score.pdf" target="_blank">
-                    <b>nog niet betekende partituur</b>
-                </a>
+                <a href="K218_NMA_score.pdf" target="_blank">Partituur</a>
                 </b>
             </li>
         </ul>
