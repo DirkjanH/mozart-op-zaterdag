@@ -60,9 +60,6 @@
                 </b>
             </li>
         </ul>
-        <p>
-            <b>NB.Strijkers, neem SVP tzt de streken uit de betekende partituur over in je eigen partij.</b>
-        </p>
     </div>
     </div>
 </body>
