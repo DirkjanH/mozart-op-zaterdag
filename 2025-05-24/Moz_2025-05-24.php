@@ -50,7 +50,7 @@
                 <a href="/2025-05-24/K218.Violin2.pdf" target="_blank">Viool 2 (nog niet betekend)</a>
             </li>
             <li>
-                <a href="/2025-05-24/K218.Viola_betekend.pdf" target="_blank">Altviool (nog niet betekend)</a>
+                <a href="/2025-05-24/K218.Viola_betekend.pdf" target="_blank">Altviool <b>(betekend)</b></a>
             </li>
             <li>
                 <a href="/2025-05-24/K218.Cello.pdf" target="_blank">Cello, fagot, contrabas (nog niet betekend)</a>
