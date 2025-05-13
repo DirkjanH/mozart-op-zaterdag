@@ -47,13 +47,13 @@
                 <a href="/2025-05-24/Mozart-KV218-Viool 1-Betekend.pdf" target="_blank">Viool 1 <b>(betekend)</b></a>
             </li>
             <li>
-                <a href="/2025-05-24/K218.Violin2_betekend.pdf" target="_blank">Viool 2 (nog niet betekend)</a>
+                <a href="/2025-05-24/K218.Violin2_betekend.pdf" target="_blank">Viool 2 <b>(betekend)</b></a>
             </li>
             <li>
                 <a href="/2025-05-24/K218.Viola_betekend.pdf" target="_blank">Altviool <b>(betekend)</b></a>
             </li>
             <li>
-                <a href="/2025-05-24/K218.Cello_betekend.pdf" target="_blank">Cello, fagot, contrabas (nog niet betekend)</a>
+                <a href="/2025-05-24/K218.Cello_betekend.pdf" target="_blank">Cello, fagot, contrabas <b>(betekend)</b></a>
             </li>
             <li>
                 <a href="K218_NMA_score.pdf" target="_blank">Partituur</a>
