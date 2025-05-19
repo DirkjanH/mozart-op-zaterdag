@@ -33,13 +33,11 @@
             <h4 class="a11y-option__header"> Gehandicapenparkeerplaats</h4>
             <p><a href="https://maps.app.goo.gl/HFHYEnwMA9yRWCiZA">Voetiusstraat</a>: 3<br><a href="https://maps.app.goo.gl/yTYvzER7qYij2KC2A">Domstraat</a>: 4<br><a href="https://maps.app.goo.gl/55Qfy7oxnui61cCy5">Hamburgerstraat</a>: 18</p>
             <h3 class="a11y-option__label">Fietsenstalling</h3>
-            <p>Aanwezig<br>Locatie: voor de entree</p>
+            <p>Aanwezig; locatie: voor de entree</p>
             <h2 class="label-above">Toegankelijkheid</h2>
             <h3 class="a11y-option__label">Ingangen</h3>
             <h4 class="a11y-option__header"> Hoofdingang</h4>
-            <p>Rolstoelvriendelijk.</p>
-            <p>Locatie: aan Domplein in pand Utrechts centrum voor de kunsten.</p>
-            <p>Type: schuifdeuren die automatisch openen</p>
+            <p>Rolstoelvriendelijk. Locatie: aan Domplein in pand Utrechts centrum voor de kunsten. Type: schuifdeuren die automatisch openen</p>
             <h3 class="a11y-option__label">Liften</h3>
             <p>Aanwezig<br><strong>Locatie: </strong>Bij binnenkomst rechtdoor, na de toiletten de gang door naar links. De Marnixzaal bevindt zich op de eerste etage.</p>
             <h3 class="a11y-option__label">Rolstoelvriendelijkheid</h3>
