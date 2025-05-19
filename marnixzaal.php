@@ -20,29 +20,25 @@
             Hier een aanzicht van het podium vanuit de zaal.
         </p>
         <div class="w3-panel w3-white w3-border">
-            <h2 class="label-above">Adres</h2>
+            <h2>Adres</h2>
             <p>Domplein 4, 3512 JC Utrecht</p>
             <h2>Bereikbaarheid</h2>
-            <h3 class="a11y-option__label">Met het openbaar vervoer</h3>
-            <h4 class="a11y-option__header"> Bus</h4>
-            <p>Dichtstbijzijnde bushalte: <a href="https://maps.app.goo.gl/KPSmYFGBLBZ3j4CZA ">Domplein</a> (Buslijn 2: kleinere bus, niet rolstoelvriendelijk. Opvouwbare rollators kunnen wel mee).</p>
-            <p>of bushalte <a href="https://maps.app.goo.gl/6MAXKWySBMJspUfs7 ">Janskerkhof</a> (rolstoelvriendelijk).</p>
-            <h3 class="a11y-option__label">Parkeren</h3>
-            <h4 class="a11y-option__header"> Parkeren</h4>
+            <h3>Met het openbaar vervoer</h3>
+            <p>Dichtstbijzijnde bushalte: <a href="https://maps.app.goo.gl/KPSmYFGBLBZ3j4CZA ">Domplein</a> (Buslijn 2: kleinere bus, niet rolstoelvriendelijk. Opvouwbare rollators kunnen wel mee). Of bushalte <a href="https://maps.app.goo.gl/6MAXKWySBMJspUfs7 ">Janskerkhof</a> (rolstoelvriendelijk).</p>
+            <h3>Parkeren</h3>
             <p>Parkeergarage <a href="https://maps.app.goo.gl/oizuD6RysxE7kWpe9">Interparking Springweg</a> (betaald)</p>
-            <h4 class="a11y-option__header"> Gehandicapenparkeerplaats</h4>
+            <h4> Gehandicapenparkeerplaats</h4>
             <p><a href="https://maps.app.goo.gl/HFHYEnwMA9yRWCiZA">Voetiusstraat</a>: 3<br><a href="https://maps.app.goo.gl/yTYvzER7qYij2KC2A">Domstraat</a>: 4<br><a href="https://maps.app.goo.gl/55Qfy7oxnui61cCy5">Hamburgerstraat</a>: 18</p>
-            <h3 class="a11y-option__label">Fietsenstalling</h3>
+            <h3>Fietsenstalling</h3>
             <p>Aanwezig; locatie: voor de entree</p>
-            <h2 class="label-above">Toegankelijkheid</h2>
-            <h3 class="a11y-option__label">Ingangen</h3>
-            <h4 class="a11y-option__header"> Hoofdingang</h4>
+            <h2>Toegankelijkheid</h2>
+            <h3>Hoofdingang</h3>
             <p>Rolstoelvriendelijk. Locatie: aan Domplein in pand Utrechts centrum voor de kunsten. Type: schuifdeuren die automatisch openen</p>
-            <h3 class="a11y-option__label">Liften</h3>
-            <p>Aanwezig<br><strong>Locatie: </strong>Bij binnenkomst rechtdoor, na de toiletten de gang door naar links. De Marnixzaal bevindt zich op de eerste etage.</p>
-            <h3 class="a11y-option__label">Rolstoelvriendelijkheid</h3>
-            <h4 class="a11y-option__header"> Integraal toegankelijke toiletruimte</h4>
-            <p>Aanwezig<br>Locatie: Op de begane grond, vanaf de ingang rechtdoor aan de linkerkant.</p>
+            <h3>Liften</h3>
+            <p>Aanwezig. Locatie: bij binnenkomst rechtdoor, na de toiletten de gang door naar links. De Marnixzaal bevindt zich op de eerste etage.</p>
+            <h3>Rolstoelvriendelijkheid</h3>
+            <h4>Integraal toegankelijke toiletruimte</h4>
+            <p>Aanwezig. Locatie: Op de begane grond, vanaf de ingang rechtdoor aan de linkerkant.</p>
         </div>
 </body>
 
