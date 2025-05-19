@@ -37,8 +37,7 @@
             <h3>Liften</h3>
             <p>Aanwezig. Locatie: bij binnenkomst rechtdoor, na de toiletten de gang door naar links. De Marnixzaal bevindt zich op de eerste etage.</p>
             <h3>Rolstoelvriendelijkheid</h3>
-            <h4>Integraal toegankelijke toiletruimte</h4>
-            <p>Aanwezig. Locatie: Op de begane grond, vanaf de ingang rechtdoor aan de linkerkant.</p>
+            <p>Integraal toegankelijke toiletruimte aanwezig. Locatie: Op de begane grond, vanaf de ingang rechtdoor aan de linkerkant.</p>
         </div>
 </body>
 
