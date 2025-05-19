@@ -25,7 +25,7 @@
             <h2>Bereikbaarheid</h2>
             <h3 class="a11y-option__label">Met het openbaar vervoer</h3>
             <h4 class="a11y-option__header"> Bus</h4>
-            <p>Dichtstbijzijnde bushalte: <a href="https://maps.app.goo.gl/KPSmYFGBLBZ3j4CZA ">Domplein</a> (kleinere bus, niet rolstoelvriendelijk. Opvouwbare rollators kunnen wel mee).</p>
+            <p>Dichtstbijzijnde bushalte: <a href="https://maps.app.goo.gl/KPSmYFGBLBZ3j4CZA ">Domplein</a> (Buslijn 2: kleinere bus, niet rolstoelvriendelijk. Opvouwbare rollators kunnen wel mee).</p>
             <p>of bushalte <a href="https://maps.app.goo.gl/6MAXKWySBMJspUfs7 ">Janskerkhof</a> (rolstoelvriendelijk).</p>
             <h3 class="a11y-option__label">Parkeren</h3>
             <h4 class="a11y-option__header"> Parkeren</h4>
