@@ -24,18 +24,18 @@
         <h4>Voor de komende keren staan deze stukken op het programma:</h4>
         <ul>
             <li>
-                <b>24 mei</b> in de
-                <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Vioolconcert nr. 4 in D KV 218 voor 2
-                hobo's, 1 fagot, 2 hoorns en strijkers (solist: Evelyn
-                Tjon-En-Fa). <a href="/2025-05-24/Moz_2025-05-24.php" target="_blank">Meer info & partijen vind je
-                    hier</a>. <b>NB: Er is nog plaats voor een altviool en twee contrabassen.</b>
-            </li>
-            <li>
                 <b>27 september</b> in de
                 <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Sinfonia Concertante in Eb KV 364 voor 2
                 hobo's, 1 fagot, 2 hoorns en strijkers. Solisten: Valentina Bernardone (viool) en Anna Smith (altviool).
-                <a href="/2025-09-27/Moz_2025-09-27.php" target="_blank">Meer info & partijen vind je
-                    hier</a>
+                <a href="/2025-09-27/Moz_2025-09-27.php" target="_blank">Meer info & partijen vind je hier</a>. Er is momenteel nog plaats voor een 2e viool en een altviool.
+            </li>
+            <li>
+                <b>25 oktober</b> in de
+                <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: de 'Haffner' symfonie nr. 35 in D KV 385 voor 2 fluiten, 2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns, 2 trompetten, pauken en strijkers. <a href="/2025-10-25/Moz_2025-10-25.php" target="_blank">Meer info & partijen vind je hier</a>.
+            </li>
+            <li>
+                <b>15 november</b> in de
+                <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Pianoconcert nr. 17 in G KV 453 voor 1 fluit, 2 hobo's, 2 fagotten, 2 hoorns en strijkers. Solist: Hans-Erik Dijkstra (piano). <a href="/2025-11-15/Moz_2025-11-15.php" target="_blank">Meer info & partijen vind je hier</a>.
             </li>
         </ul>
         <p>Aan de programma's voor de volgende afleveringen wordt nog gewerkt. Waarschijnlijk gaan er dan naast
