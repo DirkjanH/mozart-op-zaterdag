@@ -12,7 +12,7 @@
 <body>
     <div class="w3-content w3-mobile w3-white w3-panel">
         <?php include_once 'navigatie.htm'; ?>
-        <p><img src="images/Mozart.jpg" alt="Mozart" class="w3-display-container w3-left w3-margin-right"
+        <p><img src="images/Mozart.jpg" alt="Mozart" class="w3-display-container w3-left w3-margin-right w3-margin-bottom"
                 style="width: 100%; max-width: 350px; ">Er is een nieuw orkest-inititatief in Utrecht:
             <i>Mozart op Zaterdag</i>! Iedere maand komt een orkest van professionals en goede amateurs bijeen op een
             zaterdagochtend om een symfonie en/of een (solo)concert van Mozart te repeteren en meteen uit te voeren.
