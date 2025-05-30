@@ -38,8 +38,8 @@
                 <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Pianoconcert nr. 17 in G KV 453 voor 1 fluit, 2 hobo's, 2 fagotten, 2 hoorns en strijkers. Solist: Hans-Erik Dijkstra (piano). <a href="/2025-11-15/Moz_2025-11-15.php" target="_blank">Meer info & partijen vind je hier</a>.
             </li>
         </ul>
-        <p>Aan de programma's voor de volgende afleveringen wordt nog gewerkt. Waarschijnlijk gaan er dan naast
-            symfonieën ook weer (solo)concerten van Mozart. Er is al contact met professionele pianisten die graag een
+        <p>Aan de programma's voor de afleveringen in 2026 wordt nog gewerkt. Waarschijnlijk gaan er dan naast
+            symfonieën ook weer (solo)concerten van Mozart. Er is contact met meer professionele pianisten die graag een
             pianoconcert van Mozart voor hun rekening willen nemen</p>
         <h4>Meespelen?</h4>
         <p>Heb je belangstelling om eens mee te doen met Mozart op Zaterdag? Het is mogelijk je op te geven voor de
