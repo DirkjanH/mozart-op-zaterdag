@@ -1,10 +1,12 @@
 @charset "utf-8";
 @import "w3.css";
+
 body {
   font-family: Verdana, Arial, Helvetica, sans-serif;
   font-size: 11pt;
   background-color: dimgrey;
 }
+
 div.TekstpaginaAchtergrond {
   width: 100%;
   max-width: 1200px;
@@ -12,30 +14,45 @@ div.TekstpaginaAchtergrond {
   background-color: white;
   padding: 5px;
 }
+
 .rood {
   color: #ff0000;
 }
+
 .kleinkap {
   font-variant: small-caps;
 }
+
 a:link {
   color: #006633;
   text-decoration: underline;
 }
+
 a:visited {
   color: #660066;
   text-decoration: underline;
 }
+
 img {
   border: 1px solid #000000;
 }
+
 img.geenlijn {
   border-style: none;
+}
+
+ul.programma {
+  clear: both;
+}
+
+ul.programma li {
+  margin-bottom: 15px;
 }
 
 .fotobijschrift {
   font-size: 0.63em;
 }
+
 .fotolinks {
   font-size: 0.63em;
   text-align: center;
@@ -44,72 +61,89 @@ img.geenlijn {
   margin-right: 20px;
   margin-top: 20px;
 }
+
 .fotocenter {
   font-size: 0.63em;
   text-align: center;
   line-height: 2em;
 }
+
 .fotorechts {
   font-size: 0.63em;
   text-align: center;
   float: right;
   margin-left: 20px;
 }
+
 .nadruk {
   color: #f00;
   font-weight: bold;
   font-size: 80%;
 }
+
 .kleinkap {
   font-variant: small-caps;
 }
+
 .klein {
   font-size: 70%;
 }
+
 #main p,
 td {
   letter-spacing: 0em;
 }
+
 .commentaar {
   font-size: 80%;
   color: #ff0000;
 }
+
 .onzichtbaar {
   display: none !important;
 }
+
 hr {
   color: #00cc33;
 }
+
 td#verhaal {
   padding-left: 50px;
 }
+
 input[type="text"],
 input[type="tel"],
 input[type="email"],
 textarea {
   background-color: papayawhip;
 }
+
 .cols3 {
   column-count: 3;
   column-fill: balance;
 }
+
 table#res {
   max-width: 100%;
   border: medium double #336633;
   border-collapse: collapse;
 }
+
 #res td,
 th {
   font-size: 70%;
   border: thin solid #000000;
   padding: 3px;
 }
+
 #res th {
   background: #00ff99;
 }
+
 #nav {
   width: 230px;
 }
+
 #navcontainer a {
   display: block;
   padding: 3px;
@@ -118,6 +152,7 @@ th {
   font-weight: bold;
   text-decoration: none;
 }
+
 #navcontainer ul {
   margin-left: 0px;
   padding-left: 0px;
@@ -125,41 +160,50 @@ th {
   font-family: Verdana, Arial, Helvetica, sans-serif;
   font-size: 15px;
 }
+
 #navcontainer li {
   padding-bottom: 0px;
   padding-top: 0px;
   margin-top: 3px;
   margin-bottom: 0px;
 }
+
 #navcontainer a:link,
 #navlist a:visited {
   color: #0066ff;
 }
+
 #navcontainer a:hover,
 #navlist a:active {
   background-color: #0066ff;
   color: #fff;
 }
+
 div#main {
   margin: 20px 20px 20px 250px;
 }
+
 .klein {
   font-size: 70%;
 }
 
 @media print {
+
   h2,
   h3 {
     page-break-before: always !important;
   }
+
   p,
   p * {
     page-break-before: avoid;
   }
+
   .niet-printen,
   .niet-printen * {
     display: none !important;
   }
+
   #res td,
   th {
     font-size: 100%;

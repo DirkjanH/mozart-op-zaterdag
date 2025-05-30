@@ -22,7 +22,7 @@
             april 2025.
         </p>
         <h4>Voor de komende keren staan deze stukken op het programma:</h4>
-        <ul>
+        <ul class="programma">
             <li>
                 <b>27 september</b> in de
                 <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Sinfonia Concertante in Eb KV 364 voor 2
