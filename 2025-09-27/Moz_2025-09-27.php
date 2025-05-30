@@ -34,7 +34,7 @@
             </div>
         </div>
         </p>
-        <div class="" style="clear: both;">
+        <div class="clear";">
             <h4>Partijen (nog niet betekend)</h4>
             <ul style="column-count: 3;">
                 <li>

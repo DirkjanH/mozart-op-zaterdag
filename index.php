@@ -21,7 +21,7 @@
                 href="/vorige_afleveringen.php" target="_blank">twee afleveringen</a> plaatsgevonden, in februari en in
             april 2025.
         </p>
-        <h4>Voor de komende keren staan deze stukken op het programma:</h4>
+        <h4 class="clear">Voor de komende keren staan deze stukken op het programma:</h4>
         <ul class="programma">
             <li>
                 <b>27 september</b> in de

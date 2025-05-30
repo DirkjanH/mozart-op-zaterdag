@@ -48,6 +48,9 @@ ul.programma {
 ul.programma li {
   margin-bottom: 15px;
 }
+.clear {
+  clear: both;
+}
 
 .fotobijschrift {
   font-size: 0.63em;
