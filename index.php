@@ -44,8 +44,8 @@
         <h4>Meespelen?</h4>
         <p>Heb je belangstelling om eens mee te doen met Mozart op Zaterdag? Het is mogelijk je op te geven voor de
             volgende afleveringen. Het is de bedoeling hier een maandelijkse traditie van te maken op de vierde zaterdag
-            van de maand. Dus de volgende keren zijn op 26 april en 24 mei, en daarna weer op 27 september, 25 oktober
-            en 22 november. We werken in de
+            van de maand. In 2026 zijn dat dus 24 januari, 28 februari, 28 maart, 25 april en 23 mei, en daarna weer op 26 september, 24 oktober
+            en 21 november. We werken in de
             <a href="/marnixzaal.php" target="_blank">Marnixzaal</a> van de vroegere Utrechtse Muziekschool aan het
             Domplein of in het
             <a href="/stadsklooster.php" target="_blank">Stadsklooster</a> in de wijk Lombok. Er wordt koffie en thee
