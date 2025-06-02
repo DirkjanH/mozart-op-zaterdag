@@ -25,7 +25,7 @@
             Hij componeerde o.a. twee opera’s.
         </p>
 
-        <p>De partijen zijn binnenkort beschikbaar</p>
+        <p style="clear:both;">De partijen zijn binnenkort beschikbaar</p>
         <div class="onzichtbaar" style="clear: both;">
             <h4>Partijen (nog niet betekend)</h4>
             <ul style="column-count: 3;">
