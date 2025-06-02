@@ -19,7 +19,7 @@
             vindt plaats op zaterdagochtend 15 november We werken dan aan Mozarts Pianoconcert nr. 17 in G KV 453. Het orkest bestaat uit een fluit, twee hobo's, twee fagotten, hoorns en strijkers. Het pianoconcert bestaat uit drie delen, een Allegro, een Adagio en een Allegro assai, en duurt ongeveer 30 minuten. Solist is de pianist Hans-Erik Dijkstra.
         </p>
         <p><img src="Hans-Erik_Dijkstra.jpg" alt="Hans-Erik Dijkstra"
-                class="w3-image w3-left w3-margin-right w3-margin-bottom geenlijn">Hans-Erik Dijkstra studeerde piano en compositie aan het Twents Conservatorium (Artez). In 1991 studeerde hij Cum Laude af. Vervolgens
+                class="w3-image w3-left w3-margin-right w3-margin-bottom geenlijn" style="max-width: 350px;;">Hans-Erik Dijkstra studeerde piano en compositie aan het Twents Conservatorium (Artez). In 1991 studeerde hij Cum Laude af. Vervolgens
             studeerde hij bij Herman Uhlhorn en Alexander Warenberg aan het Utrechts conservatorium. Na zijn studie was hij correpetitor aan het
             Koninklijk Conservatorium te Den Haag. Momenteel is hij pianodocent, vaste begeleider van koren en uitvoerend musicus in binnen- en buitenland.
             Hij componeerde o.a. twee opera’s.
