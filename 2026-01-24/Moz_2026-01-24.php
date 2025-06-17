@@ -12,15 +12,15 @@
     <div class="w3-content w3-white w3-panel">
         <?php include_once 'navigatie.htm'; ?>
         <h3>24 januari 2026:</h3>
-        <h2>Pianoconcert nr. 20 in A KV 488</h2>
+        <h2>Pianoconcert nr. 23 in A KV 488</h2>
         <p>
             De zevende aflevering van
             <i>Mozart op Zaterdag</i>
-            vindt plaats op zaterdagochtend 24 januari. We werken dan aan Mozarts Pianoconcert nr. 20 in A KV 488. Het orkest bestaat uit een fluit, twee hobo's, twee fagotten, hoorns en strijkers. Het pianoconcert bestaat uit drie delen, een Allegro, een Adagio en een Allegro assai, en duurt ongeveer 30 minuten. Drie pianisten verdelen de delen.
+            vindt plaats op zaterdagochtend 24 januari. We werken dan aan Mozarts Pianoconcert nr. 23 in A KV 488. Het orkest bestaat uit een fluit, twee klarinetten, twee fagotten, twee hoorns en strijkers. Het pianoconcert bestaat uit drie delen, een Allegro, een Adagio en een Allegro assai, en duurt ongeveer 28 minuten. Drie pianisten verdelen de delen.
         </p>
 
             <h4>De pianosolisten</h4>
-            <img src="drie solisten.jpg" alt="De drie pianosolisten" class="w3-image" style="width: 100%; max-width: 600px; ">
+            <img src="drie solisten.jpg" alt="De drie pianosolisten" class="w3-image" style="width: 100%;">
             <div class="w3-panel" style="float: left;">
                 <h5>Annette Middelbeek</h5>
                 <p>Annette Middelbeek begon al vroeg met pianospelen. Haar moeder gaf haar de eerste lessen die de aanzet vormden tot een professionele opleiding. Achtereenvolgens studeerde Annette in Utrecht, Parijs, Amsterdam en Londen bij respectievelijk Ria Groot, France Clidat, Willem Brons en John Bingham. In Parijs won zij in een concours een eerste prijs met maar liefst twee onderscheidingen. In diezelfde tijd voltooide zij aan de Universiteit van Utrecht een studie Muziekwetenschappen. Annette gaf vele soloconcerten en maakte diverse radio- en CD-opnames, waaronder de complete pianowerken van Leo Michielsen en Arthur Honegger. Voorts speelt Annette kamermuziek en treedt zij op als solist met orkest.</p>
