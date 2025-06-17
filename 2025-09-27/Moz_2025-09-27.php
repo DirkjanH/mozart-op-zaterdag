@@ -38,6 +38,7 @@
         <div class="clear" ;">
             <h4>Deelnemers</h4>
             <style>
+
                 table td,
                 table th {
                     font-size: smaller;
@@ -46,7 +47,7 @@
                     padding: 10px 10px;
                 }
             </style>
-            <table>
+            <table class="w3-table w3-bordered w3-striped">
                 <tbody>
                     <tr>
                         <th>voornaam</th>
