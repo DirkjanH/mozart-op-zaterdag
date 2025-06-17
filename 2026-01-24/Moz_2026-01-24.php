@@ -20,7 +20,7 @@
         </p>
 
         <h4>De pianosolisten</h4>
-        <div><img src="drie solisten.jpg" alt="De drie pianosolisten" class="w3-image" style="width: 100%;"><br>De drie pianosolisten. Van links naar rechts: Brit van Manen, Yumi Toyama, Annette Middelbeek</div>
+        <div><img src="drie solisten.jpg" alt="De drie pianosolisten" class="w3-image" style="width: 100%;"><br><span class="w3-small"><em>De drie pianosolisten. Van links naar rechts: Brit van Manen, Yumi Toyama, Annette Middelbeek</em></span></div>
         <div class="w3-panel" style="float: left;">
             <h5>Annette Middelbeek</h5>
             <p>Annette Middelbeek begon al vroeg met pianospelen. Haar moeder gaf haar de eerste lessen die de aanzet vormden tot een professionele opleiding. Achtereenvolgens studeerde Annette in Utrecht, Parijs, Amsterdam en Londen bij respectievelijk Ria Groot, France Clidat, Willem Brons en John Bingham. In Parijs won zij in een concours een eerste prijs met maar liefst twee onderscheidingen. In diezelfde tijd voltooide zij aan de Universiteit van Utrecht een studie Muziekwetenschappen. Annette gaf vele soloconcerten en maakte diverse radio- en CD-opnames, waaronder de complete pianowerken van Leo Michielsen en Arthur Honegger. Voorts speelt Annette kamermuziek en treedt zij op als solist met orkest.</p>
