@@ -155,7 +155,7 @@
                         <td>altviool 2</td>
                     </tr>
                     <tr>
-                        <td>Laetitia </td>
+                        <td>Laetitia</td>
                         <td>IngenHousz</td>
                         <td>altviool 2 (aanvoerder)</td>
                     </tr>
@@ -185,8 +185,8 @@
                         <td>contrabas</td>
                     </tr>
                     <tr>
-                        <td>Richard </td>
-                        <td>Both</td>
+                        <td>Dorine</td>
+                        <td>van Lammeren</td>
                         <td>contrabas</td>
                     </tr>
                 </tbody>
