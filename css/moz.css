@@ -110,10 +110,6 @@ hr {
   color: #00cc33;
 }
 
-table#deelnemers th, td {
-  font-size: 0.7em;
-}
-
 input[type="text"],
 input[type="tel"],
 input[type="email"],
