@@ -140,6 +140,11 @@
                         <td>altviool 1</td>
                     </tr>
                     <tr>
+                        <td>Marijke</td>
+                        <td>Huijgen</td>
+                        <td>altviool 1</td>
+                    </tr>
+                    <tr>
                         <td>Mirjam</td>
                         <td>van den Berg</td>
                         <td>altviool 1</td>
