@@ -19,7 +19,7 @@
         <h4>De Oorsprong van de 'Haffner'</h4>
         <p>De symfonie dankt zijn naam aan de familie Haffner, een prominente familie uit Salzburg waar Mozart bevriend mee was. Oorspronkelijk componeerde Mozart het werk in 1782 als een serenade ter gelegenheid van de verheffing in de adelstand van Siegmund Haffner. Later bewerkte Mozart de serenade tot een symfonie door onder andere een mars en twee menuetten te verwijderen en een nieuw openingsdeel toe te voegen, waardoor het de vorm kreeg die we nu kennen. De 'Haffner' symfonie is een prachtig voorbeeld van Mozarts meesterschap en zijn vermogen om zowel feestelijke grandeur als diepgaande emotie in zijn muziek te leggen.</p>
         <h4>Deelnemers</h4>
-        <table class="w3-table-striped" id="deelnemers">
+        <table class="w3-table w3-striped w3-bordered" id="deelnemers">
             <thead>
                 <tr>
                     <th>voornaam</th>
