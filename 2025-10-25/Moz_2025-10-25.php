@@ -159,8 +159,8 @@
                     <td>altviool</td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td><span class="nadruk">vacature</span></td>
+                    <td>Martin</td>
+                    <td>Spanjaard</td>
                     <td>altviool</td>
                 </tr>
                 <tr>
