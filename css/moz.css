@@ -48,6 +48,7 @@ ul.programma {
 ul.programma li {
   margin-bottom: 15px;
 }
+
 .clear {
   clear: both;
 }
@@ -122,20 +123,26 @@ textarea {
   column-fill: balance;
 }
 
+table#deelnemers th {
+  font-size: 1em;
+  background-color: #e3183a;
+  color: #ffffff;
+}
+
 table#res {
   max-width: 100%;
   border: medium double #336633;
   border-collapse: collapse;
 }
 
-#res td,
+table#res td,
 th {
   font-size: 70%;
   border: thin solid #000000;
   padding: 3px;
 }
 
-#res th {
+table#res th {
   background: #00ff99;
 }
 
