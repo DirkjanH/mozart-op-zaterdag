@@ -80,12 +80,12 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td>vacature</td>
+                    <td><span class="nadruk">vacature</span></td>
                     <td>trompet 1</td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td>vacature</td>
+                    <td><span class="nadruk">vacature</span></td>
                     <td>trompet 2</td>
                 </tr>
                 <tr>
@@ -110,12 +110,12 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td>vacature</td>
+                    <td><span class="nadruk">vacature</span></td>
                     <td>viool 1</td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td>vacature</td>
+                    <td><span class="nadruk">vacature</span></td>
                     <td>viool 1</td>
                 </tr>
                 <tr>
@@ -140,12 +140,12 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td>vacature</td>
+                    <td><span class="nadruk">vacature</span></td>
                     <td>viool 2</td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td>vacature</td>
+                    <td><span class="nadruk">vacature</span></td>
                     <td>viool 2</td>
                 </tr>
                 <tr>
@@ -160,12 +160,12 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td>vacature</td>
+                    <td><span class="nadruk">vacature</span></td>
                     <td>altviool</td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td>vacature</td>
+                    <td><span class="nadruk">vacature</span></td>
                     <td>altviool</td>
                 </tr>
                 <tr>
