@@ -110,8 +110,8 @@ hr {
   color: #00cc33;
 }
 
-td#verhaal {
-  padding-left: 50px;
+td#deelnemers {
+  font-size: 0.7em;
 }
 
 input[type="text"],

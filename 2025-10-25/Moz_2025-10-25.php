@@ -33,7 +33,7 @@
                     <td>Krooshof </td>
                     <td>fluit 1</td>
                 </tr>
-                 <tr>
+                <tr>
                     <td>Liesbeth</td>
                     <td>van Elburg</td>
                     <td>fluit 2</td>
@@ -43,7 +43,7 @@
                     <td>Brakkee-Overbeek</td>
                     <td>hobo 1</td>
                 </tr>
-               <tr>
+                <tr>
                     <td>Erik</td>
                     <td>van Kassel </td>
                     <td>hobo 2</td>
@@ -77,6 +77,21 @@
                     <td>Piet </td>
                     <td>van den Heuvel</td>
                     <td>hoorn 2</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>vacature</td>
+                    <td>trompet 1</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>vacature</td>
+                    <td>trompet 2</td>
+                </tr>
+                <tr>
+                    <td>Agnes</td>
+                    <td>Hoeksma</td>
+                    <td>pauken</td>
                 </tr>
                 <tr>
                     <td>Carla</td>
@@ -161,11 +176,6 @@
                 <tr>
                     <td>Robin</td>
                     <td>Gerretsen</td>
-                    <td>cello</td>
-                </tr>
-                <tr>
-                    <td>Harm</td>
-                    <td>van Wijnen</td>
                     <td>cello</td>
                 </tr>
                 <tr>
