@@ -110,7 +110,7 @@ hr {
   color: #00cc33;
 }
 
-td#deelnemers {
+table#deelnemers th, td {
   font-size: 0.7em;
 }
 
