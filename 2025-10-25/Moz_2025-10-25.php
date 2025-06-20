@@ -29,74 +29,54 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>Mirjam</td>
-                    <td>van Scheepen</td>
-                    <td>dwarsfluit/piccolo</td>
-                </tr>
-                <tr>
-                    <td>Laurie</td>
-                    <td>Boltjes</td>
-                    <td>fluit</td>
-                </tr>
-                <tr>
-                    <td>Liesbeth</td>
-                    <td>van Elburg</td>
-                    <td>fluit</td>
-                </tr>
-                <tr>
                     <td>Yolande </td>
                     <td>Krooshof </td>
-                    <td>fluit</td>
+                    <td>fluit 1</td>
                 </tr>
-                <tr>
-                    <td>Erik</td>
-                    <td>van Kassel </td>
-                    <td>hobo</td>
-                </tr>
-                <tr>
+                 <tr>
                     <td>Liesbeth</td>
-                    <td>Feikema</td>
-                    <td>hobo</td>
-                </tr>
-                <tr>
-                    <td>Rineke</td>
-                    <td>Boerwinkel</td>
-                    <td>hobo, althobo</td>
+                    <td>van Elburg</td>
+                    <td>fluit 2</td>
                 </tr>
                 <tr>
                     <td>Mirella</td>
                     <td>Brakkee-Overbeek</td>
-                    <td>hobo</td>
+                    <td>hobo 1</td>
+                </tr>
+               <tr>
+                    <td>Erik</td>
+                    <td>van Kassel </td>
+                    <td>hobo 2</td>
                 </tr>
                 <tr>
                     <td>Ella</td>
                     <td>Broekstra</td>
-                    <td>klarinet</td>
+                    <td>klarinet 1</td>
                 </tr>
                 <tr>
                     <td>Rosaline</td>
                     <td>Mentink</td>
-                    <td>klarinet</td>
-                </tr>
-                <tr>
-                    <td>Boukje</td>
-                    <td>Jonkheer</td>
-                    <td>fagot</td>
+                    <td>klarinet 2</td>
                 </tr>
                 <tr>
                     <td>Nicole</td>
                     <td>Freling</td>
-                    <td>fagot</td>
+                    <td>fagot 1</td>
                 </tr>
                 <tr>
-                    <td>Piet </td>
-                    <td>van den Heuvel</td>
-                    <td>hoorn</td>
+                    <td>Boukje</td>
+                    <td>Jonkheer</td>
+                    <td>fagot 2</td>
                 </tr>
                 <tr>
                     <td>Richard</td>
                     <td>van Hoorn</td>
-                    <td>hoorn</td>
+                    <td>hoorn 1</td>
+                </tr>
+                <tr>
+                    <td>Piet </td>
+                    <td>van den Heuvel</td>
+                    <td>hoorn 2</td>
                 </tr>
                 <tr>
                     <td>Carla</td>
