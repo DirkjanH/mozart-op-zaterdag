@@ -21,7 +21,7 @@
 
         <p class="onzichtbaar">De partijen zijn binnenkort beschikbaar</p>
         <div class="" style="clear: both;">
-            <h4>Partijen (nog niet betekend)</h4>
+            <h4>Partijen & partituur</h4>
             <ul style="column-count: 3;">
                 <li>
                     <a href="/2025-10-25/K385.Flute.pdf" target="_blank">Fluit 1-2</a>
