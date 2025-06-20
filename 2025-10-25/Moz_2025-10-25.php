@@ -129,13 +129,13 @@
                     <td>viool 2</td>
                 </tr>
                 <tr>
-                    <td>Adriaan</td>
-                    <td>Mol</td>
+                    <td>Maria </td>
+                    <td>Voorhout</td>
                     <td>viool 2</td>
                 </tr>
                 <tr>
-                    <td>Maria </td>
-                    <td>Voorhout</td>
+                    <td></td>
+                    <td><span class="nadruk">vacature</span></td>
                     <td>viool 2</td>
                 </tr>
                 <tr>
