@@ -18,7 +18,198 @@
         </p>
         <h4>De Oorsprong van de 'Haffner'</h4>
         <p>De symfonie dankt zijn naam aan de familie Haffner, een prominente familie uit Salzburg waar Mozart bevriend mee was. Oorspronkelijk componeerde Mozart het werk in 1782 als een serenade ter gelegenheid van de verheffing in de adelstand van Siegmund Haffner. Later bewerkte Mozart de serenade tot een symfonie door onder andere een mars en twee menuetten te verwijderen en een nieuw openingsdeel toe te voegen, waardoor het de vorm kreeg die we nu kennen. De 'Haffner' symfonie is een prachtig voorbeeld van Mozarts meesterschap en zijn vermogen om zowel feestelijke grandeur als diepgaande emotie in zijn muziek te leggen.</p>
-
+        <h4>Deelnemers</h4>
+        <table class="w3-table" id="deelnemers">
+            <thead>
+                <tr>
+                    <th>voornaam</th>
+                    <th>achternaam</th>
+                    <th>instrument</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Mirjam</td>
+                    <td>van Scheepen</td>
+                    <td>dwarsfluit/piccolo</td>
+                </tr>
+                <tr>
+                    <td>Laurie</td>
+                    <td>Boltjes</td>
+                    <td>fluit</td>
+                </tr>
+                <tr>
+                    <td>Liesbeth</td>
+                    <td>van Elburg</td>
+                    <td>fluit</td>
+                </tr>
+                <tr>
+                    <td>Yolande </td>
+                    <td>Krooshof </td>
+                    <td>fluit</td>
+                </tr>
+                <tr>
+                    <td>Erik</td>
+                    <td>van Kassel </td>
+                    <td>hobo</td>
+                </tr>
+                <tr>
+                    <td>Liesbeth</td>
+                    <td>Feikema</td>
+                    <td>hobo</td>
+                </tr>
+                <tr>
+                    <td>Rineke</td>
+                    <td>Boerwinkel</td>
+                    <td>hobo, althobo</td>
+                </tr>
+                <tr>
+                    <td>Mirella</td>
+                    <td>Brakkee-Overbeek</td>
+                    <td>hobo</td>
+                </tr>
+                <tr>
+                    <td>Ella</td>
+                    <td>Broekstra</td>
+                    <td>klarinet</td>
+                </tr>
+                <tr>
+                    <td>Rosaline</td>
+                    <td>Mentink</td>
+                    <td>klarinet</td>
+                </tr>
+                <tr>
+                    <td>Boukje</td>
+                    <td>Jonkheer</td>
+                    <td>fagot</td>
+                </tr>
+                <tr>
+                    <td>Nicole</td>
+                    <td>Freling</td>
+                    <td>fagot</td>
+                </tr>
+                <tr>
+                    <td>Piet </td>
+                    <td>van den Heuvel</td>
+                    <td>hoorn</td>
+                </tr>
+                <tr>
+                    <td>Richard</td>
+                    <td>van Hoorn</td>
+                    <td>hoorn</td>
+                </tr>
+                <tr>
+                    <td>Carla</td>
+                    <td>Westhof</td>
+                    <td>viool 1</td>
+                </tr>
+                <tr>
+                    <td>Saskia</td>
+                    <td>Wieberdink</td>
+                    <td>viool 1</td>
+                </tr>
+                <tr>
+                    <td>Corinne</td>
+                    <td>Britzel</td>
+                    <td>viool 1</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>vacature</td>
+                    <td>viool 1</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>vacature</td>
+                    <td>viool 1</td>
+                </tr>
+                <tr>
+                    <td>Daniela</td>
+                    <td>Roeland</td>
+                    <td>viool 2</td>
+                </tr>
+                <tr>
+                    <td>Tonnie</td>
+                    <td>Mols</td>
+                    <td>viool 2</td>
+                </tr>
+                <tr>
+                    <td>Adriaan</td>
+                    <td>Mol</td>
+                    <td>viool 2</td>
+                </tr>
+                <tr>
+                    <td>Maria </td>
+                    <td>Voorhout</td>
+                    <td>viool 2</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>vacature</td>
+                    <td>viool 2</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>vacature</td>
+                    <td>viool 2</td>
+                </tr>
+                <tr>
+                    <td>Frank</td>
+                    <td>van der Drift</td>
+                    <td>altviool</td>
+                </tr>
+                <tr>
+                    <td>Maaike</td>
+                    <td>Gerlsma</td>
+                    <td>altviool</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>vacature</td>
+                    <td>altviool</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>vacature</td>
+                    <td>altviool</td>
+                </tr>
+                <tr>
+                    <td>Franca</td>
+                    <td>Post</td>
+                    <td>cello</td>
+                </tr>
+                <tr>
+                    <td>Robin</td>
+                    <td>Gerretsen</td>
+                    <td>cello</td>
+                </tr>
+                <tr>
+                    <td>Harm</td>
+                    <td>van Wijnen</td>
+                    <td>cello</td>
+                </tr>
+                <tr>
+                    <td>Friso</td>
+                    <td>van der Veen</td>
+                    <td>cello</td>
+                </tr>
+                <tr>
+                    <td>Anke</td>
+                    <td>Meester</td>
+                    <td>cello</td>
+                </tr>
+                <tr>
+                    <td>Dorine</td>
+                    <td>van Lammeren</td>
+                    <td>contrabas</td>
+                </tr>
+                <tr>
+                    <td>Yo</td>
+                    <td>van Dijk</td>
+                    <td>contrabas</td>
+                </tr>
+            </tbody>
+        </table>
         <p class="onzichtbaar">De partijen zijn binnenkort beschikbaar</p>
         <div class="" style="clear: both;">
             <h4>Partijen & partituur</h4>
