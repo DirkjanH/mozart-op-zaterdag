@@ -14,53 +14,48 @@
         <h3>25 oktober 2025:</h3>
         <h2>'Haffner' symfonie nr. 35 in D KV 385</h2>
         <p>
-            De vijfde aflevering van
-            <i>Mozart op Zaterdag</i>
-            vindt plaats op zaterdagochtend 25 oktober We werken dan aan Mozarts 'Haffner' symfonie nr. 35 in D KV 385 voor uitgebreid orkest met dubbel hout, hoorns, trompetten en pauken. De symfonie bestaat uit vier delen, een Allegro con spirito, een Andante, een Meuetto en Trio en een Presto, en duurt ongeveer 20 minuten.
+            De vijfde aflevering van <i>Mozart op Zaterdag</i> vindt plaats op zaterdagochtend 25 oktober We werken dan aan Mozarts 'Haffner' symfonie nr. 35 in D KV 385 voor uitgebreid orkest met dubbel hout, hoorns, trompetten en pauken. De symfonie bestaat uit vier delen, een Allegro con spirito, een Andante, een Meuetto en Trio en een Presto, en duurt ongeveer 20 minuten.
         </p>
 
-        <p>De partijen zijn binnenkort beschikbaar</p>
-        <div class="onzichtbaar" style="clear: both;">
+        <p class="onzichtbaar">De partijen zijn binnenkort beschikbaar</p>
+        <div class="" style="clear: both;">
             <h4>Partijen (nog niet betekend)</h4>
             <ul style="column-count: 3;">
                 <li>
-                    <a href="/2025-09-27/Mozart_Concertante_-_Oboe_1.pdf" target="_blank">Hobo 1</a>
+                    <a href="/2025-10-25/K385.Flute.pdf" target="_blank">Fluit 1-2</a>
                 </li>
                 <li>
-                    <a href="/2025-09-27/Mozart_Concertante_-_Oboe_2.pdf" target="_blank">Hobo 2</a>
+                    <a href="/2025-10-25/K385.Oboe.pdf" target="_blank">Hobo 1-2</a>
                 </li>
                 <li>
-                    <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_Eb.pdf" target="_blank">Hoorn 1 in Eb</a>
+                    <a href="/2025-10-25/K385.Clarinet.pdf" target="_blank">Klarinet 1-2 in A</a>
                 </li>
                 <li>
-                    <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_Eb.pdf" target="_blank">Hoorn 2 in Eb</a>
+                    <a href="/2025-10-25/K385.Bassoon.pdf" target="_blank">Fagot 1-2</a>
                 </li>
                 <li>
-                    <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_F.pdf" target="_blank">Hoorn 1 in F</a>
+                    <a href="/2025-10-25/K385.Horn.pdf" target="_blank">Hoorn 1-2</a>
                 </li>
                 <li>
-                    <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_F.pdf" target="_blank">Hoorn 2 in F</a>
+                    <a href="/2025-10-25/K385.Trumpet.pdf" target="_blank">Trompet 1-2</a>
                 </li>
                 <li>
-                    <a href="/2025-09-27/Mozart_Concertante_-_Violin_1.pdf" target="_blank">Viool 1</a>
+                    <a href="/2025-10-25/K385.Timpani.pdf" target="_blank">Pauken</a>
                 </li>
                 <li>
-                    <a href="/2025-09-27/Mozart_Concertante_-_Violin_2.pdf" target="_blank">Viool 2</a>
+                    <a href="/2025-10-25/K385.Violin1.pdf" target="_blank">Viool 1 (nog niet betekend)</a>
                 </li>
                 <li>
-                    <a href="/2025-09-27/Mozart_Concertante_-_Viola_1.pdf" target="_blank">Altviool 1</a>
+                    <a href="/2025-10-25/K385.Violin2.pdf" target="_blank">Viool 2 (nog niet betekend)</a>
                 </li>
                 <li>
-                    <a href="/2025-09-27/Mozart_Concertante_-_Viola_2.pdf" target="_blank">Altviool 2</a>
+                    <a href="/2025-10-25/K385.Viola.pdf" target="_blank">Altviool (nog niet betekend)</a>
                 </li>
                 <li>
-                    <a href="/2025-09-27/Mozart_Concertante_-_Cello.pdf" target="_blank">Cello</a>
+                    <a href="/2025-10-25/K385.Cello.pdf" target="_blank">Cello, contrabas (nog niet betekend)</a>
                 </li>
                 <li>
-                    <a href="/2025-09-27/Mozart_Concertante_-_Double_Bass.pdf" target="_blank">Contrabas, fagot</a>
-                </li>
-                <li>
-                    <a href="/2025-09-27/Mozart_Concertante_-_partituur_NMA.pdf" target="_blank">
+                    <a href="/2025-10-25/NMA_04_11_Band_06_04_KV_385_scan.pdf" target="_blank">
                         <b>nog niet betekende partituur</b>
                     </a>
                 </li>
