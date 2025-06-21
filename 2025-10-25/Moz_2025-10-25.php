@@ -109,8 +109,8 @@
                     <td>viool 1</td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td><span class="nadruk">vacature</span></td>
+                    <td>Marieke</td>
+                    <td>van der Haar</td>
                     <td>viool 1</td>
                 </tr>
                 <tr>
@@ -134,8 +134,8 @@
                     <td>viool 2</td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td><span class="nadruk">vacature</span></td>
+                    <td>Peter</td>
+                    <td>Klusener</td>
                     <td>viool 2</td>
                 </tr>
                 <tr>
