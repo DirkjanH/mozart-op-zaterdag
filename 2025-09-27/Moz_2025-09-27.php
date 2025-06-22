@@ -37,16 +37,7 @@
 
         <div class="clear" ;">
             <h4>Deelnemers</h4>
-            <style>
-
-                table td,
-                table th {
-                    font-size: smaller;
-                    border: 1px solid black;
-                    line-height: 1.4;
-                    padding: 10px 10px;
-                }
-            </style>
+            <p>De bezetting is compleet.</p>
             <table class="w3-table w3-bordered w3-striped" id="deelnemers">
                 <tbody>
                     <tr>
