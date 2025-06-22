@@ -79,8 +79,8 @@
                     <td>hoorn 2</td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td><span class="nadruk">vacature</span></td>
+                    <td>Michiel</td>
+                    <td>Plomp</td>
                     <td>trompet 1</td>
                 </tr>
                 <tr>
