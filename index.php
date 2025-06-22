@@ -18,10 +18,11 @@
             zaterdagochtend om een symfonie en/of een (solo)concert van Mozart te repeteren en meteen uit te voeren.
             Dirigent en initiatiefnemer is
             <a href="https://www.horringa.net/index.php" target="_blank">Dirkjan Horringa</a>. Er hebben inmiddels <a
-                href="/vorige_afleveringen.php" target="_blank">twee afleveringen</a> plaatsgevonden, in februari en in
-            april 2025.
+                href="/vorige_afleveringen.php" target="_blank">drie afleveringen</a> plaatsgevonden, in februari, in
+            april en in mei 2025. Alle keren waren zowel qua muzikaal niveau als qua sfeer een groot succes. De
+            deelnemers waren enthousiast en de muziek klonk prachtig. We hebben veel positieve reacties gekregen van het publiek.       
         </p>
-        <h4 class="clear">Voor de komende keren staan deze stukken op het programma:</h4>
+        <h4 class="clear">Voor de komende afleveringen staan deze stukken op het programma:</h4>
         <ul class="programma">
             <li>
                 <b>27 september</b> in de
