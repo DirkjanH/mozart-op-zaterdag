@@ -37,7 +37,7 @@
 
         <div class="clear" ;">
             <h4>Deelnemers</h4>
-            <p>De bezetting is compleet.</p>
+            <p>De bezetting is compleet. We hebben nu 28 mensen kunnen plaatsen, een mengeling van goede amateurs en professionals. </p>
             <table class="w3-table w3-bordered w3-striped" id="deelnemers">
                 <tbody>
                     <tr>
