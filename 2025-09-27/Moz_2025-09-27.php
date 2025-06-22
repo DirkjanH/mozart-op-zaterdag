@@ -47,7 +47,7 @@
                     padding: 10px 10px;
                 }
             </style>
-            <table class="w3-table w3-bordered w3-striped">
+            <table class="w3-table w3-bordered w3-striped" id="deelnemers">
                 <tbody>
                     <tr>
                         <th>voornaam</th>
