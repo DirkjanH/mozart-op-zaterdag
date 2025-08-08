@@ -160,8 +160,8 @@
                     <td>altviool</td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td><span class="nadruk">vacature</span></td>
+                    <td>Eline</td>
+                    <td>Snoek</td>
                     <td>altviool</td>
                 </tr>
                 <tr>
