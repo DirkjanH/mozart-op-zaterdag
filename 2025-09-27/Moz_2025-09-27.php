@@ -171,8 +171,8 @@
                         <td>cello (aanvoerder)</td>
                     </tr>
                     <tr>
-                        <td>Franca</td>
-                        <td>Post</td>
+                        <td>Friso</td>
+                        <td>van der Veen</td>
                         <td>cello</td>
                     </tr>
                     <tr>
