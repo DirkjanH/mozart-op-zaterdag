@@ -165,8 +165,8 @@
                     <td>altviool</td>
                 </tr>
                 <tr>
-                    <td>Franca</td>
-                    <td>Post</td>
+                    <td></td>
+                    <td><span class="nadruk">vacature</span></td>
                     <td>cello</td>
                 </tr>
                 <tr>
