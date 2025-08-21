@@ -165,8 +165,8 @@
                     <td>altviool</td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td><span class="nadruk">vacature</span></td>
+                    <td>Harm</td>
+                    <td>van Wijnen</td>
                     <td>cello</td>
                 </tr>
                 <tr>
