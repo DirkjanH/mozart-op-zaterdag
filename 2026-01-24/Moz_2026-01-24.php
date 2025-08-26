@@ -10,7 +10,7 @@
 
 <body>
     <div class="w3-content w3-white w3-panel">
-        <?php include_once 'navigatie.htm'; ?>
+        <?php include_once '../navigatie.htm'; ?>
         <h3>24 januari 2026:</h3>
         <h2>Pianoconcert nr. 23 in A KV 488</h2>
         <p>

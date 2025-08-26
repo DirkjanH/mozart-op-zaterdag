@@ -10,7 +10,7 @@
 
 <body>
     <div class="w3-content w3-white w3-panel">
-        <?php include_once 'navigatie.htm'; ?>
+        <?php include_once '../navigatie.htm'; ?>
         <h3>15 november 2025:</h3>
         <h2>Pianoconcert nr. 17 in G KV 453</h2>
         <p>

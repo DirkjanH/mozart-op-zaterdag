@@ -10,7 +10,7 @@
 
 <body>
     <div class="w3-content w3-white w3-panel">
-        <?php include_once 'navigatie.htm'; ?>
+        <?php include_once '../navigatie.htm'; ?>
         <h3>27 september 2025:</h3>
         <h2>Sinfonia concertante in Eb KV 364</h2>
         <p>
