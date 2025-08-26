@@ -44,8 +44,7 @@
             </li>
         </ul>
         <p>Aan de programma's voor de afleveringen in 2026 wordt nog gewerkt. Waarschijnlijk gaan er dan naast
-            symfonieën ook weer (solo)concerten van Mozart. Er is contact met meer professionele pianisten die graag een
-            pianoconcert van Mozart voor hun rekening willen nemen</p>
+            symfonieën ook weer (solo)concerten van Mozart.</p>
         <h4>Meespelen?</h4>
         <p>Heb je belangstelling om eens mee te doen met Mozart op Zaterdag? Het is mogelijk je op te geven voor de
             volgende afleveringen, die steeds plaatsvinden op de vierde zaterdag van de maand. In 2026 zijn dat dus 24 januari, 28 februari, 28 maart, 25 april en 23 mei, en daarna weer op 26 september, 24 oktober
@@ -57,7 +56,7 @@
         </p>
         <h4>Tijden</h4>
         <p>We werken als volgt: binnenkomen om 9:45, repeteren van 10:00 tot 12:30 met een korte pauze. Om 13:00 sluiten
-            we af met een concertje van een half uur.
+            we af met een concertje van 30-45 minuten.
         </p>
         <h4>Meld je aan met het formulier</h4>
         <p>We hopen dat je deze geweldige muziek met ons wilt spelen! We formeren een bezetting van serieuze en ervaren
