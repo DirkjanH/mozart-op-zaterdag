@@ -210,7 +210,7 @@
                         <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_F.pdf" target="_blank">Hoorn 2 in F</a>
                     </li>
                     <li>
-                        <a href="/2025-09-27/Mozart_Concertante_-_Violin_1.pdf" target="_blank">Viool 1</a>
+                        <a href="/2025-05-24/Mozart-KV218-Viool 1-Betekend.pdf" target="_blank">Viool 1 <b>(betekend)</b></a>
                     </li>
                     <li>
                         <a href="/2025-09-27/Mozart_Concertante_-_Violin_2.pdf" target="_blank">Viool 2</a>
@@ -228,8 +228,8 @@
                         <a href="/2025-09-27/Mozart_Concertante_-_Double_Bass.pdf" target="_blank">Contrabas, fagot</a>
                     </li>
                     <li>
-                        <a href="/2025-09-27/Mozart_Concertante_-_partituur_NMA.pdf" target="_blank">
-                            <b>nog niet betekende partituur</b>
+                        <a href="/2025-09-27/Mozart_Concertante_-_partituur_BETEKEND.pdf" target="_blank">
+                            partituur <b>(betekend)</b>>
                         </a>
                     </li>
                 </ul>
