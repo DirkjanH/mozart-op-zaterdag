@@ -188,8 +188,8 @@
                 </tbody>
             </table>
 
-            <div class="clear" ;">
-                <h4>Partijen (nog niet betekend)</h4>
+            <div class="w3-clear">
+                <h4>Partijen</h4>
                 <ul style="column-count: 3;">
                     <li>
                         <a href="/2025-09-27/Mozart_Concertante_-_Oboe_1.pdf" target="_blank">Hobo 1</a>
