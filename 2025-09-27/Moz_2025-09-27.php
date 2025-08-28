@@ -210,26 +210,26 @@
                         <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_F.pdf" target="_blank">Hoorn 2 in F</a>
                     </li>
                     <li>
-                        <a href="/2025-05-24/Mozart-KV218-Viool 1-Betekend.pdf" target="_blank">Viool 1 <b>(betekend)</b></a>
+                        <a href="/2025-05-24/Mozart-KV218-Viool 1-Betekend.pdf" target="_blank">Viool 1 <b class="w3-green">(betekend)</b></a>
                     </li>
                     <li>
-                        <a href="/2025-09-27/Mozart_Concertante_-_Violin_2.pdf" target="_blank">Viool 2 <b>(nog niet betekend)</b></a>
+                        <a href="/2025-09-27/Mozart_Concertante_-_Violin_2.pdf" target="_blank">Viool 2 <b class="w3-red">(nog niet betekend)</b></a>
                     </li>
                     <li>
-                        <a href="/2025-09-27/Mozart_Concertante_-_Viola_1.pdf" target="_blank">Altviool 1 <b>(nog niet betekend)</b></a>
+                        <a href="/2025-09-27/Mozart_Concertante_-_Viola_1.pdf" target="_blank">Altviool 1 <b class="w3-red">(nog niet betekend)</b></a>
                     </li>
                     <li>
-                        <a href="/2025-09-27/Mozart_Concertante_-_Viola_2.pdf" target="_blank">Altviool 2 <b>(nog niet betekend)</b></a>
+                        <a href="/2025-09-27/Mozart_Concertante_-_Viola_2.pdf" target="_blank">Altviool 2 <b class="w3-red">(nog niet betekend)</b></a>
                     </li>
                     <li>
-                        <a href="/2025-09-27/Mozart_Concertante_-_Cello.pdf" target="_blank">Cello <b>(nog niet betekend)</b></a>
+                        <a href="/2025-09-27/Mozart_Concertante_-_Cello.pdf" target="_blank">Cello <b class="w3-red">(nog niet betekend)</b></a>
                     </li>
                     <li>
-                        <a href="/2025-09-27/Mozart_Concertante_-_Double_Bass.pdf" target="_blank">Contrabas, fagot <b>(nog niet betekend)</b></a>
+                        <a href="/2025-09-27/Mozart_Concertante_-_Double_Bass.pdf" target="_blank">Contrabas, fagot <b class="w3-red">(nog niet betekend)</b></a>
                     </li>
                     <li>
                         <a href="/2025-09-27/Mozart_Concertante_-_partituur_BETEKEND.pdf" target="_blank">
-                            partituur <b>(betekend)</b>>
+                            partituur <b class="w3-green">(betekend)</b>>
                         </a>
                     </li>
                 </ul>
