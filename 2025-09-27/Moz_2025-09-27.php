@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <div class="w3-content w3-white w3-panel">
+    <div class="w3-text-content w3-white w3-panel">
         <?php include_once '../navigatie.htm'; ?>
         <h3>27 september 2025:</h3>
         <h2>Sinfonia concertante in Eb KV 364</h2>
@@ -24,13 +24,13 @@
             voorbeeld van muzikale interactie tussen de solisten en het orkest. De solisten zijn Valentina Bernardone
             (viool) en Anna Smith (altviool)
         <div style="clear: both; display: table; margin: auto;">
-            <div style="display: table-cell;" class="w3-small w3-center"><img
+            <div style="display: table-cell;" class="w3-text-small w3-center"><img
                     src="/2025-09-27/valentina-bernardone-nederlands-.ed8ef09e.fill-1280x1280.jpg" width="350"
-                    alt="Valentina Bernardone" class="w3-image w3-panel w3-left geenlijn"><br>Valentina Bernardone,
+                    alt="Valentina Bernardone" class="w3-text-image w3-panel w3-left geenlijn"><br>Valentina Bernardone,
                 viool
             </div>
-            <div style="display: table-cell;" class="w3-small w3-center"><img src="/2025-09-27/Anna-Smith-vierkant-.jpg"
-                    width="350" alt="Anna Smith" class="w3-image w3-panel w3-left geenlijn"><br>Anna Smith, altviool
+            <div style="display: table-cell;" class="w3-text-small w3-center"><img src="/2025-09-27/Anna-Smith-vierkant-.jpg"
+                    width="350" alt="Anna Smith" class="w3-text-image w3-panel w3-left geenlijn"><br>Anna Smith, altviool
             </div>
         </div>
         </p>
@@ -38,7 +38,7 @@
         <div class="clear" ;">
             <h4>Deelnemers</h4>
             <p>De bezetting is compleet. We hebben nu 28 mensen kunnen plaatsen, een mengeling van goede amateurs en professionals. </p>
-            <table class="w3-table w3-bordered w3-striped" id="deelnemers">
+            <table class="w3-text-table w3-bordered w3-striped" id="deelnemers">
                 <tbody>
                     <tr>
                         <th>voornaam</th>
@@ -210,26 +210,26 @@
                         <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_F.pdf" target="_blank">Hoorn 2 in F</a>
                     </li>
                     <li>
-                        <a href="/2025-05-24/Mozart-KV218-Viool 1-Betekend.pdf" target="_blank">Viool 1 <b class="w3-green">(betekend)</b></a>
+                        <a href="/2025-05-24/Mozart-KV218-Viool 1-Betekend.pdf" target="_blank">Viool 1 <b class="w3-text-green">(betekend)</b></a>
                     </li>
                     <li>
-                        <a href="/2025-09-27/Mozart_Concertante_-_Violin_2.pdf" target="_blank">Viool 2 <b class="w3-red">(nog niet betekend)</b></a>
+                        <a href="/2025-09-27/Mozart_Concertante_-_Violin_2.pdf" target="_blank">Viool 2 <b class="w3-text-red">(nog niet betekend)</b></a>
                     </li>
                     <li>
-                        <a href="/2025-09-27/Mozart_Concertante_-_Viola_1.pdf" target="_blank">Altviool 1 <b class="w3-red">(nog niet betekend)</b></a>
+                        <a href="/2025-09-27/Mozart_Concertante_-_Viola_1.pdf" target="_blank">Altviool 1 <b class="w3-text-red">(nog niet betekend)</b></a>
                     </li>
                     <li>
-                        <a href="/2025-09-27/Mozart_Concertante_-_Viola_2.pdf" target="_blank">Altviool 2 <b class="w3-red">(nog niet betekend)</b></a>
+                        <a href="/2025-09-27/Mozart_Concertante_-_Viola_2.pdf" target="_blank">Altviool 2 <b class="w3-text-red">(nog niet betekend)</b></a>
                     </li>
                     <li>
-                        <a href="/2025-09-27/Mozart_Concertante_-_Cello.pdf" target="_blank">Cello <b class="w3-red">(nog niet betekend)</b></a>
+                        <a href="/2025-09-27/Mozart_Concertante_-_Cello.pdf" target="_blank">Cello <b class="w3-text-red">(nog niet betekend)</b></a>
                     </li>
                     <li>
-                        <a href="/2025-09-27/Mozart_Concertante_-_Double_Bass.pdf" target="_blank">Contrabas, fagot <b class="w3-red">(nog niet betekend)</b></a>
+                        <a href="/2025-09-27/Mozart_Concertante_-_Double_Bass.pdf" target="_blank">Contrabas, fagot <b class="w3-text-red">(nog niet betekend)</b></a>
                     </li>
                     <li>
                         <a href="/2025-09-27/Mozart_Concertante_-_partituur_BETEKEND.pdf" target="_blank">
-                            partituur <b class="w3-green">(betekend)</b>>
+                            partituur <b class="w3-text-green">(betekend)</b>
                         </a>
                     </li>
                 </ul>
