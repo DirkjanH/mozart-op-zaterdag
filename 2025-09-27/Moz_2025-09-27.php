@@ -24,13 +24,13 @@
             voorbeeld van muzikale interactie tussen de solisten en het orkest. De solisten zijn Valentina Bernardone
             (viool) en Anna Smith (altviool)
         <div style="clear: both; display: table; margin: auto;">
-            <div style="display: table-cell;" class="w3-text-small w3-center"><img
+            <div style="display: table-cell;" class="w3-small w3-center"><img
                     src="/2025-09-27/valentina-bernardone-nederlands-.ed8ef09e.fill-1280x1280.jpg" width="350"
-                    alt="Valentina Bernardone" class="w3-text-image w3-panel w3-left geenlijn"><br>Valentina Bernardone,
+                    alt="Valentina Bernardone" class="w3-image w3-panel w3-left geenlijn"><br>Valentina Bernardone,
                 viool
             </div>
-            <div style="display: table-cell;" class="w3-text-small w3-center"><img src="/2025-09-27/Anna-Smith-vierkant-.jpg"
-                    width="350" alt="Anna Smith" class="w3-text-image w3-panel w3-left geenlijn"><br>Anna Smith, altviool
+            <div style="display: table-cell;" class="w3-small w3-center"><img src="/2025-09-27/Anna-Smith-vierkant-.jpg"
+                    width="350" alt="Anna Smith" class="w3-image w3-panel w3-left geenlijn"><br>Anna Smith, altviool
             </div>
         </div>
         </p>
@@ -38,7 +38,7 @@
         <div class="clear" ;">
             <h4>Deelnemers</h4>
             <p>De bezetting is compleet. We hebben nu 28 mensen kunnen plaatsen, een mengeling van goede amateurs en professionals. </p>
-            <table class="w3-text-table w3-bordered w3-striped" id="deelnemers">
+            <table class="w3-table w3-bordered w3-striped" id="deelnemers">
                 <tbody>
                     <tr>
                         <th>voornaam</th>
