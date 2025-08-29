@@ -213,7 +213,7 @@
                         <a href="/2025-05-24/Mozart-KV218-Viool 1-Betekend.pdf" target="_blank">Viool 1 <b class="w3-text-green">(betekend)</b></a>
                     </li>
                     <li>
-                        <a href="/2025-09-27/Mozart_Concertante_-_Violin_2.pdf" target="_blank">Viool 2 <b class="w3-text-red">(nog niet betekend)</b></a>
+                        <a href="/2025-09-27/Mozart_Concertante_-_Violin_2_BETEKEND.pdf" target="_blank">Viool 2 <b class="w3-text-green">(betekend)</b></a>
                     </li>
                     <li>
                         <a href="/2025-09-27/Mozart_Concertante_-_Viola_1.pdf" target="_blank">Altviool 1 <b class="w3-text-red">(nog niet betekend)</b></a>
