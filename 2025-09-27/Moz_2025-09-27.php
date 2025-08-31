@@ -225,7 +225,7 @@
                         <a href="/2025-09-27/Mozart Concertante - Cello_BETEKEND.pdf" target="_blank">Cello <b class="w3-text-green">(betekend)</b></a>
                     </li>
                     <li>
-                        <a href="/2025-09-27/Mozart_Concertante_-_Double_Bass.pdf_BETEKEND" target="_blank">Contrabas, fagot <b class="w3-text-green">(nog niet betekend)</b></a>
+                        <a href="/2025-09-27/Mozart_Concertante_-_Double_Bass_BETEKEND.pdf" target="_blank">Contrabas, fagot <b class="w3-text-green">(betekend)</b></a>
                     </li>
                     <li>
                         <a href="/2025-09-27/Mozart_Concertante_-_partituur_BETEKEND.pdf" target="_blank">
