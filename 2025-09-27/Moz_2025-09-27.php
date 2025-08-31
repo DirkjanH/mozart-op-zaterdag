@@ -233,7 +233,7 @@
                         </a>
                     </li>
                 </ul>
-                <p>
+                <p class="onzichtbaar">
                     NB.
                     <b>
                         Strijkers, neem SVP de streken uit de betekende partituur over in je eigen partij.
