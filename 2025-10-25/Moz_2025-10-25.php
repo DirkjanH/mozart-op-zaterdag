@@ -130,15 +130,14 @@
                     <td>viool 2</td>
                 </tr>
                 <tr>
-                    <td>Maria </td>
-                    <td>Voorhout</td>
-                    <td>viool 2</td>
-                </tr>
-                <tr>
                     <td>Peter</td>
                     <td>Klusener</td>
                     <td>viool 2</td>
                 </tr>
+                <tr>
+                    <td></td>
+                    <td><span class="nadruk">vacature</span></td>
+                    <td>viool 2</td>
                 <tr>
                     <td></td>
                     <td><span class="nadruk">vacature</span></td>
