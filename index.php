@@ -31,7 +31,7 @@
             </li>
             <li>
                 <b>25 oktober</b> in de
-                <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: de 'Haffner' symfonie nr. 35 in D KV 385 voor 2 fluiten, 2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns, 2 trompetten, pauken en strijkers. <a href="/2025-10-25/Moz_2025-10-25.php" target="_blank">Meer info & partijen vind je hier</a>.
+                <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: de 'Haffner' symfonie nr. 35 in D KV 385 voor 2 fluiten, 2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns, 2 trompetten, pauken en strijkers. Er is nog plaats voor een trompet en twee 2e violen. <a href="/2025-10-25/Moz_2025-10-25.php" target="_blank">Meer info & partijen vind je hier</a>.
             </li>
             <li>
                 <b>15 november</b> in de
@@ -42,7 +42,7 @@
                 <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Pianoconcert nr. 23 in A KV 488 voor 1 fluit, 2 klarinetten, 2 fagotten, 2 hoorns en strijkers. De solisten Annette Middelbeek, Brit van Manen en Yumi Toyama spelen ieder een deel. <a href="/2026-01-24/Moz_2026-01-24.php" target="_blank">Meer info & partijen vind je hier</a>.
             </li>
         </ul>
-        <p>Aan de programma's voor de afleveringen in 2026 wordt nog gewerkt. Waarschijnlijk gaan er dan naast
+        <p>Aan de programma's voor de volgende afleveringen in 2026 wordt nog gewerkt. Waarschijnlijk gaan er dan naast
             symfonieën ook weer (solo)concerten van Mozart.</p>
         <h4>Meespelen?</h4>
         <p>Heb je belangstelling om eens mee te doen met Mozart op Zaterdag? Het is mogelijk je op te geven voor de
