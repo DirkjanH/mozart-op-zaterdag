@@ -144,8 +144,8 @@
                     <td>viool 2</td>
                 </tr>
                 <tr>
-                    <td>Frank</td>
-                    <td>van der Drift</td>
+                    <td></td>
+                    <td><span class="nadruk">vacature</span></td>
                     <td>altviool</td>
                 </tr>
                 <tr>
