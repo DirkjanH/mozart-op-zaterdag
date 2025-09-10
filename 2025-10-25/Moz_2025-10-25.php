@@ -14,7 +14,7 @@
         <h3>25 oktober 2025:</h3>
         <h2>'Haffner' symfonie nr. 35 in D KV 385</h2>
         <p>
-            De vijfde aflevering van <i>Mozart op Zaterdag</i> vindt plaats op zaterdagochtend 25 oktober We werken dan aan Mozarts 'Haffner' symfonie nr. 35 in D KV 385 voor uitgebreid orkest met dubbel hout, hoorns, trompetten en pauken. De symfonie bestaat uit vier delen, een Allegro con spirito, een Andante, een Meuetto en Trio en een Presto, en duurt ongeveer 20 minuten.
+            De vijfde aflevering van <i>Mozart op Zaterdag</i> vindt plaats op zaterdagochtend 25 oktober We werken dan aan Mozarts 'Haffner' symfonie nr. 35 in D KV 385 voor uitgebreid orkest met dubbel hout, hoorns, trompetten en pauken. De symfonie bestaat uit vier delen, een Allegro con spirito, een Andante, een Menuetto en Trio en een Presto, en duurt ongeveer 20 minuten.
         </p>
         <h4>De Oorsprong van de 'Haffner'</h4>
         <p>De symfonie dankt zijn naam aan de familie Haffner, een prominente familie uit Salzburg waar Mozart bevriend mee was. Oorspronkelijk componeerde Mozart het werk in 1782 als een serenade ter gelegenheid van de verheffing in de adelstand van Siegmund Haffner. Later bewerkte Mozart de serenade tot een symfonie door onder andere een mars en twee menuetten te verwijderen en een nieuw openingsdeel toe te voegen, waardoor het de vorm kreeg die we nu kennen. De 'Haffner' symfonie is een prachtig voorbeeld van Mozarts meesterschap en zijn vermogen om zowel feestelijke grandeur als diepgaande emotie in zijn muziek te leggen.</p>
