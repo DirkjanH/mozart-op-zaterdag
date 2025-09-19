@@ -28,16 +28,15 @@ if (isset($_POST['loguit']) && $_POST['loguit'] === 'Loguit') {
 }
 // Toegang weigeren als niet ingelogd
 if (!isset($_SESSION['ingelogd']) || $_SESSION['ingelogd'] !== true) {
-    echo
-    <<<XXX
+    echo <<<XXX
     <body class="w3-lightgrey">
         <div class="w3-content w3-white w3-panel w3-center" style="max-width: 800px; margin-top:20px;">
             <h2>Inloggen vereist</h2>
             <p>Deze pagina is beveiligd. Voer het wachtwoord in om toegang te krijgen.</p>
             <form method="post">
-                    Wachtwoord: <input type="password" name="password" />
-                    <input type="submit" value="Login" class="w3-button"/>
-                    <input type="submit" value="Loguit" class="w3-button w3-red"/>
+                Wachtwoord: <input type="password" name="password" />
+                <input type="submit" value="Login" class="w3-button"/>
+                <input type="submit" value="Loguit" class="w3-button w3-red"/>
             </form>
         </div>
     </body>
