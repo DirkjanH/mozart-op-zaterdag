@@ -31,9 +31,9 @@ if (!isset($_SESSION['ingelogd']) || $_SESSION['ingelogd'] !== true) {
             Wachtwoord: <input type="password" name="password" />
             <input type="submit" value="Login" />
             <input type="submit" value="Loguit" />
-            if (isset(\$_POST['password']) && \$_POST['password'] !== '$wachtwoord') {
-                echo "<p style='color:red;'>Onjuist wachtwoord. Probeer het opnieuw.</p>";
-              if (isset(\$_POST['loguit']) && \$_POST['loguit'] === 'Loguit') {
+            if (isset($_POST['password']) && \$_POST['password'] !== '$wachtwoord') {
+                echo "<p class="w3-red">Onjuist wachtwoord. Probeer het opnieuw.</p>";
+              if (isset($_POST['loguit']) && $_POST['loguit'] === 'Loguit') {
                 session_destroy();
                 header("Location: " . $_SERVER['PHP_SELF']);
                 exit;
