@@ -42,4 +42,7 @@ if (!isset($_SESSION['ingelogd']) || $_SESSION['ingelogd'] !== true) {
     </body>
     XXX;
     exit;
+    echo ('<p class="w3-green">Ingelogd</p>');
 }
+// Als we hier komen, is de gebruiker ingelogd
+?> //einde login
