@@ -37,7 +37,6 @@ if (isset($_POST['loguit']) && $_POST['loguit'] === 'Loguit') {
             Wachtwoord: <input type="password" name="password" />
             <input type="submit" value="Login" />
             <input type="submit" value="Loguit" class="w3-red"/>
-            }
           </form>
           </div>
     </body>
