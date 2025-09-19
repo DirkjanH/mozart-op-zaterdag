@@ -7,7 +7,7 @@ error_reporting(E_ALL);
 
 //use function PHP81_BC\strftime;
 
-Kint::$enabled_mode = false; //($_SERVER['REMOTE_ADDR'] === '83.87.12.163');
+//Kint::$enabled_mode = false; //($_SERVER['REMOTE_ADDR'] === '83.87.12.163');
 
 session_start();
 print_r($_SESSION);
