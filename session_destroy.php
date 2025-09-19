@@ -11,6 +11,7 @@ Kint::$enabled_mode = false; //($_SERVER['REMOTE_ADDR'] === '83.87.12.163');
 
 session_start();
 print_r($_SESSION);
+session_unset();
 session_destroy();
 echo "Session destroyed. You have been logged out.<br>";
 print_r($_SESSION);
