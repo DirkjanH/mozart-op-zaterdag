@@ -15,4 +15,3 @@ session_destroy();
 echo "Session destroyed. You have been logged out.";
 exit;
 // Einde session_destroy.php 
-?>
