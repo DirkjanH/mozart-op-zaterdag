@@ -16,11 +16,17 @@ $wachtwoord = "Mozart123.";
 
 // Controleer of het wachtwoord reeds is verzonden en correct is
 if (isset($_POST['password']) && $_POST['password'] === $wachtwoord) {
-    $_SESSION['ingelogd'] = true;
+    $_SESSION['ingelogd'] = true;}
+if (isset($_POST['password']) && $_POST['password'] !== $wachtwoord) {
+    echo "<p class="w3-red">Onjuist wachtwoord. Probeer het opnieuw.</p>";
+   }
+if (isset($_POST['loguit']) && $_POST['loguit'] === 'Loguit') {
+    session_destroy();
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit;
 }
-
-// Toegang weigeren als niet ingelogd
-if (!isset($_SESSION['ingelogd']) || $_SESSION['ingelogd'] !== true) {
+    // Toegang weigeren als niet ingelogd
+    if (!isset($_SESSION['ingelogd']) || $_SESSION['ingelogd'] !== true) {
     echo
     <<<XXX
     <body class="w3-lightgrey">
@@ -30,13 +36,7 @@ if (!isset($_SESSION['ingelogd']) || $_SESSION['ingelogd'] !== true) {
     <form method="post">
             Wachtwoord: <input type="password" name="password" />
             <input type="submit" value="Login" />
-            <input type="submit" value="Loguit" />
-            if (isset($_POST['password']) && \$_POST['password'] !== '$wachtwoord') {
-                echo "<p class="w3-red">Onjuist wachtwoord. Probeer het opnieuw.</p>";
-              if (isset($_POST['loguit']) && $_POST['loguit'] === 'Loguit') {
-                session_destroy();
-                header("Location: " . $_SERVER['PHP_SELF']);
-                exit;
+            <input type="submit" value="Loguit" class="w3-red"/>
             }
           </form>
           </div>
