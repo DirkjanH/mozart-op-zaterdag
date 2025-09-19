@@ -16,29 +16,30 @@ $wachtwoord = "Mozart123.";
 
 // Controleer of het wachtwoord reeds is verzonden en correct is
 if (isset($_POST['password']) && $_POST['password'] === $wachtwoord) {
-    $_SESSION['ingelogd'] = true;}
+    $_SESSION['ingelogd'] = true;
+}
 if (isset($_POST['password']) && $_POST['password'] !== $wachtwoord) {
-    echo "<p class="w3-red">Onjuist wachtwoord. Probeer het opnieuw.</p>";
-   }
+    echo ('<p class="w3-red">Onjuist wachtwoord. Probeer het opnieuw.</p>');
+}
 if (isset($_POST['loguit']) && $_POST['loguit'] === 'Loguit') {
     session_destroy();
     header("Location: " . $_SERVER['PHP_SELF']);
     exit;
 }
-    // Toegang weigeren als niet ingelogd
-    if (!isset($_SESSION['ingelogd']) || $_SESSION['ingelogd'] !== true) {
+// Toegang weigeren als niet ingelogd
+if (!isset($_SESSION['ingelogd']) || $_SESSION['ingelogd'] !== true) {
     echo
     <<<XXX
     <body class="w3-lightgrey">
-    <div class="w3-content w3-white w3-panel" style="max-width: 800px; margin-top:20px;">
-        <h2>Inloggen vereist</h2>
-        <p>Deze pagina is beveiligd. Voer het wachtwoord in om toegang te krijgen.</p>
-    <form method="post">
-            Wachtwoord: <input type="password" name="password" />
-            <input type="submit" value="Login" />
-            <input type="submit" value="Loguit" class="w3-red"/>
-          </form>
-          </div>
+        <div class="w3-content w3-white w3-panel w3-center" style="max-width: 800px; margin-top:20px;">
+            <h2>Inloggen vereist</h2>
+            <p>Deze pagina is beveiligd. Voer het wachtwoord in om toegang te krijgen.</p>
+            <form method="post">
+                    Wachtwoord: <input type="password" name="password" />
+                    <input type="submit" value="Login" class="w3-button"/>
+                    <input type="submit" value="Loguit" class="w3-button w3-red"/>
+            </form>
+        </div>
     </body>
     XXX;
     exit;
