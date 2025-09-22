@@ -25,7 +25,7 @@ if (isset($_POST['password']) && $_POST['password'] !== $wachtwoord) {
 }
 if (isset($_POST['loguit']) && $_POST['loguit'] === 'Loguit') {
     session_destroy();
-    header("Location: " . $_SERVER['PHP_SELF']);
+    //header("Location: " . $_SERVER['PHP_SELF']);
     exit;
 }
 // Toegang weigeren als niet ingelogd
@@ -49,4 +49,3 @@ if (!isset($_SESSION['ingelogd']) || $_SESSION['ingelogd'] !== true) {
 print_r($_SESSION);
 
 // Einde includes/inloggen.php
-?>
