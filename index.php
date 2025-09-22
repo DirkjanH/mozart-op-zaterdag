@@ -32,11 +32,22 @@
         <h4 class="clear">Voor de komende afleveringen staan deze stukken op het programma:</h4>
         <ul class="programma">
             <li>
-                <b>27 september</b> in de
-                <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Sinfonia Concertante in Eb KV 364 voor 2
-                hobo's, 1 fagot, 2 hoorns en strijkers. Solisten: Valentina Bernardone (viool) en Anna Smith (altviool).
-                <a href="/2025-09-27/Moz_2025-09-27.php" target="_blank">Meer info & partijen vind je hier</a>. De
-                bezetting is compleet.
+                <p><b>27 september</b> in de
+                    <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Sinfonia Concertante in Eb KV 364 voor 2
+                    hobo's, 1 fagot, 2 hoorns en strijkers. De sinfonia bestaat uit drie delen, een Allegro maestoso,
+                    een Andante en een
+                    Presto, en duurt ongeveer 30 minuten. De bezetting is compleet.
+                </p>
+                <button class="toggle-knop" onclick="toonVerbergTekst()">Lees verder</button>
+                <div id="geheimeTekst" class="verborgen-tekst">
+                    <p> De Sinfonia concertante is een van de meest geliefde werken van Mozart. Het orkest bestaat uit
+                        twee hobo's,
+                        twee hoorns, fagot en strijkers, met gedeelde altviolen. Het werk is een prachtig
+                        voorbeeld van muzikale interactie tussen de solisten en het orkest. De solisten zijn Valentina
+                        Bernardone
+                        (viool) en Anna Smith (altviool)
+                    </p>
+                </div>
             </li>
             <li>
                 <p><b>25 oktober</b> in de
@@ -49,7 +60,6 @@
                     amateurs en
                     professionals. Er is nog plaats voor een trompet, twee 2e violen en een altviool.</p>
                 <button class="toggle-knop" onclick="toonVerbergTekst()">Lees verder</button>
-
                 <div id="geheimeTekst" class="verborgen-tekst">
                     <h4>De Oorsprong van de 'Haffner'</h4>
                     <p>De symfonie dankt zijn naam aan de familie Haffner, een prominente familie uit Salzburg waar

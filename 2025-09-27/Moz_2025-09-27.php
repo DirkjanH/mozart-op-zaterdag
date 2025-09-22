@@ -37,7 +37,8 @@
 
         <div class="clear" ;">
             <h4>Deelnemers</h4>
-            <p>De bezetting is compleet. We hebben nu 28 mensen kunnen plaatsen, een mengeling van goede amateurs en professionals. </p>
+            <p>De bezetting is compleet. We hebben nu 28 mensen kunnen plaatsen, een mengeling van goede amateurs en
+                professionals. </p>
             <table class="w3-table w3-bordered w3-striped" id="deelnemers">
                 <tbody>
                     <tr>
@@ -210,22 +211,28 @@
                         <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_F.pdf" target="_blank">Hoorn 2 in F</a>
                     </li>
                     <li>
-                        <a href="/2025-09-27/Mozart Concertante - Violin 1 - BETEKEND.pdf" target="_blank">Viool 1 <b class="w3-text-green">(betekend)</b></a>
+                        <a href="/2025-09-27/Mozart Concertante - Violin 1 - BETEKEND.pdf" target="_blank">Viool 1 <b
+                                class="w3-text-green">(betekend)</b></a>
                     </li>
                     <li>
-                        <a href="/2025-09-27/Mozart_Concertante_-_Violin_2_BETEKEND.pdf" target="_blank">Viool 2 <b class="w3-text-green">(betekend)</b></a>
+                        <a href="/2025-09-27/Mozart_Concertante_-_Violin_2_BETEKEND.pdf" target="_blank">Viool 2 <b
+                                class="w3-text-green">(betekend)</b></a>
                     </li>
                     <li>
-                        <a href="/2025-09-27/Mozart_Concertante_-_Viola_1_BETEKEND.pdf" target="_blank">Altviool 1 <b class="w3-text-green">(betekend)</b></a>
+                        <a href="/2025-09-27/Mozart_Concertante_-_Viola_1_BETEKEND.pdf" target="_blank">Altviool 1 <b
+                                class="w3-text-green">(betekend)</b></a>
                     </li>
                     <li>
-                        <a href="/2025-09-27/Mozart_Concertante_-_Viola_2_BETEKEND.pdf" target="_blank">Altviool 2 <b class="w3-text-green">(betekend)</b></a>
+                        <a href="/2025-09-27/Mozart_Concertante_-_Viola_2_BETEKEND.pdf" target="_blank">Altviool 2 <b
+                                class="w3-text-green">(betekend)</b></a>
                     </li>
                     <li>
-                        <a href="/2025-09-27/Mozart Concertante - Cello_BETEKEND.pdf" target="_blank">Cello <b class="w3-text-green">(betekend)</b></a>
+                        <a href="/2025-09-27/Mozart Concertante - Cello_BETEKEND.pdf" target="_blank">Cello <b
+                                class="w3-text-green">(betekend)</b></a>
                     </li>
                     <li>
-                        <a href="/2025-09-27/Mozart_Concertante_-_Double_Bass_BETEKEND.pdf" target="_blank">Contrabas, fagot <b class="w3-text-green">(betekend)</b></a>
+                        <a href="/2025-09-27/Mozart_Concertante_-_Double_Bass_BETEKEND.pdf" target="_blank">Contrabas,
+                            fagot <b class="w3-text-green">(betekend)</b></a>
                     </li>
                     <li>
                         <a href="/2025-09-27/Mozart_Concertante_-_partituur_BETEKEND.pdf" target="_blank">
