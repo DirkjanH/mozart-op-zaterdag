@@ -45,4 +45,5 @@ if (!isset($_SESSION['ingelogd']) || $_SESSION['ingelogd'] !== true) {
 } else echo ('<p class="w3-green">Ingelogd</p>');
 // Als we hier komen, is de gebruiker ingelogd
 print_r($_SESSION);
-?> //einde login
+//einde login
+// Einde includes/inloggen.php
