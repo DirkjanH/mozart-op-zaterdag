@@ -193,6 +193,27 @@ div#main {
   font-size: 70%;
 }
 
+.verborgen-tekst {
+  display: none;
+  padding: 15px;
+  border: 1px solid #ccc;
+  margin-top: 10px;
+  background-color: #f4f4f4;
+}
+
+.zichtbaar {
+  display: block;
+}
+
+.toggle-knop {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
 @media print {
 
   h2,
