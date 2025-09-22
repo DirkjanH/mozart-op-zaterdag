@@ -61,24 +61,24 @@
             amateurs en
             professionals. Er is nog plaats voor een trompet, twee 2e violen en een altviool.</p>
         <button class="toggle-knop" onclick="toonVerbergTekst('okt2025')">Lees verder</button>
-                <div id="okt2025" class="verborgen-tekst">
-            <h4>De Oorsprong van de 'Haffner'</h4>
-            <p>De symfonie dankt zijn naam aan de familie Haffner, een prominente familie uit Salzburg waar
-                Mozart
-                bevriend
-                mee was. Oorspronkelijk componeerde Mozart het werk in 1782 als een serenade ter gelegenheid van
-                de
-                verheffing in de
-                adelstand van Siegmund Haffner. Later bewerkte Mozart de serenade tot een symfonie door onder
-                andere
-                een
-                mars en twee menuetten te verwijderen en een nieuw openingsdeel toe te voegen, waardoor het de
-                vorm
-                kreeg die we nu
-                kennen. De 'Haffner' symfonie is een prachtig voorbeeld van Mozarts meesterschap en zijn
-                vermogen om
-                zowel
-                feestelijke grandeur als diepgaande emotie in zijn muziek te leggen.</p>
+            <div id="okt2025" class="verborgen-tekst">
+                <h4>De Oorsprong van de 'Haffner'</h4>
+                <p>De symfonie dankt zijn naam aan de familie Haffner, een prominente familie uit Salzburg waar
+                    Mozart
+                    bevriend
+                    mee was. Oorspronkelijk componeerde Mozart het werk in 1782 als een serenade ter gelegenheid van
+                    de
+                    verheffing in de
+                    adelstand van Siegmund Haffner. Later bewerkte Mozart de serenade tot een symfonie door onder
+                    andere
+                    een
+                    mars en twee menuetten te verwijderen en een nieuw openingsdeel toe te voegen, waardoor het de
+                    vorm
+                    kreeg die we nu
+                    kennen. De 'Haffner' symfonie is een prachtig voorbeeld van Mozarts meesterschap en zijn
+                    vermogen om
+                    zowel
+                    feestelijke grandeur als diepgaande emotie in zijn muziek te leggen.</p>
             </div>
     </li>
     <li>
