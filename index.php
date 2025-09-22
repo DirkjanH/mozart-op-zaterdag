@@ -6,6 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mozart op Zaterdag</title>
     <link href="css/moz.css" rel="stylesheet" type="text/css">
+    <script>
+        function toonVerbergTekst(elementId) {
+            var tekstElement = document.getElementById(elementId);
+            if (tekstElement) {
+                tekstElement.classList.toggle('zichtbaar');
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -115,13 +123,6 @@
     </p>
 
     </div>
-    <script>
-        function toonVerbergTekst(elementId) {
-            var tekstElement = document.getElementById(elementId);
-            if (tekstElement) {
-                tekstElement.classList.toggle('zichtbaar');
-            }
-    </script>
 </body>
 
 </html>
