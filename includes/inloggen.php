@@ -14,6 +14,8 @@ session_start();
 // Zet hier je gewenste wachtwoord
 $wachtwoord = "WolfGang";
 
+d($wachtwoord, $_REQUEST);
+
 // Controleer of het wachtwoord reeds is verzonden en correct is
 if (isset($_POST['password']) && $_POST['password'] === $wachtwoord) {
     $_SESSION['ingelogd'] = true;
