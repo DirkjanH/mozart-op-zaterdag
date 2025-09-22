@@ -12,7 +12,7 @@ Kint::$enabled_mode = false; //($_SERVER['REMOTE_ADDR'] === '83.87.12.163');
 session_start();
 
 // Zet hier je gewenste wachtwoord
-$wachtwoord = "Mozart123.";
+$wachtwoord = "WolfGang";
 
 // Controleer of het wachtwoord reeds is verzonden en correct is
 if (isset($_POST['password']) && $_POST['password'] === $wachtwoord) {
