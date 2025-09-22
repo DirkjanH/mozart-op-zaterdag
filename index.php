@@ -39,7 +39,7 @@
                     een Andante en een
                     Presto, en duurt ongeveer 30 minuten. De bezetting is compleet.
                 </p>
-                <button class="toggle-knop" onclick="toonVerbergTekst('sept2025')"">Lees verder</button>
+                <button class="toggle-knop" onclick="toonVerbergTekst('sept2025')">Lees verder</button>
                 <div id="sept2025" class="verborgen-tekst">
                     <p> De Sinfonia concertante is een van de meest geliefde werken van Mozart. Het orkest bestaat uit
                         twee hobo's,
@@ -60,7 +60,7 @@
         <p>De bezetting is bijna compleet. We hebben nu 30 mensen kunnen plaatsen, een mengeling van goede
             amateurs en
             professionals. Er is nog plaats voor een trompet, twee 2e violen en een altviool.</p>
-        <button class="toggle-knop" onclick="toonVerbergTekst('okt2025')"">Lees verder</button>
+        <button class="toggle-knop" onclick="toonVerbergTekst('okt2025')">Lees verder</button>
                 <div id="okt2025" class="verborgen-tekst">
             <h4>De Oorsprong van de 'Haffner'</h4>
             <p>De symfonie dankt zijn naam aan de familie Haffner, een prominente familie uit Salzburg waar
