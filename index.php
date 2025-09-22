@@ -8,7 +8,7 @@
     <link href="css/moz.css" rel="stylesheet" type="text/css">
     <script>
         function toonVerbergTekst() {
-            var tekstElement = document.getElementById('geheimeTekst');
+            var tekstElement = document.getElementsByClassName('geheimeTekst');
             tekstElement.classList.toggle('zichtbaar');
         }
     </script>
@@ -39,7 +39,7 @@
                     Presto, en duurt ongeveer 30 minuten. De bezetting is compleet.
                 </p>
                 <button class="toggle-knop" onclick="toonVerbergTekst()">Lees verder</button>
-                <div id="geheimeTekst" class="verborgen-tekst">
+                <div class="geheimeTekst verborgen-tekst">
                     <p> De Sinfonia concertante is een van de meest geliefde werken van Mozart. Het orkest bestaat uit
                         twee hobo's,
                         twee hoorns, fagot en strijkers, met gedeelde altviolen. Het werk is een prachtig
@@ -60,7 +60,7 @@
                     amateurs en
                     professionals. Er is nog plaats voor een trompet, twee 2e violen en een altviool.</p>
                 <button class="toggle-knop" onclick="toonVerbergTekst()">Lees verder</button>
-                <div id="geheimeTekst" class="verborgen-tekst">
+                <div class="geheimeTekst verborgen-tekst">
                     <h4>De Oorsprong van de 'Haffner'</h4>
                     <p>De symfonie dankt zijn naam aan de familie Haffner, een prominente familie uit Salzburg waar
                         Mozart
