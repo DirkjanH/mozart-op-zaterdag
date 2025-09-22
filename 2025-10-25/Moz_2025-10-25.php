@@ -11,6 +11,7 @@
 <body>
     <div class="w3-content w3-white w3-panel">
         <?php require_once '../navigatie.htm'; ?>
+        echo 'Navigatie geladen<br>';
         <?php require_once '\includes\inloggen.php'; ?>
         <h3>25 oktober 2025:</h3>
         <h2>'Haffner' symfonie nr. 35 in D KV 385</h2>
