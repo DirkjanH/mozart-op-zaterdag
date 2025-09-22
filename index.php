@@ -36,15 +36,15 @@
             <li>
                 <p><b>27 september</b> in de
                     <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Sinfonia Concertante in Eb KV 364 voor 2
-                    hobo's, 1 fagot, 2 hoorns en strijkers. De sinfonia bestaat uit drie delen, een Allegro maestoso,
-                    een Andante en een
-                    Presto, en duurt ongeveer 30 minuten. De bezetting is compleet.
+                    hobo's, 1 fagot, 2 hoorns en strijkers. De bezetting is compleet.
                 </p>
                 <button class="toggle-knop" onclick="toonVerbergTekst('sept2025')">Lees verder</button>
                 <div id="sept2025" class="verborgen-tekst">
                     <p> De Sinfonia concertante is een van de meest geliefde werken van Mozart. Het orkest bestaat uit
                         twee hobo's,
-                        twee hoorns, fagot en strijkers, met gedeelde altviolen. Het werk is een prachtig
+                        twee hoorns, fagot en strijkers, met gedeelde altviolen. De sinfonia bestaat uit drie delen, een Allegro maestoso,
+                    een Andante en een
+                    Presto, en duurt ongeveer 30 minuten. Het werk is een prachtig
                         voorbeeld van muzikale interactie tussen de solisten en het orkest. De solisten zijn Valentina
                         Bernardone
                         (viool) en Anna Smith (altviool)
@@ -54,32 +54,18 @@
     <li>
         <p><b>25 oktober</b> in de
             <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: de 'Haffner' symfonie nr. 35 in D KV 385
-            voor 2 fluiten, 2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns, 2 trompetten, pauken en strijkers. De
-            symfonie bestaat uit vier delen, een Allegro con spirito, een Andante, een Menuetto en Trio en een
-            Presto, en duurt ongeveer 20 minuten.
-        </p>
-        <p>De bezetting is bijna compleet. We hebben nu 30 mensen kunnen plaatsen, een mengeling van goede
-            amateurs en
-            professionals. Er is nog plaats voor een trompet, twee 2e violen en een altviool.</p>
+            voor 2 fluiten, 2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns, 2 trompetten, pauken en strijkers. De bezetting is bijna compleet. We hebben nu 30 mensen kunnen plaatsen, een mengeling van goede amateurs en professionals. Er is nog plaats voor een trompet, twee 2e violen en een altviool.</p>
         <button class="toggle-knop" onclick="toonVerbergTekst('okt2025')">Lees verder</button>
             <div id="okt2025" class="verborgen-tekst">
                 <h4>De Oorsprong van de 'Haffner'</h4>
                 <p>De symfonie dankt zijn naam aan de familie Haffner, een prominente familie uit Salzburg waar
-                    Mozart
-                    bevriend
-                    mee was. Oorspronkelijk componeerde Mozart het werk in 1782 als een serenade ter gelegenheid van
-                    de
-                    verheffing in de
-                    adelstand van Siegmund Haffner. Later bewerkte Mozart de serenade tot een symfonie door onder
-                    andere
-                    een
-                    mars en twee menuetten te verwijderen en een nieuw openingsdeel toe te voegen, waardoor het de
-                    vorm
-                    kreeg die we nu
-                    kennen. De 'Haffner' symfonie is een prachtig voorbeeld van Mozarts meesterschap en zijn
-                    vermogen om
-                    zowel
-                    feestelijke grandeur als diepgaande emotie in zijn muziek te leggen.</p>
+                    Mozart bevriend mee was. Oorspronkelijk componeerde Mozart het werk in 1782 als een serenade ter gelegenheid van
+                    de verheffing in de adelstand van Siegmund Haffner. Later bewerkte Mozart de serenade tot een symfonie door onder
+                    andere een mars en twee menuetten te verwijderen en een nieuw openingsdeel toe te voegen, waardoor het de
+                    vorm kreeg die we nu kennen. De 'Haffner' symfonie is een prachtig voorbeeld van Mozarts meesterschap en zijn
+                    vermogen om zowel feestelijke grandeur als diepgaande emotie in zijn muziek te leggen. De
+            symfonie bestaat uit vier delen, een Allegro con spirito, een Andante, een Menuetto en Trio en een
+            Presto, en duurt ongeveer 20 minuten.</p>
             </div>
     </li>
     <li>
