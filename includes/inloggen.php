@@ -7,7 +7,7 @@ require_once $_SERVER["DOCUMENT_ROOT"] . '/vendor/autoload.php';
 
 use function PHP81_BC\strftime;
 
-Kint::$enabled_mode = false; //($_SERVER['REMOTE_ADDR'] === '83.87.12.163');
+Kint::$enabled_mode = true; //($_SERVER['REMOTE_ADDR'] === '83.87.12.163');
 
 session_start();
 
