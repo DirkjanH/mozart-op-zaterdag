@@ -1,11 +1,4 @@
-<?php
-session_start();
-
-if (!isset($_SESSION['ingelogd']) || $_SESSION['ingelogd'] !== true) {
-    header('Location: /includes/login.php');
-    exit; // Stop de scriptuitvoering
-}
-?>
+<?php require_once '/includes/inloggen.php'; ?>
 
 <!DOCTYPE html>
 <html lang="en">
