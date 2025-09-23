@@ -122,8 +122,8 @@
                         <td>hoorn 1</td>
                     </tr>
                     <tr>
-                        <td>Stefaan</td>
-                        <td>Brakkee</td>
+                        <td>Wim</td>
+                        <td>Kuppen</td>
                         <td>hoorn 2</td>
                     </tr>
                     <tr>
