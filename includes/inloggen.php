@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 
 session_start();
 
-print_r($_SESSION);
+// print_r($_SESSION);
 
 if (!isset($_SESSION['ingelogd']) || $_SESSION['ingelogd'] !== true) {
     $_SESSION['redirect_na_inloggen'] = $_SERVER['REQUEST_URI'];
