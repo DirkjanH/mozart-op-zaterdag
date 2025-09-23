@@ -24,7 +24,7 @@
             Presto, en
             duurt ongeveer 20 minuten.
         </p>
-        <h4>De Oorsprong van de 'Haffner'</h4>
+        <h5>De oorsprong van de 'Haffner'</h5>
         <p>De symfonie dankt zijn naam aan de familie Haffner, een prominente familie uit Salzburg waar Mozart bevriend
             mee was.
             Oorspronkelijk componeerde Mozart het werk in 1782 als een serenade ter gelegenheid van de verheffing in de
@@ -35,6 +35,55 @@
             De 'Haffner' symfonie is een prachtig voorbeeld van Mozarts meesterschap en zijn vermogen om zowel
             feestelijke
             grandeur als diepgaande emotie in zijn muziek te leggen.</p>
+        <p class="onzichtbaar">De partijen zijn binnenkort beschikbaar</p>
+        <div class="" style="clear: both;">
+            <h4>Partijen & partituur</h4>
+            <ul style="column-count: 3;">
+                <li>
+                    <a href="/2025-10-25/K385.Flute.pdf" target="_blank">Fluit 1-2</a>
+                </li>
+                <li>
+                    <a href="/2025-10-25/K385.Oboe.pdf" target="_blank">Hobo 1-2</a>
+                </li>
+                <li>
+                    <a href="/2025-10-25/K385.Clarinet.pdf" target="_blank">Klarinet 1-2 in A</a>
+                </li>
+                <li>
+                    <a href="/2025-10-25/K385.Bassoon.pdf" target="_blank">Fagot 1-2</a>
+                </li>
+                <li>
+                    <a href="/2025-10-25/K385.Horn.pdf" target="_blank">Hoorn 1-2</a>
+                </li>
+                <li>
+                    <a href="/2025-10-25/K385.Trumpet.pdf" target="_blank">Trompet 1-2</a>
+                </li>
+                <li>
+                    <a href="/2025-10-25/K385.Timpani.pdf" target="_blank">Pauken</a>
+                </li>
+                <li>
+                    <a href="/2025-10-25/K385.Violin1.pdf" target="_blank">Viool 1 (nog niet betekend)</a>
+                </li>
+                <li>
+                    <a href="/2025-10-25/K385.Violin2.pdf" target="_blank">Viool 2 (nog niet betekend)</a>
+                </li>
+                <li>
+                    <a href="/2025-10-25/K385.Viola.pdf" target="_blank">Altviool (nog niet betekend)</a>
+                </li>
+                <li>
+                    <a href="/2025-10-25/K385.Cello.pdf" target="_blank">Cello, contrabas (nog niet betekend)</a>
+                </li>
+                <li>
+                    <a href="/2025-10-25/NMA_04_11_Band_06_04_KV_385_scan.pdf" target="_blank">
+                        <b>nog niet betekende partituur</b>
+                    </a>
+                </li>
+            </ul>
+            <p class="onzichtbaar">
+                NB.
+                <b>
+                    Strijkers, neem SVP de streken uit de betekende partituur over in je eigen partij.
+            </p>
+        </div>
         <h4>Deelnemers</h4>
         <p>De bezetting is bijna compleet. We hebben nu 30 mensen kunnen plaatsen, een mengeling van goede amateurs en
             professionals. Er is nog plaats voor een 2e trompet, een 2e viool en een altviool.</p>
@@ -213,55 +262,6 @@
                 </tr>
             </tbody>
         </table>
-        <p class="onzichtbaar">De partijen zijn binnenkort beschikbaar</p>
-        <div class="" style="clear: both;">
-            <h4>Partijen & partituur</h4>
-            <ul style="column-count: 3;">
-                <li>
-                    <a href="/2025-10-25/K385.Flute.pdf" target="_blank">Fluit 1-2</a>
-                </li>
-                <li>
-                    <a href="/2025-10-25/K385.Oboe.pdf" target="_blank">Hobo 1-2</a>
-                </li>
-                <li>
-                    <a href="/2025-10-25/K385.Clarinet.pdf" target="_blank">Klarinet 1-2 in A</a>
-                </li>
-                <li>
-                    <a href="/2025-10-25/K385.Bassoon.pdf" target="_blank">Fagot 1-2</a>
-                </li>
-                <li>
-                    <a href="/2025-10-25/K385.Horn.pdf" target="_blank">Hoorn 1-2</a>
-                </li>
-                <li>
-                    <a href="/2025-10-25/K385.Trumpet.pdf" target="_blank">Trompet 1-2</a>
-                </li>
-                <li>
-                    <a href="/2025-10-25/K385.Timpani.pdf" target="_blank">Pauken</a>
-                </li>
-                <li>
-                    <a href="/2025-10-25/K385.Violin1.pdf" target="_blank">Viool 1 (nog niet betekend)</a>
-                </li>
-                <li>
-                    <a href="/2025-10-25/K385.Violin2.pdf" target="_blank">Viool 2 (nog niet betekend)</a>
-                </li>
-                <li>
-                    <a href="/2025-10-25/K385.Viola.pdf" target="_blank">Altviool (nog niet betekend)</a>
-                </li>
-                <li>
-                    <a href="/2025-10-25/K385.Cello.pdf" target="_blank">Cello, contrabas (nog niet betekend)</a>
-                </li>
-                <li>
-                    <a href="/2025-10-25/NMA_04_11_Band_06_04_KV_385_scan.pdf" target="_blank">
-                        <b>nog niet betekende partituur</b>
-                    </a>
-                </li>
-            </ul>
-            <p class="onzichtbaar">
-                NB.
-                <b>
-                    Strijkers, neem SVP de streken uit de betekende partituur over in je eigen partij.
-            </p>
-        </div>
     </div>
 </body>
 
