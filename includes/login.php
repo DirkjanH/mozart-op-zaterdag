@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['ingelogd'] = true;
 
         // Stuur de gebruiker door naar de beveiligde pagina
-        if (isset($_SESSION['redirect_na_inloggen']) AND ) {
+        if (isset($_SESSION['redirect_na_inloggen']) AND !empty($_SESSION['redirect_na_inloggen'])) {
             $redirect_url = $_SESSION['redirect_na_inloggen'];
             unset($_SESSION['redirect_na_inloggen']); // Verwijder de redirect variabele na gebruik
             header('Location: ' . $redirect_url);
