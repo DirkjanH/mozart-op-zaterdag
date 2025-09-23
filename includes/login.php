@@ -21,14 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $redirect_url = $_SESSION['redirect_na_inloggen'];
             unset($_SESSION['redirect_na_inloggen']); // Verwijder de redirect variabele na gebruik
             header('Location: ' . $redirect_url);
+            exit;
         } else {
             header('Location: /index.php');
         }
-        header('Location: '.$_SESSION['redirect_na_inloggen'] ?? 'Location: /index.php');
-        exit;
-    } else {
-        $foutmelding = 'Ongeldige gebruikersnaam of wachtwoord.';
-    }
+    } else $foutmelding = 'Ongeldige gebruikersnaam of wachtwoord.';
 }
 ?>
 

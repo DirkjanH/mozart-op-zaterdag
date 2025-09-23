@@ -5,6 +5,8 @@ error_reporting(E_ALL);
 
 session_start();
 
+printf($_SESSION);
+
 if (!isset($_SESSION['ingelogd']) || $_SESSION['ingelogd'] !== true) {
     $_SESSION['redirect_na_inloggen'] = $_SERVER['REQUEST_URI'];
     header('Location: /includes/login.php');
