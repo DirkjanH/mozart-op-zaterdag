@@ -12,5 +12,3 @@ if (!isset($_SESSION['ingelogd']) || $_SESSION['ingelogd'] !== true) {
     exit; // Stop de scriptuitvoering
 }
 ?>
-
-// Einde includes/inloggen.php
