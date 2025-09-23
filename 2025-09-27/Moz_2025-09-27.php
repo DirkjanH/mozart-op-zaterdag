@@ -87,13 +87,10 @@
                 </li>
             </ul>
             <p class="onzichtbaar">
-                NB.
-                <b>
-                    Strijkers, neem SVP de streken uit de betekende partituur over in je eigen partij.
-            </p>
+                NB. <b>Strijkers, neem SVP de streken uit de betekende partituur over in je eigen partij.</b></p>
         </div>
 
-        <div class="clear" ;">
+        <div class="clear">
             <h4>Deelnemers</h4>
             <p>De bezetting is compleet. We hebben nu 28 mensen kunnen plaatsen, een mengeling van goede amateurs en
                 professionals. </p>
