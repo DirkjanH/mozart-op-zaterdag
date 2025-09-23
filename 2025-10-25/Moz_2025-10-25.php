@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['ingelogd']) || $_SESSION['ingelogd'] !== true) {
+    header('Location: login.php');
+    exit; // Stop de scriptuitvoering
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,7 +44,7 @@
             grandeur als diepgaande emotie in zijn muziek te leggen.</p>
         <h4>Deelnemers</h4>
         <p>De bezetting is bijna compleet. We hebben nu 30 mensen kunnen plaatsen, een mengeling van goede amateurs en
-            professionals. Er is nog plaats voor een trompet, twee 2e violen en een altviool.</p>
+            professionals. Er is nog plaats voor een 2e trompet, een 2e viool en een altviool.</p>
         <table class="w3-table w3-striped w3-bordered" id="deelnemers">
             <thead>
                 <tr>
@@ -151,8 +160,8 @@
                     <td>viool 2</td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td><span class="nadruk">vacature</span></td>
+                    <td>Paul</td>
+                    <td>van Coeverden</td>
                     <td>viool 2</td>
                 <tr>
                     <td></td>
