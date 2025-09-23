@@ -35,7 +35,63 @@
                     width="350" alt="Anna Smith" class="w3-image w3-panel w3-left geenlijn"><br>Anna Smith, altviool
             </div>
         </div>
-        </p>
+        <div class="w3-clear">
+            <h4>Partijen</h4>
+            <ul style="column-count: 3;">
+                <li>
+                    <a href="/2025-09-27/Mozart_Concertante_-_Oboe_1.pdf" target="_blank">Hobo 1</a>
+                </li>
+                <li>
+                    <a href="/2025-09-27/Mozart_Concertante_-_Oboe_2.pdf" target="_blank">Hobo 2</a>
+                </li>
+                <li>
+                    <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_Eb.pdf" target="_blank">Hoorn 1 in Eb</a>
+                </li>
+                <li>
+                    <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_Eb.pdf" target="_blank">Hoorn 2 in Eb</a>
+                </li>
+                <li>
+                    <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_F.pdf" target="_blank">Hoorn 1 in F</a>
+                </li>
+                <li>
+                    <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_F.pdf" target="_blank">Hoorn 2 in F</a>
+                </li>
+                <li>
+                    <a href="/2025-09-27/Mozart Concertante - Violin 1 - BETEKEND.pdf" target="_blank">Viool 1 <b
+                            class="w3-text-green">(betekend)</b></a>
+                </li>
+                <li>
+                    <a href="/2025-09-27/Mozart_Concertante_-_Violin_2_BETEKEND.pdf" target="_blank">Viool 2 <b
+                            class="w3-text-green">(betekend)</b></a>
+                </li>
+                <li>
+                    <a href="/2025-09-27/Mozart_Concertante_-_Viola_1_BETEKEND.pdf" target="_blank">Altviool 1 <b
+                            class="w3-text-green">(betekend)</b></a>
+                </li>
+                <li>
+                    <a href="/2025-09-27/Mozart_Concertante_-_Viola_2_BETEKEND.pdf" target="_blank">Altviool 2 <b
+                            class="w3-text-green">(betekend)</b></a>
+                </li>
+                <li>
+                    <a href="/2025-09-27/Mozart Concertante - Cello_BETEKEND.pdf" target="_blank">Cello <b
+                            class="w3-text-green">(betekend)</b></a>
+                </li>
+                <li>
+                    <a href="/2025-09-27/Mozart_Concertante_-_Double_Bass_BETEKEND.pdf" target="_blank">Contrabas,
+                        fagot <b class="w3-text-green">(betekend)</b></a>
+                </li>
+                <li>
+                    <a href="/2025-09-27/Mozart_Concertante_-_partituur_BETEKEND.pdf" target="_blank">
+                        partituur <b class="w3-text-green">(betekend)</b>
+                    </a>
+                </li>
+            </ul>
+            <p class="onzichtbaar">
+                NB.
+                <b>
+                    Strijkers, neem SVP de streken uit de betekende partituur over in je eigen partij.
+            </p>
+        </div>
 
         <div class="clear" ;">
             <h4>Deelnemers</h4>
@@ -191,63 +247,6 @@
                 </tbody>
             </table>
 
-            <div class="w3-clear">
-                <h4>Partijen</h4>
-                <ul style="column-count: 3;">
-                    <li>
-                        <a href="/2025-09-27/Mozart_Concertante_-_Oboe_1.pdf" target="_blank">Hobo 1</a>
-                    </li>
-                    <li>
-                        <a href="/2025-09-27/Mozart_Concertante_-_Oboe_2.pdf" target="_blank">Hobo 2</a>
-                    </li>
-                    <li>
-                        <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_Eb.pdf" target="_blank">Hoorn 1 in Eb</a>
-                    </li>
-                    <li>
-                        <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_Eb.pdf" target="_blank">Hoorn 2 in Eb</a>
-                    </li>
-                    <li>
-                        <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_F.pdf" target="_blank">Hoorn 1 in F</a>
-                    </li>
-                    <li>
-                        <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_F.pdf" target="_blank">Hoorn 2 in F</a>
-                    </li>
-                    <li>
-                        <a href="/2025-09-27/Mozart Concertante - Violin 1 - BETEKEND.pdf" target="_blank">Viool 1 <b
-                                class="w3-text-green">(betekend)</b></a>
-                    </li>
-                    <li>
-                        <a href="/2025-09-27/Mozart_Concertante_-_Violin_2_BETEKEND.pdf" target="_blank">Viool 2 <b
-                                class="w3-text-green">(betekend)</b></a>
-                    </li>
-                    <li>
-                        <a href="/2025-09-27/Mozart_Concertante_-_Viola_1_BETEKEND.pdf" target="_blank">Altviool 1 <b
-                                class="w3-text-green">(betekend)</b></a>
-                    </li>
-                    <li>
-                        <a href="/2025-09-27/Mozart_Concertante_-_Viola_2_BETEKEND.pdf" target="_blank">Altviool 2 <b
-                                class="w3-text-green">(betekend)</b></a>
-                    </li>
-                    <li>
-                        <a href="/2025-09-27/Mozart Concertante - Cello_BETEKEND.pdf" target="_blank">Cello <b
-                                class="w3-text-green">(betekend)</b></a>
-                    </li>
-                    <li>
-                        <a href="/2025-09-27/Mozart_Concertante_-_Double_Bass_BETEKEND.pdf" target="_blank">Contrabas,
-                            fagot <b class="w3-text-green">(betekend)</b></a>
-                    </li>
-                    <li>
-                        <a href="/2025-09-27/Mozart_Concertante_-_partituur_BETEKEND.pdf" target="_blank">
-                            partituur <b class="w3-text-green">(betekend)</b>
-                        </a>
-                    </li>
-                </ul>
-                <p class="onzichtbaar">
-                    NB.
-                    <b>
-                        Strijkers, neem SVP de streken uit de betekende partituur over in je eigen partij.
-                </p>
-            </div>
         </div>
 </body>
 
