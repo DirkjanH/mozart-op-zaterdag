@@ -7,6 +7,7 @@ error_reporting(E_ALL);
 session_start();
 
 if (!isset($_SESSION['ingelogd']) || $_SESSION['ingelogd'] !== true) {
+    $_SESSION['redirect_na_inloggen'] = $_SERVER['REQUEST_URI'];
     header('Location: login.php');
     exit; // Stop de scriptuitvoering
 }

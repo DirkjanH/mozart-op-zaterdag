@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['ingelogd'] = true;
 
         // Stuur de gebruiker door naar de beveiligde pagina
-        header('Location: pagina.php');
+        header('Location: '.$_SESSION['redirect_na_inloggen'] ?? '/index.php');
         exit;
     } else {
         $foutmelding = 'Ongeldige gebruikersnaam of wachtwoord.';
