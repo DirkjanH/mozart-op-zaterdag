@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header('Location: ' . $redirect_url);
             exit;
         } else {
-            header('Location: /index.php');
+            header('Location: /includes/index.php');
         }
     } else $foutmelding = 'Ongeldige gebruikersnaam of wachtwoord.';
 }
