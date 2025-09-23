@@ -10,7 +10,7 @@
     <link href="/css/moz.css" rel="stylesheet" type="text/css">
 </head>
 
-<body>
+<body class="w3-grey">
     <div class="w3-content w3-white w3-panel">
         <?php require_once '../navigatie.htm'; ?>
         <h3>25 oktober 2025:</h3>
