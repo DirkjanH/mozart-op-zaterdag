@@ -29,11 +29,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="nl">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/css/moz.css" rel="stylesheet" type="text/css">
     <title>Login</title>
 </head>
 
-<body>
-
+<body class="w3-grey">
+<div class="w3-content w3-white w3-center w3-panel w3-card-4" style="max-width: 400px; margin-top: 50px; padding: 20px;">
     <h2>Inloggen</h2>
 
     <?php if ($foutmelding): ?>
@@ -45,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="password" id="wachtwoord" name="wachtwoord" required><br><br>
         <button type="submit">Inloggen</button>
     </form>
-
+</div>
 </body>
 
 </html>
