@@ -48,13 +48,13 @@
                     <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_Eb.pdf" target="_blank">Hoorn 1 in Eb</a>
                 </li>
                 <li>
-                    <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_Eb.pdf" target="_blank">Hoorn 2 in Eb</a>
+                    <a href="/2025-09-27/Mozart_Concertante_-_Horn_2_in_Eb.pdf" target="_blank">Hoorn 2 in Eb</a>
                 </li>
                 <li>
                     <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_F.pdf" target="_blank">Hoorn 1 in F</a>
                 </li>
                 <li>
-                    <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_F.pdf" target="_blank">Hoorn 2 in F</a>
+                    <a href="/2025-09-27/Mozart_Concertante_-_Horn_2_in_F.pdf" target="_blank">Hoorn 2 in F</a>
                 </li>
                 <li>
                     <a href="/2025-09-27/Mozart Concertante - Violin 1 - BETEKEND.pdf" target="_blank">Viool 1 <b
