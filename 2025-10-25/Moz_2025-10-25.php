@@ -93,13 +93,13 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>Yolande </td>
-                    <td>Krooshof </td>
+                    <td>Yolande</td>
+                    <td>Krooshof</td>
                     <td>fluit 1</td>
                 </tr>
                 <tr>
-                    <td>Liesbeth</td>
-                    <td>van Elburg</td>
+                    <td>Mirjam</td>
+                    <td>van Scheepen</td>
                     <td>fluit 2</td>
                 </tr>
                 <tr>
@@ -109,7 +109,7 @@
                 </tr>
                 <tr>
                     <td>Erik</td>
-                    <td>van Kassel </td>
+                    <td>van Kassel</td>
                     <td>hobo 2</td>
                 </tr>
                 <tr>
