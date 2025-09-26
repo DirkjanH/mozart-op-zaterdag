@@ -101,13 +101,13 @@
                         <th>instrument</th>
                     </tr>
                     <tr>
-                        <td>Liesbeth</td>
-                        <td>Feikema</td>
+                        <td>Rineke</td>
+                        <td>Boerwinkel</td>
                         <td>hobo 1</td>
                     </tr>
                     <tr>
-                        <td>Rineke</td>
-                        <td>Boerwinkel</td>
+                        <td>Mariëlle</td>
+                        <td>Theunissen</td>
                         <td>hobo 2</td>
                     </tr>
                     <tr>
