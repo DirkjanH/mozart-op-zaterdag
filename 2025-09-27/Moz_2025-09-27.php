@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mozart op Zaterdag op 27 september 2025</title>
+    <title>Sinfonia concertante KV 364 op 27 september 2025</title>
     <link href="/css/moz.css" rel="stylesheet" type="text/css">
 </head>
 
@@ -16,15 +16,8 @@
         <h3>27 september 2025:</h3>
         <h2>Sinfonia concertante in Eb KV 364</h2>
         <p>
-            De vierde aflevering van
-            <i>Mozart op Zaterdag</i>
-            vindt plaats op zaterdagochtend 27 september. We werken dan aan Mozarts Sinfonia concertante in Eb KV 364
-            voor viool, altviool en orkest. De sinfonia bestaat uit drie delen, een Allegro maestoso, een Andante en een
-            Presto, en duurt ongeveer 30 minuten.
-            De Sinfonia concertante is een van de meest geliefde werken van Mozart. Het orkest bestaat uit twee hobo's,
-            twee hoorns, fagot en strijkers, met gedeelde altviolen. Het werk is een prachtig
-            voorbeeld van muzikale interactie tussen de solisten en het orkest. De solisten zijn Valentina Bernardone
-            (viool) en Anna Smith (altviool)
+            De vierde aflevering van <i>Mozart op Zaterdag</i> vond plaats op zaterdagochtend 27 september. We werkten toen aan Mozarts Sinfonia concertante in Es KV 364 voor viool, altviool en orkest. De sinfonia bestaat uit drie delen, een Allegro maestoso, een Andante en een Presto, en duurt ongeveer 30 minuten.
+De Sinfonia concertante is een van de meest geliefde werken van Mozart. Het orkest bestaat uit twee hobo's, twee hoorns, fagot en strijkers, met gedeelde altviolen. Het werk is een prachtig voorbeeld van muzikale interactie tussen de solisten en het orkest. De solisten waren Valentina Bernardone (viool) en Anna Smith (altviool).
         <div style="clear: both; display: table; margin: auto;">
             <div style="display: table-cell;" class="w3-small w3-center"><img
                     src="/2025-09-27/valentina-bernardone-nederlands-.ed8ef09e.fill-1280x1280.jpg" width="350"
