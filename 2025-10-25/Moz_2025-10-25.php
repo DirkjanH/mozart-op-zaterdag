@@ -183,8 +183,8 @@
                     <td>viool 1</td>
                 </tr>
                 <tr>
-                    <td>Daniela</td>
-                    <td>Roeland</td>
+                    <td></td>
+                    <td><span class="nadruk">vacature</span></td>
                     <td>viool 2</td>
                 </tr>
                 <tr>
@@ -202,13 +202,13 @@
                     <td>van Coeverden</td>
                     <td>viool 2</td>
                 <tr>
-                    <td></td>
-                    <td><span class="nadruk">vacature</span></td>
+                    <td>Marijke</td>
+                    <td>Huijgen</td>	
                     <td>viool 2</td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td><span class="nadruk">vacature</span></td>
+                    <td>Sytse</td>
+                    <td>Dotinga</td>
                     <td>altviool</td>
                 </tr>
                 <tr>
