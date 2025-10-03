@@ -26,15 +26,11 @@
         </p>
         <h5>De oorsprong van de 'Haffner'</h5>
         <p>De symfonie dankt zijn naam aan de familie Haffner, een prominente familie uit Salzburg waar Mozart bevriend
-            mee was.
-            Oorspronkelijk componeerde Mozart het werk in 1782 als een serenade ter gelegenheid van de verheffing in de
+            mee was. Oorspronkelijk componeerde Mozart het werk in 1782 als een serenade ter gelegenheid van de verheffing in de
             adelstand van Siegmund Haffner. Later bewerkte Mozart de serenade tot een symfonie door onder andere een
-            mars en
-            twee menuetten te verwijderen en een nieuw openingsdeel toe te voegen, waardoor het de vorm kreeg die we nu
-            kennen.
-            De 'Haffner' symfonie is een prachtig voorbeeld van Mozarts meesterschap en zijn vermogen om zowel
-            feestelijke
-            grandeur als diepgaande emotie in zijn muziek te leggen.</p>
+            mars en twee menuetten te verwijderen en een nieuw openingsdeel toe te voegen, waardoor het de vorm kreeg die we nu
+            kennen. De 'Haffner' symfonie is een prachtig voorbeeld van Mozarts meesterschap en zijn vermogen om zowel
+            feestelijke grandeur als diepgaande emotie in zijn muziek te leggen.</p>
         <p class="onzichtbaar">De partijen zijn binnenkort beschikbaar</p>
         <div class="" style="clear: both;">
             <h4>Partijen & partituur</h4>
@@ -61,28 +57,27 @@
                     <a href="/2025-10-25/K385.Timpani.pdf" target="_blank">Pauken</a>
                 </li>
                 <li>
-                    <a href="/2025-10-25/K385.Violin1.pdf" target="_blank">Viool 1 (nog niet betekend)</a>
+                    <a href="/2025-10-25/K385.Violin1_bet.pdf" target="_blank">Viool 1</a>
                 </li>
                 <li>
-                    <a href="/2025-10-25/K385.Violin2.pdf" target="_blank">Viool 2 (nog niet betekend)</a>
+                    <a href="/2025-10-25/K385.Violin2_bet.pdf" target="_blank">Viool 2</a>
                 </li>
                 <li>
-                    <a href="/2025-10-25/K385.Viola.pdf" target="_blank">Altviool (nog niet betekend)</a>
+                    <a href="/2025-10-25/K385.Viola_bet.pdf" target="_blank">Altviool</a>
                 </li>
                 <li>
-                    <a href="/2025-10-25/K385.Cello.pdf" target="_blank">Cello, contrabas (nog niet betekend)</a>
+                    <a href="/2025-10-25/K385.Cello-Bas_bet.pdf" target="_blank">Cello, contrabas</a>
                 </li>
                 <li>
                     <a href="/2025-10-25/NMA_04_11_Band_06_04_KV_385_scan.pdf" target="_blank">
-                        <b>nog niet betekende partituur</b>
-                    </a>
+                Partituur</a>
                 </li>
             </ul>
             <p class="onzichtbaar">NB. <b>Strijkers, neem SVP de streken uit de betekende partituur over in je eigen partij.</b></p>
         </div>
         <h4>Deelnemers</h4>
         <p>De bezetting is bijna compleet. We hebben nu 30 mensen kunnen plaatsen, een mengeling van goede amateurs en
-            professionals. Er is nog plaats voor een 2e trompet, een 2e viool en een altviool.</p>
+            professionals. Er is nog plaats voor een 2e trompet en een 2e viool.</p>
         <table class="w3-table w3-striped w3-bordered" id="deelnemers">
             <thead>
                 <tr>
