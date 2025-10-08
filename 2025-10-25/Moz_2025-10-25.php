@@ -81,9 +81,9 @@
         <table class="w3-table w3-striped w3-bordered" id="deelnemers">
             <thead>
                 <tr>
-                    <th>voornaam</th>
-                    <th>achternaam</th>
-                    <th>instrument</th>
+                    <th>Voornaam</th>
+                    <th>Achternaam</th>
+                    <th>Instrument</th>
                 </tr>
             </thead>
             <tbody>
