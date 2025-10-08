@@ -77,7 +77,7 @@
         </div>
         <h4>Deelnemers</h4>
         <p>De bezetting is bijna compleet. We hebben nu 30 mensen kunnen plaatsen, een mengeling van goede amateurs en
-            professionals. Er is nog plaats voor een 2e trompet en een 2e viool.</p>
+            professionals. Er is nog plaats voor een 2e trompet, een 2e viool en een altviool.</p>
         <table class="w3-table w3-striped w3-bordered" id="deelnemers">
             <thead>
                 <tr>
@@ -212,8 +212,8 @@
                     <td>altviool</td>
                 </tr>
                 <tr>
-                    <td>Martin</td>
-                    <td>Spanjaard</td>
+                    <td></td>
+                    <td><span class="nadruk">vacature</span></td>
                     <td>altviool</td>
                 </tr>
                 <tr>
