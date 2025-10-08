@@ -129,7 +129,9 @@ table#deelnemers {
   max-width: 500px;
   margin-left: auto;
   margin-right: auto;
-}
+  border: medium double black;
+  border-collapse: collapse;
+} 
 
 table#deelnemers th {
   font-size: 1em;
