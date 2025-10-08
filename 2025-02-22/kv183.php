@@ -10,7 +10,7 @@
 
 <body>
     <div class="w3-content w3-white w3-panel">
-        <?php include_once '/navigatie.htm'; ?>
+        <?php require_once '../navigatie.htm'; ?>
         <h3>Mozart op Zaterdag op 22 februari 2025:</h3>
         <h1>Symfonie nr. 25 in g klein KV 183</h1>
         <p>Op 22 februari stond Mozarts 25e symfonie KV 183 op het programma. Het is een van de maar twee symfonieën in mineur-toonsoorten die hij schreef. De andere is de beroemde 40e symfonie KV 550; beide staan in de dramatische toonsoort g klein. Nr. 25 wordt daarom ook wel de ‘kleine g mineur symfonie’ genoemd. Sinds de film Amadeus uitkwam, waarin in de opening de gejaagde muziek van het eerste deel klinkt, zou deze symfonie waarschijnlijk beter de 'Amadeus-symfonie' kunnen worden genoemd. Deze symfonie staat al meer dan halverwege Mozarts genummerde symfonieën. Het is de eerste, denk ik, die veel mensen rekenen tot een van zijn grote werken.</p>
