@@ -11,7 +11,7 @@
 <body>
     <div class="w3-content w3-mobile w3-white w3-panel">
         <p class="w3-content w3-white w3-panel">
-            <?php include_once 'navigatie.htm'; ?>
+        <?php require_once '../navigatie.htm'; ?>
         <h3>24 mei 2025:</h3>
         <h2>Vioolconcert nr. 4 in D KV 218</h2>
         <p>
