@@ -10,7 +10,7 @@
 
 <body>
     <div class="w3-content w3-white w3-panel">
-        <?php include_once 'navigatie.htm'; ?>
+        <?php include_once '/navigatie.htm'; ?>
         <h3>Mozart op Zaterdag op 22 maart 2025:</h3>
         <h1>Symfonie nr. 29 in A KV 201</h1>
         <h4>Mozarts symfonie nr. 29 in A op zaterdagochtend 22 maart</h4>
