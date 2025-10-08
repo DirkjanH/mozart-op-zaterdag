@@ -16,6 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Succesvol ingelogd: Zet de sessievariabele
         $_SESSION['ingelogd'] = true;
 
+        print_r($_SESSION);
+
         // Stuur de gebruiker door naar de beveiligde pagina
         if (isset($_SESSION['redirect_na_inloggen']) AND !empty($_SESSION['redirect_na_inloggen'])) {
             $redirect_url = $_SESSION['redirect_na_inloggen'];
