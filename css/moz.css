@@ -131,8 +131,8 @@ table#deelnemers th {
 
 table#deelnemers td {
   font-size: 0.8em;
-  width: 100%;
-  max-width: 600px;
+  width: auto;
+  max-width: 400px;
 }
 
 table#res {
