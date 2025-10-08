@@ -39,22 +39,12 @@
         <p>
             De derde aflevering van <i>Mozart op Zaterdag</i>
             vond plaats op zaterdagochtend 24 mei. We werkten aan Mozarts vierde vioolconcert in D KV 218. Mozart
-            schreef zijn vierde vioolconcert in D groot KV 218 in 1775 in Salzburg. Hij schijnt het oorspronkelijk
-            gecomponeerd te hebben om zelf te spelen, maar na zijn vertrek uit het Salzburgse
-            Hoforkest veranderde hij het concert zodat zijn opvolger in het hoforkest, Antonio Brunetti, het kon spelen.
-            Het is discutabel of het concert boven Mozarts niveau lag of dat hij het met opzet moeilijk maakte voor
-            Brunetti vanwege diens grotere vaardigheid. Het eerste deel is een virtuoos Allegro, terwijl het tweede
-            deel, een Andante cantabile uit zangerige melodische lijnen bestaat. Het derde deel, een Rondeau, is vrolijk
-            en vol plezier. Het concert duurde ongeveer 25 minuten.
-        </p>
-        <p><img src="/2025-05-24/evelyn.jpg" alt="Evelyn Tjon-En-Fa" width="250"
+            schreef zijn vierde vioolconcert in D groot KV 218 in 1775 in Salzburg. <img src="/2025-05-24/evelyn.jpg" alt="Evelyn Tjon-En-Fa" width="250"
                 class="w3-image w3-left w3-margin-right w3-margin-bottom geenlijn">
             Soliste was Evelyn Tjon-En-Fa. Zij werkte eerder mee als concertmeester aan Mozart op Zaterdag. In 2001
             studeerde Evelyn cum
-            laude af als uitvoerend musicus aan het conservatorium in Tilburg (Fontys Hogescholen). Evelyn heeft sinds
-            1997 regelmatig opgetreden als solist met orkesten waarvan zij deel uitmaakt en heeft een ruime ervaring in
-            kamermuziek. Evelyn heeft parallel aan haar conservatoriumstudie Nederlands recht gestudeerd. Naast haar
-            optredens als violiste werkt Evelyn sinds 2001 ook als advocaat.
+            laude af als uitvoerend musicus aan het conservatorium in Tilburg (Fontys Hogescholen). Naast haar
+            optredens als violiste werkt Evelyn sinds 2001 als advocaat.
         </p>
         </div>
         <div style="clear: both;" class="w3-panel">
