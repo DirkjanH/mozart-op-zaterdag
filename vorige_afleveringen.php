@@ -34,6 +34,45 @@
                     Xavier (Portugal)</a>. Er speelden 26 mensen in het orkest. Er waren een kleine 40 bezoekers.
             </p>
         </div>
+        <div style="clear: both;" class="w3-panel">
+        <h4>Vioolconcert nr. 4 in D KV 218</h4>
+        <p>
+            De derde aflevering van <i>Mozart op Zaterdag</i>
+            vond plaats op zaterdagochtend 24 mei. We werkten aan Mozarts vierde vioolconcert in D KV 218. Mozart
+            schreef zijn vierde vioolconcert in D groot KV 218 in 1775 in Salzburg. Hij schijnt het oorspronkelijk
+            gecomponeerd te hebben om zelf te spelen, maar na zijn vertrek uit het Salzburgse
+            Hoforkest veranderde hij het concert zodat zijn opvolger in het hoforkest, Antonio Brunetti, het kon spelen.
+            Het is discutabel of het concert boven Mozarts niveau lag of dat hij het met opzet moeilijk maakte voor
+            Brunetti vanwege diens grotere vaardigheid. Het eerste deel is een virtuoos Allegro, terwijl het tweede
+            deel, een Andante cantabile uit zangerige melodische lijnen bestaat. Het derde deel, een Rondeau, is vrolijk
+            en vol plezier. Het concert duurde ongeveer 25 minuten.
+        </p>
+        <p><img src="evelyn.jpg" alt="Evelyn Tjon-En-Fa" width="250"
+                class="w3-image w3-left w3-margin-right w3-margin-bottom geenlijn">
+            Soliste was Evelyn Tjon-En-Fa. Zij werkte eerder mee als concertmeester aan Mozart op Zaterdag. In 2001
+            studeerde Evelyn cum
+            laude af als uitvoerend musicus aan het conservatorium in Tilburg (Fontys Hogescholen). Evelyn heeft sinds
+            1997 regelmatig opgetreden als solist met orkesten waarvan zij deel uitmaakt en heeft een ruime ervaring in
+            kamermuziek. Evelyn heeft parallel aan haar conservatoriumstudie Nederlands recht gestudeerd. Naast haar
+            optredens als violiste werkt Evelyn sinds 2001 ook als advocaat.
+        </p>
+        </div>
+        <div style="clear: both;" class="w3-panel">
+        <h2>Sinfonia concertante in Eb KV 364</h2>
+        <p>
+            De vierde aflevering van <i>Mozart op Zaterdag</i> vond plaats op zaterdagochtend 27 september. We werkten toen aan Mozarts Sinfonia concertante in Es KV 364 voor viool, altviool en orkest. De sinfonia bestaat uit drie delen, een Allegro maestoso, een Andante en een Presto, en duurt ongeveer 30 minuten.
+De Sinfonia concertante is een van de meest geliefde werken van Mozart. Het orkest bestaat uit twee hobo's, twee hoorns, fagot en strijkers, met gedeelde altviolen. Het werk is een prachtig voorbeeld van muzikale interactie tussen de solisten en het orkest. De solisten waren Valentina Bernardone (viool) en Anna Smith (altviool).
+        <div style="clear: both; display: table; margin: auto;">
+            <div style="display: table-cell;" class="w3-small w3-center"><img
+                    src="/2025-09-27/valentina-bernardone-nederlands-.ed8ef09e.fill-1280x1280.jpg" width="250"
+                    alt="Valentina Bernardone" class="w3-image w3-panel w3-left geenlijn"><br>Valentina Bernardone,
+                viool
+            </div>
+            <div style="display: table-cell;" class="w3-small w3-center"><img src="/2025-09-27/Anna-Smith-vierkant-.jpg"
+                    width="250" alt="Anna Smith" class="w3-image w3-panel w3-left geenlijn"><br>Anna Smith, altviool
+            </div>
+        </div>
+        </div>
     </div>
 </body>
 
