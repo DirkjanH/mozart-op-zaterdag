@@ -1,7 +1,7 @@
 <?php require_once '../includes/inloggen.php'; ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 
 <head>
     <meta charset="UTF-8">
