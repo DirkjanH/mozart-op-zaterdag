@@ -37,13 +37,10 @@
         <div style="clear: both;" class="w3-panel">
         <h4>Vioolconcert nr. 4 in D KV 218</h4>
         <p>
-            De derde aflevering van <i>Mozart op Zaterdag</i>
+            <img src="/2025-05-24/evelyn.jpg" alt="Evelyn Tjon-En-Fa" width="250"
+                class="w3-image w3-left w3-margin-right w3-margin-bottom geenlijn">De derde aflevering van <i>Mozart op Zaterdag</i>
             vond plaats op zaterdagochtend 24 mei. We werkten aan Mozarts vierde vioolconcert in D KV 218. Mozart
-            schreef zijn vierde vioolconcert in D groot KV 218 in 1775 in Salzburg. <img src="/2025-05-24/evelyn.jpg" alt="Evelyn Tjon-En-Fa" width="250"
-                class="w3-image w3-left w3-margin-right w3-margin-bottom geenlijn">
-            Soliste was Evelyn Tjon-En-Fa. Zij werkte eerder mee als concertmeester aan Mozart op Zaterdag. In 2001
-            studeerde Evelyn cum
-            laude af als uitvoerend musicus aan het conservatorium in Tilburg (Fontys Hogescholen). Naast haar
+            schreef zijn vierde vioolconcert in D groot KV 218 in 1775 in Salzburg. Soliste was Evelyn Tjon-En-Fa. Zij werkte eerder mee als concertmeester aan Mozart op Zaterdag. In 2001 studeerde Evelyn cum laude af als uitvoerend musicus aan het conservatorium in Tilburg (Fontys Hogescholen). Naast haar
             optredens als violiste werkt Evelyn sinds 2001 als advocaat.
         </p>
         </div>
