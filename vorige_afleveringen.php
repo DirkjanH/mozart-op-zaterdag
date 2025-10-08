@@ -58,7 +58,7 @@
         </p>
         </div>
         <div style="clear: both;" class="w3-panel">
-        <h2>Sinfonia concertante in Eb KV 364</h2>
+        <h4>Sinfonia concertante in Eb KV 364</h4>
         <p>
             De vierde aflevering van <i>Mozart op Zaterdag</i> vond plaats op zaterdagochtend 27 september. We werkten toen aan Mozarts Sinfonia concertante in Es KV 364 voor viool, altviool en orkest. De sinfonia bestaat uit drie delen, een Allegro maestoso, een Andante en een Presto, en duurt ongeveer 30 minuten.
 De Sinfonia concertante is een van de meest geliefde werken van Mozart. Het orkest bestaat uit twee hobo's, twee hoorns, fagot en strijkers, met gedeelde altviolen. Het werk is een prachtig voorbeeld van muzikale interactie tussen de solisten en het orkest. De solisten waren Valentina Bernardone (viool) en Anna Smith (altviool).
