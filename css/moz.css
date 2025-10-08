@@ -129,6 +129,12 @@ table#deelnemers th {
   color: #ffffff;
 }
 
+table#deelnemers td {
+  font-size: 0.8em;
+  width: 100%;
+  max-width: 600px;
+}
+
 table#res {
   max-width: 100%;
   border: medium double #336633;
