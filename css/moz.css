@@ -123,16 +123,16 @@ textarea {
   column-fill: balance;
 }
 
+table#deelnemers {
+  font-size: 0.8em;
+  width: auto;
+  max-width: 400px;
+}
+
 table#deelnemers th {
   font-size: 1em;
   background-color: red;
   color: #ffffff;
-}
-
-table#deelnemers td {
-  font-size: 0.8em;
-  width: auto;
-  max-width: 400px;
 }
 
 table#res {
