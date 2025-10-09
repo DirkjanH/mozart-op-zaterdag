@@ -16,7 +16,7 @@ jobs:
       uses: rostimelk/one.com-deployer@master
       env:
           ONE_DOMAIN_NAME: ssh.cfb5wd2sc.service.one
-          ONE_SSH_KEY_PUBLIC: ${{ secrets.PUBLIC_KEY_NAME }}
-          ONE_SSH_KEY_PRIVATE: ${{ secrets.PRIVATE_KEY_NAME }}
+          ONE_SSH_KEY_PUBLIC: ${{ secrets.id_ed25519.pub }}
+          ONE_SSH_KEY_PRIVATE: ${{ secrets.id_ed25519 }}
           TPO_SRC_PATH: ""
           TPO_PATH: ""
