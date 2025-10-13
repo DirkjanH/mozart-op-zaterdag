@@ -68,11 +68,7 @@
                     </a>
                 </li>
             </ul>
-            <p>
-                NB.
-                <b>
-                    Strijkers, neem SVP de streken uit de betekende partituur over in je eigen partij.
-            </p>
+            <p>NB. <b>Strijkers, neem SVP de streken uit de betekende partituur over in je eigen partij.</b></p>
         </div>
         <h2>Bezetting</h2>
         <p>Er zijn nu 26 deelnemers. Er is nog plaats voor een contrabas en een 2e hoorn. Een paar extra violen kunnen eventueel ook nog geplaatst worden. </p>
