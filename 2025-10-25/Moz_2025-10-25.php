@@ -17,12 +17,8 @@
         <h2>'Haffner' symfonie nr. 35 in D KV 385</h2>
         <p>
             De vijfde aflevering van <i>Mozart op Zaterdag</i> vindt plaats op zaterdagochtend 25 oktober We werken dan
-            aan
-            Mozarts 'Haffner' symfonie nr. 35 in D KV 385 voor uitgebreid orkest met dubbel hout, hoorns, trompetten en
-            pauken.
-            De symfonie bestaat uit vier delen, een Allegro con spirito, een Andante, een Menuetto en Trio en een
-            Presto, en
-            duurt ongeveer 20 minuten.
+            aan Mozarts 'Haffner' symfonie nr. 35 in D KV 385 voor uitgebreid orkest met dubbel hout, hoorns, trompetten en
+            pauken. De symfonie bestaat uit vier delen, een Allegro con spirito (tempo halve noot = 72), een Andante (tempo achtste = 72), een Menuetto en Trio (tempo gepuncteerde halve = 48) en een Presto (tempo halve noot = 138), en duurt ongeveer 20 minuten. Met name het Presto gaat erg snel en vraagt flink wat studie.
         </p>
         <h5>De oorsprong van de 'Haffner'</h5>
         <p>De symfonie dankt zijn naam aan de familie Haffner, een prominente familie uit Salzburg waar Mozart bevriend
@@ -143,8 +139,8 @@
                     <td>trompet 1</td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td><span class="nadruk">vacature</span></td>
+                    <td>Laurence</td>
+                    <td>Peverall</td>
                     <td>trompet 2</td>
                 </tr>
                 <tr>
