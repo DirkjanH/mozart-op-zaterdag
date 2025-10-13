@@ -72,7 +72,7 @@
         </div>
         <h2>Bezetting</h2>
         <p>Er zijn nu 26 deelnemers. Er is nog plaats voor een contrabas en een 2e hoorn. Een paar extra violen kunnen eventueel ook nog geplaatst worden. </p>
-        <p>Binnenkorten plaatsen we hier de lijst van alle deelnemers.</p>
+        <p>Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
     </div>
 </body>
 
