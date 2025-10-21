@@ -151,7 +151,7 @@
                 <tr>
                     <td>Carla</td>
                     <td>Westhof</td>
-                    <td>viool 1</td>
+                    <td>viool 1 (concertmeester)</td>
                 </tr>
                 <tr>
                     <td>Saskia</td>
@@ -235,7 +235,7 @@
                 <tr>
                     <td>Anke</td>
                     <td>Meester</td>
-                    <td>cello</td>
+                    <td>cello (aanvoerder)</td>
                 </tr>
                 <tr>
                     <td>Dorine</td>
