@@ -62,7 +62,7 @@
                     <a href="/2025-10-25/K385.Viola_bet.pdf" target="_blank">Altviool</a>
                 </li>
                 <li>
-                    <a href="/2025-10-25/K385.Cello-Bas_bet.pdf" target="_blank">Cello, contrabas</a>
+                    <a href="/2025-10-25/K385.Cello-Bas_bet 3.pdf" target="_blank">Cello, contrabas</a>
                 </li>
                 <li>
                     <a href="/2025-10-25/NMA_04_11_Band_06_04_KV_385_scan.pdf" target="_blank">
@@ -94,8 +94,8 @@
                     <td>fluit 2</td>
                 </tr>
                 <tr>
-                    <td>Mirella</td>
-                    <td>Brakkee-Overbeek</td>
+                    <td>Ingeborg</td>
+                    <td>de Lange</td>
                     <td>hobo 1</td>
                 </tr>
                 <tr>
