@@ -63,6 +63,12 @@
                 Toyama spelen ieder een deel. <a href="/2026-01-24/Moz_2026-01-24.php" target="_blank">Meer info &
                     partijen vind je hier</a>.
             </li>
+            <li>
+                <b>28 februari</b> in de
+                <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Symfonie nr. 40 in g klein KV 550 voor 1 fluit,
+                2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns en strijkers. <a href="/2026-02-28/Moz_2026-02-28.php" target="_blank">Meer info &
+                    partijen vind je binnenkort hier</a>.
+            </li>
         </ul>
         <p>Aan de programma's voor de volgende afleveringen in 2026 wordt nog gewerkt. Waarschijnlijk gaan er dan naast
             symfonieën ook weer (solo)concerten van Mozart.</p>
