@@ -35,7 +35,7 @@
             <li>
                 <p><b>25 oktober</b> in de
                     <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: de 'Haffner' symfonie nr. 35 in D KV 385
-                    voor 2 fluiten, 2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns, 2 trompetten, pauken en strijkers. De bezetting is bijna compleet. We hebben nu 30 mensen kunnen plaatsen, een mengeling van goede amateurs en professionals. Er is nog plaats voor een trompet, een 2e viool en een altviool.
+                    voor 2 fluiten, 2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns, 2 trompetten, pauken en strijkers. De bezetting is bijna compleet. We hebben nu 30 mensen kunnen plaatsen, een mengeling van goede amateurs en professionals. Er is nog plaats voor een 2e viool en een altviool.
                 </p>
                 <button class="toggle-knop" onclick="toonVerbergTekst('okt2025')">Lees verder</button>
                 <div id="okt2025" class="verborgen-tekst">
