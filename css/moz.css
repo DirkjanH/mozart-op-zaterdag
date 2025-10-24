@@ -216,8 +216,8 @@ div#main {
 }
 
 .toggle-knop {
-  padding: 10px 15px;
-  background-color: #007bff;
+  padding: 8px 10px;
+  background-color: #ff4800;
   color: white;
   border: none;
   cursor: pointer;
