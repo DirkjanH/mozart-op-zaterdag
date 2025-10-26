@@ -70,7 +70,7 @@
                     </a>
                 </li>
             </ul>
-            <p>NB. <b>Strijkers, neem SVP de streken uit de betekende partituur over in je eigen partij.</b></p>
+            <p class="onzichtbaar">NB. <b>Strijkers, neem SVP de streken uit de betekende partituur over in je eigen partij.</b></p>
         </div>
         <h2>Bezetting</h2>
         <p>Er zijn nu 25 deelnemers. Er is nog plaats voor een 1e fagot en een contrabas. Een paar extra violen kunnen eventueel ook nog geplaatst worden. </p>
