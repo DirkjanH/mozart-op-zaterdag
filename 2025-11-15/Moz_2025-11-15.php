@@ -74,7 +74,153 @@
         </div>
         <h2>Bezetting</h2>
         <p>Er zijn nu 26 deelnemers. Er is nog plaats voor een contrabas en een 1e fagot. Een paar extra violen kunnen eventueel ook nog geplaatst worden. </p>
-        <p>Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
+        <p class="onzichtbaar">Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
+        <table class="w3-table w3-striped w3-bordered" id="deelnemers">
+            <thead>
+                <tr>
+                    <th>voornaam</th>
+                    <th>achternaam</th>
+                    <th>instrument</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Yolande </td>
+                    <td>Krooshof </td>
+                    <td>fluit</td>
+                </tr>
+                <tr>
+                    <td>Erik</td>
+                    <td>van Kassel </td>
+                    <td>hobo 1</td>
+                </tr>
+                <tr>
+                    <td>Rineke</td>
+                    <td>Boerwinkel</td>
+                    <td>hobo 2</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><span class="nadruk">vacature</span></td>
+                    <td>fagot 1</td>
+                </tr>
+                <tr>
+                    <td>Dirk</td>
+                    <td>de Vreede</td>
+                    <td>fagot 2</td>
+                </tr>
+                <tr>
+                    <td>Richard</td>
+                    <td>van Hoorn</td>
+                    <td>hoorn 1</td>
+                </tr>
+                <tr>
+                    <td>Ger</td>
+                    <td>Otten</td>
+                    <td>hoorn 2</td>
+                </tr>
+                <tr>
+                    <td>Carla</td>
+                    <td>Westhof</td>
+                    <td>viool 1 (concertmeester)</td>
+                </tr>
+                <tr>
+                    <td>Frank</td>
+                    <td>van der Drift</td>
+                    <td>viool 1</td>
+                </tr>
+                <tr>
+                    <td>Corinne</td>
+                    <td>Britzel</td>
+                    <td>viool 1</td>
+                </tr>
+                <tr>
+                    <td>Vera</td>
+                    <td>Heins</td>
+                    <td>viool 1</td>
+                </tr>
+                <tr>
+                    <td>Ruben </td>
+                    <td>Faas</td>
+                    <td>viool 1</td>
+                </tr>
+                <tr>
+                    <td>Adriaan</td>
+                    <td>Mol</td>
+                    <td>viool 2</td>
+                </tr>
+                <tr>
+                    <td>Erika</td>
+                    <td>Mathot</td>
+                    <td>viool 2</td>
+                </tr>
+                <tr>
+                    <td>Daniela </td>
+                    <td>Roeland</td>
+                    <td>viool 2</td>
+                </tr>
+                <tr>
+                    <td>Saskia</td>
+                    <td>Wieberdink</td>
+                    <td>viool 2</td>
+                </tr>
+                <tr>
+                    <td>Peter</td>
+                    <td>Klusener</td>
+                    <td>viool 2</td>
+                </tr>
+                <tr>
+                    <td>Mirjam</td>
+                    <td>van den Berg</td>
+                    <td>altviool</td>
+                </tr>
+                <tr>
+                    <td>Laetitia </td>
+                    <td>IngenHousz</td>
+                    <td>altviool (aanvoerder)</td>
+                </tr>
+                <tr>
+                    <td>Maaike</td>
+                    <td>Gerlsma</td>
+                    <td>altviool</td>
+                </tr>
+                <tr>
+                    <td>Eline</td>
+                    <td>Snoek</td>
+                    <td>altviool</td>
+                </tr>
+                <tr>
+                    <td>Meike</td>
+                    <td>Jongejan</td>
+                    <td>cello</td>
+                </tr>
+                <tr>
+                    <td>Robin</td>
+                    <td>Gerretsen</td>
+                    <td>cello</td>
+                </tr>
+                <tr>
+                    <td>Harm</td>
+                    <td>van Wijnen</td>
+                    <td>cello</td>
+                </tr>
+                <tr>
+                    <td>Reine Marie</td>
+                    <td>Verhagen</td>
+                    <td>cello</td>
+                </tr>
+                <tr>
+                    <td>Frederik</td>
+                    <td>Advokaat</td>
+                    <td>contrabas</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><span class="nadruk">vacature</span></td>
+                    <td>contrabas</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </body>
 
