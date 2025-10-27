@@ -161,8 +161,8 @@
                 </tr>
                 <tr>
                     <td>Saskia</td>
-                    <td>Wieberdink (aanvoerder)</td>
-                    <td>viool 2</td>
+                    <td>Wieberdink</td>
+                    <td>viool 2 (aanvoerder)</td>
                 </tr>
                 <tr>
                     <td>Peter</td>
@@ -196,8 +196,8 @@
                 </tr>
                 <tr>
                     <td>Robin</td>
-                    <td>Gerretsen (aanvoerder)</td>
-                    <td>cello</td>
+                    <td>Gerretsen</td>
+                    <td>cello (aanvoerder)</td>
                 </tr>
                 <tr>
                     <td>Harm</td>
