@@ -161,7 +161,7 @@
                 </tr>
                 <tr>
                     <td>Saskia</td>
-                    <td>Wieberdink</td>
+                    <td>Wieberdink (aanvoerder)</td>
                     <td>viool 2</td>
                 </tr>
                 <tr>
@@ -196,7 +196,7 @@
                 </tr>
                 <tr>
                     <td>Robin</td>
-                    <td>Gerretsen</td>
+                    <td>Gerretsen (aanvoerder)</td>
                     <td>cello</td>
                 </tr>
                 <tr>
