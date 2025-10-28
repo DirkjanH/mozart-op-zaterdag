@@ -29,7 +29,7 @@
 
         <p class="onzichtbaar" style="clear:both;">De partijen zijn binnenkort beschikbaar</p>
         <div style="clear: both;">
-            <h4>Partijen (nog niet betekend)</h4>
+            <h4>Partijen</h4>
             <ul style="column-count: 3;">
                 <li>
                     <a href="/2025-11-15/Piano_Concerto_17_in_G_Major_K453_-_Flute.pdf" target="_blank">Dwarsfluit</a>
@@ -53,7 +53,7 @@
                     <a href="/2025-11-15/Piano Concerto 17 in G Major K453 - Violin 1 bet.pdf" target="_blank">Viool 1 (betekend)</a>
                 </li>
                 <li>
-                    <a href="/2025-11-15/Piano_Concerto_17_in_G_Major_K453_-_Violin_2.pdf" target="_blank">Viool 2</a>
+                    <a href="/2025-11-15/Piano Concerto 17 in G Major K453 - Violin 2 bet.pdf" target="_blank">Viool 2 (betekend)</a>
                 </li>
                 <li>
                     <a href="/2025-11-15/Piano_Concerto_17_in_G_Major_K453_-_Viola.pdf" target="_blank">Altviool</a>
@@ -66,7 +66,7 @@
                 </li>
                 <li>
                     <a href="/2025-11-15/Mozart-NMA_KV_453.pdf" target="_blank">
-                        <b>nog niet betekende partituur</b>
+                        <b>Partituur</b>
                     </a>
                 </li>
             </ul>
