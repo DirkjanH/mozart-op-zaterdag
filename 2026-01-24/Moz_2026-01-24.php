@@ -91,7 +91,7 @@
             </p>
         </div>
         <h2>Bezetting</h2>
-        <p>Er zijn nu 28 deelnemers. Er is nog plaats voor een contrabas.</p>
+        <p>Er zijn nu 17 deelnemers. De blazers zijn compleet, maar er is nog plaats voor strijkers in alle groepen.</p>
         <p class="onzichtbaar">Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
         <table class="w3-table w3-striped w3-bordered" id="deelnemers">
             <thead>
