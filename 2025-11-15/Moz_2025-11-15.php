@@ -59,10 +59,10 @@
                     <a href="/2025-11-15/Piano_Concerto_17_in_G_Major_K453_-_Viola bet.pdf" target="_blank">Altviool (betekend)</a>
                 </li>
                 <li>
-                    <a href="/2025-11-15/Piano_Concerto_17_in_G_Major_K453_-_Cello.pdf" target="_blank">Cello</a>
+                    <a href="/2025-11-15/Mozart pc 17 cello (adagio los).pdf" target="_blank">Cello (betekend)</a>
                 </li>
                 <li>
-                    <a href="/2025-11-15/Piano_Concerto_17_in_G_Major_K453_-_Bass.pdf" target="_blank">Contrabas</a>
+                    <a href="/2025-11-15/Piano_Concerto_17_in_G_Major_K453_-_Bass.pdf" target="_blank">Contrabas (neem de betekening van de cello even over)</a>
                 </li>
                 <li>
                     <a href="/2025-11-15/Mozart-NMA_KV_453.pdf" target="_blank">
@@ -145,6 +145,11 @@
                     <td>viool 1</td>
                 </tr>
                 <tr>
+                    <td>Janne</td>
+                    <td>den Blaauwen</td>
+                    <td>viool 1</td>
+                </tr>
+                <tr>
                     <td>Adriaan</td>
                     <td>Mol</td>
                     <td>viool 2</td>
@@ -167,6 +172,11 @@
                 <tr>
                     <td>Peter</td>
                     <td>Klusener</td>
+                    <td>viool 2</td>
+                </tr>
+                <tr>
+                    <td>Marijke</td>
+                    <td>Huijgen</td>	
                     <td>viool 2</td>
                 </tr>
                 <tr>
