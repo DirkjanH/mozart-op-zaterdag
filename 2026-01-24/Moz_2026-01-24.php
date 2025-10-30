@@ -90,6 +90,105 @@
                     Strijkers, neem SVP de streken uit de betekende partituur over in je eigen partij.
             </p>
         </div>
+        <h2>Bezetting</h2>
+        <p>Er zijn nu 28 deelnemers. Er is nog plaats voor een contrabas.</p>
+        <p class="onzichtbaar">Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
+        <table class="w3-table w3-striped w3-bordered" id="deelnemers">
+            <thead>
+                <tr>
+                    <th>voornaam</th>
+                    <th>achternaam</th>
+                    <th>instrument</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Laurie</td>
+                    <td>Boltjes</td>
+                    <td>fluit</td>
+                </tr>
+                <tr>
+                    <td>Rosaline</td>
+                    <td>Mentink</td>
+                    <td>klarinet 1</td>
+                </tr>
+                <tr>
+                    <td>Ella</td>
+                    <td>Broekstra</td>
+                    <td>klarinet 2</td>
+                </tr>
+                <tr>
+                    <td>Boukje</td>
+                    <td>Jonkheer</td>
+                    <td>fagot 1</td>
+                </tr>
+                <tr>
+                    <td>Vera</td>
+                    <td>Dalm</td>
+                    <td>fagot 2</td>
+                </tr>
+                <tr>
+                    <td>Richard</td>
+                    <td>van Hoorn</td>
+                    <td>hoorn 1</td>
+                </tr>
+                <tr>
+                    <td>Piet </td>
+                    <td>van den Heuvel</td>
+                    <td>hoorn 2</td>
+                </tr>
+                <tr>
+                    <td>Carla</td>
+                    <td>Westhof</td>
+                    <td>viool 1 (concertmeester)</td>
+                </tr>
+                <tr>
+                    <td>Harriet</td>
+                    <td>van Seventer</td>
+                    <td>viool 1</td>
+                </tr>
+                <tr>
+                    <td>Tonnie</td>
+                    <td>Mols</td>
+                    <td>viool 2</td>
+                </tr>
+                <tr>
+                    <td>Adriaan</td>
+                    <td>Mol</td>
+                    <td>viool 2</td>
+                </tr>
+                <tr>
+                    <td>Mirjam</td>
+                    <td>van den Berg</td>
+                    <td>viool 2</td>
+                </tr>
+                <tr>
+                    <td>Maria </td>
+                    <td>Voorhout</td>
+                    <td>viool 2</td>
+                </tr>
+                <tr>
+                    <td>Eline</td>
+                    <td>Snoek</td>
+                    <td>altviool</td>
+                </tr>
+                <tr>
+                    <td>Marijke</td>
+                    <td>Huijgen</td>
+                    <td>altviool</td>
+                </tr>
+                <tr>
+                    <td>Anke</td>
+                    <td>Meester</td>
+                    <td>cello</td>
+                </tr>
+                <tr>
+                    <td>Frederik</td>
+                    <td>Advokaat</td>
+                    <td>contrabas</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </body>
 
