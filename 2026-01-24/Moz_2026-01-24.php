@@ -23,17 +23,17 @@
 
         <h4>De pianosolisten</h4>
         <div><img src="drie solisten.jpg" alt="De drie pianosolisten" class="w3-image" style="width: 100%;"><br><span class="w3-small"><em>De drie pianosolisten. Van links naar rechts: Brit van Manen, Yumi Toyama, Annette Middelbeek</em></span></div>
-        <div class="w3-flex" style="flex-direction:row; gap:8px; flex-wrap:wrap;">
-            <div style="flex: 0 0 200px; width: 300px;">
+        <div class="w3-flex" style="flex-flow:row wrap; gap:8px;">
+            <div style="width: 200px;">
                 <h5>Annette Middelbeek</h5>
                 <p>Annette Middelbeek begon al vroeg met pianospelen. Haar moeder gaf haar de eerste lessen die de aanzet vormden tot een professionele opleiding. Achtereenvolgens studeerde Annette in Utrecht, Parijs, Amsterdam en Londen bij respectievelijk Ria Groot, France Clidat, Willem Brons en John Bingham. In Parijs won zij in een concours een eerste prijs met maar liefst twee onderscheidingen. In diezelfde tijd voltooide zij aan de Universiteit van Utrecht een studie Muziekwetenschappen. Annette gaf vele soloconcerten en maakte diverse radio- en CD-opnames, waaronder de complete pianowerken van Leo Michielsen en Arthur Honegger. Voorts speelt Annette kamermuziek en treedt zij op als solist met orkest.</p>
             </div>
-            <div style="flex: 0 0 200px; width: 300px;">
+            <div style="width: 200px;">
                 <h5>Brit van Manen</h5>
                 <p>Brit sloot hoofdvak piano af bij Herman Uhlhorn aan het Utrechts Conservatorium. Daar behaalde zij ook de graad ensembleleiding. Bij Willem Brons perfectioneert zij haar pianospel en treedt met regelmaat op tijdens gezamenlijke projecten van het Scarbo pianistencollectief. Onlangs speelde zij met Arthur Bouma, een collega uit het pianistencollectief, live op Concertzender enkele préludes van Debussy als aankondiging van ons Debussy project op 15 juni a.s. in de vioolkist in Hilversum.
                     Ook is zij als solist en/of begeleider van (kinder-) koren en kamermuziek te horen op lokale podia in Apeldoorn, Soest, Almere en Amersfoort. Zij geeft lessen als docent piano en bereidt studenten voor op het toelatingsexamen voor het Conservatorium. Aan het Conservatorium van Artez Zwolle behaalde zij het diploma docent muziek en heeft een eigen bedrijf in muziekeducatie. Zij geeft lessen als docent muziek in het primair en voortgezet onderwijs en traint groepsleerkrachten om het vak muziek binnen het basisonderwijs vorm en inhoud te kunnen geven.</p>
             </div>
-            <div style="flex: 0 0 200px; width: 300px;">
+            <div style="width: 200px;">
                 <h5>Yumi Toyama</h5>
                 <p>Yumi Toyama, geboren in Japan, begon op 3-jarige leeftijd piano spelen. Ze heeft haar Bachelor of Music gehaald aan het Peabody Conservatory in Baltimore (VS) en haar Master Degree aan de Chopin Academy of Music in Warschau (Polen), waar ze na haar studie als pianiste werkte. Ze won diverse prijzen op Internationale concoursen, o.a. de Chopin-Prijs op Radziwił in Polen. Yumi woont al lang in Nederland en heeft meerdere jaren als pianiste bij The International Holland Music Sessions (o.a. met H. Krebbers) gewerkt. Zij speelt als solopianiste en in kamermuziekverband, daarnaast werkt ze als docente. Diverse leerlingen van haar hebben concoursen gewonnen (zoals het Prinses Christina Concours).</p>
             </div>
