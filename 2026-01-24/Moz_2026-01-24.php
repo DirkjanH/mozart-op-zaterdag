@@ -35,53 +35,53 @@
             <p>Yumi Toyama, geboren in Japan, begon op 3-jarige leeftijd piano spelen. Ze heeft haar Bachelor of Music gehaald aan het Peabody Conservatory in Baltimore (VS) en haar Master Degree aan de Chopin Academy of Music in Warschau (Polen), waar ze na haar studie als pianiste werkte. Ze won diverse prijzen op Internationale concoursen, o.a. de Chopin-Prijs op Radziwił in Polen. Yumi woont al lang in Nederland en heeft meerdere jaren als pianiste bij The International Holland Music Sessions (o.a. met H. Krebbers) gewerkt. Zij speelt als solopianiste en in kamermuziekverband, daarnaast werkt ze als docente. Diverse leerlingen van haar hebben concoursen gewonnen (zoals het Prinses Christina Concours).</p>
         </div>
 
-        <p style="clear:both;">De partijen zijn binnenkort beschikbaar</p>
-        <div class="onzichtbaar" style="clear: both;">
+        <p class="onzichtbaar">De partijen zijn binnenkort beschikbaar</p>
+        <div class="" style="clear: both;">
             <h4>Partijen (nog niet betekend)</h4>
             <ul style="column-count: 3;">
                 <li>
-                    <a href="/2025-09-27/Mozart_Concertante_-_Oboe_1.pdf" target="_blank">Hobo 1</a>
+                    <a href="/2026-01-24/Piano_Concerto_23_in_A_Major_K488_-_Flute.pdf" target="_blank">Flute</a>
                 </li>
                 <li>
-                    <a href="/2025-09-27/Mozart_Concertante_-_Oboe_2.pdf" target="_blank">Hobo 2</a>
+                    <a href="/2026-01-24/Piano_Concerto_23_in_A_Major_K488_-_Clarinet_in_A_1.pdf" target="_blank">Clarinet 1</a>
                 </li>
                 <li>
-                    <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_Eb.pdf" target="_blank">Hoorn 1 in Eb</a>
+                    <a href="/2026-01-24/Piano_Concerto_23_in_A_Major_K488_-_Clarinet_in_A_2.pdf" target="_blank">Clarinet 2</a>
                 </li>
                 <li>
-                    <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_Eb.pdf" target="_blank">Hoorn 2 in Eb</a>
+                    <a href="/2026-01-24/Piano_Concerto_23_in_A_Major_K488_-_Bassoon_1.pdf" target="_blank">Fagot 1</a>
                 </li>
                 <li>
-                    <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_F.pdf" target="_blank">Hoorn 1 in F</a>
+                    <a href="/2026-01-24/Piano_Concerto_23_in_A_Major_K488_-_Bassoon_2.pdf" target="_blank">Fagot 2</a>
                 </li>
                 <li>
-                    <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_F.pdf" target="_blank">Hoorn 2 in F</a>
+                    <a href="/2026-01-24/Piano_Concerto_23_in_A_Major_K488_-_Horn_in_A_1.pdf" target="_blank">Hoorn 1 in A</a>
                 </li>
                 <li>
-                    <a href="/2025-09-27/Mozart_Concertante_-_Violin_1.pdf" target="_blank">Viool 1</a>
+                    <a href="/2026-01-24/Piano_Concerto_23_in_A_Major_K488_-_Horn_in_A_2.pdf" target="_blank">Hoorn 2 in A</a>
                 </li>
                 <li>
-                    <a href="/2025-09-27/Mozart_Concertante_-_Violin_2.pdf" target="_blank">Viool 2</a>
+                    <a href="/2026-01-24/Piano_Concerto_23_in_A_Major_K488_-_Violin_1.pdf" target="_blank">Viool 1</a>
                 </li>
                 <li>
-                    <a href="/2025-09-27/Mozart_Concertante_-_Viola_1.pdf" target="_blank">Altviool 1</a>
+                    <a href="/2026-01-24/Piano_Concerto_23_in_A_Major_K488_-_Violin_2.pdf" target="_blank">Viool 2</a>
                 </li>
                 <li>
-                    <a href="/2025-09-27/Mozart_Concertante_-_Viola_2.pdf" target="_blank">Altviool 2</a>
+                    <a href="/2026-01-24/Piano_Concerto_23_in_A_Major_K488_-_Viola.pdf" target="_blank">Altviool</a>
+                </li>
+               <li>
+                    <a href="/2026-01-24/Piano_Concerto_23_in_A_Major_K488_-_Cello.pdf" target="_blank">Cello</a>
                 </li>
                 <li>
-                    <a href="/2025-09-27/Mozart_Concertante_-_Cello.pdf" target="_blank">Cello</a>
+                    <a href="/2026-01-24/Piano_Concerto_23_in_A_Major_K488_-_Bass.pdf" target="_blank">Contrabas</a>
                 </li>
                 <li>
-                    <a href="/2025-09-27/Mozart_Concertante_-_Double_Bass.pdf" target="_blank">Contrabas, fagot</a>
-                </li>
-                <li>
-                    <a href="/2025-09-27/Mozart_Concertante_-_partituur_NMA.pdf" target="_blank">
-                        <b>nog niet betekende partituur</b>
+                    <a href="/2026-01-24/Mozart - Pianoconcert nr. 23 in A KV 488 - Score.pdf" target="_blank">
+                        <b>Partituur</b>
                     </a>
                 </li>
             </ul>
-            <p>
+            <p class="onzichtbaar">
                 NB.
                 <b>
                     Strijkers, neem SVP de streken uit de betekende partituur over in je eigen partij.
