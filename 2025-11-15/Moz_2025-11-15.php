@@ -18,7 +18,7 @@
         <p>
             De zesde aflevering van
             <i>Mozart op Zaterdag</i>
-            vindt plaats op zaterdagochtend 15 november We werken dan aan Mozarts Pianoconcert nr. 17 in G KV 453. Het orkest bestaat uit een fluit, twee hobo's, twee fagotten, hoorns en strijkers. Het pianoconcert bestaat uit drie delen, een Allegro, een Adagio en een Allegro assai, en duurt ongeveer 30 minuten. Solist is de pianist Hans-Erik Dijkstra.
+            vindt plaats op zaterdagochtend 15 november We werken dan aan Mozarts Pianoconcert nr. 17 in G KV 453. Het orkest bestaat uit een fluit, twee hobo's, twee fagotten, hoorns en strijkers. Het pianoconcert bestaat uit drie delen, een Allegro, een Adagio en een Allegretto, en duurt ongeveer 30 minuten. Solist is de pianist Hans-Erik Dijkstra.
         </p>
         <p><img src="Hans-Erik_Dijkstra.jpg" alt="Hans-Erik Dijkstra"
                 class="w3-image w3-left w3-margin-right w3-margin-bottom geenlijn" style="max-width: 400px;">Hans-Erik Dijkstra studeerde piano en compositie aan het Twents Conservatorium (Artez). In 1991 studeerde hij Cum Laude af. Vervolgens
@@ -73,7 +73,7 @@
             <p class="onzichtbaar">NB. <b>Strijkers, neem SVP de streken uit de betekende partituur over in je eigen partij.</b></p>
         </div>
         <h2>Bezetting</h2>
-        <p>Er zijn nu 25 deelnemers. Er is nog plaats voor een 1e fagot en een contrabas. Een paar extra violen kunnen eventueel ook nog geplaatst worden. </p>
+        <p>Er zijn nu 28 deelnemers. Er is nog plaats voor een contrabas.</p>
         <p class="onzichtbaar">Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
         <table class="w3-table w3-striped w3-bordered" id="deelnemers">
             <thead>
