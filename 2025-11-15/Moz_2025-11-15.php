@@ -1,7 +1,7 @@
 <?php require_once '../includes/inloggen.php'; ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 
 <head>
     <meta charset="UTF-8">
@@ -62,7 +62,7 @@
                     <a href="/2025-11-15/Mozart pc 17 cello (adagio los).pdf" target="_blank">Cello (betekend)</a>
                 </li>
                 <li>
-                    <a href="/2025-11-15/Piano_Concerto_17_in_G_Major_K453_-_Bass.pdf" target="_blank">Contrabas (neem de betekening van de cello even over)</a>
+                    <a href="/2025-11-15/Piano_Concerto_17_in_G_Major_K453_-_Bass.pdf" target="_blank">Contrabas<br>(neem de betekening van de cello even over)</a>
                 </li>
                 <li>
                     <a href="/2025-11-15/Mozart-NMA_KV_453.pdf" target="_blank">
