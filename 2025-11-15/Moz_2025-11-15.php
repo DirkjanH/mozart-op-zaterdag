@@ -100,8 +100,8 @@
                     <td>hobo 2</td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td><span class="nadruk">vacature</span></td>
+                    <td>Maartje</td>
+                    <td>van der Kluit</td>
                     <td>fagot 1</td>
                 </tr>
                 <tr>
