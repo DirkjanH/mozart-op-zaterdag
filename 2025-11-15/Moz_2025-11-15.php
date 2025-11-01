@@ -225,8 +225,8 @@
                     <td>contrabas</td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td><span class="nadruk">vacature</span></td>
+                    <td>Jurgen</td>
+                    <td>van der Ent</td>
                     <td>contrabas</td>
                 </tr>
             </tbody>
