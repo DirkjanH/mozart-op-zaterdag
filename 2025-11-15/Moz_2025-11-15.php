@@ -73,7 +73,7 @@
             <p class="onzichtbaar">NB. <b>Strijkers, neem SVP de streken uit de betekende partituur over in je eigen partij.</b></p>
         </div>
         <h2>Bezetting</h2>
-        <p>Er zijn nu 28 deelnemers. Er is nog plaats voor een contrabas.</p>
+        <p>Er zijn nu 29 deelnemers. De bezetting is compleet.</p>
         <p class="onzichtbaar">Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
         <table class="w3-table w3-striped w3-bordered" id="deelnemers">
             <thead>
