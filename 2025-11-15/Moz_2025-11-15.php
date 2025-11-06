@@ -18,7 +18,7 @@
         <p>
             De zesde aflevering van
             <i>Mozart op Zaterdag</i>
-            vindt plaats op zaterdagochtend 15 november We werken dan aan Mozarts Pianoconcert nr. 17 in G KV 453. Het orkest bestaat uit een fluit, twee hobo's, twee fagotten, hoorns en strijkers. Het pianoconcert bestaat uit drie delen, een Allegro, een Adagio en een Allegretto, en duurt ongeveer 30 minuten. Solist is de pianist Hans-Erik Dijkstra. De tempi zijn:
+            vindt plaats op zaterdagochtend 15 november We werken dan aan Mozarts Pianoconcert nr. 17 in G KV 453. Het orkest bestaat uit een fluit, twee hobo's, twee fagotten, hoorns en strijkers. Het pianoconcert bestaat uit drie delen, een Allegro, een Adagio en een Allegretto dat overgaat in een Presto, en duurt ongeveer 30 minuten. Solist is de pianist Hans-Erik Dijkstra. De tempi zijn:
         </p>
         <ol>
             <li>Allegro: halve noot = 69</li>
