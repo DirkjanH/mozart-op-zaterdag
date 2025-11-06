@@ -24,7 +24,7 @@
             <li>Allegro: halve noot = 69</li>
             <li>Andante: kwart = 52</li>
             <li>Allegretto: halve noot = 90<br>
-            Finale- resto (maat 171): halve noot = 132 of hele noot = 66
+            Finale - presto (maat 171): halve noot = 132 of hele noot = 66
             </li>
         </ol> 
             <li>
