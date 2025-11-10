@@ -140,8 +140,8 @@
                     <td>viool 1</td>
                 </tr>
                 <tr>
-                    <td>Corinne</td>
-                    <td>Britzel</td>
+                    <td>Bea</td>
+                    <td>Selman</td>
                     <td>viool 1</td>
                 </tr>
                 <tr>
