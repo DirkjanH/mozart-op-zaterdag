@@ -28,7 +28,6 @@
             <a href="https://www.horringa.net/index.php" target="_blank">Dirkjan Horringa</a>. Er hebben inmiddels <a
                 href="/vorige_afleveringen.php" target="_blank">vanaf februari 2025 zes afleveringen</a> plaatsgevonden. Alle keren waren zowel qua muzikaal niveau als qua sfeer een groot succes. De deelnemers waren enthousiast en de muziek klonk prachtig. We hebben veel positieve reacties gekregen van het publiek.
         </p>
-        <h4>Tijden</h4>
         <p>We werken als volgt: binnenkomen om 9:45, repeteren van 10:00 tot 12:30 met een korte pauze. Om 13:00 sluiten
             we af met een concertje van 30-45 minuten.
         </p>
