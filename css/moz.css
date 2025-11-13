@@ -246,3 +246,8 @@ div#main {
     font-size: 100%;
   }
 }
+li.aflevering {
+  background-color: beige;
+  margin-bottom: 10px;
+  list-style-type: none; 
+}

@@ -21,43 +21,43 @@
         <div class="onzichtbaar" style="clear: both;">
             <h4>Partijen (nog niet betekend)</h4>
             <ul style="column-count: 3;">
-                <li>
+                <li class="aflevering">
                     <a href="/2025-09-27/Mozart_Concertante_-_Oboe_1.pdf" target="_blank">Hobo 1</a>
                 </li>
-                <li>
+                <li class="aflevering">
                     <a href="/2025-09-27/Mozart_Concertante_-_Oboe_2.pdf" target="_blank">Hobo 2</a>
                 </li>
-                <li>
+                <li class="aflevering">
                     <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_Eb.pdf" target="_blank">Hoorn 1 in Eb</a>
                 </li>
-                <li>
+                <li class="aflevering">
                     <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_Eb.pdf" target="_blank">Hoorn 2 in Eb</a>
                 </li>
-                <li>
+                <li class="aflevering">
                     <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_F.pdf" target="_blank">Hoorn 1 in F</a>
                 </li>
-                <li>
+                <li class="aflevering">
                     <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_F.pdf" target="_blank">Hoorn 2 in F</a>
                 </li>
-                <li>
+                <li class="aflevering">
                     <a href="/2025-09-27/Mozart_Concertante_-_Violin_1.pdf" target="_blank">Viool 1</a>
                 </li>
-                <li>
+                <li class="aflevering">
                     <a href="/2025-09-27/Mozart_Concertante_-_Violin_2.pdf" target="_blank">Viool 2</a>
                 </li>
-                <li>
+                <li class="aflevering">
                     <a href="/2025-09-27/Mozart_Concertante_-_Viola_1.pdf" target="_blank">Altviool 1</a>
                 </li>
-                <li>
+                <li class="aflevering">
                     <a href="/2025-09-27/Mozart_Concertante_-_Viola_2.pdf" target="_blank">Altviool 2</a>
                 </li>
-                <li>
+                <li class="aflevering">
                     <a href="/2025-09-27/Mozart_Concertante_-_Cello.pdf" target="_blank">Cello</a>
                 </li>
-                <li>
+                <li class="aflevering">
                     <a href="/2025-09-27/Mozart_Concertante_-_Double_Bass.pdf" target="_blank">Contrabas, fagot</a>
                 </li>
-                <li>
+                <li class="aflevering">
                     <a href="/2025-09-27/Mozart_Concertante_-_partituur_NMA.pdf" target="_blank">
                         <b>nog niet betekende partituur</b>
                     </a>
