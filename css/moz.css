@@ -248,6 +248,8 @@ div#main {
 }
 ul.programma li {
   background-color: beige;
+  padding: 10px;
+  margin-left: 0px;
   margin-bottom: 10px;
   list-style-type: none; 
 }
