@@ -26,9 +26,11 @@
             zaterdagochtend om een symfonie en/of een (solo)concert van Mozart te repeteren en meteen uit te voeren.
             Dirigent en initiatiefnemer is
             <a href="https://www.horringa.net/index.php" target="_blank">Dirkjan Horringa</a>. Er hebben inmiddels <a
-                href="/vorige_afleveringen.php" target="_blank">vanaf februari 2025 vier afleveringen</a> plaatsgevonden. Alle keren waren zowel qua muzikaal niveau als qua sfeer een groot succes. De
-            deelnemers waren enthousiast en de muziek klonk prachtig. We hebben veel positieve reacties gekregen van het
-            publiek.
+                href="/vorige_afleveringen.php" target="_blank">vanaf februari 2025 zes afleveringen</a> plaatsgevonden. Alle keren waren zowel qua muzikaal niveau als qua sfeer een groot succes. De deelnemers waren enthousiast en de muziek klonk prachtig. We hebben veel positieve reacties gekregen van het publiek.
+        </p>
+        <h4>Tijden</h4>
+        <p>We werken als volgt: binnenkomen om 9:45, repeteren van 10:00 tot 12:30 met een korte pauze. Om 13:00 sluiten
+            we af met een concertje van 30-45 minuten.
         </p>
         <h4 class="clear">Voor de komende afleveringen staan deze stukken op het programma:</h4>
         <ul class="programma">
@@ -105,10 +107,6 @@
             Domplein of in het
             <a href="/stadsklooster.php" target="_blank">Stadsklooster</a> in de wijk Lombok. Er wordt koffie en thee
             geschonken in de zaal.
-        </p>
-        <h4>Tijden</h4>
-        <p>We werken als volgt: binnenkomen om 9:45, repeteren van 10:00 tot 12:30 met een korte pauze. Om 13:00 sluiten
-            we af met een concertje van 30-45 minuten.
         </p>
         <h4>Meld je aan met het formulier</h4>
         <p>We hopen dat je deze geweldige muziek met ons wilt spelen! We formeren een bezetting van serieuze en ervaren
