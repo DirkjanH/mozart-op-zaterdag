@@ -101,7 +101,7 @@
         <p>Heb je belangstelling om eens mee te doen met Mozart op Zaterdag? Het is mogelijk je op te geven voor de
             volgende afleveringen, die steeds plaatsvinden op de vierde zaterdag van de maand. We werken in de
             <a href="/marnixzaal.php" target="_blank">Marnixzaal</a> van de vroegere Utrechtse Muziekschool aan het
-            Domplein of in het <a href="/stadsklooster.php" target="_blank">Stadsklooster</a> in de wijk Lombok. Er wordt koffie 
+            Domplein of in het <a href="/stadsklooster.php" target="_blank">Stadsklooster</a> in de wijk Lombok. Er wordt koffie
             en thee geschonken in de zaal.
         </p>
         <h4>Meld je aan met het formulier</h4>
@@ -109,7 +109,9 @@
             spelers die zich natuurlijk goed voorbereiden. We leveren op tijd (betekende) partijen als PDF's aan.
             <a href="https://forms.gle/49YfM2dSn8AYpzfE8" target="_blank">In dit formulier kun je aangeven of en wanneer
                 je wilt meedoen</a>. Mogelijk zijn er meer inschrijvingen dan plaatsen.
-            <b>Reageer daarom snel!</b> Deelname is gratis; wel worden de deelnemers aan het eind om een vrijwillige
+            <b>Reageer daarom snel!</b> Je krijgt dan ca. 2 maanden voor de speeldatum bericht of je geplaatst bent. Voor sommige instrumenten, zoals cello en blazers, geldt dat er vaak meer gegadigden zijn dan plaatsen. We zullen dan een selectie maken op basis van moment van aanmelden en ervaring.
+        </p>
+        <p> Deelname is gratis; wel worden de deelnemers aan het eind om een vrijwillige
             bijdrage in de kosten van de zaal e.d. gevraagd. T.z.t. hopen we de professionele deelnemers ook wat te
             kunnen betalen.
         </p>
