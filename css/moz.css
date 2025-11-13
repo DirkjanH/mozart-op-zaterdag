@@ -246,7 +246,7 @@ div#main {
     font-size: 100%;
   }
 }
-li.aflevering {
+ul.programma li {
   background-color: beige;
   margin-bottom: 10px;
   list-style-type: none; 
