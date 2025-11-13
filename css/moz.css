@@ -223,6 +223,15 @@ div#main {
   cursor: pointer;
   border-radius: 5px;
 }
+ul.programma {
+  padding-left: 0px;
+}
+ul.programma li {
+  background-color: #fdf6e6;
+  padding: 10px;
+  margin-bottom: 10px;
+  list-style-type: none; 
+}
 
 @media print {
 
@@ -245,13 +254,4 @@ div#main {
   th {
     font-size: 100%;
   }
-}
-ul.programma {
-  padding-left: 0px;
-}
-ul.programma li {
-  background-color: beige;
-  padding: 10px;
-  margin-bottom: 10px;
-  list-style-type: none; 
 }
