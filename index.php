@@ -96,8 +96,6 @@
                 <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Concertarias voor sopraan, bas en orkest (en het duet "Per queste tue manine" KV 540b) voor 2 fluiten, 2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns en strijkers. De solisten zijn nog te bepalen. <a xxxx="/2026-02-28/Moz_2026-02-28.php" target="_blank">Meer info & partijen vind je binnenkort hier</a>.
             </li>
         </ul>
-        <p>Aan de programma's voor de volgende afleveringen in 2026 wordt nog gewerkt. Waarschijnlijk gaan er dan naast
-            symfonieën ook weer (solo)concerten van Mozart.</p>
         <h4>Meespelen?</h4>
         <p>Heb je belangstelling om eens mee te doen met Mozart op Zaterdag? Het is mogelijk je op te geven voor de
             volgende afleveringen, die steeds plaatsvinden op de vierde zaterdag van de maand. In 2026 zijn dat dus 24
