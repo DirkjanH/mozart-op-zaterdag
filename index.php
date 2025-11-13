@@ -109,7 +109,7 @@
             spelers die zich natuurlijk goed voorbereiden. We leveren op tijd (betekende) partijen als PDF's aan.
             <a href="https://forms.gle/49YfM2dSn8AYpzfE8" target="_blank">In dit formulier kun je aangeven of en wanneer
                 je wilt meedoen</a>. Mogelijk zijn er meer inschrijvingen dan plaatsen.
-            <b>Reageer daarom snel!</b> Je krijgt dan ca. 2 maanden voor de speeldatum bericht of je geplaatst bent. Voor sommige instrumenten, zoals cello en blazers, geldt dat er vaak meer gegadigden zijn dan plaatsen. We zullen dan een selectie maken op basis van moment van aanmelden en ervaring.
+            <b>Reageer daarom snel!</b> Je krijgt dan ca. twee maanden voor de speeldatum bericht of je geplaatst bent. Voor sommige instrumenten, zoals cello en blazers, geldt dat er vaak meer gegadigden zijn dan plaatsen. We zullen dan een selectie maken op basis van moment van aanmelden en ervaring. Mocht je niet geplaatst worden, dan kom je automatisch op de reservelijst. Als je wel geplaatst wordt en toch moet afzeggen, dan stellen we het op prijs als je voor een vervanger zorgt. Dat geldt uiteraard niet bij last-minute afzegging wegens ziekte of andere onvoorziene omstandigheden.
         </p>
         <p> Deelname is gratis; wel worden de deelnemers aan het eind om een vrijwillige
             bijdrage in de kosten van de zaal e.d. gevraagd. T.z.t. hopen we de professionele deelnemers ook wat te
