@@ -69,6 +69,33 @@
                 2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns en strijkers. <a href="/2026-02-28/Moz_2026-02-28.php" target="_blank">Meer info &
                     partijen vind je binnenkort hier</a>.
             </li>
+            <li>
+                <b>28 maart</b> in de
+                <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Symfonie nr. 13 in F KV 112 & Hoornconcert nr. 2 in Es KV 417 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. De solist is nog te bepalen. <a xxxx="/2026-02-28/Moz_2026-02-28.php" target="_blank">Meer info & partijen vind je binnenkort hier</a>.
+            </li>
+            <li>
+            <li>
+                <b>25 april</b> in de
+                <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Symfonie nr. 29 in A KV 201 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. <a xxxx="/2026-02-28/Moz_2026-02-28.php" target="_blank">Meer info & partijen vind je binnenkort hier</a>.
+            </li>
+            <li>
+                <b>23 mei</b> in de
+                <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Pianoconcert nr. 24 in c klein KV 491 voor 1 fluit,
+                2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns en strijkers. De solist is nog te bepalen. <a xxxx="/2026-02-28/Moz_2026-02-28.php" target="_blank">Meer info & partijen vind je binnenkort hier</a>.
+            </li>
+            <li>
+                <b>26 september</b> in de
+                <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Concert voor fluit en harp in C KV 417 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. <a xxxx="/2026-02-28/Moz_2026-02-28.php" target="_blank">Meer info & partijen vind je binnenkort hier</a>.
+            </li>
+            <li>
+                <b>24 oktober</b> in de
+                <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: “Parijse” Ouverture in D KV 311a & “Parijse” Symfonie nr. 31 in D KV 297 voor 2 fluiten,
+                2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns, 2 trompetten, pauken en strijkers. <a xxxx="/2026-02-28/Moz_2026-02-28.php" target="_blank">Meer info & partijen vind je binnenkort hier</a>.
+            </li>
+            <li>
+                <b>21 november</b> in de
+                <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Concertarias voor sopraan, bas en orkest (en het duet "Per queste tue manine" KV 540b) voor 2 fluiten, 2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns en strijkers. De solisten zijn nog te bepalen. <a xxxx="/2026-02-28/Moz_2026-02-28.php" target="_blank">Meer info & partijen vind je binnenkort hier</a>.
+            </li>
         </ul>
         <p>Aan de programma's voor de volgende afleveringen in 2026 wordt nog gewerkt. Waarschijnlijk gaan er dan naast
             symfonieën ook weer (solo)concerten van Mozart.</p>
