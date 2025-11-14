@@ -76,7 +76,7 @@
             </li>
             <li>
                 <b>25 april</b> in de
-                <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Symfonie nr. 29 in A KV 201 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. <a xxxx="/2026-02-28/Moz_2026-02-28.php" target="_blank">Meer info & partijen vind je binnenkort hier</a>.
+                <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Symfonie nr. 29 in A KV 201 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. <a href="/2026-04-25/kv201.php" target="_blank">Meer info & partijen vind je hier</a>.
             </li>
             <li>
                 <b>23 mei</b> in de

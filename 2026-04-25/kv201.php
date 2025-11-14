@@ -11,13 +11,11 @@
 <body>
     <div class="w3-content w3-white w3-panel">
         <?php require_once '../navigatie.htm'; ?>
-        <h3>Mozart op Zaterdag op 22 maart 2025:</h3>
+        <h3>Mozart op Zaterdag op 25 april 2026:</h3>
         <h1>Symfonie nr. 29 in A KV 201</h1>
         <h4>Mozarts symfonie nr. 29 in A op zaterdagochtend 22 maart</h4>
         <p>
-            De tweede aflevering van
-            <i>Mozart op Zaterdag</i>
-            zou plaats vinden op zaterdagochtend 22 maart, maar is geannuleerd. Op het programma stond Mozarts 29e symfonie in A KV 201.
+            Op zaterdagochtend 25 april speelt <i>Mozart op Zaterdag</i> Mozarts 29e symfonie in A KV 201.
             <a href="https://open.spotify.com/playlist/6sbwUmreBh4ZAMfUdM5a0z?si=acd83ace818b4d34" target="_blank">Dit is een mooie opname onder leiding van Ádám Fischer</a>
             . Mozart voltooide die symfonie op 6 april 1774 in Salzburg. Deze symfonie van Mozart wordt door verschillende auteurs beschouwd als een hoogtepunt in zijn symfonische werk. Dit komt door de uitwerking van de vorm, vooral van de uitgebreide sonatevorm van de eerste drie delen, die allemaal een expliciet coda hebben. Ook het contrapunt, vooral in het eerste deel, en de expressieve kracht, bijvoorbeeld in de lange doorwerking in het vierde deel, dragen hieraan bij. Deze symfonie en 'onze' kleine g-moll symfonie KV 183 zijn de vroegste symfonieën van Mozart die nog regelmatig op concertprogramma's verschijnen.
         </p>
