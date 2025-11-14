@@ -94,27 +94,20 @@
             </li>
             <li>
                 <b>21 november</b> in de
-                <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Concertarias voor sopraan, bas en orkest (en het duet "Per queste tue manine" KV 540b) voor 2 fluiten, 2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns en strijkers. De solisten zijn nog te bepalen. <a xxxx="/2026-02-28/Moz_2026-02-28.php" target="_blank">Meer info & partijen vind je binnenkort hier</a>.
+                <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: concertaria’s voor sopraan, bas en orkest en het duet <i>Per queste tue manine</i> KV 540b voor 2 fluiten, 2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns en strijkers. De solisten zijn nog te bepalen. <a xxxx="/2026-02-28/Moz_2026-02-28.php" target="_blank">Meer info & partijen vind je binnenkort hier</a>.
             </li>
         </ul>
         <h4>Meespelen?</h4>
         <p>Heb je belangstelling om eens mee te doen met Mozart op Zaterdag? Het is mogelijk je op te geven voor de
-            volgende afleveringen, die steeds plaatsvinden op de vierde zaterdag van de maand. We werken in de
+            komende afleveringen, die steeds plaatsvinden op de vierde zaterdag van de maand. We werken in de
             <a href="/marnixzaal.php" target="_blank">Marnixzaal</a> van de vroegere Utrechtse Muziekschool aan het
-            Domplein of in het <a href="/stadsklooster.php" target="_blank">Stadsklooster</a> in de wijk Lombok. Er wordt koffie
-            en thee geschonken in de zaal.
+            Domplein of soms in het <a href="/stadsklooster.php" target="_blank">Stadsklooster</a> in de wijk Lombok.
         </p>
         <h4>Meld je aan met het formulier</h4>
         <p>We hopen dat je deze geweldige muziek met ons wilt spelen! We formeren een bezetting van serieuze en ervaren
             spelers die zich natuurlijk goed voorbereiden. We leveren op tijd (betekende) partijen als PDF's aan.
             <a href="https://forms.gle/49YfM2dSn8AYpzfE8" target="_blank">In dit formulier kun je aangeven of en wanneer
-                je wilt meedoen</a>. Je krijgt dan ca. twee maanden voor de speeldatum bericht of je geplaatst bent.
-        </p>
-        <p>Voor sommige instrumenten, zoals cello en blazers, geldt dat er vaak meer gegadigden zijn dan plaatsen. We zullen dan een selectie maken op basis van moment van aanmelden en ervaring. Mocht je niet geplaatst worden, dan kom je automatisch op de reservelijst. Als je wel geplaatst wordt en toch moet afzeggen, dan stellen we het op prijs als je voor een vervanger zorgt. Dat geldt uiteraard niet bij last-minute afzegging wegens ziekte of andere onvoorziene omstandigheden.
-        </p>
-        <p> Deelname is gratis; wel worden de deelnemers aan het eind om een vrijwillige
-            bijdrage in de kosten van de zaal e.d. gevraagd. T.z.t. hopen we de professionele deelnemers ook wat te
-            kunnen betalen.
+                je wilt meedoen</a>.Mijn vraag is nu: heb je belangstelling om (weer) mee te doen? 
         </p>
 
     </div>
