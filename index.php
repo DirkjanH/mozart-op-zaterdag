@@ -31,70 +31,38 @@
         <p>We werken als volgt: binnenkomen vanaf 9:15, repeteren van 10:00 tot 12:30 met een korte pauze. Om 13:00 sluiten
             we af met een concertje van 30-45 minuten.
         </p>
-        <h4 class="clear">Voor de komende afleveringen staan deze stukken op het programma:</h4>
+        <h4 class="clear">Voor de komende afleveringen, die allemaal plaatsvinden in de <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>, staan deze stukken op het programma:</h4>
         <ul class="programma">
-            <li class="onzichtbaar">
-                <p><b>25 oktober</b> in de
-                    <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: de 'Haffner' symfonie nr. 35 in D KV 385
-                    voor 2 fluiten, 2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns, 2 trompetten, pauken en strijkers. De bezetting is bijna compleet. We hebben nu 30 mensen kunnen plaatsen, een mengeling van goede amateurs en professionals. Er is nog plaats voor een 2e viool en een altviool.
-                </p>
-                <button class="toggle-knop" onclick="toonVerbergTekst('okt2025')">Lees verder</button>
-                <div id="okt2025" class="verborgen-tekst">
-                    <h4>De Oorsprong van de 'Haffner'</h4>
-                    <p>De symfonie dankt zijn naam aan de familie Haffner, een prominente familie uit Salzburg waar
-                        Mozart bevriend mee was. Oorspronkelijk componeerde Mozart het werk in 1782 als een serenade ter gelegenheid van
-                        de verheffing in de adelstand van Siegmund Haffner. Later bewerkte Mozart de serenade tot een symfonie door onder
-                        andere een mars en twee menuetten te verwijderen en een nieuw openingsdeel toe te voegen, waardoor het de
-                        vorm kreeg die we nu kennen. De 'Haffner' symfonie is een prachtig voorbeeld van Mozarts meesterschap en zijn
-                        vermogen om zowel feestelijke grandeur als diepgaande emotie in zijn muziek te leggen. De
-                        symfonie bestaat uit vier delen, een Allegro con spirito, een Andante, een Menuetto en Trio en een
-                        Presto, en duurt ongeveer 20 minuten.</p>
-                </div>
-            </li>
             <li>
-                <b>15 november</b> in de
-                <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Pianoconcert nr. 17 in G KV 453 voor 1 fluit,
-                2 hobo's, 2 fagotten, 2 hoorns en strijkers. Solist: Hans-Erik Dijkstra (piano). <a
-                    href="/2025-11-15/Moz_2025-11-15.php" target="_blank">Meer info & partijen vind je hier</a>.
-            </li>
-            <li>
-                <b>24 januari</b> in de
-                <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Pianoconcert nr. 23 in A KV 488 voor 1 fluit,
+                <b>24 januari:</b> Pianoconcert nr. 23 in A KV 488 voor 1 fluit,
                 2 klarinetten, 2 fagotten, 2 hoorns en strijkers. De solisten Annette Middelbeek, Brit van Manen en Yumi
-                Toyama spelen ieder een deel. <a href="/2026-01-24/Moz_2026-01-24.php" target="_blank">Meer info &
+                Toyama spelen ieder een deel. Er is nog plaats voor enkele strijkers in alle groepen. <a href="/2026-01-24/Moz_2026-01-24.php" target="_blank">Meer info &
                     partijen vind je hier</a>.
             </li>
             <li>
-                <b>28 februari</b> in de
-                <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Symfonie nr. 40 in g klein KV 550 voor 1 fluit,
+                <b>28 februari:</b> Symfonie nr. 40 in g klein KV 550 voor 1 fluit,
                 2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns en strijkers. <a href="/2026-02-28/Moz_2026-02-28.php" target="_blank">Meer info &
                     partijen vind je binnenkort hier</a>.
             </li>
             <li>
-                <b>28 maart</b> in de
-                <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Symfonie nr. 13 in F KV 112 & Hoornconcert nr. 2 in Es KV 417 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. De solist is nog te bepalen. <a xxxx="/2026-02-28/Moz_2026-02-28.php" target="_blank">Meer info & partijen vind je binnenkort hier</a>.
+                <b>28 maart:</b> Symfonie nr. 13 in F KV 112 & Hoornconcert nr. 2 in Es KV 417 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. De solist is nog te bepalen. <a xxxx="/2026-02-28/Moz_2026-02-28.php" target="_blank">Meer info & partijen vind je binnenkort hier</a>.
             </li>
             <li>
-                <b>25 april</b> in de
-                <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Symfonie nr. 29 in A KV 201 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. <a href="/2026-04-25/kv201.php" target="_blank">Meer info & partijen vind je hier</a>.
+                <b>25 april:</b> Symfonie nr. 29 in A KV 201 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. <a href="/2026-04-25/kv201.php" target="_blank">Meer info & partijen vind je hier</a>.
             </li>
             <li>
-                <b>23 mei</b> in de
-                <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Pianoconcert nr. 24 in c klein KV 491 voor 1 fluit,
+                <b>23 mei:</b> Pianoconcert nr. 24 in c klein KV 491 voor 1 fluit,
                 2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns en strijkers. De solist is nog te bepalen. <a xxxx="/2026-02-28/Moz_2026-02-28.php" target="_blank">Meer info & partijen vind je binnenkort hier</a>.
             </li>
             <li>
-                <b>26 september</b> in de
-                <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: Concert voor fluit en harp in C KV 417 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. <a xxxx="/2026-02-28/Moz_2026-02-28.php" target="_blank">Meer info & partijen vind je binnenkort hier</a>.
+                <b>26 september:</b> Concert voor fluit en harp in C KV 417 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. <a xxxx="/2026-02-28/Moz_2026-02-28.php" target="_blank">Meer info & partijen vind je binnenkort hier</a>.
             </li>
             <li>
-                <b>24 oktober</b> in de
-                <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: “Parijse” Ouverture in D KV 311a & “Parijse” Symfonie nr. 31 in D KV 297 voor 2 fluiten,
+                <b>24 oktober:</b> “Parijse” Ouverture in D KV 311a & “Parijse” Symfonie nr. 31 in D KV 297 voor 2 fluiten,
                 2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns, 2 trompetten, pauken en strijkers. <a xxxx="/2026-02-28/Moz_2026-02-28.php" target="_blank">Meer info & partijen vind je binnenkort hier</a>.
             </li>
             <li>
-                <b>21 november</b> in de
-                <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>: concertaria’s voor sopraan, bas en orkest en het duet <i>Per queste tue manine</i> KV 540b voor 2 fluiten, 2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns en strijkers. De solisten zijn nog te bepalen. <a xxxx="/2026-02-28/Moz_2026-02-28.php" target="_blank">Meer info & partijen vind je binnenkort hier</a>.
+                <b>21 november:</b> concertaria’s voor sopraan, bas en orkest en het duet <i>Per queste tue manine</i> KV 540b voor 2 fluiten, 2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns en strijkers. De solisten zijn nog te bepalen. <a xxxx="/2026-02-28/Moz_2026-02-28.php" target="_blank">Meer info & partijen vind je binnenkort hier</a>.
             </li>
         </ul>
         <h4>Meespelen?</h4>
