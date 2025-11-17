@@ -68,17 +68,17 @@
 
         <div style="clear: both;" class="w3-panel">
             <h4>15 november 2025: Pianoconcert nr. 17 in G KV 453</h4>
-            <img src="/images/2025-11-kv453.jpg" alt="Pianoconcert KV 453 met Hans-Erik Dijkstra" class="w3-image">
             De zesde aflevering van <i>Mozart op Zaterdag</i> vond plaats op zaterdagochtend 15 november. We werkten toen aan Mozarts Pianoconcert nr. 17 in G, KV 453.
             Het orkest bestond uit een fluit, twee hobo’s, twee fagotten, twee hoorns en strijkers. Solist was de pianist Hans-Erik Dijkstra.</p>
             <p>Mozart schreef het concert voor zijn leerlinge Barbara Ployer, die ook de première in 1784 speelde. Het thema van het laatste deel is beroemd omdat Mozarts spreeuw dat kon zingen. Mozart was een groot vogelliefhebber. Hij had een spreeuw als huisdier en schreef dat hij de vogel dit wijsje had geleerd te zingen. Dat was waarschijnlijk geen grapje, want spreeuwen staan bekend om hun vermogen tot vocale imitatie.</p>
-            <img src="/2025-11-15/Hans-Erik_Dijkstra.jpg" alt="Hans-Erik Dijkstra"
-                class="w3-image w3-left w3-margin-right w3-margin-bottom geenlijn" style="max-width: 400px;">
-            Hans-Erik Dijkstra studeerde piano en compositie aan het Twents Conservatorium (Artez). In 1991 studeerde hij Cum Laude af.
-            Vervolgens studeerde hij bij Herman Uhlhorn en Alexander Warenberg aan het Utrechts Conservatorium.
-            Na zijn studie was hij correpetitor aan het Koninklijk Conservatorium te Den Haag.
-            Hij was pianodocent, vaste begeleider van koren en uitvoerend musicus in binnen- en buitenland.
-            Hij componeerde onder andere twee opera’s.
+            <img src="/images/2025-11-kv453.jpg" alt="Pianoconcert KV 453 met Hans-Erik Dijkstra" class="w3-image">
+            <p><img src="/2025-11-15/Hans-Erik_Dijkstra.jpg" alt="Hans-Erik Dijkstra"
+                    class="w3-image w3-left w3-margin-right w3-margin-bottom geenlijn" style="max-width: 400px;">
+                Hans-Erik Dijkstra studeerde piano en compositie aan het Twents Conservatorium (Artez). In 1991 studeerde hij Cum Laude af.
+                Vervolgens studeerde hij bij Herman Uhlhorn en Alexander Warenberg aan het Utrechts Conservatorium.
+                Na zijn studie was hij correpetitor aan het Koninklijk Conservatorium te Den Haag.
+                Hij was pianodocent, vaste begeleider van koren en uitvoerend musicus in binnen- en buitenland.
+                Hij componeerde onder andere twee opera’s.
             </p>
         </div>
     </div>
