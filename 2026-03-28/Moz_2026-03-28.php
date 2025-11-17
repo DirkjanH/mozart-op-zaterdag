@@ -4,17 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mozart op Zaterdag op 28 februari 2026</title>
+    <title>Mozart op Zaterdag op 28 maart 2026</title>
     <link href="/css/moz.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
     <div class="w3-content w3-white w3-panel">
         <?php include_once '../navigatie.htm'; ?>
-        <h3>28 februari 2026:</h3>
-        <h2>Symfonie nr. 40 in g klein KV 550</h2>
+        <h3>28 maart 2026:</h3>
+        <h2>Symfonie nr. 13 in F KV 112 & Hoornconcert nr. 2 in Es KV 417</h2>
         <p>
-            De achtste aflevering van <i>Mozart op Zaterdag</i> vindt plaats op zaterdagochtend 28 februari. We werken dan aan Mozarts Symfonie nr. 40 in g klein KV 550. Het orkest bestaat uit een fluit, twee hobo's, twee klarinetten, twee fagotten, twee hoorns en strijkers. De symfonie bestaat uit vier delen, een Molto Allegro, een Andante, een Menuetto en Trio en een Allegro assai, en duurt ongeveer 27 minuten.
+            De negende aflevering van <i>Mozart op Zaterdag</i> vindt plaats op zaterdagochtend 28 maart. We werken dan aan Mozarts Symfonie nr. 13 in F KV 112 & Hoornconcert nr. 2 in Es KV 417, beide voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. De hoornsolist is nog te bepalen.
         </p>
 
         <p style="clear:both;">De partijen zijn binnenkort beschikbaar</p>
