@@ -43,13 +43,13 @@
             <h4>Partijen (nog niet betekend)</h4>
             <ul style="column-count: 3;">
                 <li>
-                    <a href="/2026-01-24/Piano_Concerto_23_in_A_Major_K488_-_Flute.pdf" target="_blank">Flute</a>
+                    <a href="/2026-01-24/Piano_Concerto_23_in_A_Major_K488_-_Flute.pdf" target="_blank">Fluit</a>
                 </li>
                 <li>
-                    <a href="/2026-01-24/Piano_Concerto_23_in_A_Major_K488_-_Clarinet_in_A_1.pdf" target="_blank">Clarinet 1</a>
+                    <a href="/2026-01-24/Piano_Concerto_23_in_A_Major_K488_-_Clarinet_in_A_1.pdf" target="_blank">Klarinet 1</a>
                 </li>
                 <li>
-                    <a href="/2026-01-24/Piano_Concerto_23_in_A_Major_K488_-_Clarinet_in_A_2.pdf" target="_blank">Clarinet 2</a>
+                    <a href="/2026-01-24/Piano_Concerto_23_in_A_Major_K488_-_Clarinet_in_A_2.pdf" target="_blank">Klarinet 2</a>
                 </li>
                 <li>
                     <a href="/2026-01-24/Piano_Concerto_23_in_A_Major_K488_-_Bassoon_1.pdf" target="_blank">Fagot 1</a>
