@@ -91,7 +91,7 @@
             </p>
         </div>
         <h2>Bezetting</h2>
-        <p>Er zijn nu 17 deelnemers. De blazers zijn compleet, maar er is nog plaats voor strijkers in alle groepen.</p>
+        <p>Er zijn nu 24 deelnemers. De blazers zijn compleet, maar er is nog plaats voor 2 tweede violen, 2 altviolen en een contrabas.</p>
         <p class="onzichtbaar">Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
         <table class="w3-table w3-striped w3-bordered" id="deelnemers">
             <thead>
@@ -118,8 +118,8 @@
                     <td>klarinet 2</td>
                 </tr>
                 <tr>
-                    <td>Boukje</td>
-                    <td>Jonkheer</td>
+                    <td>Nicole</td>
+                    <td>Freling</td>
                     <td>fagot 1</td>
                 </tr>
                 <tr>
@@ -148,6 +148,26 @@
                     <td>viool 1</td>
                 </tr>
                 <tr>
+                    <td>Marieke</td>
+                    <td>van der Haar</td>
+                    <td>viool 1</td>
+                </tr>
+                <tr>
+                    <td>Vera</td>
+                    <td>Heins</td>
+                    <td>viool 1</td>
+                </tr>
+                <tr>
+                    <td>Ruben</td>
+                    <td>Faas</td>
+                    <td>viool 1</td>
+                </tr>
+                <tr>
+                    <td>Janne</td>
+                    <td>den Blaauwen</td>
+                    <td>viool 1</td>
+                </tr>
+                <tr>
                     <td>Tonnie</td>
                     <td>Mols</td>
                     <td>viool 2</td>
@@ -158,8 +178,8 @@
                     <td>viool 2</td>
                 </tr>
                 <tr>
-                    <td>Mirjam</td>
-                    <td>van den Berg</td>
+                    <td>Barbara</td>
+                    <td>Hendricx</td>
                     <td>viool 2</td>
                 </tr>
                 <tr>
@@ -178,8 +198,23 @@
                     <td>altviool</td>
                 </tr>
                 <tr>
+                    <td>Marianne</td>
+                    <td>Vrijland</td>
+                    <td>cello (aanvoerder)</td>
+                </tr>
+                <tr>
                     <td>Anke</td>
                     <td>Meester</td>
+                    <td>cello</td>
+                </tr>
+                <tr>
+                    <td>Gill</td>
+                    <td>Griffiths</td>
+                    <td>cello</td>
+                </tr>
+                <tr>
+                    <td>Robin</td>
+                    <td>Gerretsen</td>
                     <td>cello</td>
                 </tr>
                 <tr>
