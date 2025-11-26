@@ -190,7 +190,7 @@
                 <tr>
                     <td>Eline</td>
                     <td>Snoek</td>
-                    <td>altviool</td>
+                    <td>altviool (aanvoerder)</td>
                 </tr>
                 <tr>
                     <td>Marijke</td>
