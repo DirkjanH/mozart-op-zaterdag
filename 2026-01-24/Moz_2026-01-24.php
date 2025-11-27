@@ -91,7 +91,7 @@
             </p>
         </div>
         <h2>Bezetting</h2>
-        <p>Er zijn nu 24 deelnemers. De blazers zijn compleet, maar er is nog plaats voor 2 tweede violen, 2 altviolen en een contrabas.</p>
+        <p>Er zijn nu 24 deelnemers. De blazers zijn compleet, maar er is nog plaats voor 1 tweede viool en 2 altviolen.</p>
         <p class="onzichtbaar">Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
         <table class="w3-table w3-striped w3-bordered" id="deelnemers">
             <thead>
@@ -188,6 +188,11 @@
                     <td>viool 2</td>
                 </tr>
                 <tr>
+                    <td>Jan</td>
+                    <td>Prins</td>
+                    <td>viool 2</td>
+                </tr>
+                <tr>
                     <td>Eline</td>
                     <td>Snoek</td>
                     <td>altviool (aanvoerder)</td>
@@ -220,6 +225,11 @@
                 <tr>
                     <td>Frederik</td>
                     <td>Advokaat</td>
+                    <td>contrabas</td>
+                </tr>
+                <tr>
+                    <td>Jurgen</td>
+                    <td>van der Ent</td>
                     <td>contrabas</td>
                 </tr>
             </tbody>
