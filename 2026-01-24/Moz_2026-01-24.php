@@ -175,7 +175,7 @@
                 <tr>
                     <td>Adriaan</td>
                     <td>Mol</td>
-                    <td>viool 2</td>
+                    <td>viool 2 (aanvoerder)</td>
                 </tr>
                 <tr>
                     <td>Barbara</td>
