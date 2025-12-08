@@ -61,7 +61,7 @@
             </ul>
         </div>
         <h2>Bezetting</h2>
-        <p>Er zijn nu 31 deelnemers. Er is uitsluitend nog plaats voor een contrabas.</p>
+        <p>Er zijn nu 30 deelnemers. Er is uitsluitend nog plaats voor een 1e viool en een contrabas.</p>
         <p class="onzichtbaar">Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
         <table class="w3-table w3-striped w3-bordered" id="deelnemers">
             <thead>
@@ -127,8 +127,8 @@
                 <td>viool 1</td>
             </tr>
             <tr>
-                <td>Daniela</td>
-                <td>Roeland</td>
+                <td><i>vacature</i></td>
+                <td></td>
                 <td>viool 1</td>
             </tr>
             <tr>
