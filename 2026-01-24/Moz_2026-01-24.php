@@ -40,7 +40,7 @@
         </div>
         <p class="onzichtbaar">De partijen zijn binnenkort beschikbaar</p>
         <div class="" style="clear: both;">
-            <h4>Partijen (nog niet betekend)</h4>
+            <h4>Partijen</h4>
             <ul style="column-count: 3;">
                 <li>
                     <a href="/2026-01-24/Piano_Concerto_23_in_A_Major_K488_-_Flute.pdf" target="_blank">Fluit</a>
@@ -64,10 +64,10 @@
                     <a href="/2026-01-24/Piano_Concerto_23_in_A_Major_K488_-_Horn_in_A_2.pdf" target="_blank">Hoorn 2 in A</a>
                 </li>
                 <li>
-                    <a href="/2026-01-24/Piano_Concerto_23_in_A_Major_K488_-_Violin_1.pdf" target="_blank">Viool 1</a>
+                    <a href="/2026-01-24/Piano Concerto 23 in A Major K488 - Violin 1 betekend.pdf" target="_blank">Viool 1 <b>(betekend)</b></a>
                 </li>
                 <li>
-                    <a href="/2026-01-24/Piano_Concerto_23_in_A_Major_K488_-_Violin_2.pdf" target="_blank">Viool 2</a>
+                    <a href="/2026-01-24/Piano Concerto 23 in A Major K488 - Violin 2 betekend.pdf" target="_blank">Viool 2 <b>(betekend)</b></a>
                 </li>
                 <li>
                     <a href="/2026-01-24/Piano_Concerto_23_in_A_Major_K488_-_Viola.pdf" target="_blank">Altviool</a>
