@@ -198,9 +198,9 @@
                     <td>viool 2</td>
                 </tr>
                 <tr>
-                    <td>Eline</td>
-                    <td>Snoek</td>
-                    <td>altviool (aanvoerder)</td>
+                    <td>Saskia</td>
+                    <td>Wieberdink</td>
+                    <td>altviool</td>
                 </tr>
                 <tr>
                     <td>Marijke</td>
