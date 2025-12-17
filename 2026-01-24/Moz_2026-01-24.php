@@ -22,7 +22,7 @@
         </p>
 
         <h4>De pianosolisten</h4>
-        <div><img src="drie solisten.jpg" alt="De drie pianosolisten" class="w3-image" style="width: 100%;"><br><span class="w3-small"><em>De drie pianosolisten. Van links naar rechts: Brit van Manen, Yumi Toyama, Annette Middelbeek</em></span></div>
+        <div><img src="drie solisten.jpg" alt="De drie pianosolisten" class="w3-image" style="width: 100%;"><br><span class="w3-small"><em>De drie pianosolisten. Van links naar rechts: Brit van Maanen, Yumi Toyama, Annette Middelbeek</em></span></div>
         <div class="w3-row-padding">
             <div class="w3-third">
                 <h5>Annette Middelbeek</h5>
