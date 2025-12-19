@@ -212,6 +212,11 @@
                 <td>cello</td>
             </tr>
             <tr>
+                <td>Marianne</td>
+                <td>Vrijland</td>
+                <td>cello (aanvoerder)</td>
+            </tr>
+            <tr>
                 <td>Meike</td>
                 <td>Jongejan </td>
                 <td>cello</td>
