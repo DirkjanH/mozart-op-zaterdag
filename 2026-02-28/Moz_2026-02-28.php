@@ -147,6 +147,11 @@
                 <td>viool 1</td>
             </tr>
             <tr>
+                <td>Saskia</td>
+                <td>Wieberdink</td>
+                <td>viool 1</td>
+            </tr>
+            <tr>
                 <td>Adriaan</td>
                 <td>Mol</td>
                 <td>viool 2</td>
@@ -177,8 +182,8 @@
                 <td>viool 2</td>
             </tr>
             <tr>
-                <td>Saskia</td>
-                <td>Wieberdink</td>
+                <td>Petra</td>
+                <td>Meijer</td>
                 <td>viool 2</td>
             </tr>
             <tr>
