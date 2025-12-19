@@ -18,8 +18,12 @@
         <p>
             De zevende aflevering van
             <i>Mozart op Zaterdag</i>
-            vindt plaats op zaterdagochtend 24 januari. We werken dan aan Mozarts Pianoconcert nr. 23 in A KV 488. Het orkest bestaat uit een fluit, twee klarinetten, twee fagotten, twee hoorns en strijkers. Het pianoconcert bestaat uit drie delen, een Allegro, een Adagio en een Allegro assai, en duurt ongeveer 28 minuten. Drie pianisten verdelen de delen.
-        </p>
+            vindt plaats op zaterdagochtend 24 januari. We werken dan aan Mozarts Pianoconcert nr. 23 in A KV 488. Het orkest bestaat uit een fluit, twee klarinetten, twee fagotten, twee hoorns en strijkers. Het pianoconcert bestaat uit drie delen, een Allegro, een Adagio en een Allegro assai, en duurt ongeveer 28 minuten. Drie pianisten verdelen de delen:</p>
+            <ol>
+                <li>Yumi Toyama speelt het Allegro. Haar tempo is 80 voor de halve noot.</li>
+                <li>Brit van Maanen speelt het Adagio. Haar tempo is 96 voor de achtste noot.</li>
+                <li>Annette Middelbeek speelt het Allegro assai. Haar tempo is 112 voor de halve noot.</li>
+            </ol>
 
         <h4>De pianosolisten</h4>
         <div><img src="drie solisten.jpg" alt="De drie pianosolisten" class="w3-image" style="width: 100%;"><br><span class="w3-small"><em>De drie pianosolisten. Van links naar rechts: Brit van Maanen, Yumi Toyama, Annette Middelbeek</em></span></div>
