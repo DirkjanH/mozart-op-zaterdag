@@ -17,11 +17,25 @@
         <h2>Pianoconcert nr. 23 in A KV 488</h2>
         <p>
             De zevende aflevering van <i>Mozart op Zaterdag</i> vindt plaats op zaterdagochtend 24 januari. We werken dan aan Mozarts Pianoconcert nr. 23 in A KV 488. Het orkest bestaat uit een fluit, twee klarinetten, twee fagotten, twee hoorns en strijkers. Het pianoconcert bestaat uit drie delen, een Allegro, een Adagio en een Allegro assai, en duurt ongeveer 28 minuten. Drie pianisten verdelen de solo's van de delen:</p>
-            <ol>
-                <li>Yumi Toyama speelt het Allegro. Haar tempo is 128 voor de kwartnoot.</li>
-                <li>Brit van Maanen speelt het Adagio. Haar tempo is 96 voor de achtste noot.</li>
-                <li>Annette Middelbeek speelt het Allegro assai. Haar tempo is 112 voor de halve noot.</li>
-            </ol>
+        <ol>
+            <li>Yumi Toyama speelt het Allegro. Haar tempo is 128 voor de kwartnoot.</li>
+            <li>Brit van Maanen speelt het Adagio. Haar tempo is 96 voor de achtste noot.</li>
+            <li>Annette Middelbeek speelt het Allegro assai. Haar tempo is 112 voor de halve noot.</li>
+        </ol>
+
+        <p>Mozarts Pianoconcert nr. 23 in A, KV 488, behoort tot zijn meest lyrische en verfijnde concertwerken en ontstond in 1786, in dezelfde creatieve periode als Le nozze di Figaro. Het concerto valt op door de relatief kamermuzikale orkestbezetting met onder meer klarinetten, die een warme, intieme kleur geven.</p>
+
+        <h4>Ontstaan en karakter</h4>
+        <p>Mozart voltooide het concert op 2 maart 1786, tijdens een uiterst productieve Weense fase waarin hij vooral als opera- en concertcomponist actief was. Het werk wordt vaak geprezen om zijn evenwicht tussen virtuoze pianopartij en een bijzonder sprekende, bijna vocale melodiek.</p>
+
+        <h4>Eerste deel: Allegro</h4>
+        <p>Het openingsdeel in A groot ademt een galante, elegante <strong>stemming</strong>, maar bevat direct in het begin subtiele schaduwen door onverwachte harmonische wendingen in de strijkers. De dialoog tussen piano en houtblazers heeft een uitgesproken kamermuzikaal karakter, waarbij de solist niet zozeer triumfeert als wel converseert met het orkest.</p>
+
+        <h4>Tweede deel: Adagio</h4>
+        <p>Het langzame deel in de zeldzame toonsoort fis klein vormt het emotionele hart van het concerto, met een intense, bijna contemplatieve expressie. De pianolijn is sterk vocaal gedacht, verwant aan een operaaria, en wordt omgeven door zachte, donker getinte kleuren van klarinetten en fagotten.</p>
+
+        <h4>Finale: Allegro assai</h4>
+        <p>Het slotdeel brengt na de introspectie van het Adagio een licht, beweeglijk en sprankelend rondo, dat de pianist vrijwel onafgebroken in beweging houdt. Ondanks het overwegend opgewekte karakter duiken ook hier korte momenten van melancholie op, wat de speelsheid extra diepte verleent.</p>
 
         <h4>De pianosolisten</h4>
         <div><img src="drie solisten.jpg" alt="De drie pianosolisten" class="w3-image" style="width: 100%;"><br><span class="w3-small"><em>De drie pianosolisten. Van links naar rechts: Brit van Maanen, Yumi Toyama, Annette Middelbeek</em></span></div>
