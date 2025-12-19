@@ -28,13 +28,13 @@
         <h4>Ontstaan en karakter</h4>
         <p>Mozart voltooide het concert op 2 maart 1786, tijdens een uiterst productieve Weense fase waarin hij vooral als opera- en concertcomponist actief was. Het werk wordt vaak geprezen om zijn evenwicht tussen virtuoze pianopartij en een bijzonder sprekende, bijna vocale melodiek.</p>
 
-        <h4>Eerste deel: Allegro</h4>
-        <p>Het openingsdeel in A groot ademt een galante, elegante <strong>stemming</strong>, maar bevat direct in het begin subtiele schaduwen door onverwachte harmonische wendingen in de strijkers. De dialoog tussen piano en houtblazers heeft een uitgesproken kamermuzikaal karakter, waarbij de solist niet zozeer triumfeert als wel converseert met het orkest.</p>
+        <h5>Eerste deel: Allegro</h5>
+        <p>Het openingsdeel in A groot ademt een galante, elegante stemming, maar bevat direct in het begin subtiele schaduwen door onverwachte harmonische wendingen in de strijkers. De dialoog tussen piano en houtblazers heeft een uitgesproken kamermuzikaal karakter, waarbij de solist niet zozeer triomfeert als wel converseert met het orkest.</p>
 
-        <h4>Tweede deel: Adagio</h4>
-        <p>Het langzame deel in de zeldzame toonsoort fis klein vormt het emotionele hart van het concerto, met een intense, bijna contemplatieve expressie. De pianolijn is sterk vocaal gedacht, verwant aan een operaaria, en wordt omgeven door zachte, donker getinte kleuren van klarinetten en fagotten.</p>
+        <h5>Tweede deel: Adagio</h5>
+        <p>Het langzame deel in de zeldzame toonsoort fis klein vormt het emotionele hart van het concerto, met een intense, contemplatieve expressie. De pianolijn is sterk vocaal gedacht, verwant aan een opera-aria, en wordt omgeven door zachte, donker getinte kleuren van klarinetten en fagotten.</p>
 
-        <h4>Finale: Allegro assai</h4>
+        <h5>Finale: Allegro assai</h5>
         <p>Het slotdeel brengt na de introspectie van het Adagio een licht, beweeglijk en sprankelend rondo, dat de pianist vrijwel onafgebroken in beweging houdt. Ondanks het overwegend opgewekte karakter duiken ook hier korte momenten van melancholie op, wat de speelsheid extra diepte verleent.</p>
 
         <h4>De pianosolisten</h4>
