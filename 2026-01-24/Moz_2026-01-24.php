@@ -107,7 +107,7 @@
             </p>
         </div>
         <h2>Bezetting</h2>
-        <p>Er zijn nu 27 deelnemers. Er is uitsluitend nog plaats voor 2 altviolen.</p>
+        <p>Er zijn nu 28 deelnemers. Er is uitsluitend nog plaats voor een altviool.</p>
         <p class="onzichtbaar">Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
         <table class="w3-table w3-striped w3-bordered" id="deelnemers">
             <thead>
@@ -212,6 +212,11 @@
                     <td>Eleanor</td>
                     <td>Peverall</td>
                     <td>viool 2</td>
+                </tr>
+                <tr>
+                    <td>Rolf</td>
+                    <td>Buijs</td>
+                    <td>altviool</td>
                 </tr>
                 <tr>
                     <td>Saskia</td>
