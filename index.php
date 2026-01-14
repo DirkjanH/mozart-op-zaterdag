@@ -36,7 +36,7 @@
             <li>
                 <b>24 januari:</b> Pianoconcert nr. 23 in A KV 488 voor 1 fluit,
                 2 klarinetten, 2 fagotten, 2 hoorns en strijkers. De solisten Annette Middelbeek, Brit van Manen en Yumi
-                Toyama spelen ieder een deel. Er is nog plaats voor enkele strijkers in alle groepen. <a href="/2026-01-24/Moz_2026-01-24.php" target="_blank">Meer info &
+                Toyama spelen ieder een deel. Er is nog plaats voor een altviool. <a href="/2026-01-24/Moz_2026-01-24.php" target="_blank">Meer info &
                     partijen vind je hier</a>.
             </li>
             <li>
