@@ -61,7 +61,7 @@
             </ul>
         </div>
         <h2>Bezetting</h2>
-        <p>Er zijn nu 30 deelnemers. Er is uitsluitend nog plaats voor een 1e viool en een contrabas.</p>
+        <p>Er zijn nu 36 deelnemers. Er is uitsluitend nog plaats voor een contrabas.</p>
         <p class="onzichtbaar">Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
         <table class="w3-table w3-striped w3-bordered" id="deelnemers">
             <thead>
@@ -127,11 +127,6 @@
                 <td>viool 1</td>
             </tr>
             <tr>
-                <td><i>vacature</i></td>
-                <td></td>
-                <td>viool 1</td>
-            </tr>
-            <tr>
                 <td>Mirte</td>
                 <td>Hulscher</td>
                 <td>viool 1</td>
@@ -149,6 +144,16 @@
             <tr>
                 <td>Saskia</td>
                 <td>Wieberdink</td>
+                <td>viool 1</td>
+            </tr>
+            <tr>
+                <td>Vera</td>
+                <td>Heins</td>
+                <td>viool 1</td>
+            </tr>
+            <tr>
+                <td>Sophie</td>
+                <td>Vermond</td>
                 <td>viool 1</td>
             </tr>
             <tr>
@@ -207,14 +212,24 @@
                 <td>altviool</td>
             </tr>
             <tr>
-                <td>Friso</td>
-                <td>van der Veen</td>
-                <td>cello</td>
+                <td>Eline</td>
+                <td>Snoek</td>
+                <td>altviool</td>
+            </tr>
+            <tr>
+                <td>Maaike</td>
+                <td>Gerlsma</td>
+                <td>altviool</td>
             </tr>
             <tr>
                 <td>Marianne</td>
                 <td>Vrijland</td>
                 <td>cello (aanvoerder)</td>
+            </tr>
+            <tr>
+                <td>Friso</td>
+                <td>van der Veen</td>
+                <td>cello</td>
             </tr>
             <tr>
                 <td>Meike</td>
