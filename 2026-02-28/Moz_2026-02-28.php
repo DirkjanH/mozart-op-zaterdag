@@ -252,8 +252,8 @@
                 <td>contrabas</td>
             </tr>
             <tr>
-                <td><i>vacature</i></td>
-                <td></td>
+                <td>Jurgen</td>
+                <td>van der Ent</td>
                 <td>contrabas</td>
             </tr>
         </table>
