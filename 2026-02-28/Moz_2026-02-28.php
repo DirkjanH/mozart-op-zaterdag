@@ -61,7 +61,7 @@
             </ul>
         </div>
         <h2>Bezetting</h2>
-        <p>Er zijn nu 37 deelnemers. De bezetting is compleet</p>
+        <p>Er zijn nu 36 deelnemers. Er is nog plaats voor een tweede viool.</p>
         <p class="onzichtbaar">Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
         <table class="w3-table w3-striped w3-bordered" id="deelnemers">
             <thead>
@@ -159,11 +159,6 @@
             <tr>
                 <td>Adriaan</td>
                 <td>Mol</td>
-                <td>viool 2</td>
-            </tr>
-            <tr>
-                <td>Tonnie</td>
-                <td>Mols</td>
                 <td>viool 2</td>
             </tr>
             <tr>
