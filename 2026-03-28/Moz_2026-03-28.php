@@ -42,7 +42,7 @@
                 </li>
                 <li class="aflevering">
                     <a href="/2026-03-28/Mozart - partituur NMA KV112.pdf" target="_blank">
-                        <b>nog niet betekende partituur</b>
+                        Partituur
                     </a>
                 </li>
             </ul>
@@ -74,7 +74,7 @@
                 </li>
                 <li class="aflevering">
                     <a href="/2026-03-28/Mozart - partituur NMA KV417.pdf" target="_blank">
-                        <b>nog niet betekende partituur</b>
+                        Partituur
                     </a>
                 </li>
             </ul>
