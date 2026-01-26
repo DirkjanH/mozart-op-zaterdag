@@ -17,7 +17,7 @@
             De negende aflevering van <i>Mozart op Zaterdag</i> vindt plaats op zaterdagochtend 28 maart. We werken dan aan Mozarts Symfonie nr. 13 in F KV 112 & Hoornconcert nr. 2 in Es KV 417, beide voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. De hoornsolist is nog te bepalen.
         </p>
 
-        <p style="clear:both;">De partijen zijn binnenkort beschikbaar</p>
+        <p style="clear:both;" class="onzichtbaar">De partijen zijn binnenkort beschikbaar</p>
         <div style="clear: both;">
             <h4>Partijen (nog niet betekend)</h4>
             <h5>Symfonie nr. 13 in F KV 112</h5>
