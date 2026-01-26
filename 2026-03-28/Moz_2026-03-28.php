@@ -18,57 +18,86 @@
         </p>
 
         <p style="clear:both;">De partijen zijn binnenkort beschikbaar</p>
-        <div class="onzichtbaar" style="clear: both;">
+        <div style="clear: both;">
             <h4>Partijen (nog niet betekend)</h4>
+            <h5>Symfonie nr. 13 in F KV 112</h5>
             <ul style="column-count: 3;">
                 <li class="aflevering">
-                    <a href="/2025-09-27/Mozart_Concertante_-_Oboe_1.pdf" target="_blank">Hobo 1</a>
+                    <a href="/2026-03-28/KV112 - Oboe.pdf" target="_blank">Hobo 1/2</a>
                 </li>
                 <li class="aflevering">
-                    <a href="/2025-09-27/Mozart_Concertante_-_Oboe_2.pdf" target="_blank">Hobo 2</a>
+                    <a href="/2026-03-28/KV112 - Trompa_en_Fa.pdf" target="_blank">Hoorn 1/2</a>
                 </li>
                 <li class="aflevering">
-                    <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_Eb.pdf" target="_blank">Hoorn 1 in Eb</a>
+                    <a href="/2026-03-28/KV112 - Violin_I.pdf" target="_blank">Viool 1</a>
                 </li>
                 <li class="aflevering">
-                    <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_Eb.pdf" target="_blank">Hoorn 2 in Eb</a>
+                    <a href="/2026-03-28/KV112 - Violin_II.pdf" target="_blank">Viool 2</a>
                 </li>
                 <li class="aflevering">
-                    <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_F.pdf" target="_blank">Hoorn 1 in F</a>
+                    <a href="/2026-03-28/KV112 - Viola.pdf" target="_blank">Altviool</a>
                 </li>
                 <li class="aflevering">
-                    <a href="/2025-09-27/Mozart_Concertante_-_Horn_1_in_F.pdf" target="_blank">Hoorn 2 in F</a>
+                    <a href="/2026-03-28/KV112 - Violoncelo_y_Contrabajo.pdf" target="_blank">Cello, contrabas, fagot</a>
                 </li>
                 <li class="aflevering">
-                    <a href="/2025-09-27/Mozart_Concertante_-_Violin_1.pdf" target="_blank">Viool 1</a>
-                </li>
-                <li class="aflevering">
-                    <a href="/2025-09-27/Mozart_Concertante_-_Violin_2.pdf" target="_blank">Viool 2</a>
-                </li>
-                <li class="aflevering">
-                    <a href="/2025-09-27/Mozart_Concertante_-_Viola_1.pdf" target="_blank">Altviool 1</a>
-                </li>
-                <li class="aflevering">
-                    <a href="/2025-09-27/Mozart_Concertante_-_Viola_2.pdf" target="_blank">Altviool 2</a>
-                </li>
-                <li class="aflevering">
-                    <a href="/2025-09-27/Mozart_Concertante_-_Cello.pdf" target="_blank">Cello</a>
-                </li>
-                <li class="aflevering">
-                    <a href="/2025-09-27/Mozart_Concertante_-_Double_Bass.pdf" target="_blank">Contrabas, fagot</a>
-                </li>
-                <li class="aflevering">
-                    <a href="/2025-09-27/Mozart_Concertante_-_partituur_NMA.pdf" target="_blank">
+                    <a href="/2026-03-28/Mozart - partituur NMA KV112.pdf" target="_blank">
                         <b>nog niet betekende partituur</b>
                     </a>
                 </li>
             </ul>
-            <p>
+            <h5>Hoornconcert nr. 2 in Es KV 417</h5>
+            <ul style="column-count: 3;">
+                <li class="aflevering">
+                    <a href="/2026-03-28/KV417 - Oboe_I.pdf" target="_blank">Hobo 1</a>
+                </li>
+                <li class="aflevering">
+                    <a href="/2026-03-28/KV417 - Oboe_II.pdf" target="_blank">Hobo 2</a>
+                </li>
+                <li class="aflevering">
+                    <a href="/2026-03-28/KV417 - Corno_I_en_Eb.pdf" target="_blank">Hoorn 1</a>
+                </li>
+                <li class="aflevering">
+                    <a href="/2026-03-28/KV417 - Corno_II_en_Eb.pdf" target="_blank">Hoorn 2</a>
+                </li>
+                <li class="aflevering">
+                    <a href="/2026-03-28/KV417 - Violin_I.pdf" target="_blank">Viool 1</a>
+                </li>
+                <li class="aflevering">
+                    <a href="/2026-03-28/KV417 - Violin_II.pdf" target="_blank">Viool 2</a>
+                </li>
+                <li class="aflevering">
+                    <a href="/2026-03-28/KV417 - Viola.pdf" target="_blank">Altviool</a>
+                </li>
+                <li class="aflevering">
+                    <a href="/2026-03-28/KV417 - Basso.pdf" target="_blank">Cello, contrabas, fagot</a>
+                </li>
+                <li class="aflevering">
+                    <a href="/2026-03-28/Mozart - partituur NMA KV417.pdf" target="_blank">
+                        <b>nog niet betekende partituur</b>
+                    </a>
+                </li>
+            </ul>
+            <p class="onzichtbaar">
                 NB.
                 <b>
                     Strijkers, neem SVP de streken uit de betekende partituur over in je eigen partij.
             </p>
         </div>
+    </div>
+    <div class="onzichtbaar">
+        <h2>Bezetting</h2>
+        <p>Er zijn nu 26 deelnemers. Er is nog plaats voor een tweede viool en een altviool.</p>
+        <p class="onzichtbaar">Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
+        <table class="w3-table w3-striped w3-bordered" id="deelnemers">
+            <thead>
+                <tr>
+                    <th>voornaam</th>
+                    <th>achternaam</th>
+                    <th>instrument</th>
+                </tr>
+            </thead>
+        </table>
     </div>
 </body>
 
