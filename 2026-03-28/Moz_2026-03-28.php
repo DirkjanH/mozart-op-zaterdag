@@ -19,7 +19,7 @@
 
         <p style="clear:both;" class="onzichtbaar">De partijen zijn binnenkort beschikbaar</p>
         <div style="clear: both;">
-            <h4>Partijen (nog niet betekend)</h4>
+            <h3>Partijen (nog niet betekend)</h3>
             <h5>Symfonie nr. 13 in F KV 112</h5>
             <ul style="column-count: 3;">
                 <li class="aflevering">
