@@ -39,7 +39,7 @@
                     <a href="/2026-02-28/Mozart--symph40-horns.pdf" target="_blank">Hoorn 1-2 in Bb alto</a>
                 </li>
                 <li class="aflevering">
-                    <a href="/2026-02-28/Mozart--symph40-vln1.pdf" target="_blank">Viool 1</a>
+                    <a href="/2026-02-28/Mozart - symph40-vln1-betekend.pdf" target="_blank">Viool 1 (betekend)</a>
                 </li>
                 <li class="aflevering">
                     <a href="/2026-02-28/Mozart--symph40-vln2.pdf" target="_blank">Viool 2</a>
@@ -119,7 +119,7 @@
             <tr>
                 <td>Carla</td>
                 <td>Van Kassel-Westhof</td>
-                <td>viool 1</td>
+                <td>viool 1 (concertmeester)</td>
             </tr>
             <tr>
                 <td>Carolien</td>
@@ -155,6 +155,11 @@
                 <td>Sophie</td>
                 <td>Vermond</td>
                 <td>viool 1</td>
+            </tr>
+            <tr>
+                <td>Janne</td>
+                <td>den Blaauwen</td>
+                <td>viool 2 (aanvoerder)</td>
             </tr>
             <tr>
                 <td>Adriaan</td>
@@ -204,7 +209,7 @@
             <tr>
                 <td>Laetitia </td>
                 <td>IngenHousz</td>
-                <td>altviool</td>
+                <td>altviool (aanvoerder)</td>
             </tr>
             <tr>
                 <td>Eline</td>
@@ -217,11 +222,6 @@
                 <td>altviool</td>
             </tr>
             <tr>
-                <td>Marianne</td>
-                <td>Vrijland</td>
-                <td>cello (aanvoerder)</td>
-            </tr>
-            <tr>
                 <td>Friso</td>
                 <td>van der Veen</td>
                 <td>cello</td>
@@ -229,7 +229,7 @@
             <tr>
                 <td>Meike</td>
                 <td>Jongejan </td>
-                <td>cello</td>
+                <td>cello (aanvoerder)</td>
             </tr>
             <tr>
                 <td>Robin</td>
