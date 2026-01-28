@@ -21,7 +21,7 @@
 
         <p style="clear:both;" class="onzichtbaar">De partijen zijn binnenkort beschikbaar</p>
         <div class="" style="clear: both;">
-            <h4>Partijen</h4>
+            <h3>Partijen</h3>
             <ul style="column-count: 3;">
                 <li class="aflevering">
                     <a href="/2026-02-28/Mozart--symph40-flt.pdf" target="_blank">Fluit</a>
@@ -60,7 +60,7 @@
                 </li>
             </ul>
         </div>
-        <h2>Bezetting</h2>
+        <h3>Bezetting</h3>
         <p>Er zijn nu 36 deelnemers. Er is nog plaats voor een tweede viool.</p>
         <p class="onzichtbaar">Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
         <table class="w3-table w3-striped w3-bordered" id="deelnemers">
