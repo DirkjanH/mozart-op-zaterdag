@@ -21,7 +21,7 @@
 
         <p style="clear:both;" class="onzichtbaar">De partijen zijn binnenkort beschikbaar</p>
         <div class="" style="clear: both;">
-            <h4>Partijen (nog niet betekend)</h4>
+            <h4>Partijen</h4>
             <ul style="column-count: 3;">
                 <li class="aflevering">
                     <a href="/2026-02-28/Mozart--symph40-flt.pdf" target="_blank">Fluit</a>
@@ -48,7 +48,7 @@
                     <a href="/2026-02-28/Mozart--symph40-vla.pdf" target="_blank">Altviool</a>
                 </li>
                 <li class="aflevering">
-                    <a href="/2026-02-28/Mozart--symph40-cello.pdf" target="_blank">Cello</a>
+                    <a href="/2026-02-28/Mozart--symph40-cello_betekend.pdf" target="_blank">Cello (betekend)</a>
                 </li>
                 <li class="aflevering">
                     <a href="/2026-02-28/Mozart--symph40-bass.pdf" target="_blank">Contrabas</a>
