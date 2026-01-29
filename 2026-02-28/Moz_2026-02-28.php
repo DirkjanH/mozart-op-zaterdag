@@ -45,7 +45,7 @@
                     <a href="/2026-02-28/Mozart--symph40-vln2.pdf" target="_blank">Viool 2</a>
                 </li>
                 <li class="aflevering">
-                    <a href="/2026-02-28/Mozart--symph40-vla.pdf" target="_blank">Altviool</a>
+                    <a href="/2026-02-28/Mozart - symph40-vla-betekend.pdf" target="_blank">Altviool (betekend)</a>
                 </li>
                 <li class="aflevering">
                     <a href="/2026-02-28/Mozart--symph40-cello_betekend.pdf" target="_blank">Cello (betekend)</a>
