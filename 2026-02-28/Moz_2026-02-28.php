@@ -192,6 +192,11 @@
                 <td>viool 2</td>
             </tr>
             <tr>
+                <td>Ruben</td>
+                <td>Faas</td>
+                <td>viool 2</td>
+            </tr>
+            <tr>
                 <td>Marijke</td>
                 <td>Huijgen</td>
                 <td>altviool</td>
