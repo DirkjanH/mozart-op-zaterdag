@@ -117,8 +117,8 @@
                     <td>hoorn 1</td>
                 </tr>
                 <tr>
-                    <td>Richard</td>
-                    <td>van Hoorn</td>
+                    <td><i>vacature</i></td>
+                    <td></td>
                     <td>hoorn 2</td>
                 </tr>
                 <tr>
