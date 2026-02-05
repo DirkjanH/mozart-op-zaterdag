@@ -85,7 +85,7 @@
             </p>
         </div>
         <h2>Bezetting</h2>
-        <p>Er zijn nu 22 deelnemers. Er is nog plaats voor een tweede viool, een altviool en een contrabas.</p>
+        <p>Er zijn nu 20 deelnemers. Er is nog plaats voor twee tweede violen, een altviool, een cello en een contrabas.</p>
         <p class="onzichtbaar">Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
         <table class="w3-table w3-striped w3-bordered" id="deelnemers">
             <thead>
@@ -124,7 +124,7 @@
                 <tr>
                     <td>Carla</td>
                     <td>Van Kassel-Westhof</td>
-                    <td>viool 1</td>
+                    <td>viool 1 (concertmeester)</td>
                 </tr>
                 <tr>
                     <td>Corinne</td>
@@ -162,11 +162,6 @@
                     <td>viool 2</td>
                 </tr>
                 <tr>
-                    <td>Daniela</td>
-                    <td>Roeland</td>
-                    <td>viool 2</td>
-                </tr>
-                <tr>
                     <td>Eline</td>
                     <td>Snoek</td>
                     <td>altviool</td>
@@ -184,11 +179,6 @@
                 <tr>
                     <td>Gill</td>
                     <td>Griffiths</td>
-                    <td>cello</td>
-                </tr>
-                <tr>
-                    <td>Jan</td>
-                    <td>Strumphler</td>
                     <td>cello</td>
                 </tr>
                 <tr>
