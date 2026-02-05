@@ -61,7 +61,7 @@
             </ul>
         </div>
         <h3>Bezetting</h3>
-        <p>Er zijn nu 36 deelnemers. De bezetting is compleet.</p>
+        <p>Er zijn nu 37 deelnemers. De bezetting is compleet.</p>
         <p class="onzichtbaar">Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
         <table class="w3-table w3-striped w3-bordered" id="deelnemers">
             <thead>
