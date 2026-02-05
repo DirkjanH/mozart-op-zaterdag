@@ -85,9 +85,9 @@
             </p>
         </div>
     </div>
-    <div class="onzichtbaar">
+    <div class="">
         <h2>Bezetting</h2>
-        <p>Er zijn nu 26 deelnemers. Er is nog plaats voor een tweede viool en een altviool.</p>
+        <p>Er zijn nu 22 deelnemers. Er is nog plaats voor een tweede viool, een altviool en een contrabas.</p>
         <p class="onzichtbaar">Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
         <table class="w3-table w3-striped w3-bordered" id="deelnemers">
             <thead>
@@ -97,6 +97,118 @@
                     <th>instrument</th>
                 </tr>
             </thead>
+            <tbody>
+                <tr>
+                    <td>Erik</td>
+                    <td>van Kassel</td>
+                    <td>hobo 1</td>
+                </tr>
+                <tr>
+                    <td>Rineke</td>
+                    <td>Boerwinkel</td>
+                    <td>hobo 2</td>
+                </tr>
+                <tr>
+                    <td>Yolande </td>
+                    <td>Krooshof</td>
+                    <td>fagot</td>
+                </tr>
+                <tr>
+                    <td>Wim</td>
+                    <td>Kuppen</td>
+                    <td>hoorn 1</td>
+                </tr>
+                <tr>
+                    <td>Richard</td>
+                    <td>van Hoorn</td>
+                    <td>hoorn 2</td>
+                </tr>
+                <tr>
+                    <td>Carla</td>
+                    <td>Van Kassel-Westhof</td>
+                    <td>viool 1</td>
+                </tr>
+                <tr>
+                    <td>Corinne</td>
+                    <td>Britzel</td>
+                    <td>viool 1</td>
+                </tr>
+                <tr>
+                    <td>Ruben</td>
+                    <td>Faas</td>
+                    <td>viool 1</td>
+                </tr>
+                <tr>
+                    <td>Sophie</td>
+                    <td>Vermond</td>
+                    <td>viool 1</td>
+                </tr>
+                <tr>
+                    <td>Vera</td>
+                    <td>Heins</td>
+                    <td>viool 1</td>
+                </tr>
+                <tr>
+                    <td>Adriaan</td>
+                    <td>Mol</td>
+                    <td>viool 2</td>
+                </tr>
+                <tr>
+                    <td>Bea</td>
+                    <td>Selman</td>
+                    <td>viool 2</td>
+                </tr>
+                <tr>
+                    <td>Daniela</td>
+                    <td>Roeland</td>
+                    <td>viool 2</td>
+                </tr>
+                <tr>
+                    <td>Daniela</td>
+                    <td>Roeland</td>
+                    <td>viool 2</td>
+                </tr>
+                <tr>
+                    <td>Eline</td>
+                    <td>Snoek</td>
+                    <td>altviool</td>
+                </tr>
+                <tr>
+                    <td>Marijke</td>
+                    <td>Huijgen</td>
+                    <td>altviool</td>
+                </tr>
+                <tr>
+                    <td>Saskia</td>
+                    <td>Wieberdink</td>
+                    <td>altviool</td>
+                </tr>
+                <tr>
+                    <td>Gill</td>
+                    <td>Griffiths</td>
+                    <td>cello</td>
+                </tr>
+                <tr>
+                    <td>Jan</td>
+                    <td>Strumphler</td>
+                    <td>cello</td>
+                </tr>
+                <tr>
+                    <td>Jan</td>
+                    <td>Strumphler</td>
+                    <td>cello</td>
+                </tr>
+                <tr>
+                    <td>Robin</td>
+                    <td>Gerretsen</td>
+                    <td>cello</td>
+                </tr>
+                <tr>
+                    <td>Jurgen</td>
+                    <td>van der Ent</td>
+                    <td>contrabas</td>
+                </tr>
+            </tbody>
         </table>
     </div>
 </body>
