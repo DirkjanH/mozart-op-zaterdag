@@ -42,7 +42,7 @@
                     <a href="/2026-02-28/Mozart - symph40-vln1-betekend.pdf" target="_blank">Viool 1 (betekend)</a>
                 </li>
                 <li class="aflevering">
-                    <a href="/2026-02-28/Mozart--symph40-vln2.pdf" target="_blank">Viool 2</a>
+                    <a href="/2026-02-28/Mozart symph. 40 violin 2 betekend.pdf" target="_blank">Viool 2 (betekend)</a>
                 </li>
                 <li class="aflevering">
                     <a href="/2026-02-28/Mozart - symph40-vla-betekend.pdf" target="_blank">Altviool (betekend)</a>
