@@ -84,8 +84,6 @@
                     Strijkers, neem SVP de streken uit de betekende partituur over in je eigen partij.
             </p>
         </div>
-    </div>
-    <div class="">
         <h2>Bezetting</h2>
         <p>Er zijn nu 22 deelnemers. Er is nog plaats voor een tweede viool, een altviool en een contrabas.</p>
         <p class="onzichtbaar">Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
