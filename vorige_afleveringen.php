@@ -81,6 +81,16 @@
                 Hij componeerde onder andere twee opera’s.
             </p>
         </div>
+        <div style="clear: both;" class="w3-panel">
+            <p>
+                De zevende aflevering van <i>Mozart op Zaterdag</i> vond plaats op zaterdagochtend 24 januari. Tijdens deze sessie werkten we aan Mozarts Pianoconcert nr. 23 in A, KV 488. Het orkest bestond uit een fluit, twee klarinetten, twee fagotten, twee hoorns en strijkers. Drie pianisten verdeelden de solopartijen als volgt:</p>
+            <ol>
+                <li>Yumi Toyama speelde het Allegro</li>
+                <li>Brit van Maanen nam het Adagio voor haar rekening</li>
+                <li>Annette Middelbeek besloot met het Allegro assai</li>
+            </ol>
+            <p>Mozarts Pianoconcert nr. 23 in A, KV 488, behoort tot zijn meest lyrische en verfijnde concertwerken. Het ontstond in 1786, in dezelfde creatieve periode als <i>Le nozze di Figaro</i>. Tijdens onze uitvoering viel vooral de kamermuzikale bezetting op, waarin de klarinetten voor een bijzonder warme en intieme kleur zorgden. Mozart voltooide het concert op 2 maart 1786, in een van zijn meest productieve Weense jaren. Ook bij deze uitvoering kwam het evenwicht tussen de virtuoze pianopartij en de bijna vocale melodiek duidelijk naar voren. De combinatie van precisie, lyriek en samenspel maakte deze aflevering tot een bijzonder muzikale zaterdagochtend.</p>
+        </div>
     </div>
 </body>
 
