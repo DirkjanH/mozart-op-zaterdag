@@ -16,7 +16,7 @@
         <h3>28 februari 2026:</h3>
         <h2>Symfonie nr. 40 in g klein KV 550</h2>
         <p>
-            De achtste aflevering van <i>Mozart op Zaterdag</i> vindt plaats op zaterdagochtend 28 februari. We werken dan aan Mozarts Symfonie nr. 40 in g klein KV 550. Het orkest bestaat uit een fluit, twee hobo's, twee klarinetten, twee fagotten, twee hoorns en strijkers. De symfonie bestaat uit vier delen, een Molto Allegro, een Andante, een Menuetto en Trio en een Allegro assai, en duurt ongeveer 27 minuten.
+            De achtste aflevering van <i>Mozart op Zaterdag</i> vindt plaats op zaterdagochtend 28 februari. We werken dan aan Mozarts Symfonie nr. 40 in g klein KV 550. Het orkest bestaat uit een fluit, twee hobo's, twee klarinetten, twee fagotten, twee hoorns en strijkers. De symfonie duurt ongeveer 27 minuten.
         </p>
         <p>
             Mozart componeerde deze symfonie in de zomer van <strong>1788</strong>,
