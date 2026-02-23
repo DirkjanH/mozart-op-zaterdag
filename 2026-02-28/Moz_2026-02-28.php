@@ -18,6 +18,26 @@
         <p>
             De achtste aflevering van <i>Mozart op Zaterdag</i> vindt plaats op zaterdagochtend 28 februari. We werken dan aan Mozarts Symfonie nr. 40 in g klein KV 550. Het orkest bestaat uit een fluit, twee hobo's, twee klarinetten, twee fagotten, twee hoorns en strijkers. De symfonie bestaat uit vier delen, een Molto Allegro, een Andante, een Menuetto en Trio en een Allegro assai, en duurt ongeveer 27 minuten.
         </p>
+        <p>
+            Mozart componeerde deze symfonie in de zomer van <strong>1788</strong>,
+            in een buitengewoon productieve periode waarin ook de veertigste en eenenveertigste symfonie ontstonden.
+            De g-kleine symfonie werd later bekend om haar dramatische intensiteit, verfijnde vormgeving en emotionele diepte.
+            Vanaf het gespannen openingsmotief van het eerste <em>Molto Allegro</em> tot de onrustige levendigheid van het slotdeel
+            <em>Allegro assai</em> tekent zich een muziekbeeld af dat vooruitwijst naar de romantiek.
+        </p>
+
+        <p>De symfonie bestaat uit <strong>vier delen</strong>:</p>
+
+        <ol>
+            <li><em>Molto Allegro</em> – energiek en onrustig, met een typisch Mozartiaanse balans tussen passie en structuur. Het tempo wordt 112 voor de halve noot</li>
+            <li><em>Andante</em> – een ingetogener, zangerig middendeel vol subtiele spanning. Het tempo wordt 50 voor de gepuncteerde kwart</li>
+            <li><em>Menuetto en Trio</em> – dansant maar donker getint, met scherp gearticuleerde contrasten. Het tempo wordt:</li>
+            <ol start="a">
+                <li>Menuetto: 66 voor de gepuncteerde halve noot</li>
+                <li>Trio: 132 voor de kwart</li>
+            </ol>
+            <li><em>Allegro assai</em> – een virtuoos en stormachtig slot, waarin de gemoedsbewegingen tot een hoogtepunt komen. Het tempo wordt 120 voor de halve noot</li>
+        </ol>
 
         <p style="clear:both;" class="onzichtbaar">De partijen zijn binnenkort beschikbaar</p>
         <div class="" style="clear: both;">
