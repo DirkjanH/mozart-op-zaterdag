@@ -32,7 +32,7 @@
             <li><em>Molto Allegro</em> – energiek en onrustig, met een typisch Mozartiaanse balans tussen passie en structuur. Het tempo wordt 112 voor de halve noot</li>
             <li><em>Andante</em> – een ingetogener, zangerig middendeel vol subtiele spanning. Het tempo wordt 50 voor de gepuncteerde kwart</li>
             <li><em>Menuetto en Trio</em> – dansant maar donker getint, met scherp gearticuleerde contrasten. Het tempo wordt:</li>
-            <ol start="a">
+            <ol start="a" style="list-style-type: lower-latin;">
                 <li>Menuetto: 66 voor de gepuncteerde halve noot</li>
                 <li>Trio: 132 voor de kwart</li>
             </ol>
