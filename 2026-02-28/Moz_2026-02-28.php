@@ -20,7 +20,7 @@
         </p>
         <p>
             Mozart componeerde deze symfonie in de zomer van <strong>1788</strong>,
-            in een buitengewoon productieve periode waarin ook de veertigste en eenenveertigste symfonie ontstonden.
+            in een buitengewoon productieve periode waarin ook de eenenveertigste symfonie, de Jupitersymfonie, ontstond.
             De g-kleine symfonie werd later bekend om haar dramatische intensiteit, verfijnde vormgeving en emotionele diepte.
             Vanaf het gespannen openingsmotief van het eerste <em>Molto Allegro</em> tot de onrustige levendigheid van het slotdeel
             <em>Allegro assai</em> tekent zich een muziekbeeld af dat vooruitwijst naar de romantiek.
