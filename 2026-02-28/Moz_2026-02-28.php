@@ -112,8 +112,8 @@
                 <td>klarinet 1</td>
             </tr>
             <tr>
-                <td>Zwaantje </td>
-                <td>Schijve </td>
+                <td>Eveline</td>
+                <td>van Cleeff</td>
                 <td>klarinet 2</td>
             </tr>
             <tr>
