@@ -237,12 +237,12 @@ ul.programma li {
 
   h2,
   h3 {
-    page-break-before: always !important;
+    break-before: auto !important;
   }
 
   p,
   p * {
-    page-break-before: avoid;
+    break-before: avoid;
   }
 
   .niet-printen,
