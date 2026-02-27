@@ -16,7 +16,7 @@
         <h3>28 maart 2026:</h3>
         <h2>Symfonie nr. 13 in F KV 112 & Hoornconcert nr. 2 in Es KV 417</h2>
         <p>
-            De negende aflevering van <i>Mozart op Zaterdag</i> vindt plaats op zaterdagochtend 28 maart. We werken dan aan Mozarts Symfonie nr. 13 in F KV 112 & Hoornconcert nr. 2 in Es KV 417, beide voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. De hoornsolist is nog te bepalen.
+            De negende aflevering van <i>Mozart op Zaterdag</i> vindt plaats op zaterdagochtend 28 maart. We werken dan aan Mozarts Symfonie nr. 13 in F KV 112 & Hoornconcert nr. 2 in Es KV 417, beide voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. Hoornsolist is Maarten Theunen.
         </p>
 
         <p style="clear:both;" class="onzichtbaar">De partijen zijn binnenkort beschikbaar</p>
@@ -87,7 +87,7 @@
             </p>
         </div>
         <h2>Bezetting</h2>
-        <p>Er zijn nu 19 deelnemers. Er is nog plaats voor een tweede hoorn, twee tweede violen, een altviool, een cello en een contrabas.</p>
+        <p>Er zijn nu 21 deelnemers. Er is nog plaats voor twee tweede violen, een altviool en een contrabas.</p>
         <p class="onzichtbaar">Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
         <table class="w3-table w3-striped w3-bordered" id="deelnemers">
             <thead>
@@ -119,8 +119,8 @@
                     <td>hoorn 1</td>
                 </tr>
                 <tr>
-                    <td><i>vacature</i></td>
-                    <td></td>
+                    <td>Irene</td>
+                    <td>de Graauw</td>
                     <td>hoorn 2</td>
                 </tr>
                 <tr>
@@ -191,6 +191,11 @@
                 <tr>
                     <td>Robin</td>
                     <td>Gerretsen</td>
+                    <td>cello</td>
+                </tr>
+                <tr>
+                    <td>Anke</td>
+                    <td>Meesters</td>
                     <td>cello</td>
                 </tr>
                 <tr>
