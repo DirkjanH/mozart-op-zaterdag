@@ -43,7 +43,7 @@
                 2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns en strijkers. Er is nog plaats voor een tweede viool. <a href="/2026-02-28/Moz_2026-02-28.php" target="_blank">Meer info & partijen vind je hier</a>.
             </li>
             <li>
-                <b>28 maart:</b> Symfonie nr. 13 in F KV 112 & Hoornconcert nr. 2 in Es KV 417 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. De solist is nog te bepalen. <a <a href="/2026-03-28/Moz_2026-03-28.php" target="_blank">Meer info & partijen vind je hier</a>.
+                <b>28 maart:</b> Symfonie nr. 13 in F KV 112 & Hoornconcert nr. 2 in Es KV 417 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. Hoornist Maarten Theulen treedt op als solist. <a <a href="/2026-03-28/Moz_2026-03-28.php" target="_blank">Meer info & partijen vind je hier</a>.
             </li>
             <li>
                 <b>25 april:</b> Symfonie nr. 29 in A KV 201 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. <a href="/2026-04-25/kv201.php" target="_blank">Meer info & partijen vind je hier</a>.
