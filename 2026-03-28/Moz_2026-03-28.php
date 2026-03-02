@@ -149,6 +149,11 @@
                     <td>viool 1</td>
                 </tr>
                 <tr>
+                    <td>Janne</td>
+                    <td>den Blaauwen</td>
+                    <td>viool 2 (aanvoerder)</td>
+                </tr>
+                <tr>
                     <td>Adriaan</td>
                     <td>Mol</td>
                     <td>viool 2</td>
@@ -164,9 +169,14 @@
                     <td>viool 2</td>
                 </tr>
                 <tr>
+                    <td>Jan</td>
+                    <td>Prins</td>
+                    <td>viool 2</td>
+                </tr>
+                <tr>
                     <td>Eline</td>
                     <td>Snoek</td>
-                    <td>altviool</td>
+                    <td>altviool (aanvoerder)</td>
                 </tr>
                 <tr>
                     <td>Marijke</td>
@@ -196,7 +206,7 @@
                 <tr>
                     <td>Anke</td>
                     <td>Meesters</td>
-                    <td>cello</td>
+                    <td>cello (aanvoerder)</td>
                 </tr>
                 <tr>
                     <td>Jurgen</td>
