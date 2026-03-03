@@ -209,8 +209,8 @@
                     <td>cello (aanvoerder)</td>
                 </tr>
                 <tr>
-                    <td>Jurgen</td>
-                    <td>van der Ent</td>
+                    <td>Ernő</td>
+                    <td>Groeneweg</td>
                     <td>contrabas</td>
                 </tr>
             </tbody>
