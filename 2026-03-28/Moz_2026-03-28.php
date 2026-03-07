@@ -31,7 +31,7 @@
                     <a href="/2026-03-28/KV112 - Trompa_en_Fa.pdf" target="_blank">Hoorn 1/2</a>
                 </li>
                 <li class="aflevering">
-                    <a href="/2026-03-28/KV112 - Violin_I.pdf" target="_blank">Viool 1</a>
+                    <a href="/2026-03-28/KV112 - Violin I - betekend.pdf" target="_blank">Viool 1 - betekend</a>
                 </li>
                 <li class="aflevering">
                     <a href="/2026-03-28/KV112 - Violin_II.pdf" target="_blank">Viool 2</a>
@@ -63,7 +63,7 @@
                     <a href="/2026-03-28/KV417 - Corno_II_en_Eb.pdf" target="_blank">Hoorn 2</a>
                 </li>
                 <li class="aflevering">
-                    <a href="/2026-03-28/KV417 - Violin_I.pdf" target="_blank">Viool 1</a>
+                    <a href="/2026-03-28/KV417 - Violin I - betekend.pdf" target="_blank">Viool 1 - betekend</a>
                 </li>
                 <li class="aflevering">
                     <a href="/2026-03-28/KV417 - Violin_II.pdf" target="_blank">Viool 2</a>
@@ -82,7 +82,7 @@
             </ul>
         </div>
         <h2>Bezetting</h2>
-        <p>Er zijn nu 23 deelnemers. Er is nog plaats voor een altviool.</p>
+        <p>Er zijn nu 22 deelnemers. Er is nog plaats voor een tweede viool en een altviool.</p>
         <p class="onzichtbaar">Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
         <table class="w3-table w3-striped w3-bordered" id="deelnemers">
             <thead>
@@ -144,8 +144,8 @@
                     <td>viool 1</td>
                 </tr>
                 <tr>
-                    <td>Janne</td>
-                    <td>den Blaauwen</td>
+                    <td><i>vacature</i></td>
+                    <td></td>
                     <td>viool 2 (aanvoerder)</td>
                 </tr>
                 <tr>
