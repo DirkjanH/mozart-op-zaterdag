@@ -31,10 +31,10 @@
                     <a href="/2026-03-28/KV112 - Trompa_en_Fa.pdf" target="_blank">Hoorn 1/2</a>
                 </li>
                 <li class="aflevering">
-                    <a href="/2026-03-28/KV112 - Violin I - betekend.pdf" target="_blank">Viool 1 - betekend</a>
+                    <a href="/2026-03-28/KV112 - Violin I - betekend.pdf" target="_blank"><b>Viool 1 (betekend)</b></a>
                 </li>
                 <li class="aflevering">
-                    <a href="/2026-03-28/KV112 - Violin_II.pdf" target="_blank">Viool 2</a>
+                    <a href="/2026-03-28/KV112 - Violin II - betekend.pdf" target="_blank"><b>Viool 2 (betekend)</b></a>
                 </li>
                 <li class="aflevering">
                     <a href="/2026-03-28/KV112 - Viola.pdf" target="_blank">Altviool</a>
@@ -63,10 +63,10 @@
                     <a href="/2026-03-28/KV417 - Corno_II_en_Eb.pdf" target="_blank">Hoorn 2</a>
                 </li>
                 <li class="aflevering">
-                    <a href="/2026-03-28/KV417 - Violin I - betekend.pdf" target="_blank">Viool 1 - betekend</a>
+                    <a href="/2026-03-28/KV417 - Violin I - betekend.pdf" target="_blank"><b>Viool 1 (betekend)</b></a>
                 </li>
                 <li class="aflevering">
-                    <a href="/2026-03-28/KV417 - Violin_II.pdf" target="_blank">Viool 2</a>
+                    <a href="/2026-03-28/KV417 - Violin II - betekend.pdf" target="_blank"><b>Viool 2 (betekend)</b></a>
                 </li>
                 <li class="aflevering">
                     <a href="/2026-03-28/KV417 - Viola.pdf" target="_blank">Altviool</a>
