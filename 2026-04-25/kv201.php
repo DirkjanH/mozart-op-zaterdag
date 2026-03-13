@@ -23,31 +23,31 @@
         <h3>Partijen</h3>
         <ul style="column-count: 3;">
             <li>
-                <a href="\2025-03-22\Mozart - Symfonie nr. 29 in A KV 201 - hobo 1.pdf" target="_blank">Hobo 1</a>
+                <a href="\2026-04-25\Mozart - Symfonie nr. 29 in A KV 201 - hobo 1.pdf" target="_blank">Hobo 1</a>
             </li>
             <li>
-                <a href="\2025-03-22\Mozart - Symfonie nr. 29 in A KV 201 - hobo 2.pdf" target="_blank">Hobo 2</a>
+                <a href="\2026-04-25\Mozart - Symfonie nr. 29 in A KV 201 - hobo 2.pdf" target="_blank">Hobo 2</a>
             </li>
             <li>
-                <a href="\2025-03-22\Mozart - Symfonie nr. 29 in A KV 201 - hoorn 1.pdf" target="_blank">Hoorn 1</a>
+                <a href="\2026-04-25\Mozart - Symfonie nr. 29 in A KV 201 - hoorn 1.pdf" target="_blank">Hoorn 1</a>
             </li>
             <li>
-                <a href="\2025-03-22\Mozart - Symfonie nr. 29 in A KV 201 - hoorn 2.pdf" target="_blank">Hoorn 2</a>
+                <a href="\2026-04-25\Mozart - Symfonie nr. 29 in A KV 201 - hoorn 2.pdf" target="_blank">Hoorn 2</a>
             </li>
             <li>
-                <a href="\2025-03-22\Mozart - Symfonie nr. 29 in A KV 201 - viool 1.pdf" target="_blank">Viool 1</a>
+                <a href="\2026-04-25\Mozart - Symfonie nr. 29 in A KV 201 - viool 1.pdf" target="_blank">Viool 1</a>
             </li>
             <li>
-                <a href="\2025-03-22\Mozart - Symfonie nr. 29 in A KV 201 - viool 2.pdf" target="_blank">Viool 2</a>
+                <a href="\2026-04-25\Mozart - Symfonie nr. 29 in A KV 201 - viool 2.pdf" target="_blank">Viool 2</a>
             </li>
             <li>
-                <a href="\2025-03-22\Mozart - Symfonie nr. 29 in A KV 201 - viola.pdf" target="_blank">Altviool</a>
+                <a href="\2026-04-25\Mozart - Symfonie nr. 29 in A KV 201 - viola.pdf" target="_blank">Altviool</a>
             </li>
             <li>
-                <a href="\2025-03-22\Mozart - Symfonie nr. 29 in A KV 201 - bas.pdf" target="_blank">Cello, fagot, contrabas</a>
+                <a href="\2026-04-25\Mozart - Symfonie nr. 29 in A KV 201 - bas.pdf" target="_blank">Cello, fagot, contrabas</a>
             </li>
             <li>
-                <a href="\2025-03-22\Mozart - Symfonie nr. 29 in A KV 201 - partituur NMA.pdf" target="_blank">Partituur</a>
+                <a href="\2026-04-25\Mozart - Symfonie nr. 29 in A KV 201 - partituur NMA.pdf" target="_blank">Partituur</a>
                 </b>
             </li>
         </ul>
