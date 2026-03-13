@@ -40,7 +40,7 @@
                     <a href="/2026-03-28/KV112 - Viola.pdf" target="_blank">Altviool</a>
                 </li>
                 <li class="aflevering">
-                    <a href="/2026-03-28/KV112 - Violoncelo_y_Contrabajo.pdf" target="_blank">Cello, contrabas, fagot</a>
+                    <a href="/2026-03-28/KV112 - Cello - betekend.pdf" target="_blank"><b>Cello, contrabas, fagot (betekend)</b></a>
                 </li>
                 <li class="aflevering">
                     <a href="/2026-03-28/Mozart - partituur NMA KV112.pdf" target="_blank">
@@ -72,7 +72,7 @@
                     <a href="/2026-03-28/KV417 - Viola.pdf" target="_blank">Altviool</a>
                 </li>
                 <li class="aflevering">
-                    <a href="/2026-03-28/KV417 - Basso.pdf" target="_blank">Cello, contrabas, fagot</a>
+                    <a href="/2026-03-28/KV417 - Cello - betekend.pdf" target="_blank"><b>Cello, contrabas, fagot (betekend)</b></a>
                 </li>
                 <li class="aflevering">
                     <a href="/2026-03-28/Mozart - partituur NMA KV417.pdf" target="_blank">
