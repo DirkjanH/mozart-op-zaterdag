@@ -20,7 +20,7 @@
         </p>
         <p>“Er is een nieuw besef van de noodzaak om de symfonie te verdiepen door middel van imitatieve vitalisering, om haar door middel van kamermuzikale verfijning te redden van het louter decoratieve. De instrumenten veranderen van karakter; de violen worden spiritueler, de blazers vermijden alles wat lawaaierig is, de figuraties alles wat conventioneel is. De nieuwe geest is gedocumenteerd in alle delen (...)" schreef musicoloog Albert Einstein over deze symfonie. Stanley Sadie karakteriseert hem als “een mijlpaal ... persoonlijk in toon, ja misschien wel individueler in zijn combinatie van een intieme, kamermuzikale stijl met een nog steeds vurige en impulsieve manier.”</p>
         <p>De symfonie duurt ca. 26 minuten. De bezetting is 2 hobo's, 1 fagot, 2 hoorns en strijkers. De (nog niet betekende) partijen vind je hieronder.</p>
-        <h4>Partijen</h4>
+        <h3>Partijen</h3>
         <ul style="column-count: 3;">
             <li>
                 <a href="\2025-03-22\Mozart - Symfonie nr. 29 in A KV 201 - hobo 1.pdf" target="_blank">Hobo 1</a>
@@ -51,6 +51,129 @@
                 </b>
             </li>
         </ul>
+        <h2>Bezetting</h2>
+        <p>Er zijn nu 22 deelnemers. Er is nog plaats voor een of twee eerste en een of twee tweede violen en een altviool.</p>
+        <p class="onzichtbaar">Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
+        <table class="w3-table w3-striped w3-bordered" id="deelnemers">
+            <thead>
+                <tr>
+                    <th>voornaam</th>
+                    <th>achternaam</th>
+                    <th>instrument</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Liesbeth</td>
+                    <td>Feikema</td>
+                    <td>hobo 1</td>
+                </tr>
+                <tr>
+                    <td>Rineke</td>
+                    <td>Boerwinkel</td>
+                    <td>hobo 2</td>
+                </tr>
+                <tr>
+                    <td>Yolande </td>
+                    <td>Krooshof</td>
+                    <td>fagot</td>
+                </tr>
+                <tr>
+                    <td>Ietsje</td>
+                    <td>Bontekoe</td>
+                    <td>hoorn 1</td>
+                </tr>
+                <tr>
+                    <td>Wim</td>
+                    <td>Kuppen</td>
+                    <td>hoorn 2</td>
+                </tr>
+                <tr>
+                    <td>Sylvia </td>
+                    <td>Keijser </td>
+                    <td>viool 1</td>
+                </tr>
+                <tr>
+                    <td>Vera</td>
+                    <td>Heins</td>
+                    <td>viool 1</td>
+                </tr>
+                <tr>
+                    <td>Frits </td>
+                    <td>Muusse </td>
+                    <td>viool 1</td>
+                </tr>
+                <tr>
+                    <td>Janne</td>
+                    <td>den Blaauwen </td>
+                    <td>viool 1 (concertmeester)</td>
+                </tr>
+                <tr>
+                    <td>Adriaan</td>
+                    <td>Mol</td>
+                    <td>viool 2 (aanvoerder)</td>
+                </tr>
+                <tr>
+                    <td>Petra</td>
+                    <td>Meijer</td>
+                    <td>viool 2</td>
+                </tr>
+                <tr>
+                    <td>Erika</td>
+                    <td>Mathot</td>
+                    <td>viool 2</td>
+                </tr>
+                <tr>
+                    <td>Peter</td>
+                    <td>Klusener</td>
+                    <td>viool 2</td>
+                </tr>
+                <tr>
+                    <td>Maria</td>
+                    <td>Voorhout</td>
+                    <td>altviool</td>
+                </tr>
+                <tr>
+                    <td>Maaike</td>
+                    <td>Gerlsma</td>
+                    <td>altviool</td>
+                </tr>
+                <tr>
+                    <td>Eline</td>
+                    <td>Snoek</td>
+                    <td>altviool (aanvoerder)</td>
+                </tr>
+                <tr>
+                    <td>Meike</td>
+                    <td>Jongejan </td>
+                    <td>cello (aanvoerder)</td>
+                </tr>
+                <tr>
+                    <td>Reine Marie</td>
+                    <td>Verhagen</td>
+                    <td>cello</td>
+                </tr>
+                <tr>
+                    <td>Friso</td>
+                    <td>van der Veen</td>
+                    <td>cello</td>
+                </tr>
+                <tr>
+                    <td>Anke</td>
+                    <td>Meester</td>
+                    <td>cello</td>
+                </tr>
+                <tr>
+                    <td>Jurgen</td>
+                    <td>van der Ent</td>
+                    <td>contrabas</td>
+                </tr>
+                <tr>
+                    <td>Anke</td>
+                    <td>Muusse</td>
+                    <td>contrabas</td>
+                </tr>
+        </table>
     </div>
     <p>&nbsp;</p>
 </body>
