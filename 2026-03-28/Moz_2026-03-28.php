@@ -184,6 +184,11 @@
                     <td>altviool</td>
                 </tr>
                 <tr>
+                    <td>Peter</td>
+                    <td>Klusener</td>
+                    <td>altviool</td>
+                </tr>
+                <tr>
                     <td>Gill</td>
                     <td>Griffiths</td>
                     <td>cello</td>
