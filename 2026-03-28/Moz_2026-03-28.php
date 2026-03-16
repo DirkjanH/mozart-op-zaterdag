@@ -37,7 +37,7 @@
                     <a href="/2026-03-28/KV112 - Violin II - betekend.pdf" target="_blank"><b>Viool 2 (betekend)</b></a>
                 </li>
                 <li class="aflevering">
-                    <a href="/2026-03-28/KV112 - Viola.pdf" target="_blank">Altviool</a>
+                    <a href="/2026-03-28/KV112 - Viola - betekend.pdf" target="_blank"><b>Altviool (betekend)</b></a>
                 </li>
                 <li class="aflevering">
                     <a href="/2026-03-28/KV112 - Cello - betekend.pdf" target="_blank"><b>Cello, contrabas, fagot (betekend)</b></a>
@@ -69,7 +69,7 @@
                     <a href="/2026-03-28/KV417 - Violin II - betekend.pdf" target="_blank"><b>Viool 2 (betekend)</b></a>
                 </li>
                 <li class="aflevering">
-                    <a href="/2026-03-28/KV417 - Viola.pdf" target="_blank">Altviool</a>
+                    <a href="/2026-03-28/KV417 - viola - betekend.pdf" target="_blank"><b>Altviool (betekend)</b></a>
                 </li>
                 <li class="aflevering">
                     <a href="/2026-03-28/KV417 - Cello - betekend.pdf" target="_blank"><b>Cello, contrabas, fagot (betekend)</b></a>
