@@ -16,7 +16,7 @@
         <h3>28 maart 2026:</h3>
         <h2>Symfonie nr. 13 in F KV 112 & Hoornconcert nr. 2 in Es KV 417</h2>
         <p>
-            De negende aflevering van <i>Mozart op Zaterdag</i> vindt plaats op zaterdagochtend 28 maart. We werken dan aan Mozarts Symfonie nr. 13 in F KV 112 & Hoornconcert nr. 2 in Es KV 417, beide voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. Hoornsolist is Maarten Theunen.
+            De negende aflevering van <i>Mozart op Zaterdag</i> vindt plaats op zaterdagochtend 28 maart. We werken dan aan Mozarts Symfonie nr. 13 in F KV 112 & Hoornconcert nr. 2 in Es KV 417, beide voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. Hoornsolist is Maarten Theulen.
         </p>
         <p>Hou bij het voorbereiden rekening met deze tempi:</p>
         <p><b>Symfonie nr. 13 KV 112:</b></p>
