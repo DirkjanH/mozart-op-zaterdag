@@ -45,7 +45,7 @@
         <p><b>Hoornconcert nr. 2 in Es KV 417:</b></p>
         <ol>
             <li>
-                <><em>Allegro</em> 120 voor de kwart
+                <em>Allegro</em> 120 voor de kwart
             </li>
             <li>
                 <em>Andante</em>: 88 voor de achtste
