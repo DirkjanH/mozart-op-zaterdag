@@ -116,8 +116,8 @@
                     <td>viool 2 (aanvoerder)</td>
                 </tr>
                 <tr>
-                    <td>Petra</td>
-                    <td>Meijer</td>
+                    <td><i>vacature</i></td>
+                    <td></td>
                     <td>viool 2</td>
                 </tr>
                 <tr>
@@ -138,6 +138,11 @@
                 <tr>
                     <td>Maaike</td>
                     <td>Gerlsma</td>
+                    <td>altviool</td>
+                </tr>
+                <tr>
+                    <td>Laetitia</td>
+                    <td>Ingen Hoes</td>
                     <td>altviool</td>
                 </tr>
                 <tr>
