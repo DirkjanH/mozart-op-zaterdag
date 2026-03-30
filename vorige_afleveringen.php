@@ -82,6 +82,7 @@
             </p>
         </div>
         <div style="clear: both;" class="w3-panel">
+            <h4>24 januari 2026: Pianoconcert nr. 23 in A KV 488</h4>
             <p>
                 De zevende aflevering van <i>Mozart op Zaterdag</i> vond plaats op zaterdagochtend 24 januari. Tijdens deze sessie werkten we aan Mozarts Pianoconcert nr. 23 in A, KV 488. Het orkest bestond uit een fluit, twee klarinetten, twee fagotten, twee hoorns en strijkers. Drie pianisten verdeelden de solopartijen als volgt:</p>
             <ol>
@@ -90,6 +91,30 @@
                 <li>Annette Middelbeek besloot met het Allegro assai</li>
             </ol>
             <p>Mozarts Pianoconcert nr. 23 in A, KV 488, behoort tot zijn meest lyrische en verfijnde concertwerken. Het ontstond in 1786, in dezelfde creatieve periode als <i>Le nozze di Figaro</i>. Tijdens onze uitvoering viel vooral de kamermuzikale bezetting op, waarin de klarinetten voor een bijzonder warme en intieme kleur zorgden. Mozart voltooide het concert op 2 maart 1786, in een van zijn meest productieve Weense jaren. Ook bij deze uitvoering kwam het evenwicht tussen de virtuoze pianopartij en de bijna vocale melodiek duidelijk naar voren. De combinatie van precisie, lyriek en samenspel maakte deze aflevering tot een bijzonder muzikale zaterdagochtend.</p>
+        </div>
+        <div style="clear: both;" class="w3-panel">
+            <h4>28 februari 2026: symfonie nr. 40 in g klein KV 550</h4>
+            <p>De achtste aflevering van <i>Mozart op Zaterdag</i> vond plaats op zaterdagochtend 28 februari. We werkten aan Mozarts Symfonie nr. 40 in g klein KV 550. Mozart componeerde deze symfonie in de zomer van <strong>1788</strong>,
+                in een buitengewoon productieve periode waarin ook de eenenveertigste symfonie, de Jupitersymfonie, ontstond.
+                De g-kleine symfonie werd later bekend om haar dramatische intensiteit, verfijnde vormgeving en emotionele diepte.
+                Vanaf het gespannen openingsmotief van het eerste <em>Molto Allegro</em> tot de onrustige levendigheid van het slotdeel
+                <em>Allegro assai</em> tekent zich een muziekbeeld af dat vooruitwijst naar de romantiek.
+            </p>
+
+            <p>De symfonie bestaat uit <strong>vier delen</strong>:</p>
+
+            <ol>
+                <li><em>Molto Allegro</em> – energiek en onrustig, met een typisch Mozartiaanse balans tussen passie en structuur</li>
+                <li><em>Andante</em> – een ingetogener, zangerig middendeel vol subtiele spanning</li>
+                <li><em>Menuetto en Trio</em> – dansant maar donker getint, met scherp gearticuleerde contrasten</li>
+                <li><em>Allegro assai</em> – een virtuoos en stormachtig slot, waarin de gemoedsbewegingen tot een hoogtepunt komen</li>
+            </ol>
+            </p>
+        </div>
+        <div style="clear: both;" class="w3-panel">
+            <h4>28 maart 2026: symfonie nr. 13 in F KV 112 & hoornconcert nr. 2 in Es KV 417</h4>
+            <p>De negende aflevering van Mozart op Zaterdag vond plaats op zaterdagochtend 28 maart. We werkten aan Mozarts vroege symfonie nr. 13 in F KV 112 en aan het tweede hoornconcert in Es KV 417, beide voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. Hoornsolist was Maarten Theulen, die ook het publiek vergaste op een inleiding over de mogelijkheden en onmogelijkheden van de natuurhoorn.</p>
+
         </div>
     </div>
 </body>

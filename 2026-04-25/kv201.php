@@ -91,8 +91,13 @@
                     <td>hoorn 2</td>
                 </tr>
                 <tr>
-                    <td>Sylvia </td>
-                    <td>Keijser </td>
+                    <td><i>vacature</i></td>
+                    <td></td>
+                    <td>viool 1</td>
+                </tr>
+                <tr>
+                    <td><i>vacature</i></td>
+                    <td></td>
                     <td>viool 1</td>
                 </tr>
                 <tr>
@@ -133,7 +138,7 @@
                 <tr>
                     <td>Maria</td>
                     <td>Voorhout</td>
-                    <td>altviool</td>
+                    <td>viool 2</td>
                 </tr>
                 <tr>
                     <td>Maaike</td>
@@ -143,6 +148,11 @@
                 <tr>
                     <td>Laetitia</td>
                     <td>Ingen Hoes</td>
+                    <td>altviool</td>
+                </tr>
+                <tr>
+                    <td>Lia</td>
+                    <td>van Schaijk</td>
                     <td>altviool</td>
                 </tr>
                 <tr>
