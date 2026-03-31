@@ -71,8 +71,8 @@
                     <td>hobo 1</td>
                 </tr>
                 <tr>
-                    <td>Rineke</td>
-                    <td>Boerwinkel</td>
+                    <td>Eva</td>
+                    <td>Elgeti</td>
                     <td>hobo 2</td>
                 </tr>
                 <tr>
