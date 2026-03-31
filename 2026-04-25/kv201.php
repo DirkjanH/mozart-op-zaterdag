@@ -76,8 +76,8 @@
                     <td>hobo 2</td>
                 </tr>
                 <tr>
-                    <td>Yolande </td>
-                    <td>Krooshof</td>
+                    <td>Nicole</td>
+                    <td>Freling</td>
                     <td>fagot</td>
                 </tr>
                 <tr>
