@@ -31,9 +31,12 @@
             drie delen en eindigt met een reeks variaties, wat het werk een bijzondere
             afwisseling van dramatiek, verfijning en innerlijke spanning geeft.
         </p>
-        <p>Het concert duurt ca. 33 minuten. De bezetting is 2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns, 2 trompetten, pauken en strijkers. De (nog niet betekende) partijen vind je hieronder.</p>
+        <p>Het concert duurt ca. 33 minuten. De bezetting is 1 fluit, 2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns, 2 trompetten, pauken en strijkers. De (gedeeltelijknog niet betekende) partijen vind je hieronder.</p>
         <h3>Partijen</h3>
         <ul style="column-count: 3;">
+            <li>
+                <a href="\2026-05-23\K491.Flute.pdf" target="_blank">Dwarsfluit</a>
+            </li>
             <li>
                 <a href="\2026-05-23\K491.Oboe.pdf" target="_blank">Hobo 1/2</a>
             </li>
