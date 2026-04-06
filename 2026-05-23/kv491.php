@@ -23,15 +23,15 @@
             in een periode waarin hij op het toppunt van zijn creativiteit stond.
         </p>
         <p>
-            De donkere toonsoort c klein geeft het concerto een gespannen en intens
+            De donkere toonsoort c klein geeft het concerto een intens
             karakter. Opvallend is de rijke orkestratie, met onder meer fluit, hobo’s,
             klarinetten, fagotten, hoorns, trompetten, pauken en strijkers, waardoor een
             kleurrijk en bijna symfonisch klankbeeld ontstaat. Het concerto bestaat uit
             drie delen en eindigt met een reeks variaties, wat het werk een bijzondere
-            afwisseling van dramatiek, verfijning en innerlijke spanning geeft.
+            afwisseling van dramatiek en innerlijke spanning geeft.
         </p>
         <p><img src="https://mozartopzaterdag.nl/2025-11-15/Hans-Erik_Dijkstra.jpg" alt="Hans-Erik Dijkstra, piano" class="w3-right w3-margin-left" style="width:300px;"></p>
-            Solist is deze keer de pianist <strong>Hans-Erik Dijkstra</strong>. Hij trad eerder op bij Mozart op Zaterdag als solist in het 17e pianoconcert KV 453. Hij is een veelzijdig pianist met een brede muzikale praktijk. Na zijn studie was hij correpetitor aan het Koninklijk Conservatorium te Den Haag. Hij is pianodocent, vaste begeleider van koren en uitvoerend musicus in binnen- en buitenland. Hij componeerde onder andere twee opera’s.
+        Solist is deze keer de pianist <strong>Hans-Erik Dijkstra</strong>. Hij trad eerder op bij Mozart op Zaterdag als solist in het 17e pianoconcert KV 453. Hij is een veelzijdig pianist met een brede muzikale praktijk. Na zijn studie was hij correpetitor aan het Koninklijk Conservatorium te Den Haag. Hij is pianodocent, vaste begeleider van koren en uitvoerend musicus in binnen- en buitenland. Hij componeerde onder andere twee opera’s.
         </p>
         <p>
             Zijn ervaring in kamermuziek en als begeleider geeft zijn solospel extra diepgang en een natuurlijk gevoel voor samenspel met orkest en dirigent.
