@@ -23,11 +23,8 @@
             in een periode waarin hij op het toppunt van zijn creativiteit stond.
         </p>
         <p>
-            De donkere toonsoort c klein geeft het concerto een intens
-            karakter. Opvallend is de rijke orkestratie, met onder meer fluit, hobo’s,
-            klarinetten, fagotten, hoorns, trompetten, pauken en strijkers, waardoor een
-            kleurrijk en bijna symfonisch klankbeeld ontstaat. Het concerto bestaat uit
-            drie delen en eindigt met een reeks variaties, wat het werk een bijzondere
+            De donkere toonsoort c klein geeft het concerto een intens karakter. Opvallend is de rijke orkestratie, waardoor een
+            kleurrijk en bijna symfonisch klankbeeld ontstaat. Het concerto bestaat uit drie delen en eindigt met een reeks variaties, wat het werk een bijzondere
             afwisseling van dramatiek en innerlijke spanning geeft.
         </p>
         <p><img src="https://mozartopzaterdag.nl/2025-11-15/Hans-Erik_Dijkstra.jpg" alt="Hans-Erik Dijkstra, piano" class="w3-right w3-margin-left" style="width:300px;"></p>
