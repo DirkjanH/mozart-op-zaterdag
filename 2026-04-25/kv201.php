@@ -20,7 +20,14 @@
             <a href="https://open.spotify.com/playlist/6sbwUmreBh4ZAMfUdM5a0z?si=acd83ace818b4d34" target="_blank">Dit is een mooie opname onder leiding van Ádám Fischer</a>. Mozart voltooide die symfonie op 6 april 1774 in Salzburg. Deze symfonie van Mozart wordt door verschillende auteurs beschouwd als een hoogtepunt in zijn symfonische werk. Dit komt door de uitwerking van de vorm, vooral van de uitgebreide sonatevorm van de eerste drie delen, die allemaal een expliciet coda hebben. Ook het contrapunt, vooral in het eerste deel, en de expressieve kracht, bijvoorbeeld in de lange doorwerking in het vierde deel, dragen hieraan bij. Deze symfonie en 'onze' kleine g-moll symfonie KV 183 zijn de vroegste symfonieën van Mozart die nog regelmatig op concertprogramma's verschijnen.
         </p>
         <p>“Er is een nieuw besef van de noodzaak om de symfonie te verdiepen door middel van imitatieve vitalisering, om haar door middel van kamermuzikale verfijning te redden van het louter decoratieve. De instrumenten veranderen van karakter; de violen worden spiritueler, de blazers vermijden alles wat lawaaierig is, de figuraties alles wat conventioneel is. De nieuwe geest is gedocumenteerd in alle delen (...)" schreef musicoloog Albert Einstein over deze symfonie. Stanley Sadie karakteriseert hem als “een mijlpaal ... persoonlijk in toon, ja misschien wel individueler in zijn combinatie van een intieme, kamermuzikale stijl met een nog steeds vurige en impulsieve manier.”</p>
-        <p>De symfonie duurt ca. 26 minuten. De bezetting is 2 hobo's, 1 fagot, 2 hoorns en strijkers. De partijen vind je hieronder.</p>
+        <p>De symfonie duurt ca. 26 minuten. De bezetting is 2 hobo's, 1 fagot, 2 hoorns en strijkers. De partijen vind je hieronder. De tempi van de delen zijn:</p>
+        <ol>
+            <li>Allegro: ca. 80 voor de halve noot</li>
+            <li>Andante: ca. 80 voor de achtste noot</li>
+            <li>Menuetto & Trio: ca. 50 voor de gepuncteerde halve (150 voor de kwart)</li>
+            <li>Allegro: ca. 108 voor de gepuncteerde kwart</li>
+        </ol>
+
         <h3>Partijen</h3>
         <ul style="column-count: 3;">
             <li>
@@ -39,7 +46,7 @@
                 <a href="\2026-04-25\Mozart - Symfonie nr. 29 in A KV 201 - viool 1 - betekend.pdf" target="_blank"><b>Viool 1 (betekend)</b></a>
             </li>
             <li>
-                <a href="\2026-04-25\Mozart - Symfonie nr. 29 in A KV 201 - viool 2.pdf" target="_blank">Viool 2</a>
+                <a href="\2026-04-25\Mozart - Symfonie nr. 29 in A KV 201 - viool 2 - betekend.pdf" target="_blank"><b>Viool 2 (betekend)</b></a>
             </li>
             <li>
                 <a href="\2026-04-25\Mozart - Symfonie nr. 29 in A KV 201 - viola - betekend.pdf" target="_blank"><b>Altviool (betekend)</b></a>
@@ -85,8 +92,8 @@
                     <td>hoorn 1</td>
                 </tr>
                 <tr>
-                    <td>Wim</td>
-                    <td>Kuppen</td>
+                    <td>Richard</td>
+                    <td>van Hoorn</td>
                     <td>hoorn 2</td>
                 </tr>
                 <tr>
@@ -95,8 +102,8 @@
                     <td>viool 1</td>
                 </tr>
                 <tr>
-                    <td><i>vacature</i></td>
-                    <td></td>
+                    <td>Petra</td>
+                    <td>van Besouw</td>
                     <td>viool 1</td>
                 </tr>
                 <tr>

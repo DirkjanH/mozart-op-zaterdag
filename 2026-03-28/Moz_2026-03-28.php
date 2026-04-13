@@ -180,8 +180,8 @@
                     <td>viool 1</td>
                 </tr>
                 <tr>
-                    <td><i>vacature</i></td>
-                    <td></td>
+                    <td>Petra</td>
+                    <td>van Besouw</td>
                     <td>viool 2 (aanvoerder)</td>
                 </tr>
                 <tr>
