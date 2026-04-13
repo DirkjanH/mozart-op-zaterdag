@@ -60,7 +60,7 @@
             </li>
         </ul>
         <h2>Bezetting</h2>
-        <p>Er zijn nu 22 deelnemers. Er is nog plaats voor een of twee eerste en een of twee tweede violen.</p>
+        <p>Er zijn nu 23 deelnemers. Er is nog plaats voor een of twee eerste en een tweede viool.</p>
         <p class="onzichtbaar">Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
         <table class="w3-table w3-striped w3-bordered" id="deelnemers">
             <thead>
