@@ -127,8 +127,8 @@
                     <td>viool 2 (aanvoerder)</td>
                 </tr>
                 <tr>
-                    <td><i>vacature</i></td>
-                    <td></td>
+                    <td>Rudolf</td>
+                    <td>Rasch</td>
                     <td>viool 2</td>
                 </tr>
                 <tr>
