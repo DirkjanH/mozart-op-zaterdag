@@ -74,9 +74,9 @@
                 <a href="\2026-05-23\K491_score.pdf" target="_blank">Partituur</a>
             </li>
         </ul>
-        <div class="onzichtbaar">
+        <div class="">
             <h2>Bezetting</h2>
-            <p>Er zijn nu 22 deelnemers. Er is nog plaats voor een of twee eerste en een of twee tweede violen.</p>
+            <p>Er zijn nu 31 deelnemers. Er is nog plaats voor een of twee eerste violen en twee trompetten.</p>
             <p class="onzichtbaar">Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
             <table class="w3-table w3-striped w3-bordered" id="deelnemers">
                 <thead>
@@ -88,23 +88,43 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Liesbeth</td>
-                        <td>Feikema</td>
+                        <td>Laurie</td>
+                        <td>Boltjes</td>
+                        <td>fluit</td>
+                    </tr>
+                    <tr>
+                        <td>Erik</td>
+                        <td>van Kassel</td>
                         <td>hobo 1</td>
                     </tr>
                     <tr>
-                        <td>Eva</td>
-                        <td>Elgeti</td>
+                        <td>Liesbeth</td>
+                        <td>Feikema</td>
                         <td>hobo 2</td>
                     </tr>
                     <tr>
-                        <td>Nicole</td>
-                        <td>Freling</td>
-                        <td>fagot</td>
+                        <td>Marcus </td>
+                        <td>Prins</td>
+                        <td>klarinet 1</td>
                     </tr>
                     <tr>
-                        <td>Ietsje</td>
-                        <td>Bontekoe</td>
+                        <td>Inge</td>
+                        <td>Out </td>
+                        <td>klarinet 2</td>
+                    </tr>
+                    <tr>
+                        <td>Yolande </td>
+                        <td>Krooshof</td>
+                        <td>fagot 1</td>
+                    </tr>
+                    <tr>
+                        <td>Pieter</td>
+                        <td>de Oude</td>
+                        <td>fagot 2</td>
+                    </tr>
+                    <tr>
+                        <td>Richard</td>
+                        <td>van Hoorn</td>
                         <td>hoorn 1</td>
                     </tr>
                     <tr>
@@ -115,36 +135,56 @@
                     <tr>
                         <td><i>vacature</i></td>
                         <td></td>
-                        <td>viool 1</td>
+                        <td>trompet 1</td>
                     </tr>
                     <tr>
                         <td><i>vacature</i></td>
                         <td></td>
-                        <td>viool 1</td>
+                        <td>trompet 2</td>
                     </tr>
                     <tr>
-                        <td>Vera</td>
-                        <td>Heins</td>
-                        <td>viool 1</td>
+                        <td>Agnes</td>
+                        <td>Hoeksma</td>
+                        <td>pauken</td>
                     </tr>
                     <tr>
-                        <td>Frits </td>
-                        <td>Muusse </td>
+                        <td><i>vacature</i></td>
+                        <td></td>
                         <td>viool 1</td>
                     </tr>
                     <tr>
                         <td>Janne</td>
                         <td>den Blaauwen </td>
+                        <td>viool 1</td>
+                    </tr>
+                    <tr>
+                        <td>Jan</td>
+                        <td>Prins</td>
+                        <td>viool 1</td>
+                    </tr>
+                    <tr>
+                        <td>Carla</td>
+                        <td>Van Kassel-Westhof</td>
                         <td>viool 1 (concertmeester)</td>
                     </tr>
                     <tr>
-                        <td>Adriaan</td>
-                        <td>Mol</td>
-                        <td>viool 2 (aanvoerder)</td>
+                        <td>Janne</td>
+                        <td>den Blaauwen </td>
+                        <td>viool 1</td>
                     </tr>
                     <tr>
-                        <td><i>vacature</i></td>
-                        <td></td>
+                        <td>Petra</td>
+                        <td>van Besouw</td>
+                        <td>viool 1</td>
+                    </tr>
+                    <tr>
+                        <td>Frits </td>
+                        <td>Muusse </td>
+                        <td>viool 2</td>
+                    </tr>
+                    <tr>
+                        <td>Ruben</td>
+                        <td>Faas</td>
                         <td>viool 2</td>
                     </tr>
                     <tr>
@@ -153,23 +193,28 @@
                         <td>viool 2</td>
                     </tr>
                     <tr>
+                        <td>Bea</td>
+                        <td>Selman</td>
+                        <td>viool 2</td>
+                    </tr>
+                    <tr>
+                        <td>Saskia</td>
+                        <td>Wieberdink</td>
+                        <td>viool 2 (aanvoerder)</td>
+                    </tr>
+                    <tr>
+                        <td>Adriaan</td>
+                        <td>Mol</td>
+                        <td>viool 2</td>
+                    </tr>
+                    <tr>
+                        <td>Marijke</td>
+                        <td>Huijgen</td>
+                        <td>altviool (aanvoerder)</td>
+                    </tr>
+                    <tr>
                         <td>Peter</td>
                         <td>Klusener</td>
-                        <td>viool 2</td>
-                    </tr>
-                    <tr>
-                        <td>Maria</td>
-                        <td>Voorhout</td>
-                        <td>viool 2</td>
-                    </tr>
-                    <tr>
-                        <td>Maaike</td>
-                        <td>Gerlsma</td>
-                        <td>altviool</td>
-                    </tr>
-                    <tr>
-                        <td>Laetitia</td>
-                        <td>Ingen Hoes</td>
                         <td>altviool</td>
                     </tr>
                     <tr>
@@ -178,9 +223,9 @@
                         <td>altviool</td>
                     </tr>
                     <tr>
-                        <td>Eline</td>
-                        <td>Snoek</td>
-                        <td>altviool (aanvoerder)</td>
+                        <td>Maria</td>
+                        <td>Voorhout</td>
+                        <td>altviool</td>
                     </tr>
                     <tr>
                         <td>Meike</td>
@@ -188,18 +233,18 @@
                         <td>cello (aanvoerder)</td>
                     </tr>
                     <tr>
-                        <td>Reine Marie</td>
-                        <td>Verhagen</td>
+                        <td>Nicoline</td>
+                        <td>Simonis</td>
                         <td>cello</td>
                     </tr>
                     <tr>
-                        <td>Friso</td>
-                        <td>van der Veen</td>
+                        <td>Franca</td>
+                        <td>Post</td>
                         <td>cello</td>
                     </tr>
                     <tr>
-                        <td>Anke</td>
-                        <td>Meester</td>
+                        <td>Jan</td>
+                        <td>Strumphler</td>
                         <td>cello</td>
                     </tr>
                     <tr>
