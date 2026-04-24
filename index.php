@@ -50,7 +50,7 @@
             </li>
             <li>
                 <b>23 mei:</b> Pianoconcert nr. 24 in c klein KV 491 voor 1 fluit,
-                2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns en strijkers. Solist is de pianist Hans-Erik Dijkstra. Er is nog plaats voor een of twee 1e violen en <b>twee trompetten</b>. <a href="/2026-05-23/kv491.php" target="_blank">Meer info & partijen vind je hier</a>.
+                2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns, 2 trompetten, pauken en strijkers. Solist is de pianist Hans-Erik Dijkstra. Er is nog plaats voor een of twee 1e violen en <b>twee trompetten</b>. <a href="/2026-05-23/kv491.php" target="_blank">Meer info & partijen vind je hier</a>.
             </li>
             <li>
                 <b>26 september:</b> Concert voor fluit en harp in C KV 417 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. Solisten zijn: Elisa Bartolomé Gómez, dwarsfluit, en Maria Palma, harp. <a xxxx="/2026-02-28/Moz_2026-02-28.php" target="_blank">Meer info & partijen vind je binnenkort hier</a>.
