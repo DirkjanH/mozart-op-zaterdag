@@ -53,14 +53,14 @@
                 2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns en strijkers. Solist is de pianist Hans-Erik Dijkstra. Er is nog plaats voor een of twee 1e violen en <b>twee trompetten</b>. <a href="/2026-05-23/kv491.php" target="_blank">Meer info & partijen vind je hier</a>.
             </li>
             <li>
-                <b>26 september:</b> Concert voor fluit en harp in C KV 417 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. <a xxxx="/2026-02-28/Moz_2026-02-28.php" target="_blank">Meer info & partijen vind je binnenkort hier</a>.
+                <b>26 september:</b> Concert voor fluit en harp in C KV 417 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. Solisten zijn: Elisa Bartolomé Gómez, dwarsfluit, en Maria Palma, harp. <a xxxx="/2026-02-28/Moz_2026-02-28.php" target="_blank">Meer info & partijen vind je binnenkort hier</a>.
             </li>
             <li>
                 <b>24 oktober:</b> “Parijse” Ouverture in D KV 311a & “Parijse” Symfonie nr. 31 in D KV 297 voor 2 fluiten,
                 2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns, 2 trompetten, pauken en strijkers. <a xxxx="/2026-02-28/Moz_2026-02-28.php" target="_blank">Meer info & partijen vind je binnenkort hier</a>.
             </li>
             <li>
-                <b>21 november:</b> concertaria’s voor sopraan, bas en orkest en het duet <i>Per queste tue manine</i> KV 540b voor 2 fluiten, 2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns en strijkers. De solisten zijn nog te bepalen. <a xxxx="/2026-02-28/Moz_2026-02-28.php" target="_blank">Meer info & partijen vind je binnenkort hier</a>.
+                <b>21 november:</b> concertaria’s voor sopraan, bas en orkest en het duet <i>Per queste tue manine</i> KV 540b voor 2 fluiten, 2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns en strijkers. De solisten zijn: een nog te bepalen sopraan en Mitchell Sandler, bas. <a xxxx="/2026-02-28/Moz_2026-02-28.php" target="_blank">Meer info & partijen vind je binnenkort hier</a>.
             </li>
         </ul>
         <h4>Meespelen?</h4>
