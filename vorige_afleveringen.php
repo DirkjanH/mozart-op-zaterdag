@@ -116,6 +116,13 @@
             <p>De negende aflevering van Mozart op Zaterdag vond plaats op zaterdagochtend 28 maart. We werkten aan Mozarts vroege symfonie nr. 13 in F KV 112 en aan het tweede hoornconcert in Es KV 417, beide voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. Hoornsolist was Maarten Theulen, die ook het publiek vergaste op een inleiding over de mogelijkheden en onmogelijkheden van de natuurhoorn.</p>
 
         </div>
+        <div style="clear: both;" class="w3-panel">
+            <h4>25 april 2026: symfonie nr. 29 in A KV 201</h4>
+            <p>
+                Op zaterdagochtend 25 april speelde <i>Mozart op Zaterdag</i> Mozarts 29e symfonie in A KV 201. Mozart voltooide die symfonie op 6 april 1774 in Salzburg. Deze symfonie van Mozart wordt door verschillende auteurs beschouwd als een hoogtepunt in zijn symfonische werk. Dit komt door de uitwerking van de vorm, vooral van de uitgebreide sonatevorm van de eerste drie delen, die allemaal een expliciet coda hebben. Ook het contrapunt, vooral in het eerste deel, en de expressieve kracht, bijvoorbeeld in de lange doorwerking in het vierde deel, dragen hieraan bij. Deze symfonie en de kleine g-moll symfonie KV 183 zijn de vroegste symfonieën van Mozart die nog regelmatig op concertprogramma's verschijnen.
+            </p>
+            <p>“Er is een nieuw besef van de noodzaak om de symfonie te verdiepen door middel van imitatieve vitalisering, om haar door middel van kamermuzikale verfijning te redden van het louter decoratieve. De instrumenten veranderen van karakter; de violen worden spiritueler, de blazers vermijden alles wat lawaaierig is, de figuraties alles wat conventioneel is. De nieuwe geest is gedocumenteerd in alle delen (...)" schreef musicoloog Albert Einstein over deze symfonie. Stanley Sadie karakteriseert hem als “een mijlpaal ... persoonlijk in toon, ja misschien wel individueler in zijn combinatie van een intieme, kamermuzikale stijl met een nog steeds vurige en impulsieve manier.”</p>
+        </div>
     </div>
 </body>
 
