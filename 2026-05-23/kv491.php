@@ -98,8 +98,8 @@
                         <td>hobo 1</td>
                     </tr>
                     <tr>
-                        <td>Liesbeth</td>
-                        <td>Feikema</td>
+                        <td>Eva</td>
+                        <td>Elgeti</td>
                         <td>hobo 2</td>
                     </tr>
                     <tr>
