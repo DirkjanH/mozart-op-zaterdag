@@ -148,21 +148,6 @@
                         <td>pauken</td>
                     </tr>
                     <tr>
-                        <td><i>vacature</i></td>
-                        <td></td>
-                        <td>viool 1</td>
-                    </tr>
-                    <tr>
-                        <td>Janne</td>
-                        <td>den Blaauwen </td>
-                        <td>viool 1</td>
-                    </tr>
-                    <tr>
-                        <td>Jan</td>
-                        <td>Prins</td>
-                        <td>viool 1</td>
-                    </tr>
-                    <tr>
                         <td>Carla</td>
                         <td>Van Kassel-Westhof</td>
                         <td>viool 1 (concertmeester)</td>
@@ -170,6 +155,16 @@
                     <tr>
                         <td>Janne</td>
                         <td>den Blaauwen </td>
+                        <td>viool 1</td>
+                    </tr>
+                    <tr>
+                        <td>Rudolf</td>
+                        <td>Rasch</td>
+                        <td>viool 1</td>
+                    </tr>
+                    <tr>
+                        <td>Jan</td>
+                        <td>Prins</td>
                         <td>viool 1</td>
                     </tr>
                     <tr>
