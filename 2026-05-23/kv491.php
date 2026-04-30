@@ -68,7 +68,7 @@
                 <a href="\2026-05-23\K491.Viola.pdf" target="_blank">Altviool</a>
             </li>
             <li>
-                <a href="\2026-05-23\K491.Cello_betekend.pdf" target="_blank">Cello/contrabas</a>
+                <a href="\2026-05-23\K491.Cello_betekend.pdf" target="_blank">Cello/contrabas (betekend)</a>
             </li>
             <li>
                 <a href="\2026-05-23\K491_score.pdf" target="_blank">Partituur</a>
