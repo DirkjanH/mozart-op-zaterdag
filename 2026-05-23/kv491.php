@@ -62,10 +62,10 @@
                 <a href="\2026-05-23\K491.Violin1_betekend.pdf" target="_blank">Viool 1 (betekend)</a>
             </li>
             <li>
-                <a href="\2026-05-23\K491.Violin2.pdf" target="_blank">Viool 2</a>
+                <a href="\2026-05-23\K491.Violin2_betekend.pdf" target="_blank">Viool 2 (betekend)</a>
             </li>
             <li>
-                <a href="\2026-05-23\K491.Viola.pdf" target="_blank">Altviool</a>
+                <a href="\2026-05-23\K491.Viola_betekend.PDF" target="_blank">Altviool (betekend)</a>
             </li>
             <li>
                 <a href="\2026-05-23\K491.Cello_betekend.pdf" target="_blank">Cello/contrabas (betekend)</a>
