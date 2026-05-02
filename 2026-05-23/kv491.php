@@ -37,7 +37,7 @@
         <p>Het concert duurt ca. 33 minuten. De bezetting is 1 fluit, 2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns, 2 trompetten, pauken en strijkers. 
             De partijen vind je hieronder. We doen alle herhalingen. De tempi worden:</p>
             <ol>
-                <li>Allegro: kwart is 124</li>
+                <li>Allegro: kwart = 124</li>
                 <li>Larghetto: achtste = ca. 96</li>
                 <li>Allegretto: halve noot = 72; in de gedeelte in 6/8 wordt het 100 voor de gepuncteerde kwart</li>
             </ol>
