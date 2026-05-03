@@ -83,7 +83,7 @@
         </ul>
         <div class="">
             <h2>Bezetting</h2>
-            <p>Er zijn nu 31 deelnemers. Er is nog plaats voor een of twee eerste violen en twee trompetten.</p>
+            <p>Er zijn nu 31 deelnemers. Er is nog plaats voor een eerste en een tweede viool.</p>
             <p class="onzichtbaar">Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
             <table class="w3-table w3-striped w3-bordered" id="deelnemers">
                 <thead>
@@ -140,12 +140,12 @@
                         <td>hoorn 2</td>
                     </tr>
                     <tr>
-                        <td><i>vacature</i></td>
-                        <td></td>
+                        <td>Willem</td>
+                        <td>Naert</td>
                         <td>trompet 1</td>
                     </tr>
                     <tr>
-                        <td><i>vacature</i></td>
+                        <td>Judit</td>
                         <td></td>
                         <td>trompet 2</td>
                     </tr>
@@ -190,8 +190,8 @@
                         <td>viool 2</td>
                     </tr>
                     <tr>
-                        <td>Erika</td>
-                        <td>Mathot</td>
+                        <td><i>vacature</i></td>
+                        <td></td>
                         <td>viool 2</td>
                     </tr>
                     <tr>
