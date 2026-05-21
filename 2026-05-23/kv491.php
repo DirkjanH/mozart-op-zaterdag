@@ -180,6 +180,11 @@
                         <td>viool 1</td>
                     </tr>
                     <tr>
+                        <td>Paul</td>
+                        <td>van Coeverden</td>
+                        <td>viool 1</td>
+                    </tr>
+                    <tr>
                         <td>Frits </td>
                         <td>Muusse </td>
                         <td>viool 2</td>
