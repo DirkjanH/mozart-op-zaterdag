@@ -123,6 +123,23 @@
             </p>
             <p>“Er is een nieuw besef van de noodzaak om de symfonie te verdiepen door middel van imitatieve vitalisering, om haar door middel van kamermuzikale verfijning te redden van het louter decoratieve. De instrumenten veranderen van karakter; de violen worden spiritueler, de blazers vermijden alles wat lawaaierig is, de figuraties alles wat conventioneel is. De nieuwe geest is gedocumenteerd in alle delen (...)" schreef musicoloog Albert Einstein over deze symfonie. Stanley Sadie karakteriseert hem als “een mijlpaal ... persoonlijk in toon, ja misschien wel individueler in zijn combinatie van een intieme, kamermuzikale stijl met een nog steeds vurige en impulsieve manier.”</p>
         </div>
+        <div>Hier is de samenvatting, geschreven als een terugblik in de verleden tijd en met behoud van de HTML-structuur:
+
+            ```html
+            <h4>23 mei 2026: Pianoconcert nr. 24 in c klein KV 491</h4>
+            <p>
+                Op zaterdagochtend 23 mei bracht <i>Mozart op Zaterdag</i> het
+                <strong>24e pianoconcert in c klein KV 491</strong> ten gehore. Dit werk, dat tot
+                Mozarts meest indrukwekkende en dramatische concerten behoort en een van zijn twee pianoconcerten in een mineurtoonsoort is, werd door hem voltooid in 1786 toen hij op het toppunt van zijn creativiteit stond. De donkere toonsoort c klein geeft het concerto een intens karakter, dat door de rijke orkestratie een kleurrijk en bijna symfonisch klankbeeld krijgt. Het concerto, bestaande uit drie delen en eindigend met een reeks variaties, zorgt voor een bijzondere afwisseling van dramatiek en innerlijke spanning.
+            </p>
+            <p><img src="https://mozartopzaterdag.nl/2025-11-15/Hans-Erik_Dijkstra.jpg" alt="Hans-Erik Dijkstra, piano" class="w3-right w3-margin-left" style="width:300px;"></p>
+            <p>
+                De solopartij werd verzorgd door pianist <strong>Hans-Erik Dijkstra</strong>, die al eerder bij Mozart op Zaterdag schitterde in het 17e pianoconcert KV 453. Dijkstra bleek opnieuw een veelzijdig musicus; hij werkte na zijn studie als correpetitor aan het Koninklijk Conservatorium te Den Haag, is actief als pianodocent, vaste begeleider van koren, en treedt op in binnen- en buitenland. Ook componeerde hij onder andere twee opera’s.
+            </p>
+            <p>
+                Zijn brede ervaring in de kamermuziek en als begeleider gaf zijn solospel merkbaar extra diepgang en een natuurlijk gevoel voor samenspel met het orkest en de dirigent. Hierdoor wist hij in dit concerto-repertoire een overtuigende balans te vinden tussen virtuositeit, muzikaal lijnenspel en de dialoog met het orkest.
+            </p>
+        </div>
     </div>
 </body>
 
