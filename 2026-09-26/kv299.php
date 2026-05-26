@@ -17,19 +17,27 @@
         <h1>Concert voor fluit en harp in C KV 299</h1>
         <p>
             Op zaterdagochtend 26 september speelt <i>Mozart op Zaterdag</i> zijn
-            <strong>Concert voor fluit en harp in C KV 299</strong>. Dit werk behoort tot
-            Mozarts meest indrukwekkende en dramatische concerten, en geldt als een van
-            zijn twee pianoconcerten in een mineurtoonsoort. Mozart voltooide het in 1786,
-            in een periode waarin hij op het toppunt van zijn creativiteit stond.
+            <strong>Concert voor fluit en harp in C KV 299</strong>. Mozarts Concert voor fluit en harp in C KV 299 is een licht, elegant en bijzonder melodieus werk. De fluit en harp voeren daarin een sprankelend muzikaal gesprek, soms speels, soms juist heel lyrisch, terwijl het orkest de verfijnde kleuren subtiel ondersteunt. Vooral het langzame middendeel ademt een zachte, intieme schoonheid, terwijl de finale uitblinkt in vrolijke vaart en charme.
         </p>
         <p>Het concert duurt ca. 27 minuten. De bezetting is 2 hobo's, 1 fagot, 2 hoorns en strijkers.
             De partijen vind je hieronder. We doen alle herhalingen. De tempi worden:</p>
         <ol>
-            <li>Allegro: kwart = 124</li>
-            <li>Andantino: achtste = ca. 96</li>
-            <li>Rondo Allegro: halve noot = 72; in de gedeelte in 6/8 wordt het 100 voor de gepuncteerde kwart</li>
+            <li>Allegro: kwart = 126</li>
+            <li>Andantino: kwart = ca. 56</li>
+            <li>Rondo Allegro: halve noot = 96</li>
         </ol>
+        <h2>De solisten</h2>
+        <h4>Elisa Bartolomé Gómez (fluit)</h4>
+        <div class="w3-left" width="200">
+            <img src="Elisa_BG.jpg" alt="Elisa Bartolomé Gómez">
+        </div>
+        <p>Elisa Bartolomé Gómez is een uit Tenerife afkomstige fluitiste en piccoloïste, gevestigd in Nederland. In 2024 behaalde zij haar master aan het Koninklijk Conservatorium Den Haag, waar zij studeerde bij Alena Walentin. Elisa werkte met diverse professionele orkesten, waaronder Het Balletorkest, het Tenerife Symphony Orchestra en het Amsterdam Chamber Orchestra. Naast haar klassieke werk is zij actief in de hedendaagse muziek en zoekt zij graag de grenzen van haar instrument op in samenwerkingen rond improvisatie en elektronica.</p>
 
+        <h4>Maria Palma (harp)</h4>
+        <div class="w3-left" width="200">
+            <img src="Maria_P.jpg" alt="Maria Palma">
+        </div>
+        <p>Maria Palma is een Italiaanse harpiste, gevestigd in Den Haag, die sinds haar zesde harp speelt. Ze werkt graag in uiteenlopende contexten, zoals orkesten, soloconcerten en kamermuziek, en trad op in verschillende zalen in Italië en Nederland, waaronder het Concertgebouw in Amsterdam, het Teatro San Carlo in Napels, het Gaudeamus Festival en het Dutch Harp Festival in Utrecht. Ze heeft altijd belangstelling gehad voor het combineren van verschillende stijlen: naast haar klassieke activiteiten speelt ze in een groep voor hedendaagse muziek, in een girl band waarmee ze jazz-, pop- en fusionmuziek maakt, en in haar projecten zoekt ze graag verbindingen tussen muziek en andere kunstvormen, zoals poëzie en beeldende kunst.</p>
         <h3>Partijen</h3>
         <ul style="column-count: 3;">
             <li>
