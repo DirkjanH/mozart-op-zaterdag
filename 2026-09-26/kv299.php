@@ -28,14 +28,14 @@
         </ol>
         <h2>De solisten</h2>
         <h4>Elisa Bartolomé Gómez (fluit)</h4>
-        <div class="w3-left" width="200">
-            <img src="Elisa_BG.jpg" alt="Elisa Bartolomé Gómez">
+        <div class="w3-left w3-margin-right" >
+            <img src="Elisa_BG.jpg" alt="Elisa Bartolomé Gómez" width="200">
         </div>
         <p>Elisa Bartolomé Gómez is een uit Tenerife afkomstige fluitiste en piccoloïste, gevestigd in Nederland. In 2024 behaalde zij haar master aan het Koninklijk Conservatorium Den Haag, waar zij studeerde bij Alena Walentin. Elisa werkte met diverse professionele orkesten, waaronder Het Balletorkest, het Tenerife Symphony Orchestra en het Amsterdam Chamber Orchestra. Naast haar klassieke werk is zij actief in de hedendaagse muziek en zoekt zij graag de grenzen van haar instrument op in samenwerkingen rond improvisatie en elektronica.</p>
 
         <h4>Maria Palma (harp)</h4>
-        <div class="w3-left" width="200">
-            <img src="Maria_P.jpg" alt="Maria Palma">
+        <div class="w3-left w3-margin-right" >
+            <img src="Maria_P.jpg" alt="Maria Palma" width="200">
         </div>
         <p>Maria Palma is een Italiaanse harpiste, gevestigd in Den Haag, die sinds haar zesde harp speelt. Ze werkt graag in uiteenlopende contexten, zoals orkesten, soloconcerten en kamermuziek, en trad op in verschillende zalen in Italië en Nederland, waaronder het Concertgebouw in Amsterdam, het Teatro San Carlo in Napels, het Gaudeamus Festival en het Dutch Harp Festival in Utrecht. Ze heeft altijd belangstelling gehad voor het combineren van verschillende stijlen: naast haar klassieke activiteiten speelt ze in een groep voor hedendaagse muziek, in een girl band waarmee ze jazz-, pop- en fusionmuziek maakt, en in haar projecten zoekt ze graag verbindingen tussen muziek en andere kunstvormen, zoals poëzie en beeldende kunst.</p>
         <h3>Partijen</h3>
