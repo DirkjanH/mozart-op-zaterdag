@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Concert voor fluit en harp in C KV 417</title>
+    <title>Concert voor fluit en harp in C KV 299</title>
     <link href="/css/moz.css" rel="stylesheet" type="text/css">
 </head>
 
@@ -14,65 +14,56 @@
     <div class="w3-content w3-white w3-panel">
         <?php require_once '../navigatie.htm'; ?>
         <h3>Mozart op Zaterdag op 26 september 2026:</h3>
-        <h1>Concert voor fluit en harp in C KV 417</h1>
+        <h1>Concert voor fluit en harp in C KV 299</h1>
         <p>
             Op zaterdagochtend 26 september speelt <i>Mozart op Zaterdag</i> zijn
-            <strong>Concert voor fluit en harp in C KV 417</strong>. Dit werk behoort tot
+            <strong>Concert voor fluit en harp in C KV 299</strong>. Dit werk behoort tot
             Mozarts meest indrukwekkende en dramatische concerten, en geldt als een van
             zijn twee pianoconcerten in een mineurtoonsoort. Mozart voltooide het in 1786,
             in een periode waarin hij op het toppunt van zijn creativiteit stond.
         </p>
-        <p>Het concert duurt ca. 30 minuten. De bezetting is 2 hobo's, 1 fagot, 2 hoorns en strijkers. 
+        <p>Het concert duurt ca. 27 minuten. De bezetting is 2 hobo's, 1 fagot, 2 hoorns en strijkers.
             De partijen vind je hieronder. We doen alle herhalingen. De tempi worden:</p>
-            <ol>
-                <li>Allegro: kwart = 124</li>
-                <li>Andantino: achtste = ca. 96</li>
-                <li>Rondo Allegro: halve noot = 72; in de gedeelte in 6/8 wordt het 100 voor de gepuncteerde kwart</li>
-            </ol>
+        <ol>
+            <li>Allegro: kwart = 124</li>
+            <li>Andantino: achtste = ca. 96</li>
+            <li>Rondo Allegro: halve noot = 72; in de gedeelte in 6/8 wordt het 100 voor de gepuncteerde kwart</li>
+        </ol>
 
         <h3>Partijen</h3>
         <ul style="column-count: 3;">
             <li>
-                <a href="\2026-05-23\K491.Flute.pdf" target="_blank">Dwarsfluit</a>
+                <a href="\2026-09-26\K299.Oboe1.pdf" target="_blank">Hobo 1</a>
             </li>
             <li>
-                <a href="\2026-05-23\K491.Oboe.pdf" target="_blank">Hobo 1/2</a>
+                <a href="\2026-09-26\K299.Oboe2.pdf" target="_blank">Hobo 2</a>
             </li>
             <li>
-                <a href="\2026-05-23\K491.Clarinet.pdf" target="_blank">Klarinet 1/2</a>
+                <a href="\2026-09-26\K299.Corno1.pdf" target="_blank">Hoorn 1</a>
             </li>
             <li>
-                <a href="\2026-05-23\K491.Bassoon.pdf" target="_blank">Fagot 1/2</a>
+                <a href="\2026-09-26\K299.Corno2.pdf" target="_blank">Hoorn 2</a>
             </li>
             <li>
-                <a href="\2026-05-23\K491.Horn.pdf" target="_blank">Hoorn 1/2</a>
+                <a href="\2026-09-26\K299.Violin1.pdf" target="_blank">Viool 1</a>
             </li>
             <li>
-                <a href="\2026-05-23\K491.Trumpet.pdf" target="_blank">Trompet 1/2</a>
+                <a href="\2026-09-26\K299.Violin2.pdf" target="_blank">Viool 2</a>
             </li>
             <li>
-                <a href="\2026-05-23\K491.Timpani.pdf" target="_blank">Pauken</a>
+                <a href="\2026-09-26\K299.Viola.PDF" target="_blank">Altviool</a>
             </li>
             <li>
-                <a href="\2026-05-23\K491.Violin1_betekend.pdf" target="_blank">Viool 1 (betekend)</a>
+                <a href="\2026-09-26\K299.Cello.pdf" target="_blank">Cello, contrabas, fagot</a>
             </li>
             <li>
-                <a href="\2026-05-23\K491.Violin2_betekend.pdf" target="_blank">Viool 2 (betekend)</a>
-            </li>
-            <li>
-                <a href="\2026-05-23\K491.Viola_betekend.PDF" target="_blank">Altviool (betekend)</a>
-            </li>
-            <li>
-                <a href="\2026-05-23\K491.Cello_betekend.pdf" target="_blank">Cello/contrabas (betekend)</a>
-            </li>
-            <li>
-                <a href="\2026-05-23\K491_score.pdf" target="_blank">Partituur</a>
+                <a href="\2026-09-26\Mozart_KV_299_score.pdf" target="_blank">Partituur</a>
             </li>
         </ul>
-        <div class="">
+        <p class="">Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
+        <div class="onzichtbaar">
             <h2>Bezetting</h2>
             <p>Er zijn nu 32 deelnemers. Er is nog plaats voor een tweede viool.</p>
-            <p class="onzichtbaar">Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
             <table class="w3-table w3-striped w3-bordered" id="deelnemers">
                 <thead>
                     <tr>
