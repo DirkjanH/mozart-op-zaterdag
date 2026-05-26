@@ -17,7 +17,7 @@
         <h1>Concert voor fluit en harp in C KV 299</h1>
         <p>
             Op zaterdagochtend 26 september speelt <i>Mozart op Zaterdag</i> zijn
-            <strong>Concert voor fluit en harp in C KV 299</strong>. Mozarts Concert voor fluit en harp in C KV 299 is een licht, elegant en bijzonder melodieus werk. De fluit en harp voeren daarin een sprankelend muzikaal gesprek, soms speels, soms juist heel lyrisch, terwijl het orkest de verfijnde kleuren subtiel ondersteunt. Vooral het langzame middendeel ademt een zachte, intieme schoonheid, terwijl de finale uitblinkt in vrolijke vaart en charme.
+            <strong>Concert voor fluit en harp in C KV 299</strong>. Mozarts Concert voor fluit en harp is een licht, elegant en bijzonder melodieus werk. De fluit en harp voeren daarin een sprankelend muzikaal gesprek, soms speels, soms juist heel lyrisch, terwijl het orkest de verfijnde kleuren subtiel ondersteunt. Vooral het langzame middendeel ademt een zachte, intieme schoonheid, terwijl de finale uitblinkt in vrolijke vaart en charme.
         </p>
         <p>Het concert duurt ca. 27 minuten. De bezetting is 2 hobo's, 1 fagot, 2 hoorns en strijkers.
             De partijen vind je hieronder. We doen alle herhalingen. De tempi worden:</p>
