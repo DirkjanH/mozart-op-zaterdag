@@ -72,10 +72,10 @@
                 <a href="\2026-09-26\Mozart_KV_299_score.pdf" target="_blank">Partituur</a>
             </li>
         </ul>
-        <p class="">Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
-        <div class="onzichtbaar">
+        <p class="onzichtbaar">Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
+        <div class="">
             <h2>Bezetting</h2>
-            <p>Er zijn nu 32 deelnemers. Er is nog plaats voor een tweede viool.</p>
+            <p>Er zijn nu 24 deelnemers. Er is nog plaats voor een eerste en een tweede viool en een altviool.</p>
             <table class="w3-table w3-striped w3-bordered" id="deelnemers">
                 <thead>
                     <tr>
@@ -86,43 +86,23 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Laurie</td>
-                        <td>Boltjes</td>
-                        <td>fluit</td>
-                    </tr>
-                    <tr>
                         <td>Erik</td>
                         <td>van Kassel</td>
                         <td>hobo 1</td>
                     </tr>
                     <tr>
-                        <td>Eva</td>
-                        <td>Elgeti</td>
+                        <td>Liesbeth</td>
+                        <td>Feikema</td>
                         <td>hobo 2</td>
-                    </tr>
-                    <tr>
-                        <td>Marcus </td>
-                        <td>Prins</td>
-                        <td>klarinet 1</td>
-                    </tr>
-                    <tr>
-                        <td>Inge</td>
-                        <td>Out </td>
-                        <td>klarinet 2</td>
                     </tr>
                     <tr>
                         <td>Yolande </td>
                         <td>Krooshof</td>
-                        <td>fagot 1</td>
+                        <td>fagot</td>
                     </tr>
                     <tr>
-                        <td>Pieter</td>
-                        <td>de Oude</td>
-                        <td>fagot 2</td>
-                    </tr>
-                    <tr>
-                        <td>Richard</td>
-                        <td>van Hoorn</td>
+                        <td>Ietsje</td>
+                        <td>Bontekoe</td>
                         <td>hoorn 1</td>
                     </tr>
                     <tr>
@@ -131,19 +111,9 @@
                         <td>hoorn 2</td>
                     </tr>
                     <tr>
-                        <td>Willem</td>
-                        <td>Naert</td>
-                        <td>trompet 1</td>
-                    </tr>
-                    <tr>
-                        <td>Judit</td>
-                        <td></td>
-                        <td>trompet 2</td>
-                    </tr>
-                    <tr>
-                        <td>Agnes</td>
-                        <td>Hoeksma</td>
-                        <td>pauken</td>
+                        <td>Frits </td>
+                        <td>Muusse </td>
+                        <td>viool 1</td>
                     </tr>
                     <tr>
                         <td>Carla</td>
@@ -151,99 +121,94 @@
                         <td>viool 1 (concertmeester)</td>
                     </tr>
                     <tr>
-                        <td>Janne</td>
-                        <td>den Blaauwen </td>
-                        <td>viool 1</td>
-                    </tr>
-                    <tr>
-                        <td>Rudolf</td>
-                        <td>Rasch</td>
-                        <td>viool 1</td>
-                    </tr>
-                    <tr>
-                        <td>Jan</td>
-                        <td>Prins</td>
-                        <td>viool 1</td>
-                    </tr>
-                    <tr>
-                        <td>Petra</td>
-                        <td>van Besouw</td>
-                        <td>viool 1</td>
-                    </tr>
-                    <tr>
-                        <td>Paul</td>
-                        <td>van Coeverden</td>
-                        <td>viool 1</td>
-                    </tr>
-                    <tr>
-                        <td>Frits </td>
-                        <td>Muusse </td>
-                        <td>viool 2</td>
-                    </tr>
-                    <tr>
                         <td>Ruben</td>
                         <td>Faas</td>
-                        <td>viool 2</td>
+                        <td>viool 1</td>
                     </tr>
                     <tr>
-                        <td><i>vacature</i></td>
+                        <td>Sophie</td>
+                        <td>Vermond</td>
+                        <td>viool 1</td>
+                    </tr>
+                    <tr>
+                        <td>Corinne</td>
+                        <td>Britzel</td>
+                        <td>viool 1</td>
+                    </tr>
+                    <tr>
+                        <td>vacature</td>
+                        <td></td>
+                        <td>viool 1</td>
+                    </tr>
+                    <tr>
+                        <td>vacature</td>
                         <td></td>
                         <td>viool 2</td>
                     </tr>
                     <tr>
-                        <td>Bea</td>
-                        <td>Selman</td>
+                        <td>Daniela</td>
+                        <td>Roeland</td>
                         <td>viool 2</td>
                     </tr>
                     <tr>
-                        <td>Saskia</td>
-                        <td>Wieberdink</td>
-                        <td>viool 2 (aanvoerder)</td>
+                        <td>Erika</td>
+                        <td>Mathot</td>
+                        <td>viool 2</td>
                     </tr>
                     <tr>
-                        <td>Adriaan</td>
-                        <td>Mol</td>
+                        <td>Jan</td>
+                        <td>Prins</td>
+                        <td>viool 2</td>
+                    </tr>
+                    <tr>
+                        <td>Peter</td>
+                        <td>Klusener</td>
                         <td>viool 2</td>
                     </tr>
                     <tr>
                         <td>Marijke</td>
                         <td>Huijgen</td>
+                        <td>viool 2 (aanvoerder)</td>
+                    </tr>
+                    <tr>
+                        <td>Maaike</td>
+                        <td>Gerlsma</td>
+                        <td>altviool</td>
+                    </tr>
+                    <tr>
+                        <td>Eline</td>
+                        <td>Snoek</td>
                         <td>altviool (aanvoerder)</td>
                     </tr>
                     <tr>
-                        <td>Peter</td>
-                        <td>Klusener</td>
+                        <td>Sytse</td>
+                        <td>Dotinga</td>
                         <td>altviool</td>
                     </tr>
                     <tr>
-                        <td>Lia</td>
-                        <td>van Schaijk</td>
+                        <td>vacature</td>
+                        <td></td>
                         <td>altviool</td>
                     </tr>
                     <tr>
-                        <td>Maria</td>
-                        <td>Voorhout</td>
-                        <td>altviool</td>
+                        <td>Robin</td>
+                        <td>Gerretsen</td>
+                        <td>cello</td>
+                    </tr>
+                    <tr>
+                        <td>Anke</td>
+                        <td>Meester</td>
+                        <td>cello</td>
+                    </tr>
+                    <tr>
+                        <td>Friso</td>
+                        <td>van der Veen</td>
+                        <td>cello</td>
                     </tr>
                     <tr>
                         <td>Meike</td>
                         <td>Jongejan </td>
                         <td>cello (aanvoerder)</td>
-                    </tr>
-                    <tr>
-                        <td>Nicoline</td>
-                        <td>Simonis</td>
-                        <td>cello</td>
-                    </tr>
-                    <tr>
-                        <td>Franca</td>
-                        <td>Post</td>
-                        <td>cello</td>
-                    </tr>
-                    <tr>
-                        <td>Jan</td>
-                        <td>Strumphler</td>
-                        <td>cello</td>
                     </tr>
                     <tr>
                         <td>Jurgen</td>
