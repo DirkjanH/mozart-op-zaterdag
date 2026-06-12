@@ -57,7 +57,7 @@
                 <a href="\2026-09-26\K299.Corno2.pdf" target="_blank">Hoorn 2</a>
             </li>
             <li>
-                <a href="\2026-09-26\K299.Violin1.pdf" target="_blank">Viool 1</a>
+                <a href="\2026-09-26\Mozart K299 Violin 1 betekend.pdf" target="_blank">Viool 1 (betekend)</a>
             </li>
             <li>
                 <a href="\2026-09-26\K299.Violin2.pdf" target="_blank">Viool 2</a>
@@ -136,8 +136,8 @@
                         <td>viool 1</td>
                     </tr>
                     <tr>
-                        <td>vacature</td>
-                        <td></td>
+                        <td>Edith</td>
+                        <td>Mathot</td>
                         <td>viool 1</td>
                     </tr>
                     <tr>
