@@ -60,7 +60,7 @@
                 <a href="\2026-09-26\Mozart K299 Violin 1 betekend.pdf" target="_blank">Viool 1 (betekend)</a>
             </li>
             <li>
-                <a href="\2026-09-26\K299.Violin2.pdf" target="_blank">Viool 2</a>
+                <a href="\2026-09-26\Mozart K299 Violin 2 betekend.pdf" target="_blank">Viool 2 (betekend)</a>
             </li>
             <li>
                 <a href="\2026-09-26\K299.Viola.pdf" target="_blank">Altviool</a>
