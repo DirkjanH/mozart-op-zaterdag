@@ -148,7 +148,7 @@
                     <tr>
                         <td>Edith</td>
                         <td>Mathot</td>
-                        <td>viool 1</td>
+                        <td>viool 2</td>
                     </tr>
                     <tr>
                         <td>Erika</td>
