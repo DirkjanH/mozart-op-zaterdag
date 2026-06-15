@@ -66,7 +66,7 @@
                 <a href="\2026-09-26\K299.Viola.pdf" target="_blank">Altviool</a>
             </li>
             <li>
-                <a href="\2026-09-26\K299.Cello.pdf" target="_blank">Cello, contrabas, fagot</a>
+                <a href="\2026-09-26\K299.Cello betekend.pdf" target="_blank">Cello, contrabas, fagot</a>
             </li>
             <li>
                 <a href="\2026-09-26\Mozart_KV_299_score.pdf" target="_blank">Partituur</a>
