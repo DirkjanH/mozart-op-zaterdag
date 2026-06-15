@@ -136,19 +136,19 @@
                         <td>viool 1</td>
                     </tr>
                     <tr>
-                        <td>Edith</td>
-                        <td>Mathot</td>
-                        <td>viool 1</td>
-                    </tr>
-                    <tr>
                         <td>Janne</td>
                         <td>den Blaauwen</td>
-                        <td>viool 2</td>
+                        <td>viool 1</td>
                     </tr>
                     <tr>
                         <td>Daniela</td>
                         <td>Roeland</td>
                         <td>viool 2</td>
+                    </tr>
+                    <tr>
+                        <td>Edith</td>
+                        <td>Mathot</td>
+                        <td>viool 1</td>
                     </tr>
                     <tr>
                         <td>Erika</td>
