@@ -75,7 +75,7 @@
         <p class="onzichtbaar">Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
         <div class="">
             <h2>Bezetting</h2>
-            <p>Er zijn nu 24 deelnemers. Er is nog plaats voor een eerste en een tweede viool en een altviool.</p>
+            <p>Er zijn nu 26 deelnemers. Er is uitsluitend nog plaats voor een altviool.</p>
             <table class="w3-table w3-striped w3-bordered" id="deelnemers">
                 <thead>
                     <tr>
