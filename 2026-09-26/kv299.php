@@ -141,8 +141,8 @@
                         <td>viool 1</td>
                     </tr>
                     <tr>
-                        <td>vacature</td>
-                        <td></td>
+                        <td>Janne</td>
+                        <td>den Blaauwen</td>
                         <td>viool 2</td>
                     </tr>
                     <tr>
