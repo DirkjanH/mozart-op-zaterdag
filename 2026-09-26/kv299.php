@@ -186,8 +186,8 @@
                         <td>altviool</td>
                     </tr>
                     <tr>
-                        <td>vacature</td>
-                        <td></td>
+                        <td>Berpke</td>
+                        <td>van Oers</td>
                         <td>altviool</td>
                     </tr>
                     <tr>
