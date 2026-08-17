@@ -1,5 +1,4 @@
 <?php require_once '../includes/inloggen.php'; ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,15 +11,20 @@
 
 <body>
     <div class="w3-content w3-white w3-panel">
-        <?php require_once '../navigatie.htm'; ?>
-        <h3>Mozart op Zaterdag op 26 september 2026:</h3>
+        <?php require_once '../navigatie.htm'; ?> <h3>Mozart op Zaterdag op 26
+            september 2026:</h3>
         <h1>Concert voor fluit en harp in C KV 299</h1>
-        <p>
-            Op zaterdagochtend 26 september speelt <i>Mozart op Zaterdag</i> zijn
-            <strong>Concert voor fluit en harp in C KV 299</strong>. Mozarts Concert voor fluit en harp is een licht, elegant en bijzonder melodieus werk. De fluit en harp voeren daarin een sprankelend muzikaal gesprek, soms speels, soms juist heel lyrisch, terwijl het orkest de verfijnde kleuren subtiel ondersteunt. Vooral het langzame middendeel ademt een zachte, intieme schoonheid, terwijl de finale uitblinkt in vrolijke vaart en charme.
-        </p>
-        <p>Het concert duurt ca. 27 minuten. De bezetting is 2 hobo's, 1 fagot, 2 hoorns en strijkers.
-            De partijen vind je hieronder. We doen alle herhalingen. De tempi worden:</p>
+        <p> Op zaterdagochtend 26 september speelt <i>Mozart op Zaterdag</i>
+            zijn <strong>Concert voor fluit en harp in C KV 299</strong>.
+            Mozarts Concert voor fluit en harp is een licht, elegant en
+            bijzonder melodieus werk. De fluit en harp voeren daarin een
+            sprankelend muzikaal gesprek, soms speels, soms juist heel lyrisch,
+            terwijl het orkest de verfijnde kleuren subtiel ondersteunt. Vooral
+            het langzame middendeel ademt een zachte, intieme schoonheid,
+            terwijl de finale uitblinkt in vrolijke vaart en charme. </p>
+        <p>Het concert duurt ca. 27 minuten. De bezetting is 2 hobo's, 1 fagot,
+            2 hoorns en strijkers. De partijen vind je hieronder. We doen alle
+            herhalingen. De tempi worden:</p>
         <ol>
             <li>Allegro: kwart = 126</li>
             <li>Andantino: kwart = ca. 56</li>
@@ -32,15 +36,35 @@
             <div class="w3-left w3-margin-right">
                 <img src="Elisa_BG.jpg" alt="Elisa Bartolomé Gómez" width="200">
             </div>
-            <p style="margin-top: 0;">Elisa Bartolomé Gómez is een uit Tenerife afkomstige fluitiste en piccoloïste, gevestigd in Nederland. In 2024 behaalde zij haar master aan het Koninklijk Conservatorium Den Haag, waar zij studeerde bij Alena Walentin. Elisa werkte met diverse professionele orkesten, waaronder Het Balletorkest, het Tenerife Symphony Orchestra en het Amsterdam Chamber Orchestra. Naast haar klassieke werk is zij actief in de hedendaagse muziek en zoekt zij graag de grenzen van haar instrument op in samenwerkingen rond improvisatie en elektronica.</p>
+            <p style="margin-top: 0;">Elisa Bartolomé Gómez is een uit Tenerife
+                afkomstige fluitiste en piccoloïste, gevestigd in Nederland. In
+                2024 behaalde zij haar master aan het Koninklijk Conservatorium
+                Den Haag, waar zij studeerde bij Alena Walentin. Elisa werkte
+                met diverse professionele orkesten, waaronder Het Balletorkest,
+                het Tenerife Symphony Orchestra en het Amsterdam Chamber
+                Orchestra. Naast haar klassieke werk is zij actief in de
+                hedendaagse muziek en zoekt zij graag de grenzen van haar
+                instrument op in samenwerkingen rond improvisatie en
+                elektronica.</p>
         </div>
-
         <h4>Maria Palma (harp)</h4>
         <div class="w3-clear">
             <div class="w3-left w3-margin-right w3-margin-top-0">
                 <img src="Maria_P.jpg" alt="Maria Palma" width="200">
             </div>
-            <p style="margin-top: 0;">Maria Palma is een Italiaanse harpiste, gevestigd in Den Haag, die sinds haar zesde harp speelt. Ze werkt graag in uiteenlopende contexten, zoals orkesten, soloconcerten en kamermuziek, en trad op in verschillende zalen in Italië en Nederland, waaronder het Concertgebouw in Amsterdam, het Teatro San Carlo in Napels, het Gaudeamus Festival en het Dutch Harp Festival in Utrecht. Ze heeft altijd belangstelling gehad voor het combineren van verschillende stijlen: naast haar klassieke activiteiten speelt ze in een groep voor hedendaagse muziek, in een girl band waarmee ze jazz-, pop- en fusionmuziek maakt, en in haar projecten zoekt ze graag verbindingen tussen muziek en andere kunstvormen, zoals poëzie en beeldende kunst.</p>
+            <p style="margin-top: 0;">Maria Palma is een Italiaanse harpiste,
+                gevestigd in Den Haag, die sinds haar zesde harp speelt. Ze
+                werkt graag in uiteenlopende contexten, zoals orkesten,
+                soloconcerten en kamermuziek, en trad op in verschillende zalen
+                in Italië en Nederland, waaronder het Concertgebouw in
+                Amsterdam, het Teatro San Carlo in Napels, het Gaudeamus
+                Festival en het Dutch Harp Festival in Utrecht. Ze heeft altijd
+                belangstelling gehad voor het combineren van verschillende
+                stijlen: naast haar klassieke activiteiten speelt ze in een
+                groep voor hedendaagse muziek, in een girl band waarmee ze
+                jazz-, pop- en fusionmuziek maakt, en in haar projecten zoekt ze
+                graag verbindingen tussen muziek en andere kunstvormen, zoals
+                poëzie en beeldende kunst.</p>
         </div>
         <h3>Partijen</h3>
         <ul style="column-count: 3;">
@@ -51,31 +75,39 @@
                 <a href="\2026-09-26\K299.Oboe2.pdf" target="_blank">Hobo 2</a>
             </li>
             <li>
-                <a href="\2026-09-26\K299.Corno1.pdf" target="_blank">Hoorn 1</a>
+                <a href="\2026-09-26\K299.Corno1.pdf" target="_blank">Hoorn
+                    1</a>
             </li>
             <li>
-                <a href="\2026-09-26\K299.Corno2.pdf" target="_blank">Hoorn 2</a>
+                <a href="\2026-09-26\K299.Corno2.pdf" target="_blank">Hoorn
+                    2</a>
             </li>
             <li>
-                <a href="\2026-09-26\Mozart K299 Violin 1 betekend.pdf" target="_blank">Viool 1 (betekend)</a>
+                <a href="\2026-09-26\Mozart K299 Violin 1 betekend.pdf"
+                    target="_blank">Viool 1 (betekend)</a>
             </li>
             <li>
-                <a href="\2026-09-26\Mozart K299 Violin 2 betekend.pdf" target="_blank">Viool 2 (betekend)</a>
+                <a href="\2026-09-26\Mozart K299 Violin 2 betekend.pdf"
+                    target="_blank">Viool 2 (betekend)</a>
             </li>
             <li>
-                <a href="\2026-09-26\K299.Viola.pdf" target="_blank">Altviool</a>
+                <a href="\2026-09-26\K299.Viola.pdf"
+                    target="_blank">Altviool</a>
             </li>
             <li>
-                <a href="\2026-09-26\K299.Cello betekend.pdf" target="_blank">Cello, contrabas, fagot (betekend)</a>
+                <a href="\2026-09-26\K299.Cello betekend.pdf"
+                    target="_blank">Cello, contrabas, fagot (betekend)</a>
             </li>
             <li>
-                <a href="\2026-09-26\Mozart_KV_299_score.pdf" target="_blank">Partituur</a>
+                <a href="\2026-09-26\Mozart_KV_299_score.pdf"
+                    target="_blank">Partituur</a>
             </li>
         </ul>
-        <p class="onzichtbaar">Binnenkort plaatsen we hier de lijst van alle deelnemers.</p>
+        <p class="onzichtbaar">Binnenkort plaatsen we hier de lijst van alle
+            deelnemers.</p>
         <div class="">
             <h2>Bezetting</h2>
-            <p>Er zijn nu 27 deelnemers. De bezetting is compleet.</p>
+            <p>Er zijn nu 28 deelnemers. De bezetting is compleet.</p>
             <table class="w3-table w3-striped w3-bordered" id="deelnemers">
                 <thead>
                     <tr>
@@ -158,6 +190,11 @@
                     <tr>
                         <td>Jan</td>
                         <td>Prins</td>
+                        <td>viool 2</td>
+                    </tr>
+                    <tr>
+                        <td>Rudolf</td>
+                        <td>Rasch</td>
                         <td>viool 2</td>
                     </tr>
                     <tr>
