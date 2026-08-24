@@ -1,4 +1,4 @@
-CREATE DATABASE IF NOT EXISTS mozartopzaterdag
+CREATE DATABASE IF NOT EXISTS MozartopZaterdag
   CHARACTER SET utf8mb4
   COLLATE utf8mb4_unicode_ci;
 
