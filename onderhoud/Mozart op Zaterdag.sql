@@ -1,8 +1,8 @@
-CREATE DATABASE IF NOT EXISTS MozartopZaterdag
+CREATE DATABASE IF NOT EXISTS cfb5wd2sc_mozartopzaterdag
   CHARACTER SET utf8mb4
   COLLATE utf8mb4_unicode_ci;
 
-USE MozartopZaterdag;
+USE cfb5wd2sc_mozartopzaterdag;
 
 -- Tabel instrumenten
 CREATE TABLE instrumenten (

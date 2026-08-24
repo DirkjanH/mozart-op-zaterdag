@@ -3,10 +3,10 @@
 // Zet de MySQL-credentials als omgevingsvariabelen voordat je dit script uitvoert.
 
 $hostname = getenv('MYSQL_HOST') ?: 'localhost';
-$username = getenv('MYSQL_USERNAME') ?: 'mozartopzaterdag';
+$username = getenv('MYSQL_USERNAME') ?: 'cfb5wd2sc_mozartopzaterdagv';
 $password = getenv('MYSQL_PASSWORD') ?: '%6riUHs##SQ!4aQGaW^Qhq';
 
-$sqlBestand = __DIR__ . '/../.github/workflows/Mozart op Zaterdag.sql';
+$sqlBestand = __DIR__ . '/Mozart op Zaterdag.sql';
 
 header('Content-Type: text/plain; charset=utf-8');
 
