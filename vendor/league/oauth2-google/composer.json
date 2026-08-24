@@ -5,8 +5,8 @@
     "authors": [
         {
             "name": "Woody Gilk",
-            "email": "woody.gilk@gmail.com",
-            "homepage": "http://shadowhand.me"
+            "email": "hello@shadowhand.com",
+            "homepage": "https://shadowhand.com"
         }
     ],
     "keywords": [
@@ -17,14 +17,15 @@
         "authentication",
         "google"
     ],
-    "minimum-stability": "beta",
+    "minimum-stability": "stable",
     "require": {
-        "league/oauth2-client": "~1.0"
+        "php": "^8.0",
+        "league/oauth2-client": "^2.0 || ^3.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.0",
-        "mockery/mockery": "~0.9",
-        "squizlabs/php_codesniffer": "~2.0"
+        "eloquent/phony-phpunit": "^6.0 || ^7.1",
+        "phpunit/phpunit": "^8.0 || ^9.0",
+        "squizlabs/php_codesniffer": "^3.0"
     },
     "autoload": {
         "psr-4": {
@@ -33,7 +34,10 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "League\\OAuth2\\Client\\Test\\": "tests/src/"
+            "League\\OAuth2\\Client\\Test\\": "test/src/"
         }
+    },
+    "scripts": {
+        "check": "phpcs src test --standard=PSR12 -sp"
     }
 }

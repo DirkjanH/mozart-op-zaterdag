@@ -15,7 +15,6 @@
 namespace League\OAuth2\Client\Token;
 
 use InvalidArgumentException;
-use JsonSerializable;
 use RuntimeException;
 
 /**
@@ -23,7 +22,7 @@ use RuntimeException;
  *
  * @link http://tools.ietf.org/html/rfc6749#section-1.4 Access Token (RFC 6749, §1.4)
  */
-class AccessToken implements JsonSerializable
+class AccessToken implements AccessTokenInterface, ResourceOwnerAccessTokenInterface, SettableRefreshTokenInterface
 {
     /**
      * @var string
@@ -51,6 +50,40 @@ class AccessToken implements JsonSerializable
     protected $values = [];
 
     /**
+     * @var int
+     */
+    private static $timeNow;
+
+    /**
+     * Set the time now. This should only be used for testing purposes.
+     *
+     * @param int $timeNow the time in seconds since epoch
+     * @return void
+     */
+    public static function setTimeNow($timeNow)
+    {
+        self::$timeNow = $timeNow;
+    }
+
+    /**
+     * Reset the time now if it was set for test purposes.
+     *
+     * @return void
+     */
+    public static function resetTimeNow()
+    {
+        self::$timeNow = null;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTimeNow()
+    {
+        return self::$timeNow ? self::$timeNow : time();
+    }
+
+    /**
      * Constructs an access token.
      *
      * @param array $options An array of options returned by the service provider
@@ -76,21 +109,25 @@ class AccessToken implements JsonSerializable
         // We need to know when the token expires. Show preference to
         // 'expires_in' since it is defined in RFC6749 Section 5.1.
         // Defer to 'expires' if it is provided instead.
-        if (!empty($options['expires_in'])) {
-            $this->expires = time() + ((int) $options['expires_in']);
+        if (isset($options['expires_in'])) {
+            if (!is_numeric($options['expires_in'])) {
+                throw new \InvalidArgumentException('expires_in value must be an integer');
+            }
+
+            $this->expires = $options['expires_in'] != 0 ? $this->getTimeNow() + $options['expires_in'] : 0;
         } elseif (!empty($options['expires'])) {
             // Some providers supply the seconds until expiration rather than
             // the exact timestamp. Take a best guess at which we received.
-            $expires = $options['expires'];
+            $expires = (int) $options['expires'];
 
             if (!$this->isExpirationTimestamp($expires)) {
-                $expires += time();
+                $expires += $this->getTimeNow();
             }
 
             $this->expires = $expires;
         }
 
-        // Capure any additional values that might exist in the token but are
+        // Capture any additional values that might exist in the token but are
         // not part of the standard response. Vendors will sometimes pass
         // additional user data this way.
         $this->values = array_diff_key($options, array_flip([
@@ -117,9 +154,7 @@ class AccessToken implements JsonSerializable
     }
 
     /**
-     * Returns the access token string of this instance.
-     *
-     * @return string
+     * @inheritdoc
      */
     public function getToken()
     {
@@ -127,9 +162,7 @@ class AccessToken implements JsonSerializable
     }
 
     /**
-     * Returns the refresh token, if defined.
-     *
-     * @return string|null
+     * @inheritdoc
      */
     public function getRefreshToken()
     {
@@ -137,9 +170,15 @@ class AccessToken implements JsonSerializable
     }
 
     /**
-     * Returns the expiration timestamp, if defined.
-     *
-     * @return integer|null
+     * @inheritdoc
+     */
+    public function setRefreshToken($refreshToken)
+    {
+        $this->refreshToken = $refreshToken;
+    }
+
+    /**
+     * @inheritdoc
      */
     public function getExpires()
     {
@@ -147,9 +186,7 @@ class AccessToken implements JsonSerializable
     }
 
     /**
-     * Returns the resource owner identifier, if defined.
-     *
-     * @return string|null
+     * @inheritdoc
      */
     public function getResourceOwnerId()
     {
@@ -157,10 +194,7 @@ class AccessToken implements JsonSerializable
     }
 
     /**
-     * Checks if this token has expired.
-     *
-     * @return boolean true if the token has expired, false otherwise.
-     * @throws RuntimeException if 'expires' is not set on the token.
+     * @inheritdoc
      */
     public function hasExpired()
     {
@@ -170,13 +204,11 @@ class AccessToken implements JsonSerializable
             throw new RuntimeException('"expires" is not set on the token');
         }
 
-        return $expires < time();
+        return $expires < $this->getTimeNow();
     }
 
     /**
-     * Returns additional vendor values stored in the token.
-     *
-     * @return array
+     * @inheritdoc
      */
     public function getValues()
     {
@@ -184,9 +216,7 @@ class AccessToken implements JsonSerializable
     }
 
     /**
-     * Returns the token key.
-     *
-     * @return string
+     * @inheritdoc
      */
     public function __toString()
     {
@@ -194,10 +224,7 @@ class AccessToken implements JsonSerializable
     }
 
     /**
-     * Returns an array of parameters to serialize when this is serialized with
-     * json_encode().
-     *
-     * @return array
+     * @inheritdoc
      */
     public function jsonSerialize()
     {

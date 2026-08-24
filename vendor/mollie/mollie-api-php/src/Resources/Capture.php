@@ -2,8 +2,15 @@
 
 namespace Mollie\Api\Resources;
 
+use Mollie\Api\Traits\HasMode;
+
+/**
+ * @property \Mollie\Api\MollieApiClient $connector
+ */
 class Capture extends BaseResource
 {
+    use HasMode;
+
     /**
      * Always 'capture' for this object
      *
@@ -13,6 +20,7 @@ class Capture extends BaseResource
 
     /**
      * Id of the capture
+     *
      * @var string
      */
     public $id;
@@ -23,6 +31,20 @@ class Capture extends BaseResource
      * @var string
      */
     public $mode;
+
+    /**
+     * Description of the capture.
+     *
+     * @var string
+     */
+    public $description;
+
+    /**
+     * Status of the capture.
+     *
+     * @var string
+     */
+    public $status;
 
     /**
      * Amount object containing the value and currency
@@ -58,6 +80,15 @@ class Capture extends BaseResource
      * @var string
      */
     public $settlementId;
+
+    /**
+     * Provide any data you like, for example a string or a JSON object. The data will be saved alongside the capture.
+     * Whenever you fetch the capture, the metadata will be included.
+     * You can use up to approximately 1kB on this field.
+     *
+     * @var \stdClass|mixed|null
+     */
+    public $metadata;
 
     /**
      * @var string

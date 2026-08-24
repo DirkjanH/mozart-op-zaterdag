@@ -2,21 +2,15 @@
 
 namespace Mollie\Api\Resources;
 
-class RouteCollection extends CursorCollection
+class RouteCollection extends ResourceCollection
 {
     /**
-     * @return string
+     * The name of the collection resource in Mollie's API.
      */
-    public function getCollectionResourceName()
-    {
-        return "route";
-    }
+    public static string $collectionName = 'routes';
 
     /**
-     * @return BaseResource
+     * Resource class name.
      */
-    protected function createResourceObject()
-    {
-        return new Route($this->client);
-    }
+    public static string $resource = Route::class;
 }

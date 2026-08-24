@@ -2,6 +2,9 @@
 
 namespace Mollie\Api\Resources;
 
+/**
+ * @property \Mollie\Api\MollieApiClient $connector
+ */
 class Method extends BaseResource
 {
     /**
@@ -72,29 +75,51 @@ class Method extends BaseResource
 
     /**
      * Get the issuer value objects
-     *
-     * @return IssuerCollection
      */
-    public function issuers()
+    public function issuers(): IssuerCollection
     {
-        return ResourceFactory::createBaseResourceCollection(
-            $this->client,
-            Issuer::class,
-            $this->issuers
+        /** @var IssuerCollection */
+        $collection = ResourceFactory::createCollection(
+            $this->connector,
+            IssuerCollection::class
         );
+
+        if ($this->issuers === null) {
+            return $collection;
+        }
+
+        /** @var IssuerCollection */
+        $collection = (new ResourceHydrator)->hydrateCollection(
+            $collection,
+            (array) $this->issuers,
+            $this->getOrigin()
+        );
+
+        return $collection;
     }
 
     /**
      * Get the method price value objects.
-     *
-     * @return MethodPriceCollection
      */
-    public function pricing()
+    public function pricing(): MethodPriceCollection
     {
-        return ResourceFactory::createBaseResourceCollection(
-            $this->client,
-            MethodPrice::class,
-            $this->pricing
+        /** @var MethodPriceCollection */
+        $collection = ResourceFactory::createCollection(
+            $this->connector,
+            MethodPriceCollection::class
         );
+
+        if ($this->pricing === null) {
+            return $collection;
+        }
+
+        /** @var MethodPriceCollection */
+        $collection = (new ResourceHydrator)->hydrateCollection(
+            $collection,
+            (array) $this->pricing,
+            $this->getOrigin()
+        );
+
+        return $collection;
     }
 }

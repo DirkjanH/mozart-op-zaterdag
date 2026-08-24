@@ -8,6 +8,7 @@
  * @copyright    2021 Smiley
  * @license      Apache-2.0
  */
+declare(strict_types=1);
 
 namespace chillerlan\QRCode\Detector;
 
@@ -25,6 +26,8 @@ use const NAN;
 final class Detector{
 
 	private BitMatrix $matrix;
+	/** @var \chillerlan\QRCode\Detector\FinderPattern[] */
+	private array     $finderPatterns = [];
 
 	/**
 	 * Detector constructor.
@@ -34,10 +37,21 @@ final class Detector{
 	}
 
 	/**
+	 * @return \chillerlan\QRCode\Detector\FinderPattern[]
+	 *
+	 * @deprecated 6.0.1 This method will be removed. In v7, use the property "Detector::$finderPatterns" instead.
+	 */
+	public function getFinderPatterns():array{
+		return $this->finderPatterns;
+	}
+
+	/**
 	 * Detects a QR Code in an image.
 	 */
 	public function detect():BitMatrix{
-		[$bottomLeft, $topLeft, $topRight] = (new FinderPatternFinder($this->matrix))->find();
+		$this->finderPatterns = (new FinderPatternFinder($this->matrix))->find();
+
+		[$bottomLeft, $topLeft, $topRight] = $this->finderPatterns;
 
 		$moduleSize         = $this->calculateModuleSize($topLeft, $topRight, $bottomLeft);
 		$dimension          = $this->computeDimension($topLeft, $topRight, $bottomLeft, $moduleSize);
@@ -45,7 +59,7 @@ final class Detector{
 		$alignmentPattern   = null;
 
 		// Anything above version 1 has an alignment pattern
-		if(!empty($provisionalVersion->getAlignmentPattern())){
+		if($provisionalVersion->getAlignmentPattern() !== []){
 			// Guess where a "bottom right" finder pattern would have been
 			$bottomRightX = ($topRight->getX() - $topLeft->getX() + $bottomLeft->getX());
 			$bottomRightY = ($topRight->getY() - $topLeft->getY() + $bottomLeft->getY());
@@ -274,8 +288,8 @@ final class Detector{
 		float $overallEstModuleSize,
 		int $estAlignmentX,
 		int $estAlignmentY,
-		float $allowanceFactor
-	):?AlignmentPattern{
+		float $allowanceFactor,
+	):AlignmentPattern|null{
 		// Look for an alignment pattern (3 modules in size) around where it should be
 		$dimension           = $this->matrix->getSize();
 		$allowance           = (int)($allowanceFactor * $overallEstModuleSize);
@@ -301,15 +315,12 @@ final class Detector{
 		);
 	}
 
-	/**
-	 *
-	 */
 	private function createTransform(
-		FinderPattern    $nw,
-		FinderPattern    $ne,
-		FinderPattern    $sw,
-		int              $size,
-		AlignmentPattern $ap = null
+		FinderPattern         $nw,
+		FinderPattern         $ne,
+		FinderPattern         $sw,
+		int                   $size,
+		AlignmentPattern|null $ap = null,
 	):PerspectiveTransform{
 		$dimMinusThree = ($size - 3.5);
 
@@ -343,7 +354,7 @@ final class Detector{
 			$bottomRightX,
 			$bottomRightY,
 			$sw->getX(),
-			$sw->getY()
+			$sw->getY(),
 		);
 	}
 
