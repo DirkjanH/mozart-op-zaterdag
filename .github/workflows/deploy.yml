@@ -27,3 +27,6 @@ jobs:
             **/.github/**
             **/_notes/**
             **/tests/**
+            **/.gitkeep
+            vendor/phpunit/**
+            vendor/kint-php/**
