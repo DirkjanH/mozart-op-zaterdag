@@ -13,34 +13,30 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # one.com's FTPS server sends a TLS "internal error" alert to the Node-based
-      # FTP-Deploy-Action (basic-ftp), so we use lftp instead, which is known to
-      # work reliably against one.com.
-      - name: Deploy via lftp (FTPS)
+      - name: Deploy via rsync over SFTP
         env:
           FTP_SERVER: ${{ secrets.FTP_SERVER }}
-          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
-          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-          FTP_SERVER_DIR: ${{ secrets.FTP_SERVER_DIR }}
+          SSH_USERNAME: ${{ secrets.FTP_USERNAME }}
+          SSH_PRIVATE_KEY: ${{ secrets.ID_ED25519 }}
+          SFTP_SERVER_DIR: /customers/e/5/3/cfb5wd2sc/webroots/fad1c1e4
         run: |
-          sudo apt-get update -qq && sudo apt-get install -y -qq lftp
-          lftp -u "$FTP_USERNAME","$FTP_PASSWORD" "$FTP_SERVER" <<EOF
-          set ftp:ssl-force true
-          set ftp:ssl-protect-data true
+          sudo apt-get update -qq && sudo apt-get install -y -qq rsync
+          SSH_HOST="${FTP_SERVER#*://}"
+          SSH_HOST="${SSH_HOST%%/*}"
+          SSH_HOST="${SSH_HOST%%:*}"
           set ssl:check-hostname no
-          set ssl:verify-certificate no
+          install -d -m 700 ~/.ssh
           set ftp:passive-mode true
-          set net:max-retries 2
-          set net:timeout 30
-          set mirror:parallel-transfer-count 1
-          mirror --reverse --verbose --only-newer \
-            --exclude-glob .git* \
-            --exclude-glob .github/ \
-            --exclude-glob _notes/ \
-            --exclude-glob tests/ \
-            --exclude-glob .gitkeep \
-            --exclude-glob phpunit/ \
-            --exclude-glob kint-php/ \
-            ./ "$FTP_SERVER_DIR"
-          bye
-          EOF
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
+          rsync -rlptDz --update --verbose \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='_notes/' \
+            --exclude='tests/' \
+            --exclude='.gitkeep' \
+            --exclude='vendor/phpunit/' \
+            --exclude='vendor/kint-php/' \
+            -e 'ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=yes' \
+            ./ "${SSH_USERNAME}@${SSH_HOST}:${SFTP_SERVER_DIR%/}/"
