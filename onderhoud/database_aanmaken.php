@@ -4,7 +4,7 @@
 
 $hostname = getenv('MYSQL_HOST') ?: 'localhost';
 $username = getenv('MYSQL_USERNAME') ?: 'mozartopzaterdag';
-$password = getenv('MYSQL_PASSWORD');
+$password = getenv('MYSQL_PASSWORD') ?: '%6riUHs##SQ!4aQGaW^Qhq';
 
 $sqlBestand = __DIR__ . '/../.github/workflows/Mozart op Zaterdag.sql';
 
