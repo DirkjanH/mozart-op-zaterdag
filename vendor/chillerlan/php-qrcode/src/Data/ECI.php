@@ -7,6 +7,7 @@
  * @copyright    2020 smiley
  * @license      MIT
  */
+declare(strict_types=1);
 
 namespace chillerlan\QRCode\Data;
 
@@ -22,32 +23,31 @@ use function mb_convert_encoding, mb_detect_encoding, mb_internal_encoding, spri
  */
 final class ECI extends QRDataModeAbstract{
 
-	/**
-	 * @inheritDoc
-	 */
 	public const DATAMODE = Mode::ECI;
 
 	/**
-	 * The current ECI encoding id
+	 * The current ECI encoding id (default to UTF-8)
 	 */
-	private int $encoding;
+	private int $encoding = ECICharset::ISO_IEC_10646_UTF_8;
 
 	/**
 	 * @inheritDoc
+	 * @throws \chillerlan\QRCode\Data\QRCodeDataException
 	 * @noinspection PhpMissingParentConstructorInspection
 	 */
-	public function __construct(int $encoding){
+	public function __construct(int|null $encoding = null){
 
-		if($encoding < 0 || $encoding > 999999){
-			throw new QRCodeDataException(sprintf('invalid encoding id: "%s"', $encoding));
+		if($encoding !== null){
+
+			if($encoding < 0 || $encoding > 999999){
+				throw new QRCodeDataException(sprintf('invalid encoding id: "%s"', $encoding));
+			}
+
+			$this->encoding = $encoding;
 		}
 
-		$this->encoding = $encoding;
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	public function getLengthInBits():int{
 
 		if($this->encoding < 128){
@@ -67,7 +67,7 @@ final class ECI extends QRDataModeAbstract{
 	 * @inheritDoc
 	 * @throws \chillerlan\QRCode\Data\QRCodeDataException
 	 */
-	public function write(BitBuffer $bitBuffer, int $versionNumber):QRDataModeInterface{
+	public function write(BitBuffer $bitBuffer, int $versionNumber):static{
 		$bitBuffer->put(self::DATAMODE, 4);
 
 		if($this->encoding < 128){
@@ -80,7 +80,7 @@ final class ECI extends QRDataModeAbstract{
 			$bitBuffer->put(($this->encoding | 0xC00000), 24);
 		}
 		else{
-			throw new QRCodeDataException('invalid ECI ID');
+			throw new QRCodeDataException('invalid ECI ID'); // @codeCoverageIgnore
 		}
 
 		return $this;
@@ -91,7 +91,7 @@ final class ECI extends QRDataModeAbstract{
 	 *
 	 * @throws \chillerlan\QRCode\Data\QRCodeDataException
 	 */
-	public static function parseValue(BitBuffer $bitBuffer):ECICharset{
+	public function parseValue(BitBuffer $bitBuffer):ECICharset{
 		$firstByte = $bitBuffer->read(8);
 
 		// just one byte
@@ -107,7 +107,7 @@ final class ECI extends QRDataModeAbstract{
 			$id = ((($firstByte & 0b00011111) << 16) | $bitBuffer->read(16));
 		}
 		else{
-			throw new QRCodeDataException(sprintf('error decoding ECI value first byte: %08b', $firstByte)); // @codeCoverageIgnore
+			throw new QRCodeDataException(sprintf('error decoding ECI value first byte: %08b', $firstByte));// @codeCoverageIgnore
 		}
 
 		return new ECICharset($id);
@@ -125,20 +125,28 @@ final class ECI extends QRDataModeAbstract{
 	 *
 	 * @throws \chillerlan\QRCode\Data\QRCodeDataException
 	 */
-	public static function decodeSegment(BitBuffer $bitBuffer, int $versionNumber):string{
-		$eciCharset = self::parseValue($bitBuffer);
+	public function decodeSegment(BitBuffer $bitBuffer, int $versionNumber):string{
+		$eciCharset = $this->parseValue($bitBuffer);
 		$nextMode   = $bitBuffer->read(4);
+		$encoding   = $eciCharset->getName();
 
-		if($nextMode !== Mode::BYTE){
-			throw new QRCodeDataException(sprintf('ECI designator followed by invalid mode: "%04b"', $nextMode));
-		}
+		// this is definitely weird, but there are QR Codes out in the wild
+		// that have ECI followed by numeric and alphanum segments
+		// @see https://github.com/chillerlan/php-qrcode/discussions/289
+		$dataMode = match($nextMode){
+			Mode::NUMBER   => new Number,
+			Mode::ALPHANUM => new AlphaNum,
+			Mode::BYTE     => new Byte,
+			default        => throw new QRCodeDataException(
+				sprintf('ECI designator followed by invalid mode: "%04b"', $nextMode),
+			),
+		};
 
-		$data     = Byte::decodeSegment($bitBuffer, $versionNumber);
-		$encoding = $eciCharset->getName();
+		$data = $dataMode->decodeSegment($bitBuffer, $versionNumber);
 
 		if($encoding === null){
 			// The spec isn't clear on this mode; see
-			// section 6.4.5: t does not say which encoding to assuming
+			// section 6.4.5: it does not say which encoding to assuming
 			// upon decoding. I have seen ISO-8859-1 used as well as
 			// Shift_JIS -- without anything like an ECI designator to
 			// give a hint.
@@ -149,7 +157,13 @@ final class ECI extends QRDataModeAbstract{
 			}
 		}
 
-		return mb_convert_encoding($data, mb_internal_encoding(), $encoding);
+		$encoded = mb_convert_encoding($data, mb_internal_encoding(), $encoding);
+
+		if($encoded === false){
+			throw new QRCodeDataException('mb_convert_encoding() error'); // @codeCoverageIgnore
+		}
+
+		return $encoded;
 	}
 
 }

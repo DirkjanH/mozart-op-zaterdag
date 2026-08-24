@@ -2,78 +2,46 @@
 
 namespace Mollie\Api\Resources;
 
-use Mollie\Api\MollieApiClient;
+use Mollie\Api\Contracts\Connector;
+use Mollie\Api\Contracts\IsWrapper;
 
-#[\AllowDynamicProperties]
 class ResourceFactory
 {
     /**
-     * Create resource object from Api result
-     *
-     * @param object $apiResult
-     * @param BaseResource $resource
-     *
-     * @return mixed
+     * Create a new resource instance.
      */
-    public static function createFromApiResult($apiResult, BaseResource $resource)
+    public static function create(Connector $connector, string $resourceClass): BaseResource
     {
-        foreach ($apiResult as $property => $value) {
-            $resource->{$property} = $value;
-        }
+        /** @var BaseResource $resource */
+        $resource = new $resourceClass($connector);
 
         return $resource;
     }
 
     /**
-     * @param MollieApiClient $client
-     * @param string $resourceClass
-     * @param array $data
-     * @param null $_links
-     * @param string $resourceCollectionClass
-     * @return mixed
+     * Create a new collection instance.
      */
-    public static function createBaseResourceCollection(
-        MollieApiClient $client,
-        $resourceClass,
-        $data,
-        $_links = null,
-        $resourceCollectionClass = null
-    ) {
-        $resourceCollectionClass = $resourceCollectionClass ?: $resourceClass . 'Collection';
-        $data = $data ?: [];
+    public static function createCollection(
+        Connector $connector,
+        string $collectionClass,
+        array $items = [],
+        ?object $_links = null
+    ): ResourceCollection {
+        /** @var ResourceCollection $collection */
+        $collection = new $collectionClass($connector, $items, $_links);
 
-        $result = new $resourceCollectionClass(count($data), $_links);
-        foreach ($data as $item) {
-            $result[] = static::createFromApiResult($item, new $resourceClass($client));
-        }
-
-        return $result;
+        return $collection;
     }
 
     /**
-     * @param MollieApiClient $client
-     * @param array $input
-     * @param string $resourceClass
-     * @param null $_links
-     * @param null $resourceCollectionClass
-     * @return mixed
+     * Create a decorated resource.
      */
-    public static function createCursorResourceCollection(
-        $client,
-        array $input,
-        $resourceClass,
-        $_links = null,
-        $resourceCollectionClass = null
-    ) {
-        if (null === $resourceCollectionClass) {
-            $resourceCollectionClass = $resourceClass.'Collection';
+    public static function createDecoratedResource($resource, string $decorator): IsWrapper
+    {
+        if (! is_subclass_of($decorator, IsWrapper::class)) {
+            throw new \InvalidArgumentException("The decorator class '{$decorator}' does not implement the ResourceDecorator interface.");
         }
 
-        $data = new $resourceCollectionClass($client, count($input), $_links);
-        foreach ($input as $item) {
-            $data[] = static::createFromApiResult($item, new $resourceClass($client));
-        }
-
-        return $data;
+        return $decorator::fromResource($resource);
     }
 }

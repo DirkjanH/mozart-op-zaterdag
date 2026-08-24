@@ -2,8 +2,15 @@
 
 namespace Mollie\Api\Resources;
 
+use Mollie\Api\Traits\HasMode;
+
+/**
+ * @property \Mollie\Api\MollieApiClient $connector
+ */
 class PaymentLink extends BaseResource
 {
+    use HasMode;
+
     /**
      * Id of the payment link (on the Mollie platform).
      *
@@ -23,6 +30,7 @@ class PaymentLink extends BaseResource
      * The profile ID this payment link belongs to.
      *
      * @example pfl_QkEhN94Ba
+     *
      * @var string
      */
     public $profileId;
@@ -31,6 +39,7 @@ class PaymentLink extends BaseResource
      * UTC datetime the payment link was created in ISO-8601 format.
      *
      * @example "2013-12-25T10:30:54+00:00"
+     *
      * @var string|null
      */
     public $createdAt;
@@ -39,6 +48,7 @@ class PaymentLink extends BaseResource
      * UTC datetime the payment was paid in ISO-8601 format.
      *
      * @example "2013-12-25T10:30:54+00:00"
+     *
      * @var string|null
      */
     public $paidAt;
@@ -50,11 +60,12 @@ class PaymentLink extends BaseResource
      * @var bool
      */
     public $archived;
-    
+
     /**
      * UTC datetime the payment link was updated in ISO-8601 format.
      *
      * @example "2013-12-25T10:30:54+00:00"
+     *
      * @var string|null
      */
     public $updatedAt;
@@ -63,6 +74,7 @@ class PaymentLink extends BaseResource
      * UTC datetime - the expiry date of the payment link in ISO-8601 format.
      *
      * @example "2013-12-25T10:30:54+00:00"
+     *
      * @var string|null
      */
     public $expiresAt;
@@ -73,6 +85,34 @@ class PaymentLink extends BaseResource
      * @var \stdClass
      */
     public $amount;
+
+    /**
+     * The minimum amount. Only used for payment links without a fixed amount.
+     *
+     * @var \stdClass|null
+     */
+    public $minimumAmount;
+
+    /**
+     * The order lines for this payment link (used for Klarna and other BNPL methods).
+     *
+     * @var array|null
+     */
+    public $lines;
+
+    /**
+     * The billing address for this payment link.
+     *
+     * @var \stdClass|null
+     */
+    public $billingAddress;
+
+    /**
+     * The shipping address for this payment link.
+     *
+     * @var \stdClass|null
+     */
+    public $shippingAddress;
 
     /**
      * Description of the payment link that is shown to the customer during the payment,
@@ -103,25 +143,63 @@ class PaymentLink extends BaseResource
 
     /**
      * Is this payment paid for?
-     *
-     * @return bool
      */
-    public function isPaid()
+    public function isPaid(): bool
     {
         return ! empty($this->paidAt);
     }
 
     /**
      * Get the checkout URL where the customer can complete the payment.
-     *
-     * @return string|null
      */
-    public function getCheckoutUrl()
+    public function getCheckoutUrl(): ?string
     {
         if (empty($this->_links->paymentLink)) {
             return null;
         }
 
         return $this->_links->paymentLink->href;
+    }
+
+    /**
+     * Persist the current local Payment Link state to the Mollie API.
+     *
+     * @throws \Mollie\Api\Exceptions\ApiException
+     */
+    public function update(): ?PaymentLink
+    {
+        return $this->connector->paymentLinks->update($this->id, $this->withMode([
+            'description' => $this->description,
+            'archived' => $this->archived,
+        ]));
+    }
+
+    /**
+     * Archive this Payment Link.
+     *
+     * @return \Mollie\Api\Resources\PaymentLink
+     *
+     * @throws \Mollie\Api\Exceptions\ApiException
+     */
+    public function archive()
+    {
+        return $this->connector->paymentLinks->update($this->id, $this->withMode([
+            'archived' => true,
+        ]));
+    }
+
+    /**
+     * Retrieve a paginated list of payments associated with this payment link.
+     *
+     * @return mixed|\Mollie\Api\Resources\BaseCollection
+     */
+    public function payments(?string $from = null, ?int $limit = null, array $filters = [])
+    {
+        return $this->connector->paymentLinkPayments->pageFor(
+            $this,
+            $from,
+            $limit,
+            $this->withMode($filters)
+        );
     }
 }

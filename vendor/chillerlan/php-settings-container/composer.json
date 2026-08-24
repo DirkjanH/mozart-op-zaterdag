@@ -6,7 +6,7 @@
 	"type": "library",
 	"minimum-stability": "stable",
 	"keywords": [
-		"helper", "container", "settings", "configuration"
+		"helper", "container", "settings", "configuration", "property hook"
 	],
 	"authors": [
 		{
@@ -24,28 +24,38 @@
 		"ext-json": "*"
 	},
 	"require-dev": {
-		"phan/phan": "^5.4",
+		"phan/phan": "^5.5.2",
 		"phpmd/phpmd": "^2.15",
+		"phpstan/phpstan": "^2.1.31",
+		"phpstan/phpstan-deprecation-rules": "^2.0.3",
 		"phpunit/phpunit": "^10.5",
-		"phpcsstandards/php_codesniffer": "^3.8"
+		"slevomat/coding-standard": "^8.22",
+		"squizlabs/php_codesniffer": "^4.0"
 	},
 	"autoload": {
 		"psr-4": {
-			"chillerlan\\Settings\\": "src/"
+			"chillerlan\\Settings\\": "src"
 		}
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"chillerlan\\SettingsTest\\": "tests/"
+			"chillerlan\\SettingsTest\\": "tests"
 		}
 	},
 	"scripts": {
-		"phpunit": "@php vendor/bin/phpunit",
-		"phan": "@php vendor/bin/phan"
+		"phan": "@php vendor/bin/phan",
+		"phpcs": "@php vendor/bin/phpcs -v",
+		"phpmd": "@php vendor/bin/phpmd src text ./phpmd.xml.dist",
+		"phpstan": "@php vendor/bin/phpstan",
+		"phpstan-baseline": "@php vendor/bin/phpstan --generate-baseline",
+		"phpunit": "@php vendor/bin/phpunit"
 	},
 	"config": {
 		"lock": false,
 		"sort-packages": true,
-		"platform-check": true
+		"platform-check": true,
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
 	}
 }

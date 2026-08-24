@@ -2,11 +2,16 @@
 
 namespace Mollie\Api\Resources;
 
-use Mollie\Api\MollieApiClient;
+use Mollie\Api\Traits\HasMode;
 use Mollie\Api\Types\MandateStatus;
 
+/**
+ * @property \Mollie\Api\MollieApiClient $connector
+ */
 class Mandate extends BaseResource
 {
+    use HasMode;
+
     /**
      * @var string
      */
@@ -33,7 +38,7 @@ class Mandate extends BaseResource
     public $details;
 
     /**
-     * @var string
+     * @var string|null
      */
     public $customerId;
 
@@ -59,54 +64,37 @@ class Mandate extends BaseResource
      */
     public $_links;
 
-    /**
-     * @return bool
-     */
-    public function isValid()
+    public function isValid(): bool
     {
-        return $this->status === MandateStatus::STATUS_VALID;
+        return $this->status === MandateStatus::VALID;
     }
 
-    /**
-     * @return bool
-     */
-    public function isPending()
+    public function isPending(): bool
     {
-        return $this->status === MandateStatus::STATUS_PENDING;
+        return $this->status === MandateStatus::PENDING;
     }
 
-    /**
-     * @return bool
-     */
-    public function isInvalid()
+    public function isInvalid(): bool
     {
-        return $this->status === MandateStatus::STATUS_INVALID;
+        return $this->status === MandateStatus::INVALID;
     }
 
     /**
      * Revoke the mandate
-     *
-     * @return null|\stdClass|\Mollie\Api\Resources\Mandate
      */
-    public function revoke()
+    public function revoke(): void
     {
-        if (! isset($this->_links->self->href)) {
-            return $this;
+        if (! isset($this->customerId)) {
+            return;
         }
 
-        $body = null;
-        if ($this->client->usesOAuth()) {
-            $body = json_encode([
-                "testmode" => $this->mode === "test" ? true : false,
-            ]);
-        }
-
-        $result = $this->client->performHttpCallToFullUrl(
-            MollieApiClient::HTTP_DELETE,
-            $this->_links->self->href,
-            $body
-        );
-
-        return $result;
+        $this
+            ->connector
+            ->mandates
+            ->revokeForId(
+                $this->customerId,
+                $this->id,
+                $this->isInTestmode()
+            );
     }
 }

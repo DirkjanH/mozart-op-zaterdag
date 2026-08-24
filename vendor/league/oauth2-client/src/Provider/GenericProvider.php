@@ -79,6 +79,11 @@ class GenericProvider extends AbstractProvider
     private $responseResourceOwnerId = 'id';
 
     /**
+     * @var string|null
+     */
+    private $pkceMethod = null;
+
+    /**
      * @param array $options
      * @param array $collaborators
      */
@@ -114,6 +119,7 @@ class GenericProvider extends AbstractProvider
             'responseCode',
             'responseResourceOwnerId',
             'scopes',
+            'pkceMethod',
         ]);
     }
 
@@ -208,11 +214,25 @@ class GenericProvider extends AbstractProvider
     /**
      * @inheritdoc
      */
+    protected function getPkceMethod()
+    {
+        return $this->pkceMethod ?: parent::getPkceMethod();
+    }
+
+    /**
+     * @inheritdoc
+     */
     protected function checkResponse(ResponseInterface $response, $data)
     {
         if (!empty($data[$this->responseError])) {
             $error = $data[$this->responseError];
-            $code  = $this->responseCode ? $data[$this->responseCode] : 0;
+            if (!is_string($error)) {
+                $error = var_export($error, true);
+            }
+            $code  = $this->responseCode && !empty($data[$this->responseCode])? $data[$this->responseCode] : 0;
+            if (!is_int($code)) {
+                $code = intval($code);
+            }
             throw new IdentityProviderException($error, $code, $data);
         }
     }

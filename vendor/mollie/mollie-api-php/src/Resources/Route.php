@@ -2,6 +2,9 @@
 
 namespace Mollie\Api\Resources;
 
+/**
+ * @property \Mollie\Api\MollieApiClient $connector
+ */
 class Route extends BaseResource
 {
     /**
@@ -10,6 +13,13 @@ class Route extends BaseResource
      * @var string
      */
     public $id;
+
+    /**
+     * The unique identifier of the related payment.
+     *
+     * @var string
+     */
+    public $paymentId;
 
     /**
      * Amount object containing the value and currency
@@ -29,6 +39,7 @@ class Route extends BaseResource
      * A UTC date. The settlement of a routed payment can be delayed on payment level, by specifying a release Date
      *
      * @example "2013-12-25"
+     *
      * @var string
      */
     public $releaseDate;

@@ -1,3 +1,4 @@
+[![GitHub Workflow](https://github.com/alphp/strftime/actions/workflows/php.yml/badge.svg)](https://github.com/alphp/strftime/actions/workflows/php.yml)
 [![GitHub license](https://img.shields.io/github/license/alphp/strftime)](https://github.com/alphp/strftime/blob/master/LICENSE)
 [![GitHub release](https://img.shields.io/github/release/alphp/strftime)](https://github.com/alphp/strftime/releases)
 [![Packagist](https://img.shields.io/packagist/v/php81_bc/strftime)](https://packagist.org/packages/php81_bc/strftime)
@@ -34,7 +35,7 @@ Original autor: [BohwaZ](https://bohwaz.net/)
   - [Miscellaneous](#miscellaneous)
 
 ## Requirements
-- PHP >= 5.6
+- PHP >= 7.1.0
 - ext-intl ([Internationalization extension ICU](https://www.php.net/manual/en/book.intl.php))
 
 [TOC](#table-of-contents)
