@@ -3,7 +3,7 @@
 // Zet de MySQL-credentials als omgevingsvariabelen voordat je dit script uitvoert.
 
 $hostname = getenv('MYSQL_HOST') ?: 'localhost';
-$username = getenv('MYSQL_USERNAME') ?: 'cfb5wd2sc_mozartopzaterdagv';
+$username = getenv('MYSQL_USERNAME') ?: 'cfb5wd2sc_mozartopzaterdag';
 $password = getenv('MYSQL_PASSWORD') ?: '%6riUHs##SQ!4aQGaW^Qhq';
 
 $sqlBestand = __DIR__ . '/Mozart op Zaterdag.sql';
