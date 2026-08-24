@@ -27,7 +27,9 @@ jobs:
           lftp -u "$FTP_USERNAME","$FTP_PASSWORD" "$FTP_SERVER" <<EOF
           set ftp:ssl-force true
           set ftp:ssl-protect-data true
+          set ssl:check-hostname no
           set ssl:verify-certificate no
+          set ftp:passive-mode true
           set net:max-retries 2
           set net:timeout 30
           set mirror:parallel-transfer-count 1
