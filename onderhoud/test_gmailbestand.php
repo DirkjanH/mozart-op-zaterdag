@@ -1,5 +1,5 @@
 <?php
-$bestandsnaam = '/includes/_tst/MOZART_GMAIL_USERNAME.txt';
+$bestandsnaam = '../includes/_tst/MOZART_GMAIL_USERNAME.txt';
 $paden = [
     'vanaf onderhoud: ../' => __DIR__ . '/../' . $bestandsnaam,
     'vanaf onderhoud: ../../' => __DIR__ . '/../../' . $bestandsnaam,

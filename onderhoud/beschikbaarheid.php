@@ -15,7 +15,7 @@ $instrumenten = $pdo->query('SELECT id, naam FROM instrumenten ORDER BY id')->fe
 
 $standaardOnderwerp = 'Bevestiging deelname Mozart op Zaterdag';
 $standaardAfwijzingsOnderwerp = 'Mozart op Zaterdag - deze keer geen plaats';
-$gmailGebruikersnaamBestand = '../../../users_tmp/cfb5wd2sc_ssh/mc-cfb5wd2sc_ssh/MOZART_GMAIL_USERNAME.txt';
+$gmailGebruikersnaamBestand = '../includes/_tst/MOZART_GMAIL_USERNAME.txt';
 $gmailGebruikersnaam = 'dirkjan@pellegrina.net';
 $gmailAppWachtwoord = '';
 $gmailWachtwoordBron = 'niet gevonden';
