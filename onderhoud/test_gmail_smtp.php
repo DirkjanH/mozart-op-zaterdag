@@ -6,34 +6,9 @@ require_once __DIR__ . '/../vendor/autoload.php';
 $credentialBestand = __DIR__ . '/../includes/_tst/MOZART_GMAIL_USERNAME.txt';
 $gebruikersnaam = 'info@mozartopzaterdag.nl';
 $appWachtwoord = 'k4uqJ6E#ZV7F';
-$bron = 'niet gevonden';
 $debug = [];
 
 // Lees zowel gelabelde als twee ongelabelde regels in.
-if (is_readable($credentialBestand)) {
-    $regels = preg_split('/\r\n|\r|\n/', trim((string) file_get_contents($credentialBestand)));
-    $onbenoemdeRegels = [];
-
-    foreach ($regels as $regel) {
-        $regel = trim($regel);
-        if ($regel === '' || str_starts_with($regel, '#')) {
-            continue;
-        }
-
-        if (preg_match('/^([^:=]+)\s*[:=]\s*(.*)$/', $regel, $delen)) {
-            $naam = strtolower(trim($delen[1]));
-            $waarde = trim($delen[2]);
-            if (in_array($naam, ['username', 'gebruikersnaam', 'gmail_username', 'mozart_gmail_username'], true)) {
-                $gebruikersnaam = $waarde;
-            } elseif (in_array($naam, ['password', 'wachtwoord', 'app_password', 'gmail_app_password', 'mozart_gmail_app_password'], true)) {
-                $appWachtwoord = preg_replace('/\s+/', '', $waarde);
-                $bron = 'bestand';
-            }
-        } else {
-            $onbenoemdeRegels[] = $regel;
-        }
-    }
-
     if ($appWachtwoord === '' && isset($onbenoemdeRegels[1])) {
         $gebruikersnaam = $onbenoemdeRegels[0];
         $appWachtwoord = preg_replace('/\s+/', '', $onbenoemdeRegels[1]);
