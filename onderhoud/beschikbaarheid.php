@@ -169,6 +169,7 @@ details.mail-bewerk-groen[open] > input, details.mail-bewerk-rood[open] > input 
 details.mail-bewerk-groen[open] > textarea, details.mail-bewerk-rood[open] > textarea { position: fixed; top: calc(12vh + 3.6em); left: 50%; z-index: 10; width: min(90vw, 700px); height: 65vh; transform: translateX(-50%); box-sizing: border-box; padding: .6em; background: #fff; border: 1px solid #777; resize: vertical; }
 td.acties { min-width: 32em; white-space: nowrap; }
 td.acties > .mail-knop, td.acties > details { display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; height: 2.2em; padding: 0; line-height: 1; box-sizing: border-box; }
+.tabel-scroll tr > td:last-child > .mail-knop { padding-left: 8px; padding-right: 8px; }
 .tabel-scroll tr > td:last-child { min-width: 32em; white-space: nowrap; }
 .tabel-scroll tr > td:last-child > .mail-knop, .tabel-scroll tr > td:last-child > details { display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; height: 2.2em; padding: 0; line-height: 1; box-sizing: border-box; }
 </style>
