@@ -155,7 +155,7 @@ foreach ($activiteiten as $activiteit) if ((int) $activiteit['id'] === $activite
 // Laat beschikbare spelers zien en sorteer ze volgens de instrumentvolgorde.
 $spelers = [];
 if ($gekozenActiviteit) {
-    $stmt = $pdo->prepare("SELECT d.id, d.voornaam, d.achternaam, d.email, ad.status, ad.toegelaten, ad.afgewezen, COALESCE(ad.instrument_id, di.instrument_id) AS instrument_id, ad.partij, i.naam AS instrument FROM activiteit_deelnemers ad JOIN deelnemers d ON d.id = ad.deelnemer_id LEFT JOIN (SELECT deelnemer_id, MIN(instrument_id) AS instrument_id FROM deelnemer_instrumenten GROUP BY deelnemer_id) di ON di.deelnemer_id = d.id LEFT JOIN instrumenten i ON i.id = COALESCE(ad.instrument_id, di.instrument_id) WHERE ad.activiteit_id = ? AND ad.status IN ('ja', 'misschien') ORDER BY CASE WHEN i.id IS NULL THEN 1 ELSE 0 END, i.id, d.achternaam, d.voornaam");
+    $stmt = $pdo->prepare("SELECT d.id, d.voornaam, d.achternaam, d.email, ad.status, ad.toegelaten, ad.afgewezen, COALESCE(ad.instrument_id, di.instrument_id) AS instrument_id, ad.partij, i.naam AS instrument FROM activiteit_deelnemers ad JOIN deelnemers d ON d.id = ad.deelnemer_id LEFT JOIN (SELECT deelnemer_id, MIN(instrument_id) AS instrument_id FROM deelnemer_instrumenten GROUP BY deelnemer_id) di ON di.deelnemer_id = d.id LEFT JOIN instrumenten i ON i.id = COALESCE(ad.instrument_id, di.instrument_id) WHERE ad.activiteit_id = ? ORDER BY CASE WHEN i.id IS NULL THEN 1 ELSE 0 END, i.id, d.achternaam, d.voornaam");
     $stmt->execute([$activiteitId]);
     $spelers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -173,7 +173,7 @@ td.acties > .mail-knop, td.acties > details { display: inline-flex; align-items:
 .tabel-scroll tr > td:last-child { min-width: 32em; white-space: nowrap; }
 .tabel-scroll tr > td:last-child > .mail-knop, .tabel-scroll tr > td:last-child > details { display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; height: 2.2em; padding: 0; line-height: 1; box-sizing: border-box; }
 </style>
-<style>.afgewezen-kruis{color:#dc3545;font-size:1.25em;font-weight:bold;margin-left:.35em}</style>
+<style>.toegelaten-vinkje,.afgewezen-kruis{display:inline-flex;align-items:center;justify-content:center;width:1.35em;height:1.35em;margin-left:.35em;border-radius:50%;color:#fff;font-size:1em;font-weight:bold;line-height:1}.toegelaten-vinkje{background:#198754}.afgewezen-kruis{background:#dc3545}</style>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.tabel-scroll tr').forEach(function (rij) {
