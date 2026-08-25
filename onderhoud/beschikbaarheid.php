@@ -8,6 +8,7 @@ $melding = '';
 $testMailOntvanger = 'info@mozartopzaterdag.nl';
 set_time_limit(15);
 $activiteitId = (int) ($_GET['activiteit_id'] ?? $_POST['activiteit_id'] ?? 0);
+$toonModus = in_array($_GET['toon'] ?? 'ja_misschien', ['toegelaten', 'ja_misschien'], true) ? $_GET['toon'] : 'ja_misschien';
 // Toon alleen activiteiten die nog moeten plaatsvinden.
 $activiteiten = $pdo->query('SELECT id, datum, plaats, omschrijving FROM activiteiten WHERE datum >= CURDATE() ORDER BY datum')->fetchAll(PDO::FETCH_ASSOC);
 if ($activiteitId === 0 && $activiteiten !== []) $activiteitId = (int) $activiteiten[0]['id'];
@@ -161,11 +162,16 @@ foreach ($activiteiten as $activiteit) if ((int) $activiteit['id'] === $activite
 // Laat beschikbare spelers zien en sorteer ze volgens de instrumentvolgorde.
 $spelers = [];
 if ($gekozenActiviteit) {
-    $stmt = $pdo->prepare("SELECT d.id, d.voornaam, d.achternaam, d.email, ad.status, ad.toegelaten, ad.afgewezen, COALESCE(ad.instrument_id, di.instrument_id) AS instrument_id, ad.partij, i.naam AS instrument FROM activiteit_deelnemers ad JOIN deelnemers d ON d.id = ad.deelnemer_id LEFT JOIN (SELECT deelnemer_id, MIN(instrument_id) AS instrument_id FROM deelnemer_instrumenten GROUP BY deelnemer_id) di ON di.deelnemer_id = d.id LEFT JOIN instrumenten i ON i.id = COALESCE(ad.instrument_id, di.instrument_id) WHERE ad.activiteit_id = ? AND ad.status <> 'nee' AND (ad.status IN ('ja', 'misschien') OR ad.afgewezen = 1) ORDER BY CASE WHEN i.id IS NULL THEN 1 ELSE 0 END, i.id, d.achternaam, d.voornaam");
+    if ($toonModus === 'toegelaten') {
+        $stmt = $pdo->prepare("SELECT d.id, d.voornaam, d.achternaam, d.email, ad.status, ad.toegelaten, ad.afgewezen, COALESCE(ad.instrument_id, di.instrument_id) AS instrument_id, ad.partij, i.naam AS instrument FROM activiteit_deelnemers ad JOIN deelnemers d ON d.id = ad.deelnemer_id LEFT JOIN (SELECT deelnemer_id, MIN(instrument_id) AS instrument_id FROM deelnemer_instrumenten GROUP BY deelnemer_id) di ON di.deelnemer_id = d.id LEFT JOIN instrumenten i ON i.id = COALESCE(ad.instrument_id, di.instrument_id) WHERE ad.activiteit_id = ? AND ad.status <> 'nee' AND ad.toegelaten = 1 ORDER BY CASE WHEN i.id IS NULL THEN 1 ELSE 0 END, i.id, d.achternaam, d.voornaam");
+    } else {
+        $stmt = $pdo->prepare("SELECT d.id, d.voornaam, d.achternaam, d.email, ad.status, ad.toegelaten, ad.afgewezen, COALESCE(ad.instrument_id, di.instrument_id) AS instrument_id, ad.partij, i.naam AS instrument FROM activiteit_deelnemers ad JOIN deelnemers d ON d.id = ad.deelnemer_id LEFT JOIN (SELECT deelnemer_id, MIN(instrument_id) AS instrument_id FROM deelnemer_instrumenten GROUP BY deelnemer_id) di ON di.deelnemer_id = d.id LEFT JOIN instrumenten i ON i.id = COALESCE(ad.instrument_id, di.instrument_id) WHERE ad.activiteit_id = ? AND ad.status <> 'nee' AND ad.status IN ('ja', 'misschien') ORDER BY CASE WHEN i.id IS NULL THEN 1 ELSE 0 END, i.id, d.achternaam, d.voornaam");
+    }
     $stmt->execute([$activiteitId]);
     $spelers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 $afgewezenDeelnemers = array_map('intval', array_column(array_filter($spelers, static fn (array $speler): bool => (int) $speler['afgewezen'] === 1), 'id'));
+$onbeoordeeldeDeelnemers = array_map('intval', array_column(array_filter($spelers, static fn (array $speler): bool => (int) $speler['toegelaten'] === 0 && (int) $speler['afgewezen'] === 0), 'id'));
 ?>
 <!DOCTYPE html>
 <html lang="nl"><head><meta charset="UTF-8"><title>Beschikbaarheid</title><link href="/css/moz.css" rel="stylesheet" type="text/css"><style>
@@ -181,20 +187,33 @@ td.acties > .mail-knop, td.acties > details { display: inline-flex; align-items:
 .tabel-scroll tr > td:last-child > .mail-knop, .tabel-scroll tr > td:last-child > details { display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; height: 2.2em; padding: 0 8px; line-height: 1; box-sizing: border-box; }
 select[name="instrument_id"], select[name="status"], input[name="partij"] { background-color: transparent; }
 </style>
-<style>.toegelaten-vinkje,.afgewezen-kruis{display:inline-flex;align-items:center;justify-content:center;width:1.35em;height:1.35em;margin-left:.35em;border-radius:50%;color:#fff;font-size:1em;font-weight:bold;line-height:1}.toegelaten-vinkje{background:#198754}.afgewezen-kruis{background:#dc3545}</style>
+<style>.toegelaten-vinkje,.afgewezen-kruis,.onbeoordeeld-vraagteken{display:inline-flex;align-items:center;justify-content:center;width:1.35em;height:1.35em;margin-left:.35em;border-radius:50%;color:#fff;font-size:1em;font-weight:bold;line-height:1}.toegelaten-vinkje{background:#198754}.afgewezen-kruis{background:#dc3545}.onbeoordeeld-vraagteken{background:#ff9800}</style>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.tabel-scroll tr').forEach(function (rij) {
         var afgewezen = rij.querySelector('input[name="afgewezen"]');
         var naam = rij.querySelector('td:first-child');
         var deelnemer = rij.querySelector('input[name="deelnemer_id"]');
-        if (deelnemer && naam && <?= json_encode($afgewezenDeelnemers) ?>.includes(Number(deelnemer.value)) && !naam.querySelector('.afgewezen-kruis')) {
-            var kruis = document.createElement('span');
-            kruis.className = 'afgewezen-kruis';
-            kruis.title = 'Afgewezen';
-            kruis.setAttribute('aria-label', 'Afgewezen');
-            kruis.textContent = '✕';
-            naam.appendChild(kruis);
+        if (deelnemer && naam) {
+            var deelnemerId = Number(deelnemer.value);
+            // Markeer afgewezen deelnemers met rood kruis
+            if (<?= json_encode($afgewezenDeelnemers) ?>.includes(deelnemerId) && !naam.querySelector('.afgewezen-kruis')) {
+                var kruis = document.createElement('span');
+                kruis.className = 'afgewezen-kruis';
+                kruis.title = 'Afgewezen';
+                kruis.setAttribute('aria-label', 'Afgewezen');
+                kruis.textContent = '✕';
+                naam.appendChild(kruis);
+            }
+            // Markeer onbeoordeelde deelnemers met oranje vraagteken
+            if (<?= json_encode($onbeoordeeldeDeelnemers) ?>.includes(deelnemerId) && !naam.querySelector('.onbeoordeeld-vraagteken')) {
+                var vraagteken = document.createElement('span');
+                vraagteken.className = 'onbeoordeeld-vraagteken';
+                vraagteken.title = 'Nog niet beoordeeld';
+                vraagteken.setAttribute('aria-label', 'Nog niet beoordeeld');
+                vraagteken.textContent = '?';
+                naam.appendChild(vraagteken);
+            }
         }
     });
 });
@@ -210,5 +229,7 @@ document.addEventListener('keydown', function (event) {
 <?php if ($melding !== ''): ?><p class="w3-panel w3-pale-green w3-leftbar w3-border-green"><?= htmlspecialchars($melding) ?></p><?php endif; ?>
 <form method="get"><label for="activiteit_id">Activiteit:</label><select class="w3-select" id="activiteit_id" name="activiteit_id" onchange="this.form.submit()" style="max-width:32em;display:inline-block"><?php foreach ($activiteiten as $activiteit): ?><option value="<?= (int) $activiteit['id'] ?>" <?= (int) $activiteit['id'] === $activiteitId ? 'selected' : '' ?>><?= htmlspecialchars(date('d-m-Y', strtotime($activiteit['datum'])) . ' - ' . $activiteit['plaats']) ?></option><?php endforeach; ?></select></form>
 <?php if ($gekozenActiviteit): ?><p><?= htmlspecialchars($gekozenActiviteit['omschrijving'] ?? '') ?></p>
+<?php $toggleWaarde = $toonModus === 'toegelaten' ? 'ja_misschien' : 'toegelaten'; $toggleTekst = $toonModus === 'toegelaten' ? 'Toon: ja/misschien (alle)' : 'Toon: alleen toegelaten'; $toggleButtonClass = $toonModus === 'toegelaten' ? 'w3-button w3-small w3-border w3-green' : 'w3-button w3-small w3-border w3-light-grey'; ?>
+<form method="get" style="margin:0 0 12px"><input type="hidden" name="activiteit_id" value="<?= (int) $activiteitId ?>"><button class="<?= $toggleButtonClass ?>" type="submit" name="toon" value="<?= htmlspecialchars($toggleWaarde, ENT_QUOTES, 'UTF-8') ?>" title="<?= $toonModus === 'toegelaten' ? 'Klik om alle ja/misschien deelnemers te tonen' : 'Klik om alleen toegelaten deelnemers te tonen' ?>"><?= htmlspecialchars($toggleTekst) ?></button></form>
 <div class="tabel-scroll"><table class="w3-table w3-bordered w3-striped w3-small"><tr><th>Speler</th><th>Instrument</th><th>Status</th><th>Partij</th><th>Acties</th></tr>
 <?php foreach ($spelers as $speler): ?><tr><form method="post"><input type="hidden" name="activiteit_id" value="<?= $activiteitId ?>"><input type="hidden" name="deelnemer_id" value="<?= (int) $speler['id'] ?>"><td><?= htmlspecialchars($speler['voornaam'] . ' ' . $speler['achternaam']) ?><?php if ((int) $speler['toegelaten'] === 1): ?><span class="toegelaten-vinkje" title="Toegelaten" aria-label="Toegelaten">&#10003;</span><?php endif; ?></td><td><select class="w3-select" name="instrument_id"><option value="0">(onbekend)</option><?php foreach ($instrumenten as $instrument): ?><option value="<?= (int) $instrument['id'] ?>" <?= (int) $speler['instrument_id'] === (int) $instrument['id'] ? 'selected' : '' ?>><?= htmlspecialchars($instrument['naam']) ?></option><?php endforeach; ?></select></td><td><select class="w3-select" name="status"><?php foreach (['ja', 'misschien', 'nee'] as $status): ?><option value="<?= $status ?>" <?= $speler['status'] === $status ? 'selected' : '' ?>><?= $status ?></option><?php endforeach; ?></select></td><td><input class="w3-input" type="text" name="partij" value="<?= htmlspecialchars($speler['partij'] ?? '') ?>" placeholder="bijv. 1" style="width:8em"></td><td><button class="w3-button w3-green w3-small mail-knop" type="submit" name="actie" value="opslaan_bevestigen" formnovalidate onclick="return confirm('Bevestigingsmail versturen?')">Sla op &amp; bevestig</button><details class="mail-bewerk-groen"><summary>Bev.ml</summary><input class="w3-input" type="text" name="mail_bevestiging_onderwerp" value="<?= htmlspecialchars($standaardOnderwerp) ?>"><textarea class="w3-input" name="mail_bevestiging_tekst" rows="8"><?= htmlspecialchars($standaardMail) ?></textarea></details><button class="w3-button w3-red w3-small mail-knop" type="submit" name="actie" value="afwijzen" formnovalidate onclick="return confirm('Afwijzingsmail versturen?')">Wijs af</button><details class="mail-bewerk-rood"><summary>Afw.ml</summary><input class="w3-input" type="text" name="mail_afwijzing_onderwerp" value="<?= htmlspecialchars($standaardAfwijzingsOnderwerp) ?>"><textarea class="w3-input" name="mail_afwijzing_tekst" rows="8"><?= htmlspecialchars($standaardAfwijzingsMail) ?></textarea></details></td></form></tr><?php endforeach; ?></table></div><?php else: ?><p>Er zijn geen toekomstige activiteiten.</p><?php endif; ?></div></body></html>
