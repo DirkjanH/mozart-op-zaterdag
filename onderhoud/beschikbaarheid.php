@@ -18,7 +18,7 @@ $gmailGebruikersnaam = is_readable($gmailGebruikersnaamBestand)
     : 'dirkjan@pellegrina.net';
 $standaardMail = <<<'HTML'
 Beste {{voornaam}},<br><br>
-Leuk dat je je hebt aangemeld voor Mozart op Zaterdag! We zijn blij om je te kunnen plaatsen als {{instrument}}{{partij_tekst}} voor zaterdag {{datum}} in de {{plaats}} aan het Domplein. We spelen dan {{omschrijving}}.<br><br>
+Leuk dat je je hebt aangemeld voor Mozart op Zaterdag! We zijn blij om je te kunnen plaatsen als {{instrument}}{{partij_tekst}} voor zaterdag {{datum}} in de {{plaats}}. We spelen dan {{omschrijving}}.<br><br>
 De bezetting vind je op de <a href="https://mozartopzaterdag.nl">website</a>. Je kunt inloggen op de pagina voor deelnemers met <strong>WolfGang</strong> (let op de hoofdletters).<br><br>
 Mocht je voor het concert moeten afzeggen, dan stellen we het op prijs als je een vervanger aandraagt.<br><br>
 Alle partijen staan ook op de <a href="https://mozartopzaterdag.nl">website</a>.<br><br>
