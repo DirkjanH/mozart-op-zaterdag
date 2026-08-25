@@ -5,7 +5,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 // Tijdelijke testinstelling: alle berichten gaan naar dit adres.
 $melding = '';
-$testMailOntvanger = 'dirkjan@pellegrina.net';
+$testMailOntvanger = 'info@mozartopzaterdag.nl';
 set_time_limit(15);
 $activiteitId = (int) ($_GET['activiteit_id'] ?? $_POST['activiteit_id'] ?? 0);
 // Toon alleen activiteiten die nog moeten plaatsvinden.
