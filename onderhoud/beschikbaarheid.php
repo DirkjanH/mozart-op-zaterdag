@@ -5,6 +5,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 $melding = '';
 $testMailOntvanger = 'dirkjan@pellegrina.net';
+set_time_limit(35);
 $activiteitId = (int) ($_GET['activiteit_id'] ?? $_POST['activiteit_id'] ?? 0);
 $activiteiten = $pdo->query('SELECT id, datum, plaats, omschrijving FROM activiteiten WHERE datum >= CURDATE() ORDER BY datum')->fetchAll(PDO::FETCH_ASSOC);
 if ($activiteitId === 0 && $activiteiten !== []) $activiteitId = (int) $activiteiten[0]['id'];
@@ -84,8 +85,11 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
             $mailer->SMTPAuth = true;
             $mailer->Username = $gmailGebruikersnaam;
             $mailer->Password = $gmailAppWachtwoord;
-            $mailer->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
-            $mailer->Port = 587;
+            $mailer->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
+            $mailer->Port = 465;
+            $mailer->Timeout = 20;
+            $mailer->Timelimit = 20;
+            $mailer->SMTPKeepAlive = false;
             $mailer->CharSet = 'UTF-8';
             $mailer->setFrom($mailer->Username, 'Mozart op Zaterdag');
             $mailer->addAddress($testMailOntvanger, 'Dirkjan Horringa');
@@ -112,6 +116,8 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
             } catch (PHPMailer\PHPMailer\Exception $e) {
                 $melding = 'Mail niet verstuurd: ' . $e->getMessage();
             } catch (RuntimeException $e) {
+                $melding = 'Mail niet verstuurd: ' . $e->getMessage();
+            } catch (Throwable $e) {
                 $melding = 'Mail niet verstuurd: ' . $e->getMessage();
             }
         }
