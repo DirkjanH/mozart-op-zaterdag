@@ -2,12 +2,14 @@
 require_once __DIR__ . '/../includes/inloggen.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
+// Credentials staan buiten de openbare webmap.
 $credentialBestand = __DIR__ . '/../includes/_tst/MOZART_GMAIL_USERNAME.txt';
 $gebruikersnaam = '';
 $appWachtwoord = '';
 $bron = 'niet gevonden';
 $debug = [];
 
+// Lees zowel gelabelde als twee ongelabelde regels in.
 if (is_readable($credentialBestand)) {
     $regels = preg_split('/\r\n|\r|\n/', trim((string) file_get_contents($credentialBestand)));
     $onbenoemdeRegels = [];
@@ -46,10 +48,12 @@ if ($omgevingWachtwoord !== false && $omgevingWachtwoord !== '') {
     $bron = 'omgeving';
 }
 
+// Zonder beide waarden heeft een SMTP-test geen zin.
 if ($gebruikersnaam === '' || $appWachtwoord === '') {
     $debug[] = 'Gebruikersnaam of app-wachtwoord ontbreekt.';
 } else {
     try {
+        // Alleen verbinding en authenticatie testen; er wordt niets verzonden.
         $mailer = new PHPMailer\PHPMailer\PHPMailer(true);
         $mailer->isSMTP();
         $mailer->Host = 'smtp.gmail.com';
