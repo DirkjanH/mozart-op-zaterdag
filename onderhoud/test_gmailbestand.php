@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../includes/inloggen.php';
 
-$bestandsnaam = 'users_tmp/cfb5wd2sc_ssh/mc-cfb5wd2sc_ssh/MOZART_GMAIL_USERNAME.txt';
+$bestandsnaam = '/includes/_tst/MOZART_GMAIL_USERNAME.txt';
 $paden = [
     'vanaf onderhoud: ../' => __DIR__ . '/../' . $bestandsnaam,
     'vanaf onderhoud: ../../' => __DIR__ . '/../../' . $bestandsnaam,
