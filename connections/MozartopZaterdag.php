@@ -14,5 +14,5 @@ try {
         [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
     );
 } catch (PDOException $e) {
-    trigger_error('Kan geen verbinding maken met de database: ' . $e->getMessage(), E_USER_ERROR);
+    throw new RuntimeException('Kan geen verbinding maken met de database: ' . $e->getMessage(), 0, $e);
 }
