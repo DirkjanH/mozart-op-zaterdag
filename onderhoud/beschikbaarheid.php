@@ -18,6 +18,7 @@ $standaardAfwijzingsOnderwerp = 'Mozart op Zaterdag - deze keer geen plaats';
 $gmailGebruikersnaamBestand = '/customers/e/5/3/cfb5wd2sc/users_tmp/cfb5wd2sc_ssh/mc-cfb5wd2sc_ssh/MOZART_GMAIL_USERNAME.txt';
 $gmailGebruikersnaam = 'dirkjan@pellegrina.net';
 $gmailAppWachtwoord = '';
+$gmailWachtwoordBron = 'niet gevonden';
 if (is_readable($gmailGebruikersnaamBestand)) {
     $credentialRegels = preg_split('/\r\n|\r|\n/', trim((string) file_get_contents($gmailGebruikersnaamBestand)));
     $ongelabeldeRegels = [];
@@ -33,6 +34,7 @@ if (is_readable($gmailGebruikersnaamBestand)) {
                 $gmailGebruikersnaam = $waarde;
             } elseif (in_array($naam, ['password', 'wachtwoord', 'app_password', 'gmail_app_password', 'mozart_gmail_app_password'], true)) {
                 $gmailAppWachtwoord = preg_replace('/\s+/', '', $waarde);
+                $gmailWachtwoordBron = 'bestand';
             }
         } else {
             $ongelabeldeRegels[] = $regel;
@@ -41,10 +43,15 @@ if (is_readable($gmailGebruikersnaamBestand)) {
     if ($gmailAppWachtwoord === '' && isset($ongelabeldeRegels[1])) {
         $gmailGebruikersnaam = $ongelabeldeRegels[0];
         $gmailAppWachtwoord = preg_replace('/\s+/', '', $ongelabeldeRegels[1]);
+        $gmailWachtwoordBron = 'bestand';
     }
 }
 $gmailGebruikersnaam = getenv('MOZART_GMAIL_USERNAME') ?: $gmailGebruikersnaam;
-$gmailAppWachtwoord = getenv('MOZART_GMAIL_APP_PASSWORD') ?: $gmailAppWachtwoord;
+$gmailOmgevingsWachtwoord = getenv('MOZART_GMAIL_APP_PASSWORD');
+if ($gmailOmgevingsWachtwoord !== false && $gmailOmgevingsWachtwoord !== '') {
+    $gmailAppWachtwoord = preg_replace('/\s+/', '', $gmailOmgevingsWachtwoord);
+    $gmailWachtwoordBron = 'omgeving';
+}
 $standaardMail = <<<'HTML'
 Beste {{voornaam}},<br><br>
 Leuk dat je je hebt aangemeld voor Mozart op Zaterdag! We zijn blij om je te kunnen plaatsen als {{instrument}}{{partij_tekst}} voor zaterdag {{datum}} in de {{plaats}}. We spelen dan {{omschrijving}}.<br><br>
@@ -91,6 +98,7 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
             $datum = date('d-m-Y', strtotime($speler['datum']));
             $partij = $speler['partij'] ? ' Je speelt partij ' . htmlspecialchars($speler['partij'], ENT_QUOTES, 'UTF-8') . '.' : '';
             $partijTekst = $speler['partij'] ? ' (partij ' . htmlspecialchars($speler['partij'], ENT_QUOTES, 'UTF-8') . ')' : '';
+            $smtpDebug = [];
             $mailer = new PHPMailer\PHPMailer\PHPMailer(true);
             $mailer->isSMTP();
             $mailer->Host = 'smtp.gmail.com';
@@ -100,8 +108,11 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
             $mailer->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
             $mailer->Port = 465;
             $mailer->Timeout = 20;
-            $mailer->Timelimit = 20;
             $mailer->SMTPKeepAlive = false;
+            $mailer->SMTPDebug = 2;
+            $mailer->Debugoutput = static function (string $bericht) use (&$smtpDebug): void {
+                $smtpDebug[] = trim($bericht);
+            };
             $mailer->CharSet = 'UTF-8';
             $mailer->setFrom($mailer->Username, 'Mozart op Zaterdag');
             $mailer->addAddress($testMailOntvanger, 'Dirkjan Horringa');
@@ -127,11 +138,11 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
                 $stmt->execute([$bevestigen ? 1 : 0, $activiteitId, $deelnemerId]);
                 $melding = ($bevestigen ? 'Bevestigingsmail' : 'Afwijzingsmail') . ' verstuurd; gegevens en toelating bijgewerkt.';
             } catch (PHPMailer\PHPMailer\Exception $e) {
-                $melding = 'Mail niet verstuurd: ' . $e->getMessage();
+                $melding = 'Mail niet verstuurd: ' . $e->getMessage() . ' SMTP: ' . implode(' | ', $smtpDebug);
             } catch (RuntimeException $e) {
                 $melding = 'Mail niet verstuurd: ' . $e->getMessage();
             } catch (Throwable $e) {
-                $melding = 'Mail niet verstuurd: ' . $e->getMessage();
+                $melding = 'Mail niet verstuurd: ' . $e->getMessage() . ' SMTP: ' . implode(' | ', $smtpDebug);
             }
         }
     }
@@ -153,6 +164,7 @@ if ($gekozenActiviteit) {
 </style>
  </head><body><div class="w3-content w3-mobile w3-white w3-panel" style="max-width:1400px"><h3>Beschikbaarheid</h3>
 <?php if ($melding !== ''): ?><p class="w3-panel w3-pale-green w3-leftbar w3-border-green"><?= htmlspecialchars($melding) ?></p><?php endif; ?>
+<p class="w3-small">Mailconfiguratie: gebruikersnaam <?= htmlspecialchars($gmailGebruikersnaam) ?>; wachtwoordbron <?= htmlspecialchars($gmailWachtwoordBron) ?>; lengte <?= strlen($gmailAppWachtwoord) ?> tekens.</p>
 <form method="get"><label for="activiteit_id">Activiteit:</label><select class="w3-select" id="activiteit_id" name="activiteit_id" onchange="this.form.submit()" style="max-width:32em;display:inline-block"><?php foreach ($activiteiten as $activiteit): ?><option value="<?= (int) $activiteit['id'] ?>" <?= (int) $activiteit['id'] === $activiteitId ? 'selected' : '' ?>><?= htmlspecialchars(date('d-m-Y', strtotime($activiteit['datum'])) . ' - ' . $activiteit['plaats']) ?></option><?php endforeach; ?></select></form>
 <?php if ($gekozenActiviteit): ?><p><?= htmlspecialchars($gekozenActiviteit['omschrijving'] ?? '') ?></p>
 <div class="tabel-scroll"><table class="w3-table w3-bordered w3-striped w3-small"><tr><th>Speler</th><th>Instrument</th><th>Status</th><th>Partij</th><th>Acties</th></tr>
