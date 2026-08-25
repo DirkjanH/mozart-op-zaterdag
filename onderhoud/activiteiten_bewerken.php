@@ -149,7 +149,7 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
         }
 
         .actie-kolom {
-            min-width: 6em;
+            min-width: 7em;
             white-space: nowrap;
         }
     </style>
@@ -179,7 +179,7 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
                         <tr>
                             <td><input class="w3-input" type="date" name="datum" value="<?= htmlspecialchars($activiteit['datum']) ?>" required></td>
                             <td><input class="w3-input" type="text" name="plaats" value="<?= htmlspecialchars($activiteit['plaats']) ?>" style="width:12em;" required></td>
-                            <td class="actie-kolom">
+                            <td>
                                 <select class="w3-select" name="werken[]" multiple size="1" style="min-width:16em;">
                                     <?php foreach ($werken as $werk): ?>
                                         <option value="<?= (int) $werk['id'] ?>" <?= in_array((int) $werk['id'], $gekozenWerken, true) ? 'selected' : '' ?>>
@@ -189,7 +189,7 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
                                 </select>
                             </td>
                             <td><input class="w3-input" type="text" name="omschrijving" value="<?= htmlspecialchars($activiteit['omschrijving'] ?? '') ?>" style="min-width:24em;"></td>
-                            <td>
+                            <td class="actie-kolom">
                                 <button class="w3-button w3-blue actie-knop" type="submit" title="Activiteit opslaan" aria-label="Activiteit opslaan">&#10003;</button>
                                 <button class="w3-button w3-red actie-knop" type="submit" name="actie" value="verwijderen" formnovalidate title="Activiteit wissen" aria-label="Activiteit wissen" onclick="return confirm('Deze activiteit echt verwijderen?');">&#10005;</button>
                             </td>

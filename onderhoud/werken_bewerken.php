@@ -78,6 +78,11 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
             line-height: 2.2em;
             text-align: center;
         }
+
+        .actie-kolom {
+            width: 2.6em;
+            white-space: nowrap;
+        }
     </style>
 </head>
 
@@ -98,7 +103,7 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
                 <th>Soort</th>
                 <th>Bezetting</th>
                 <th>Solo</th>
-                <th></th>
+                <th class="actie-kolom"></th>
             </tr>
             <?php foreach ($werken as $werk): ?>
                 <form method="post">
@@ -109,7 +114,7 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
                         <td><input class="w3-input" type="number" name="kv_nummer" value="<?= htmlspecialchars($werk['kv_nummer']) ?>" style="width:6em;" required></td>
                         <td><input class="w3-input" type="text" name="kv_toevoeging" value="<?= htmlspecialchars($werk['kv_toevoeging'] ?? '') ?>" style="width:4em;"></td>
                         <td><input class="w3-input" type="number" name="jaar" value="<?= htmlspecialchars($werk['jaar']) ?>" style="width:6em;" required></td>
-                        <td>
+                        <td class="actie-kolom">
                             <select class="w3-select" name="soort">
                                 <?php foreach ($soorten as $soort): ?>
                                     <option value="<?= $soort ?>" <?= $werk['soort'] === $soort ? 'selected' : '' ?>><?= $soort ?></option>
@@ -132,7 +137,7 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
                     <td><input class="w3-input" type="number" name="kv_nummer" style="width:6em;" required></td>
                     <td><input class="w3-input" type="text" name="kv_toevoeging" style="width:4em;"></td>
                     <td><input class="w3-input" type="number" name="jaar" style="width:6em;" required></td>
-                    <td>
+                    <td class="actie-kolom">
                         <select class="w3-select" name="soort">
                             <?php foreach ($soorten as $soort): ?>
                                 <option value="<?= $soort ?>"><?= $soort ?></option>
