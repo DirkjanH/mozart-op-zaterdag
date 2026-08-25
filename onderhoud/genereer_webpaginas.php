@@ -10,6 +10,7 @@ $activiteiten = $pdo->query(
 )->fetchAll(PDO::FETCH_ASSOC);
 
 $activiteitId = (int) ($_POST['activiteit_id'] ?? $_GET['activiteit_id'] ?? 0);
+$betekendeBestanden = array_map('basename', $_POST['betekend'] ?? []);
 if ($activiteitId === 0 && $activiteiten !== []) {
     $activiteitId = (int) $activiteiten[0]['id'];
 }
@@ -20,6 +21,11 @@ function partijLabel(string $bestand): string
     $naam = preg_replace('/[_-]+/', ' ', $naam);
     $naam = preg_replace('/\s+/', ' ', $naam);
     return trim($naam);
+}
+
+function isStrijkerPartij(string $bestand): bool
+{
+    return (bool) preg_match('/viool|violin|altviool|viola|cello|contrabas|double.?bass|strijk/i', $bestand);
 }
 
 function leesPartijen(string $map): array
@@ -36,7 +42,11 @@ function leesPartijen(string $map): array
         if (strtolower(pathinfo($bestand, PATHINFO_EXTENSION)) !== 'pdf') {
             continue;
         }
-        $partijen[] = ['bestand' => $bestand, 'label' => partijLabel($bestand)];
+        $partijen[] = [
+            'bestand' => $bestand,
+            'label' => partijLabel($bestand),
+            'strijker' => isStrijkerPartij($bestand),
+        ];
     }
 
     usort($partijen, static fn (array $a, array $b): int => strnatcasecmp($a['label'], $b['label']));
@@ -79,7 +89,11 @@ if (isset($_POST['actie']) && $_POST['actie'] === 'genereer') {
 
             $partijenHtml = '';
             foreach ($partijen as $partij) {
-                $partijenHtml .= '            <li><a href="' . html($partij['bestand']) . '" target="_blank">' . html($partij['label']) . "</a></li>\n";
+                $label = $partij['label'];
+                if ($partij['strijker'] && in_array($partij['bestand'], $betekendeBestanden, true)) {
+                    $label .= ' (betekend)';
+                }
+                $partijenHtml .= '            <li><a href="' . html($partij['bestand']) . '" target="_blank">' . html($label) . "</a></li>\n";
             }
             if ($partijenHtml === '') {
                 $partijenHtml = "            <li>Er zijn nog geen PDF-partijen in deze map.</li>\n";
@@ -181,6 +195,9 @@ if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
         <form method="post">
             <input type="hidden" name="actie" value="genereer">
             <input type="hidden" name="activiteit_id" value="<?= $activiteitId ?>">
+            <?php if ($gekozenActiviteit !== null): ?>
+                <h4><?= html($gekozenActiviteit['omschrijving'] ?: 'Mozart op Zaterdag') ?></h4>
+            <?php endif; ?>
             <p>
                 <label for="toelichting">Toelichting</label>
                 <textarea class="rijke-editor" id="toelichting" name="toelichting" rows="8" placeholder="Schrijf hier de toelichting voor de webpagina..."></textarea>
@@ -195,7 +212,15 @@ if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
             <?php else: ?>
                 <ul>
                     <?php foreach ($voorbeeldPartijen as $partij): ?>
-                        <li><?= html($partij['label']) ?> (<?= html($partij['bestand']) ?>)</li>
+                        <li>
+                            <?php if ($partij['strijker']): ?>
+                                <label>
+                                    <input type="checkbox" name="betekend[]" value="<?= html($partij['bestand']) ?>" <?= in_array($partij['bestand'], $betekendeBestanden, true) || (isset($_POST['actie']) === false && preg_match('/betekend/i', $partij['bestand'])) ? 'checked' : '' ?>>
+                                    betekend
+                                </label>
+                            <?php endif; ?>
+                            <?= html($partij['label']) ?> (<?= html($partij['bestand']) ?>)
+                        </li>
                     <?php endforeach; ?>
                 </ul>
             <?php endif; ?>
