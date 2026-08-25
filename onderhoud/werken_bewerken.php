@@ -67,6 +67,17 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
         .tabel-scroll th:first-child {
             z-index: 3;
         }
+
+        .actie-knop {
+            border-radius: 50%;
+            width: 2.2em;
+            height: 2.2em;
+            padding: 0;
+            margin: 0.1em;
+            font-size: 1.1em;
+            line-height: 2.2em;
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -108,7 +119,7 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
                         <td><input class="w3-input" type="text" name="bezetting" value="<?= htmlspecialchars($werk['bezetting']) ?>"></td>
                         <td><input class="w3-input" type="text" name="solo" value="<?= htmlspecialchars($werk['solo'] ?? '') ?>"></td>
                         <td>
-                            <button class="w3-button w3-blue w3-small" type="submit">Opslaan</button>
+                            <button class="w3-button w3-blue actie-knop" type="submit" title="Werk opslaan" aria-label="Werk opslaan">&#10003;</button>
                         </td>
                     </tr>
                 </form>
