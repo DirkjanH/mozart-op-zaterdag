@@ -136,6 +136,17 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
         .tabel-scroll th:first-child {
             z-index: 3;
         }
+
+        .actie-knop {
+            border-radius: 50%;
+            width: 2.2em;
+            height: 2.2em;
+            padding: 0;
+            margin: 0.1em;
+            font-size: 1.1em;
+            line-height: 2.2em;
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -164,7 +175,7 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
                             <td><input class="w3-input" type="date" name="datum" value="<?= htmlspecialchars($activiteit['datum']) ?>" required></td>
                             <td><input class="w3-input" type="text" name="plaats" value="<?= htmlspecialchars($activiteit['plaats']) ?>" style="width:12em;" required></td>
                             <td>
-                                <select class="w3-select" name="werken[]" multiple size="4" style="min-width:16em;">
+                                <select class="w3-select" name="werken[]" multiple size="1" style="min-width:16em;">
                                     <?php foreach ($werken as $werk): ?>
                                         <option value="<?= (int) $werk['id'] ?>" <?= in_array((int) $werk['id'], $gekozenWerken, true) ? 'selected' : '' ?>>
                                             <?= htmlspecialchars($werk['titel']) ?> (KV <?= htmlspecialchars($werk['kv_nummer'] . $werk['kv_toevoeging']) ?>)
@@ -174,8 +185,8 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
                             </td>
                             <td><input class="w3-input" type="text" name="omschrijving" value="<?= htmlspecialchars($activiteit['omschrijving'] ?? '') ?>" style="min-width:24em;"></td>
                             <td>
-                                <button class="w3-button w3-blue w3-small" type="submit">Opslaan</button>
-                                <button class="w3-button w3-red w3-small" type="submit" name="actie" value="verwijderen" formnovalidate onclick="return confirm('Deze activiteit echt verwijderen?');">Wissen</button>
+                                <button class="w3-button w3-blue actie-knop" type="submit" title="Activiteit opslaan" aria-label="Activiteit opslaan">&#10003;</button>
+                                <button class="w3-button w3-red actie-knop" type="submit" name="actie" value="verwijderen" formnovalidate title="Activiteit wissen" aria-label="Activiteit wissen" onclick="return confirm('Deze activiteit echt verwijderen?');">&#10005;</button>
                             </td>
                         </tr>
                     </form>
@@ -187,14 +198,14 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
                         <td><input class="w3-input" type="date" name="datum" value="<?= htmlspecialchars($voorgesteldeDatum) ?>" required></td>
                         <td><input class="w3-input" type="text" name="plaats" value="Marnixzaal" style="width:12em;" required></td>
                         <td>
-                            <select class="w3-select" name="werken[]" multiple size="4" style="min-width:16em;">
+                            <select class="w3-select" name="werken[]" multiple size="1" style="min-width:16em;">
                                 <?php foreach ($werken as $werk): ?>
                                     <option value="<?= (int) $werk['id'] ?>"><?= htmlspecialchars($werk['titel']) ?> (KV <?= htmlspecialchars($werk['kv_nummer'] . $werk['kv_toevoeging']) ?>)</option>
                                 <?php endforeach; ?>
                             </select>
                         </td>
                         <td><input class="w3-input" type="text" name="omschrijving" placeholder="Nieuwe activiteit, of kies werken hiernaast" style="min-width:24em;"></td>
-                        <td><button class="w3-button w3-green w3-small" type="submit">Toevoegen</button></td>
+                        <td><button class="w3-button w3-blue actie-knop" type="submit" title="Activiteit toevoegen" aria-label="Activiteit toevoegen">&#10003;</button></td>
                     </tr>
                 </form>
             </table>

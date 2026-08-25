@@ -1,0 +1,8 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "/^php -l \"onderhoud\\\\activiteiten_bewerken\\.php\"$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}
