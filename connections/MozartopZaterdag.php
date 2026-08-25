@@ -4,7 +4,7 @@
 $hostname = 'localhost';
 $database = 'cfb5wd2sc_mozartopzaterdag';
 $username = 'cfb5wd2sc_mozartopzaterdag';
-$password = '?2KpAri5Ti.RGsM';
+$password = '%6riUHs##SQ!4aQGaW^Qhq';
 
 try {
     $pdo = new PDO(
