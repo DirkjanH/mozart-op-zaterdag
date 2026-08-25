@@ -85,7 +85,6 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
         $status = in_array($_POST['status'] ?? '', ['ja', 'nee', 'misschien'], true) ? $_POST['status'] : 'misschien';
         $partij = trim($_POST['partij'] ?? '') ?: null;
         $instrumentId = (int) ($_POST['instrument_id'] ?? 0) ?: null;
-        $status = $actie === 'afwijzen' ? 'nee' : $status;
         $stmt = $pdo->prepare('UPDATE activiteit_deelnemers SET instrument_id = ?, partij = ?, status = ? WHERE activiteit_id = ? AND deelnemer_id = ?');
         $stmt->execute([$instrumentId, $partij, $status, $activiteitId, $deelnemerId]);
     }
