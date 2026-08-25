@@ -56,9 +56,15 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
             $partij = $speler['partij'] ? ' Je speelt partij ' . htmlspecialchars($speler['partij'], ENT_QUOTES, 'UTF-8') . '.' : '';
             $partijTekst = $speler['partij'] ? ' (partij ' . htmlspecialchars($speler['partij'], ENT_QUOTES, 'UTF-8') . ')' : '';
             $mailer = new PHPMailer\PHPMailer\PHPMailer(true);
-            $mailer->isMail();
+            $mailer->isSMTP();
+            $mailer->Host = 'smtp.gmail.com';
+            $mailer->SMTPAuth = true;
+            $mailer->Username = getenv('MOZART_GMAIL_USERNAME') ?: 'dirkjan@pellegrina.net';
+            $mailer->Password = getenv('MOZART_GMAIL_APP_PASSWORD') ?: '';
+            $mailer->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
+            $mailer->Port = 587;
             $mailer->CharSet = 'UTF-8';
-            $mailer->setFrom('php@pellegrina.net', 'Mozart op Zaterdag');
+            $mailer->setFrom($mailer->Username, 'Mozart op Zaterdag');
             $mailer->addAddress($testMailOntvanger, 'Dirkjan Horringa');
             $mailer->isHTML(true);
             $ingevuldOnderwerp = trim($_POST[$bevestigen ? 'mail_bevestiging_onderwerp' : 'mail_afwijzing_onderwerp'] ?? '');
