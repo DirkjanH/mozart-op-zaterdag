@@ -12,7 +12,7 @@ require_once __DIR__ . '/../includes/inloggen.php';
 
 <body>
     <div class="w3-content w3-mobile w3-white w3-panel" style="max-width:700px;">
-        <h3>Mozart op Zaterdag - Dasboard</h3>
+        <h3>Mozart op Zaterdag - Dashboard</h3>
         <div class="w3-bar-block">
             <a href="deelnemers_bewerken.php" target="_blank" class="w3-bar-item w3-button w3-blue w3-margin-bottom">Deelnemers bewerken</a>
             <a href="werken_bewerken.php" target="_blank" class="w3-bar-item w3-button w3-blue w3-margin-bottom">Werken bewerken</a>
