@@ -43,6 +43,31 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
     <meta charset="UTF-8">
     <title>Werken bewerken</title>
     <link href="/css/moz.css" rel="stylesheet" type="text/css">
+    <style>
+        .tabel-scroll {
+            max-height: 75vh;
+            overflow: auto;
+        }
+
+        .tabel-scroll th {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            background: white;
+        }
+
+        .tabel-scroll td:first-child,
+        .tabel-scroll th:first-child {
+            position: sticky;
+            left: 0;
+            z-index: 1;
+            background: white;
+        }
+
+        .tabel-scroll th:first-child {
+            z-index: 3;
+        }
+    </style>
 </head>
 
 <body>
@@ -52,6 +77,7 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
             <p class="w3-panel w3-pale-green w3-leftbar w3-border-green"><?= htmlspecialchars($melding) ?></p>
         <?php endif; ?>
 
+        <div class="tabel-scroll">
         <table class="w3-table w3-bordered w3-striped w3-small">
             <tr>
                 <th>Titel</th>
@@ -110,6 +136,7 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
                 </tr>
             </form>
         </table>
+        </div>
     </div>
 </body>
 
