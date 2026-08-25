@@ -15,8 +15,8 @@ $instrumenten = $pdo->query('SELECT id, naam FROM instrumenten ORDER BY id')->fe
 
 $standaardOnderwerp = 'Bevestiging deelname Mozart op Zaterdag';
 $standaardAfwijzingsOnderwerp = 'Mozart op Zaterdag - deze keer geen plaats';
-$gmailGebruikersnaamBestand = '../includes/_tst/MOZART_GMAIL_USERNAME.txt';
 $gmailGebruikersnaam = 'dirkjan@pellegrina.net';
+$gmailGebruikersnaamBestand = __DIR__ . '/../includes/_tst/MOZART_GMAIL_USERNAME.txt';
 $gmailAppWachtwoord = '';
 $gmailWachtwoordBron = 'niet gevonden';
 $gmailBestandBestaat = file_exists($gmailGebruikersnaamBestand);
@@ -64,17 +64,14 @@ Mocht je voor het concert moeten afzeggen, dan stellen we het op prijs als je ee
 Alle partijen staan ook op de <a href="https://mozartopzaterdag.nl">website</a>.<br><br>
 Nog even wat aanvullende opmerkingen over Mozart op Zaterdag:<br>
 <ul>
-<li>De Marnixzaal ligt aan het Domplein 4, op nog geen kwartier lopen van het station. Parkeren is er niet mogelijk; de dichtstbijzijnde parkeergarage is <a href="https://www.p1.nl/parkeerplaats/parkeergarage-springweg/">Springweg</a>.</li>
+<li>De Marnixzaal ligt aan het Domplein 4, op nog geen kwartier lopen van het station.</li>
 <li>Dress code: kleurige vrije-tijdskleren.</li>
 <li>Je hoeft geen lessenaar mee te nemen; die zijn aanwezig in de zaal.</li>
-<li>Maak vooral reclame voor het korte concertje van dit project.</li>
-<li>Voor deelnemers die niet leven van muziek maken of een studenteninkomen kan een financiële bijdrage worden gevraagd.</li>
 </ul>
 Met enthousiaste groet,<br><br>
 Dirkjan Horringa<br><br>
 P.S. Mocht je ook in de toekomst weer willen meespelen, <a href="https://forms.gle/49YfM2dSn8AYpzfE8">vul dan dit formulier in</a>.
 HTML;
-$standaardAfwijzingsMail = 'Beste {{voornaam}},<br><br>Een tijdje terug heb je in het aanmeldingsformulier voor Mozart op Zaterdag aangegeven dat je (misschien) wilde meespelen op {{datum}} in {{omschrijving}}. De belangstelling voor deze aflevering van Mozart op Zaterdag is echter groot, met name bij de blazers en de celli. Helaas kan ik je voor die datum niet plaatsen. Ik hoop je bij een van de volgende afleveringen of in andere projecten weer te zien.<br><br>Hartelijke groet<br><br>Dirkjan Horringa';
 
 // Verwerk wijzigingen en verstuur alleen na expliciete keuze een mail.
 if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
@@ -165,17 +162,18 @@ if ($gekozenActiviteit) {
 <!DOCTYPE html>
 <html lang="nl"><head><meta charset="UTF-8"><title>Beschikbaarheid</title><link href="/css/moz.css" rel="stylesheet" type="text/css"><style>
 .tabel-scroll{max-height:75vh;overflow:auto}.tabel-scroll th{position:sticky;top:0;z-index:2;background:#fff}.tabel-scroll th:first-child{position:sticky;left:0;z-index:3;background:#fff}.tabel-scroll td:first-child{position:sticky;left:0;z-index:1;background:#fff}.mail-knop{margin:.15em}.toegelaten-vinkje{color:#198754;font-size:1.25em;font-weight:bold;margin-left:.35em}details.mail-editor{display:inline-block;margin:.15em 0;vertical-align:middle}details.mail-editor summary{display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;height:2.2em;min-width:4.5em;padding:0 .6em;border-radius:2px;list-style:none;box-sizing:border-box}details.mail-editor summary::-webkit-details-marker{display:none}.mail-bewerk-groen summary{background:#198754}.mail-bewerk-rood summary{background:#dc3545}details.mail-editor[open] > :not(summary){position:fixed;left:50%;transform:translateX(-50%);z-index:10;width:min(90vw,700px);box-sizing:border-box}details.mail-editor[open] > input{top:12vh;padding:.6em;background:#fff;border:1px solid #777}details.mail-editor[open] > textarea{top:calc(12vh + 3.6em);height:65vh;padding:.6em;background:#fff;border:1px solid #777;resize:vertical}
-<style>
+</style><style>
 details.mail-bewerk-groen, details.mail-bewerk-rood { display: inline-block; margin: .15em 0; vertical-align: middle; }
 details.mail-bewerk-groen summary, details.mail-bewerk-rood summary { display: inline-flex; align-items: center; justify-content: center; height: 2.2em; min-width: 4.5em; padding: 0 .6em; box-sizing: border-box; }
 details.mail-bewerk-groen[open] > input, details.mail-bewerk-rood[open] > input { position: fixed; top: 12vh; left: 50%; z-index: 10; width: min(90vw, 700px); transform: translateX(-50%); box-sizing: border-box; padding: .6em; background: #fff; border: 1px solid #777; }
 details.mail-bewerk-groen[open] > textarea, details.mail-bewerk-rood[open] > textarea { position: fixed; top: calc(12vh + 3.6em); left: 50%; z-index: 10; width: min(90vw, 700px); height: 65vh; transform: translateX(-50%); box-sizing: border-box; padding: .6em; background: #fff; border: 1px solid #777; resize: vertical; }
 </style>
+<style>
 td.acties { min-width: 32em; white-space: nowrap; }
 td.acties > .mail-knop, td.acties > details { display: inline-flex; vertical-align: middle; height: 2.2em; box-sizing: border-box; }
 .tabel-scroll tr > td:last-child { min-width: 32em; white-space: nowrap; }
 .tabel-scroll tr > td:last-child > .mail-knop, .tabel-scroll tr > td:last-child > details { display: inline-flex; vertical-align: middle; height: 2.2em; box-sizing: border-box; }
-
+</style>
  </head><body><div class="w3-content w3-mobile w3-white w3-panel" style="max-width:1400px"><h3>Beschikbaarheid</h3>
 <?php if ($melding !== ''): ?><p class="w3-panel w3-pale-green w3-leftbar w3-border-green"><?= htmlspecialchars($melding) ?></p><?php endif; ?>
 <p class="w3-small">Mailconfiguratie: gebruikersnaam <?= htmlspecialchars($gmailGebruikersnaam) ?>; bestand bestaat <?= $gmailBestandBestaat ? 'ja' : 'nee' ?>; leesbaar <?= $gmailBestandLeesbaar ? 'ja' : 'nee' ?>; regels <?= $gmailCredentialRegels ?>; wachtwoordbron <?= htmlspecialchars($gmailWachtwoordBron) ?>; lengte <?= strlen($gmailAppWachtwoord) ?> tekens.</p>
