@@ -171,6 +171,11 @@ details.mail-bewerk-groen summary, details.mail-bewerk-rood summary { display: i
 details.mail-bewerk-groen[open] > input, details.mail-bewerk-rood[open] > input { position: fixed; top: 12vh; left: 50%; z-index: 10; width: min(90vw, 700px); transform: translateX(-50%); box-sizing: border-box; padding: .6em; background: #fff; border: 1px solid #777; }
 details.mail-bewerk-groen[open] > textarea, details.mail-bewerk-rood[open] > textarea { position: fixed; top: calc(12vh + 3.6em); left: 50%; z-index: 10; width: min(90vw, 700px); height: 65vh; transform: translateX(-50%); box-sizing: border-box; padding: .6em; background: #fff; border: 1px solid #777; resize: vertical; }
 </style>
+td.acties { min-width: 32em; white-space: nowrap; }
+td.acties > .mail-knop, td.acties > details { display: inline-flex; vertical-align: middle; height: 2.2em; box-sizing: border-box; }
+.tabel-scroll tr > td:last-child { min-width: 32em; white-space: nowrap; }
+.tabel-scroll tr > td:last-child > .mail-knop, .tabel-scroll tr > td:last-child > details { display: inline-flex; vertical-align: middle; height: 2.2em; box-sizing: border-box; }
+
  </head><body><div class="w3-content w3-mobile w3-white w3-panel" style="max-width:1400px"><h3>Beschikbaarheid</h3>
 <?php if ($melding !== ''): ?><p class="w3-panel w3-pale-green w3-leftbar w3-border-green"><?= htmlspecialchars($melding) ?></p><?php endif; ?>
 <p class="w3-small">Mailconfiguratie: gebruikersnaam <?= htmlspecialchars($gmailGebruikersnaam) ?>; bestand bestaat <?= $gmailBestandBestaat ? 'ja' : 'nee' ?>; leesbaar <?= $gmailBestandLeesbaar ? 'ja' : 'nee' ?>; regels <?= $gmailCredentialRegels ?>; wachtwoordbron <?= htmlspecialchars($gmailWachtwoordBron) ?>; lengte <?= strlen($gmailAppWachtwoord) ?> tekens.</p>
