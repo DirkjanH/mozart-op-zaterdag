@@ -19,21 +19,28 @@ $gmailGebruikersnaamBestand = '/customers/e/5/3/cfb5wd2sc/users_tmp/cfb5wd2sc_ss
 $gmailGebruikersnaam = 'dirkjan@pellegrina.net';
 $gmailAppWachtwoord = '';
 if (is_readable($gmailGebruikersnaamBestand)) {
-    $credentialRegels = file($gmailGebruikersnaamBestand, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-    foreach ($credentialRegels as $nummer => $regel) {
+    $credentialRegels = preg_split('/\r\n|\r|\n/', trim((string) file_get_contents($gmailGebruikersnaamBestand)));
+    $ongelabeldeRegels = [];
+    foreach ($credentialRegels as $regel) {
         $regel = trim($regel);
-        if (str_contains($regel, '=')) {
-            [$naam, $waarde] = array_map('trim', explode('=', $regel, 2));
-            if (in_array(strtolower($naam), ['username', 'gebruikersnaam', 'gmail_username', 'mozart_gmail_username'], true)) {
-                $gmailGebruikersnaam = $waarde;
-            } elseif (in_array(strtolower($naam), ['password', 'wachtwoord', 'app_password', 'gmail_app_password', 'mozart_gmail_app_password'], true)) {
-                $gmailAppWachtwoord = $waarde;
-            }
-        } elseif ($nummer === 0) {
-            $gmailGebruikersnaam = $regel;
-        } elseif ($nummer === 1) {
-            $gmailAppWachtwoord = $regel;
+        if ($regel === '' || str_starts_with($regel, '#')) {
+            continue;
         }
+        if (preg_match('/^([^:=]+)\s*[:=]\s*(.*)$/', $regel, $delen)) {
+            $naam = strtolower(trim($delen[1]));
+            $waarde = trim($delen[2]);
+            if (in_array($naam, ['username', 'gebruikersnaam', 'gmail_username', 'mozart_gmail_username'], true)) {
+                $gmailGebruikersnaam = $waarde;
+            } elseif (in_array($naam, ['password', 'wachtwoord', 'app_password', 'gmail_app_password', 'mozart_gmail_app_password'], true)) {
+                $gmailAppWachtwoord = preg_replace('/\s+/', '', $waarde);
+            }
+        } else {
+            $ongelabeldeRegels[] = $regel;
+        }
+    }
+    if ($gmailAppWachtwoord === '' && isset($ongelabeldeRegels[1])) {
+        $gmailGebruikersnaam = $ongelabeldeRegels[0];
+        $gmailAppWachtwoord = preg_replace('/\s+/', '', $ongelabeldeRegels[1]);
     }
 }
 $gmailGebruikersnaam = getenv('MOZART_GMAIL_USERNAME') ?: $gmailGebruikersnaam;
