@@ -12,6 +12,10 @@ $instrumenten = $pdo->query('SELECT id, naam FROM instrumenten ORDER BY id')->fe
 
 $standaardOnderwerp = 'Bevestiging deelname Mozart op Zaterdag';
 $standaardAfwijzingsOnderwerp = 'Mozart op Zaterdag - deze keer geen plaats';
+$gmailGebruikersnaamBestand = '/customers/e/5/3/cfb5wd2sc/users_tmp/cfb5wd2sc_ssh/mc-cfb5wd2sc_ssh/MOZART_GMAIL_USERNAME.txt';
+$gmailGebruikersnaam = is_readable($gmailGebruikersnaamBestand)
+    ? trim((string) file_get_contents($gmailGebruikersnaamBestand))
+    : 'dirkjan@pellegrina.net';
 $standaardMail = <<<'HTML'
 Beste {{voornaam}},<br><br>
 Leuk dat je je hebt aangemeld voor Mozart op Zaterdag! We zijn blij om je te kunnen plaatsen als {{instrument}}{{partij_tekst}} voor zaterdag {{datum}} in de {{plaats}} aan het Domplein. We spelen dan {{omschrijving}}.<br><br>
@@ -59,7 +63,7 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
             $mailer->isSMTP();
             $mailer->Host = 'smtp.gmail.com';
             $mailer->SMTPAuth = true;
-            $mailer->Username = getenv('MOZART_GMAIL_USERNAME') ?: 'dirkjan@pellegrina.net';
+            $mailer->Username = getenv('MOZART_GMAIL_USERNAME') ?: $gmailGebruikersnaam;
             $mailer->Password = getenv('MOZART_GMAIL_APP_PASSWORD') ?: '';
             $mailer->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
             $mailer->Port = 587;
