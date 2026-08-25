@@ -34,6 +34,7 @@ jobs:
             --exclude='_notes/' \
             --exclude='tests/' \
             --exclude='.gitkeep' \
+            --exclude='includes/_tst/' \
             --exclude='vendor/phpunit/' \
             --exclude='vendor/kint-php/' \
             -e 'ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=yes' \
