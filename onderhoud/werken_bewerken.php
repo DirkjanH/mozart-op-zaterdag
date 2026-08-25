@@ -5,13 +5,6 @@ require_once __DIR__ . '/../connections/MozartopZaterdag.php';
 $soorten = ['symfonie', 'concert', 'ander'];
 $melding = '';
 
-// Verwijderen
-if (isset($_POST['actie']) && $_POST['actie'] === 'verwijderen' && isset($_POST['id'])) {
-    $stmt = $pdo->prepare('DELETE FROM werken WHERE id = ?');
-    $stmt->execute([$_POST['id']]);
-    $melding = 'Werk verwijderd.';
-}
-
 // Toevoegen of bewerken
 if (isset($_POST['actie']) && $_POST['actie'] === 'opslaan') {
     $titel = trim($_POST['titel'] ?? '');
@@ -75,7 +68,7 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
                     <input type="hidden" name="actie" value="opslaan">
                     <input type="hidden" name="id" value="<?= (int) $werk['id'] ?>">
                     <tr>
-                        <td><input class="w3-input" type="text" name="titel" value="<?= htmlspecialchars($werk['titel']) ?>" required></td>
+                        <td><input class="w3-input" type="text" name="titel" value="<?= htmlspecialchars($werk['titel']) ?>" style="min-width:20em;" required></td>
                         <td><input class="w3-input" type="number" name="kv_nummer" value="<?= htmlspecialchars($werk['kv_nummer']) ?>" style="width:6em;" required></td>
                         <td><input class="w3-input" type="text" name="kv_toevoeging" value="<?= htmlspecialchars($werk['kv_toevoeging'] ?? '') ?>" style="width:4em;"></td>
                         <td><input class="w3-input" type="number" name="jaar" value="<?= htmlspecialchars($werk['jaar']) ?>" style="width:6em;" required></td>
@@ -98,7 +91,7 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
             <form method="post">
                 <input type="hidden" name="actie" value="opslaan">
                 <tr>
-                    <td><input class="w3-input" type="text" name="titel" placeholder="Nieuw werk" required></td>
+                    <td><input class="w3-input" type="text" name="titel" placeholder="Nieuw werk" style="min-width:20em;" required></td>
                     <td><input class="w3-input" type="number" name="kv_nummer" style="width:6em;" required></td>
                     <td><input class="w3-input" type="text" name="kv_toevoeging" style="width:4em;"></td>
                     <td><input class="w3-input" type="number" name="jaar" style="width:6em;" required></td>
@@ -116,22 +109,6 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
                     </td>
                 </tr>
             </form>
-        </table>
-
-        <h4>Verwijderen</h4>
-        <table class="w3-table w3-bordered w3-small">
-            <?php foreach ($werken as $werk): ?>
-                <tr>
-                    <td><?= htmlspecialchars($werk['titel']) ?> (KV <?= htmlspecialchars($werk['kv_nummer'] . $werk['kv_toevoeging']) ?>)</td>
-                    <td>
-                        <form method="post" onsubmit="return confirm('Dit werk echt verwijderen?');">
-                            <input type="hidden" name="actie" value="verwijderen">
-                            <input type="hidden" name="id" value="<?= (int) $werk['id'] ?>">
-                            <button class="w3-button w3-red w3-small" type="submit">Verwijderen</button>
-                        </form>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
         </table>
     </div>
 </body>
