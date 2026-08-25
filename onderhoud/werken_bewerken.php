@@ -80,7 +80,8 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
         }
 
         .actie-kolom {
-            width: 2.6em;
+            width: 2.2em;
+            padding: 0.2em !important;
             white-space: nowrap;
         }
     </style>
@@ -114,7 +115,7 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
                         <td><input class="w3-input" type="number" name="kv_nummer" value="<?= htmlspecialchars($werk['kv_nummer']) ?>" style="width:6em;" required></td>
                         <td><input class="w3-input" type="text" name="kv_toevoeging" value="<?= htmlspecialchars($werk['kv_toevoeging'] ?? '') ?>" style="width:4em;"></td>
                         <td><input class="w3-input" type="number" name="jaar" value="<?= htmlspecialchars($werk['jaar']) ?>" style="width:6em;" required></td>
-                        <td class="actie-kolom">
+                        <td>
                             <select class="w3-select" name="soort">
                                 <?php foreach ($soorten as $soort): ?>
                                     <option value="<?= $soort ?>" <?= $werk['soort'] === $soort ? 'selected' : '' ?>><?= $soort ?></option>
@@ -123,7 +124,7 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
                         </td>
                         <td><input class="w3-input" type="text" name="bezetting" value="<?= htmlspecialchars($werk['bezetting']) ?>"></td>
                         <td><input class="w3-input" type="text" name="solo" value="<?= htmlspecialchars($werk['solo'] ?? '') ?>"></td>
-                        <td>
+                        <td class="actie-kolom">
                             <button class="w3-button w3-blue actie-knop" type="submit" title="Werk opslaan" aria-label="Werk opslaan">&#10003;</button>
                         </td>
                     </tr>
@@ -137,7 +138,7 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
                     <td><input class="w3-input" type="number" name="kv_nummer" style="width:6em;" required></td>
                     <td><input class="w3-input" type="text" name="kv_toevoeging" style="width:4em;"></td>
                     <td><input class="w3-input" type="number" name="jaar" style="width:6em;" required></td>
-                    <td class="actie-kolom">
+                    <td>
                         <select class="w3-select" name="soort">
                             <?php foreach ($soorten as $soort): ?>
                                 <option value="<?= $soort ?>"><?= $soort ?></option>
@@ -146,7 +147,7 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
                     </td>
                     <td><input class="w3-input" type="text" name="bezetting"></td>
                     <td><input class="w3-input" type="text" name="solo"></td>
-                    <td>
+                    <td class="actie-kolom">
                         <button class="w3-button w3-green w3-small" type="submit">Toevoegen</button>
                     </td>
                 </tr>
