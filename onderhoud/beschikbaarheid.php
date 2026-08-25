@@ -19,8 +19,12 @@ $gmailGebruikersnaamBestand = '/customers/e/5/3/cfb5wd2sc/users_tmp/cfb5wd2sc_ss
 $gmailGebruikersnaam = 'dirkjan@pellegrina.net';
 $gmailAppWachtwoord = '';
 $gmailWachtwoordBron = 'niet gevonden';
-if (is_readable($gmailGebruikersnaamBestand)) {
+$gmailBestandBestaat = file_exists($gmailGebruikersnaamBestand);
+$gmailBestandLeesbaar = is_readable($gmailGebruikersnaamBestand);
+$gmailCredentialRegels = 0;
+if ($gmailBestandLeesbaar) {
     $credentialRegels = preg_split('/\r\n|\r|\n/', trim((string) file_get_contents($gmailGebruikersnaamBestand)));
+    $gmailCredentialRegels = count(array_filter($credentialRegels, static fn (string $regel): bool => trim($regel) !== ''));
     $ongelabeldeRegels = [];
     foreach ($credentialRegels as $regel) {
         $regel = trim($regel);
@@ -164,7 +168,7 @@ if ($gekozenActiviteit) {
 </style>
  </head><body><div class="w3-content w3-mobile w3-white w3-panel" style="max-width:1400px"><h3>Beschikbaarheid</h3>
 <?php if ($melding !== ''): ?><p class="w3-panel w3-pale-green w3-leftbar w3-border-green"><?= htmlspecialchars($melding) ?></p><?php endif; ?>
-<p class="w3-small">Mailconfiguratie: gebruikersnaam <?= htmlspecialchars($gmailGebruikersnaam) ?>; wachtwoordbron <?= htmlspecialchars($gmailWachtwoordBron) ?>; lengte <?= strlen($gmailAppWachtwoord) ?> tekens.</p>
+<p class="w3-small">Mailconfiguratie: gebruikersnaam <?= htmlspecialchars($gmailGebruikersnaam) ?>; bestand bestaat <?= $gmailBestandBestaat ? 'ja' : 'nee' ?>; leesbaar <?= $gmailBestandLeesbaar ? 'ja' : 'nee' ?>; regels <?= $gmailCredentialRegels ?>; wachtwoordbron <?= htmlspecialchars($gmailWachtwoordBron) ?>; lengte <?= strlen($gmailAppWachtwoord) ?> tekens.</p>
 <form method="get"><label for="activiteit_id">Activiteit:</label><select class="w3-select" id="activiteit_id" name="activiteit_id" onchange="this.form.submit()" style="max-width:32em;display:inline-block"><?php foreach ($activiteiten as $activiteit): ?><option value="<?= (int) $activiteit['id'] ?>" <?= (int) $activiteit['id'] === $activiteitId ? 'selected' : '' ?>><?= htmlspecialchars(date('d-m-Y', strtotime($activiteit['datum'])) . ' - ' . $activiteit['plaats']) ?></option><?php endforeach; ?></select></form>
 <?php if ($gekozenActiviteit): ?><p><?= htmlspecialchars($gekozenActiviteit['omschrijving'] ?? '') ?></p>
 <div class="tabel-scroll"><table class="w3-table w3-bordered w3-striped w3-small"><tr><th>Speler</th><th>Instrument</th><th>Status</th><th>Partij</th><th>Acties</th></tr>
