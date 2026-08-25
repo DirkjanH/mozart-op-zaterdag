@@ -6,7 +6,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 // Tijdelijke testinstelling: alle berichten gaan naar dit adres.
 $melding = '';
 $testMailOntvanger = 'dirkjan@pellegrina.net';
-set_time_limit(35);
+set_time_limit(15);
 $activiteitId = (int) ($_GET['activiteit_id'] ?? $_POST['activiteit_id'] ?? 0);
 // Toon alleen activiteiten die nog moeten plaatsvinden.
 $activiteiten = $pdo->query('SELECT id, datum, plaats, omschrijving FROM activiteiten WHERE datum >= CURDATE() ORDER BY datum')->fetchAll(PDO::FETCH_ASSOC);
@@ -100,39 +100,39 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
             $partij = $speler['partij'] ? ' Je speelt partij ' . htmlspecialchars($speler['partij'], ENT_QUOTES, 'UTF-8') . '.' : '';
             $partijTekst = $speler['partij'] ? ' (partij ' . htmlspecialchars($speler['partij'], ENT_QUOTES, 'UTF-8') . ')' : '';
             $smtpDebug = [];
-            $mailer = new PHPMailer\PHPMailer\PHPMailer(true);
-            $mailer->isSMTP();
-            $mailer->Host = 'smtp.gmail.com';
-            $mailer->SMTPAuth = true;
-            $mailer->Username = $gmailGebruikersnaam;
-            $mailer->Password = $gmailAppWachtwoord;
-            $mailer->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
-            $mailer->Port = 465;
-            $mailer->Timeout = 20;
-            $mailer->SMTPKeepAlive = false;
-            $mailer->SMTPDebug = 2;
-            $mailer->Debugoutput = static function (string $bericht) use (&$smtpDebug): void {
-                $smtpDebug[] = trim($bericht);
-            };
-            $mailer->CharSet = 'UTF-8';
-            $mailer->setFrom($mailer->Username, 'Mozart op Zaterdag');
-            $mailer->addAddress($testMailOntvanger, 'Dirkjan Horringa');
-            $mailer->isHTML(true);
-            $ingevuldOnderwerp = trim($_POST[$bevestigen ? 'mail_bevestiging_onderwerp' : 'mail_afwijzing_onderwerp'] ?? '');
-            $ingevuldeMail = trim($_POST[$bevestigen ? 'mail_bevestiging_tekst' : 'mail_afwijzing_tekst'] ?? '');
-            $mailTekst = $ingevuldeMail ?: ($bevestigen ? $standaardMail : $standaardAfwijzingsMail);
-            $plaats = $speler['plaats'] === 'Marnixzaal' ? 'Marnixzaal aan het Domplein' : $speler['plaats'];
-            $mailTekst = str_replace(
-                ['{{voornaam}}', '{{achternaam}}', '{{datum}}', '{{plaats}}', '{{instrument}}', '{{partij_tekst}}', '{{omschrijving}}', '{voornaam}', '{achternaam}', '{datum}', '{plaats}', '{instrument}', '{partij}'],
-                [$naam, htmlspecialchars($speler['achternaam'], ENT_QUOTES, 'UTF-8'), $datum, htmlspecialchars($plaats, ENT_QUOTES, 'UTF-8'), htmlspecialchars($speler['instrument'] ?? '', ENT_QUOTES, 'UTF-8'), $partijTekst, htmlspecialchars($speler['omschrijving'] ?? '', ENT_QUOTES, 'UTF-8'), $naam, htmlspecialchars($speler['achternaam'], ENT_QUOTES, 'UTF-8'), $datum, htmlspecialchars($plaats, ENT_QUOTES, 'UTF-8'), htmlspecialchars($speler['instrument'] ?? '', ENT_QUOTES, 'UTF-8'), $partij],
-                $mailTekst
-            );
-            $mailer->Subject = $ingevuldOnderwerp ?: ($bevestigen ? $standaardOnderwerp : $standaardAfwijzingsOnderwerp);
-            $mailer->Body = $mailTekst;
             try {
-                if ($mailer->Password === '') {
+                if ($gmailAppWachtwoord === '') {
                     throw new RuntimeException('Gmail-app-wachtwoord ontbreekt in de configuratie.');
                 }
+                $mailer = new PHPMailer\PHPMailer\PHPMailer(true);
+                $mailer->isSMTP();
+                $mailer->Host = 'smtp.gmail.com';
+                $mailer->SMTPAuth = true;
+                $mailer->Username = $gmailGebruikersnaam;
+                $mailer->Password = $gmailAppWachtwoord;
+                $mailer->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
+                $mailer->Port = 465;
+                $mailer->Timeout = 8;
+                $mailer->SMTPKeepAlive = false;
+                $mailer->SMTPDebug = 2;
+                $mailer->Debugoutput = static function (string $bericht) use (&$smtpDebug): void {
+                    $smtpDebug[] = trim($bericht);
+                };
+                $mailer->CharSet = 'UTF-8';
+                $mailer->setFrom($mailer->Username, 'Mozart op Zaterdag');
+                $mailer->addAddress($testMailOntvanger, 'Dirkjan Horringa');
+                $mailer->isHTML(true);
+                $ingevuldOnderwerp = trim($_POST[$bevestigen ? 'mail_bevestiging_onderwerp' : 'mail_afwijzing_onderwerp'] ?? '');
+                $ingevuldeMail = trim($_POST[$bevestigen ? 'mail_bevestiging_tekst' : 'mail_afwijzing_tekst'] ?? '');
+                $mailTekst = $ingevuldeMail ?: ($bevestigen ? $standaardMail : $standaardAfwijzingsMail);
+                $plaats = $speler['plaats'] === 'Marnixzaal' ? 'Marnixzaal aan het Domplein' : $speler['plaats'];
+                $mailTekst = str_replace(
+                    ['{{voornaam}}', '{{achternaam}}', '{{datum}}', '{{plaats}}', '{{instrument}}', '{{partij_tekst}}', '{{omschrijving}}', '{voornaam}', '{achternaam}', '{datum}', '{plaats}', '{instrument}', '{partij}'],
+                    [$naam, htmlspecialchars($speler['achternaam'], ENT_QUOTES, 'UTF-8'), $datum, htmlspecialchars($plaats, ENT_QUOTES, 'UTF-8'), htmlspecialchars($speler['instrument'] ?? '', ENT_QUOTES, 'UTF-8'), $partijTekst, htmlspecialchars($speler['omschrijving'] ?? '', ENT_QUOTES, 'UTF-8'), $naam, htmlspecialchars($speler['achternaam'], ENT_QUOTES, 'UTF-8'), $datum, htmlspecialchars($plaats, ENT_QUOTES, 'UTF-8'), htmlspecialchars($speler['instrument'] ?? '', ENT_QUOTES, 'UTF-8'), $partij],
+                    $mailTekst
+                );
+                $mailer->Subject = $ingevuldOnderwerp ?: ($bevestigen ? $standaardOnderwerp : $standaardAfwijzingsOnderwerp);
+                $mailer->Body = $mailTekst;
                 $mailer->send();
                 // Toelating wordt pas vastgelegd nadat de mail is verzonden.
                 $stmt = $pdo->prepare('UPDATE activiteit_deelnemers SET toegelaten = ? WHERE activiteit_id = ? AND deelnemer_id = ?');
