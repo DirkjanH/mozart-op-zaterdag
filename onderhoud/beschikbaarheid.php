@@ -73,6 +73,7 @@ Dirkjan Horringa<br><br>
 P.S. Mocht je ook in de toekomst weer willen meespelen, <a href="https://forms.gle/49YfM2dSn8AYpzfE8">vul dan dit formulier in</a>.
 HTML;
 $standaardAfwijzingsMail = 'Beste {{voornaam}},<br><br>Een tijdje terug heb je in het aanmeldingsformulier voor Mozart op Zaterdag aangegeven dat je (misschien) wilde meespelen op {{datum}} in {{omschrijving}}. De belangstelling voor deze aflevering van Mozart op Zaterdag is echter groot. Helaas kan ik je voor die datum niet plaatsen. Ik hoop je bij een van de volgende afleveringen of in andere projecten weer te zien.<br><br>Hartelijke groet<br><br>Dirkjan Horringa';
+$standaardAfwijzingsMail = (string) ($standaardAfwijzingsMail ?? '');
 
 // Verwerk wijzigingen en verstuur alleen na expliciete keuze een mail.
 if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
@@ -189,6 +190,13 @@ document.addEventListener('DOMContentLoaded', function () {
             naam.appendChild(kruis);
         }
     });
+});
+document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+        document.querySelectorAll('details[open]').forEach(function (popup) {
+            popup.removeAttribute('open');
+        });
+    }
 });
 </script>
  </head><body><div class="w3-content w3-mobile w3-white w3-panel" style="max-width:1400px"><h3>Beschikbaarheid</h3>
