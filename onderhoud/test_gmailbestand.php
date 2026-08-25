@@ -1,6 +1,4 @@
 <?php
-require_once __DIR__ . '/../includes/inloggen.php';
-
 $bestandsnaam = '/includes/_tst/MOZART_GMAIL_USERNAME.txt';
 $paden = [
     'vanaf onderhoud: ../' => __DIR__ . '/../' . $bestandsnaam,
