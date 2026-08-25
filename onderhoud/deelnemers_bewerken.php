@@ -9,7 +9,7 @@ $activiteiten = $pdo->query(
     'SELECT id, datum, plaats FROM activiteiten WHERE datum >= CURDATE() ORDER BY datum'
 )->fetchAll(PDO::FETCH_ASSOC);
 
-$instrumenten = $pdo->query('SELECT id, naam FROM instrumenten ORDER BY naam')->fetchAll(PDO::FETCH_ASSOC);
+$instrumenten = $pdo->query('SELECT id, naam FROM instrumenten ORDER BY id')->fetchAll(PDO::FETCH_ASSOC);
 
 // Toevoegen of bewerken van een deelnemer, met instrumenten en beschikbaarheid in dezelfde submit.
 if (isset($_POST['actie']) && $_POST['actie'] === 'opslaan') {
