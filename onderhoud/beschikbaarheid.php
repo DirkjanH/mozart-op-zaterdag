@@ -83,6 +83,7 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
         $status = in_array($_POST['status'] ?? '', ['ja', 'nee', 'misschien'], true) ? $_POST['status'] : 'misschien';
         $partij = trim($_POST['partij'] ?? '') ?: null;
         $instrumentId = (int) ($_POST['instrument_id'] ?? 0) ?: null;
+        $status = $actie === 'afwijzen' ? 'nee' : $status;
         $stmt = $pdo->prepare('UPDATE activiteit_deelnemers SET instrument_id = ?, partij = ?, status = ? WHERE activiteit_id = ? AND deelnemer_id = ?');
         $stmt->execute([$instrumentId, $partij, $status, $activiteitId, $deelnemerId]);
     }
@@ -135,8 +136,8 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
                 $mailer->Body = $mailTekst;
                 $mailer->send();
                 // Toelating wordt pas vastgelegd nadat de mail is verzonden.
-                $stmt = $pdo->prepare('UPDATE activiteit_deelnemers SET toegelaten = ? WHERE activiteit_id = ? AND deelnemer_id = ?');
-                $stmt->execute([$bevestigen ? 1 : 0, $activiteitId, $deelnemerId]);
+                $stmt = $pdo->prepare('UPDATE activiteit_deelnemers SET toegelaten = ?, afgewezen = ? WHERE activiteit_id = ? AND deelnemer_id = ?');
+                $stmt->execute([$bevestigen ? 1 : 0, $bevestigen ? 0 : 1, $activiteitId, $deelnemerId]);
                 $melding = ($bevestigen ? 'Bevestigingsmail' : 'Afwijzingsmail') . ' verstuurd; gegevens en toelating bijgewerkt.';
             } catch (PHPMailer\PHPMailer\Exception $e) {
                 $melding = 'Mail niet verstuurd: ' . $e->getMessage() . ' SMTP: ' . implode(' | ', $smtpDebug);
@@ -154,7 +155,7 @@ foreach ($activiteiten as $activiteit) if ((int) $activiteit['id'] === $activite
 // Laat beschikbare spelers zien en sorteer ze volgens de instrumentvolgorde.
 $spelers = [];
 if ($gekozenActiviteit) {
-    $stmt = $pdo->prepare("SELECT d.id, d.voornaam, d.achternaam, d.email, ad.status, ad.toegelaten, COALESCE(ad.instrument_id, di.instrument_id) AS instrument_id, ad.partij, i.naam AS instrument FROM activiteit_deelnemers ad JOIN deelnemers d ON d.id = ad.deelnemer_id LEFT JOIN (SELECT deelnemer_id, MIN(instrument_id) AS instrument_id FROM deelnemer_instrumenten GROUP BY deelnemer_id) di ON di.deelnemer_id = d.id LEFT JOIN instrumenten i ON i.id = COALESCE(ad.instrument_id, di.instrument_id) WHERE ad.activiteit_id = ? AND ad.status IN ('ja', 'misschien') ORDER BY CASE WHEN i.id IS NULL THEN 1 ELSE 0 END, i.id, d.achternaam, d.voornaam");
+    $stmt = $pdo->prepare("SELECT d.id, d.voornaam, d.achternaam, d.email, ad.status, ad.toegelaten, ad.afgewezen, COALESCE(ad.instrument_id, di.instrument_id) AS instrument_id, ad.partij, i.naam AS instrument FROM activiteit_deelnemers ad JOIN deelnemers d ON d.id = ad.deelnemer_id LEFT JOIN (SELECT deelnemer_id, MIN(instrument_id) AS instrument_id FROM deelnemer_instrumenten GROUP BY deelnemer_id) di ON di.deelnemer_id = d.id LEFT JOIN instrumenten i ON i.id = COALESCE(ad.instrument_id, di.instrument_id) WHERE ad.activiteit_id = ? ORDER BY CASE WHEN i.id IS NULL THEN 1 ELSE 0 END, i.id, d.achternaam, d.voornaam");
     $stmt->execute([$activiteitId]);
     $spelers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -171,6 +172,23 @@ td.acties > .mail-knop, td.acties > details { display: inline-flex; align-items:
 .tabel-scroll tr > td:last-child { min-width: 32em; white-space: nowrap; }
 .tabel-scroll tr > td:last-child > .mail-knop, .tabel-scroll tr > td:last-child > details { display: inline-flex; vertical-align: middle; height: 2.2em; box-sizing: border-box; }
 </style>
+<style>.afgewezen-kruis{color:#dc3545;font-size:1.25em;font-weight:bold;margin-left:.35em}</style>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.tabel-scroll tr').forEach(function (rij) {
+        var status = rij.querySelector('select[name="status"]');
+        var naam = rij.querySelector('td:first-child');
+        if (status && naam && status.value === 'nee' && !naam.querySelector('.afgewezen-kruis')) {
+            var kruis = document.createElement('span');
+            kruis.className = 'afgewezen-kruis';
+            kruis.title = 'Afgewezen';
+            kruis.setAttribute('aria-label', 'Afgewezen');
+            kruis.textContent = '✕';
+            naam.appendChild(kruis);
+        }
+    });
+});
+</script>
  </head><body><div class="w3-content w3-mobile w3-white w3-panel" style="max-width:1400px"><h3>Beschikbaarheid</h3>
 <?php if ($melding !== ''): ?><p class="w3-panel w3-pale-green w3-leftbar w3-border-green"><?= htmlspecialchars($melding) ?></p><?php endif; ?>
 <form method="get"><label for="activiteit_id">Activiteit:</label><select class="w3-select" id="activiteit_id" name="activiteit_id" onchange="this.form.submit()" style="max-width:32em;display:inline-block"><?php foreach ($activiteiten as $activiteit): ?><option value="<?= (int) $activiteit['id'] ?>" <?= (int) $activiteit['id'] === $activiteitId ? 'selected' : '' ?>><?= htmlspecialchars(date('d-m-Y', strtotime($activiteit['datum'])) . ' - ' . $activiteit['plaats']) ?></option><?php endforeach; ?></select></form>
