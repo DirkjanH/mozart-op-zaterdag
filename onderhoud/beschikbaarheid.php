@@ -15,7 +15,7 @@ $instrumenten = $pdo->query('SELECT id, naam FROM instrumenten ORDER BY id')->fe
 
 $standaardOnderwerp = 'Bevestiging deelname Mozart op Zaterdag';
 $standaardAfwijzingsOnderwerp = 'Mozart op Zaterdag - deze keer geen plaats';
-$gmailGebruikersnaam = 'dhorringa@gmail.com';
+$gmailGebruikersnaam = 'info@mozartopzaterdag.nl';
 $gmailGebruikersnaamBestand = __DIR__ . '/../includes/_tst/MOZART_GMAIL_USERNAME.txt';
 $gmailAppWachtwoord = '';
 $gmailWachtwoordBron = 'niet gevonden';
@@ -106,12 +106,12 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
                 }
                 $mailer = new PHPMailer\PHPMailer\PHPMailer(true);
                 $mailer->isSMTP();
-                $mailer->Host = 'smtp.gmail.com';
+                $mailer->Host = 'mailout.one.com';
                 $mailer->SMTPAuth = true;
                 $mailer->Username = $gmailGebruikersnaam;
                 $mailer->Password = $gmailAppWachtwoord;
-                $mailer->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
-                $mailer->Port = 465;
+                $mailer->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
+                $mailer->Port = 587;
                 $mailer->Timeout = 8;
                 $mailer->SMTPKeepAlive = false;
                 $mailer->SMTPDebug = 2;

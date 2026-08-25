@@ -4,7 +4,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 // Credentials staan buiten de openbare webmap.
 $credentialBestand = __DIR__ . '/../includes/_tst/MOZART_GMAIL_USERNAME.txt';
-$gebruikersnaam = '';
+$gebruikersnaam = 'info@mozartopzaterdag.nl';
 $appWachtwoord = '';
 $bron = 'niet gevonden';
 $debug = [];
@@ -56,12 +56,12 @@ if ($gebruikersnaam === '' || $appWachtwoord === '') {
         // Alleen verbinding en authenticatie testen; er wordt niets verzonden.
         $mailer = new PHPMailer\PHPMailer\PHPMailer(true);
         $mailer->isSMTP();
-        $mailer->Host = 'smtp.gmail.com';
+        $mailer->Host = 'mailout.one.com';
         $mailer->SMTPAuth = true;
         $mailer->Username = $gebruikersnaam;
         $mailer->Password = $appWachtwoord;
-        $mailer->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
-        $mailer->Port = 465;
+        $mailer->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
+        $mailer->Port = 587;
         $mailer->Timeout = 8;
         $mailer->SMTPDebug = 2;
         $mailer->Debugoutput = static function (string $bericht) use (&$debug): void {
