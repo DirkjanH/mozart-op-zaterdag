@@ -124,17 +124,20 @@ foreach ($pdo->query('SELECT activiteit_id, deelnemer_id, status FROM activiteit
             gap: 0.25em;
         }
 
-        .kolom-details {
-            display: none;
-        }
-
-        table.toon-details .kolom-details {
-            display: table-cell;
+        .kolom-details[hidden] {
+            display: none !important;
         }
     </style>
     <script>
         function toggleDetails() {
-            document.querySelector('.tabel-scroll table').classList.toggle('toon-details');
+            var details = document.querySelectorAll('.kolom-details');
+            var tonen = details.length > 0 && details[0].hidden;
+            details.forEach(function (kolom) {
+                kolom.hidden = !tonen;
+            });
+            document.querySelector('#details-knop').textContent = tonen
+                ? 'E-mail / telefoon / plaats / voorkeur verbergen'
+                : 'E-mail / telefoon / plaats / voorkeur tonen';
         }
     </script>
 </head>
@@ -146,17 +149,17 @@ foreach ($pdo->query('SELECT activiteit_id, deelnemer_id, status FROM activiteit
             <p class="w3-panel w3-pale-green w3-leftbar w3-border-green"><?= htmlspecialchars($melding) ?></p>
         <?php endif; ?>
 
-        <button type="button" class="w3-button w3-blue w3-margin-bottom" onclick="toggleDetails()">E-mail / telefoon / plaats / voorkeur tonen</button>
+        <button id="details-knop" type="button" class="w3-button w3-blue w3-margin-bottom" onclick="toggleDetails()">E-mail / telefoon / plaats / voorkeur tonen</button>
 
         <div class="tabel-scroll">
             <table class="w3-table w3-bordered w3-striped w3-small">
                 <tr>
                     <th>Naam</th>
-                    <th class="kolom-details">E-mail</th>
-                    <th class="kolom-details">Telefoon</th>
-                    <th class="kolom-details">Plaats</th>
+                    <th class="kolom-details" hidden>E-mail</th>
+                    <th class="kolom-details" hidden>Telefoon</th>
+                    <th class="kolom-details" hidden>Plaats</th>
                     <th>Instrumenten</th>
-                    <th class="kolom-details">Voorkeur</th>
+                    <th class="kolom-details" hidden>Voorkeur</th>
                     <?php foreach ($activiteiten as $activiteit): ?>
                         <th><?= htmlspecialchars(date('d-m-Y', strtotime($activiteit['datum']))) ?></th>
                     <?php endforeach; ?>
@@ -174,9 +177,9 @@ foreach ($pdo->query('SELECT activiteit_id, deelnemer_id, status FROM activiteit
                                     <input class="w3-input" type="text" name="achternaam" value="<?= htmlspecialchars($deelnemer['achternaam']) ?>" placeholder="Achternaam" required>
                                 </div>
                             </td>
-                            <td class="kolom-details"><input class="w3-input" type="email" name="email" value="<?= htmlspecialchars($deelnemer['email']) ?>" style="min-width:14em;" required></td>
-                            <td class="kolom-details"><input class="w3-input" type="text" name="telefoon" value="<?= htmlspecialchars($deelnemer['telefoon'] ?? '') ?>" style="width:9em;"></td>
-                            <td class="kolom-details"><input class="w3-input" type="text" name="plaats" value="<?= htmlspecialchars($deelnemer['plaats'] ?? '') ?>" style="width:10em;"></td>
+                            <td class="kolom-details" hidden><input class="w3-input" type="email" name="email" value="<?= htmlspecialchars($deelnemer['email']) ?>" style="min-width:14em;" required></td>
+                            <td class="kolom-details" hidden><input class="w3-input" type="text" name="telefoon" value="<?= htmlspecialchars($deelnemer['telefoon'] ?? '') ?>" style="width:9em;"></td>
+                            <td class="kolom-details" hidden><input class="w3-input" type="text" name="plaats" value="<?= htmlspecialchars($deelnemer['plaats'] ?? '') ?>" style="width:10em;"></td>
                             <td>
                                 <select class="w3-select" name="instrumenten[]" multiple size="4" style="min-width:12em;">
                                     <?php foreach ($instrumenten as $instrument): ?>
@@ -186,7 +189,7 @@ foreach ($pdo->query('SELECT activiteit_id, deelnemer_id, status FROM activiteit
                                     <?php endforeach; ?>
                                 </select>
                             </td>
-                            <td class="kolom-details"><input class="w3-input" type="text" name="voorkeuren" value="<?= htmlspecialchars($voorkeurenPerDeelnemer[$deelnemer['id']] ?? '') ?>" style="min-width:12em;"></td>
+                            <td class="kolom-details" hidden><input class="w3-input" type="text" name="voorkeuren" value="<?= htmlspecialchars($voorkeurenPerDeelnemer[$deelnemer['id']] ?? '') ?>" style="min-width:12em;"></td>
                             <?php foreach ($activiteiten as $activiteit): ?>
                                 <td>
                                     <select class="w3-select" name="status_<?= (int) $activiteit['id'] ?>">
@@ -212,9 +215,9 @@ foreach ($pdo->query('SELECT activiteit_id, deelnemer_id, status FROM activiteit
                                 <input class="w3-input" type="text" name="achternaam" placeholder="Achternaam" required>
                             </div>
                         </td>
-                        <td class="kolom-details"><input class="w3-input" type="email" name="email" style="min-width:14em;" required></td>
-                        <td class="kolom-details"><input class="w3-input" type="text" name="telefoon" style="width:9em;"></td>
-                        <td class="kolom-details"><input class="w3-input" type="text" name="plaats" style="width:10em;"></td>
+                        <td class="kolom-details" hidden><input class="w3-input" type="email" name="email" style="min-width:14em;" required></td>
+                        <td class="kolom-details" hidden><input class="w3-input" type="text" name="telefoon" style="width:9em;"></td>
+                        <td class="kolom-details" hidden><input class="w3-input" type="text" name="plaats" style="width:10em;"></td>
                         <td>
                             <select class="w3-select" name="instrumenten[]" multiple size="4" style="min-width:12em;">
                                 <?php foreach ($instrumenten as $instrument): ?>
@@ -222,7 +225,7 @@ foreach ($pdo->query('SELECT activiteit_id, deelnemer_id, status FROM activiteit
                                 <?php endforeach; ?>
                             </select>
                         </td>
-                        <td class="kolom-details"><input class="w3-input" type="text" name="voorkeuren" style="min-width:12em;"></td>
+                        <td class="kolom-details" hidden><input class="w3-input" type="text" name="voorkeuren" style="min-width:12em;"></td>
                         <?php foreach ($activiteiten as $activiteit): ?>
                             <td>
                                 <select class="w3-select" name="status_<?= (int) $activiteit['id'] ?>">
