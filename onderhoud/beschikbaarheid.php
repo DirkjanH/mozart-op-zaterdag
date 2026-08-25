@@ -173,7 +173,7 @@ td.acties { min-width: 32em; white-space: nowrap; }
 td.acties > .mail-knop, td.acties > details { display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; height: 2.2em; padding: 0; line-height: 1; box-sizing: border-box; }
 .tabel-scroll tr > td:last-child > .mail-knop { padding-left: 8px; padding-right: 8px; }
 .tabel-scroll tr > td:last-child { min-width: 32em; white-space: nowrap; }
-.tabel-scroll tr > td:last-child > .mail-knop, .tabel-scroll tr > td:last-child > details { display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; height: 2.2em; padding: 0; line-height: 1; box-sizing: border-box; }
+.tabel-scroll tr > td:last-child > .mail-knop, .tabel-scroll tr > td:last-child > details { display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; height: 2.2em; padding: 0 8px; line-height: 1; box-sizing: border-box; }
 </style>
 <style>.toegelaten-vinkje,.afgewezen-kruis{display:inline-flex;align-items:center;justify-content:center;width:1.35em;height:1.35em;margin-left:.35em;border-radius:50%;color:#fff;font-size:1em;font-weight:bold;line-height:1}.toegelaten-vinkje{background:#198754}.afgewezen-kruis{background:#dc3545}</style>
 <script>
