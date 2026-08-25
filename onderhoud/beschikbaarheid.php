@@ -156,10 +156,11 @@ foreach ($activiteiten as $activiteit) if ((int) $activiteit['id'] === $activite
 // Laat beschikbare spelers zien en sorteer ze volgens de instrumentvolgorde.
 $spelers = [];
 if ($gekozenActiviteit) {
-    $stmt = $pdo->prepare("SELECT d.id, d.voornaam, d.achternaam, d.email, CASE WHEN ad.afgewezen = 1 THEN 'nee' ELSE ad.status END AS status, ad.toegelaten, ad.afgewezen, COALESCE(ad.instrument_id, di.instrument_id) AS instrument_id, ad.partij, i.naam AS instrument FROM activiteit_deelnemers ad JOIN deelnemers d ON d.id = ad.deelnemer_id LEFT JOIN (SELECT deelnemer_id, MIN(instrument_id) AS instrument_id FROM deelnemer_instrumenten GROUP BY deelnemer_id) di ON di.deelnemer_id = d.id LEFT JOIN instrumenten i ON i.id = COALESCE(ad.instrument_id, di.instrument_id) WHERE ad.activiteit_id = ? AND ad.status IN ('ja', 'misschien') ORDER BY CASE WHEN i.id IS NULL THEN 1 ELSE 0 END, i.id, d.achternaam, d.voornaam");
+    $stmt = $pdo->prepare("SELECT d.id, d.voornaam, d.achternaam, d.email, ad.status, ad.toegelaten, ad.afgewezen, COALESCE(ad.instrument_id, di.instrument_id) AS instrument_id, ad.partij, i.naam AS instrument FROM activiteit_deelnemers ad JOIN deelnemers d ON d.id = ad.deelnemer_id LEFT JOIN (SELECT deelnemer_id, MIN(instrument_id) AS instrument_id FROM deelnemer_instrumenten GROUP BY deelnemer_id) di ON di.deelnemer_id = d.id LEFT JOIN instrumenten i ON i.id = COALESCE(ad.instrument_id, di.instrument_id) WHERE ad.activiteit_id = ? AND (ad.status IN ('ja', 'misschien') OR ad.afgewezen = 1) ORDER BY CASE WHEN i.id IS NULL THEN 1 ELSE 0 END, i.id, d.achternaam, d.voornaam");
     $stmt->execute([$activiteitId]);
     $spelers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+$afgewezenDeelnemers = array_map('intval', array_column(array_filter($spelers, static fn (array $speler): bool => (int) $speler['afgewezen'] === 1), 'id'));
 ?>
 <!DOCTYPE html>
 <html lang="nl"><head><meta charset="UTF-8"><title>Beschikbaarheid</title><link href="/css/moz.css" rel="stylesheet" type="text/css"><style>
@@ -179,9 +180,10 @@ select[name="instrument_id"], select[name="status"], input[name="partij"] { back
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.tabel-scroll tr').forEach(function (rij) {
-        var status = rij.querySelector('select[name="status"]');
+        var afgewezen = rij.querySelector('input[name="afgewezen"]');
         var naam = rij.querySelector('td:first-child');
-        if (status && naam && status.value === 'nee' && !naam.querySelector('.afgewezen-kruis')) {
+        var deelnemer = rij.querySelector('input[name="deelnemer_id"]');
+        if (deelnemer && naam && <?= json_encode($afgewezenDeelnemers) ?>.includes(Number(deelnemer.value)) && !naam.querySelector('.afgewezen-kruis')) {
             var kruis = document.createElement('span');
             kruis.className = 'afgewezen-kruis';
             kruis.title = 'Afgewezen';
