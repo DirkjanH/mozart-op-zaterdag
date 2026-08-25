@@ -5,7 +5,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 // Credentials staan buiten de openbare webmap.
 $credentialBestand = __DIR__ . '/../includes/_tst/MOZART_GMAIL_USERNAME.txt';
 $gebruikersnaam = 'info@mozartopzaterdag.nl';
-$appWachtwoord = '';
+$appWachtwoord = 'k4uqJ6E#ZV7F';
 $bron = 'niet gevonden';
 $debug = [];
 
