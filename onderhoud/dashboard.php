@@ -18,7 +18,7 @@ require_once __DIR__ . '/../includes/inloggen.php';
             <a href="werken_bewerken.php" target="_blank" class="w3-bar-item w3-button w3-blue w3-margin-bottom">Werken bewerken</a>
             <a href="activiteiten_bewerken.php" target="_blank" class="w3-bar-item w3-button w3-blue w3-margin-bottom">Activiteiten bewerken</a>
             <a href="beschikbaarheid.php" target="_blank" class="w3-bar-item w3-button w3-blue w3-margin-bottom">Beschikbaarheid overzicht</a>
-            <a href="genereer_webpaginas.php" target="_blank" class="w3-bar-item w3-button w3-blue">Genereer webpagina's</a>
+            <a href="genereer_webpaginas.php" target="_blank" class="w3-bar-item w3-button w3-blue w3-margin-bottom">Genereer webpagina's</a>
         </div>
     </div>
 </body>
