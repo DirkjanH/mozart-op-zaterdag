@@ -124,6 +124,22 @@ foreach ($pdo->query('SELECT activiteit_id, deelnemer_id, status FROM activiteit
             gap: 0.25em;
         }
 
+            .actie-knop {
+                border-radius: 50%;
+                width: 2.2em;
+                height: 2.2em;
+                padding: 0;
+                margin: 0.1em;
+                font-size: 1.1em;
+                line-height: 2.2em;
+                text-align: center;
+            }
+
+            .actie-kolom {
+                width: 2.6em;
+                white-space: nowrap;
+            }
+
         .kolom-details[hidden] {
             display: none !important;
         }
@@ -163,7 +179,7 @@ foreach ($pdo->query('SELECT activiteit_id, deelnemer_id, status FROM activiteit
                     <?php foreach ($activiteiten as $activiteit): ?>
                         <th><?= htmlspecialchars(date('d-m-Y', strtotime($activiteit['datum']))) ?></th>
                     <?php endforeach; ?>
-                    <th></th>
+                        <th class="actie-kolom"></th>
                 </tr>
                 <?php foreach ($deelnemers as $deelnemer): ?>
                     <?php $gekozenInstrumenten = $instrumentenPerDeelnemer[$deelnemer['id']] ?? []; ?>
@@ -201,7 +217,7 @@ foreach ($pdo->query('SELECT activiteit_id, deelnemer_id, status FROM activiteit
                                     </select>
                                 </td>
                             <?php endforeach; ?>
-                            <td><button class="w3-button w3-blue w3-small" type="submit">Opslaan</button></td>
+                                <td class="actie-kolom"><button class="w3-button w3-blue actie-knop" type="submit" title="Deelnemer opslaan" aria-label="Deelnemer opslaan">&#10003;</button></td>
                         </tr>
                     </form>
                 <?php endforeach; ?>
@@ -235,7 +251,7 @@ foreach ($pdo->query('SELECT activiteit_id, deelnemer_id, status FROM activiteit
                                 </select>
                             </td>
                         <?php endforeach; ?>
-                        <td><button class="w3-button w3-green w3-small" type="submit">Toevoegen</button></td>
+                            <td class="actie-kolom"><button class="w3-button w3-blue actie-knop" type="submit" title="Deelnemer toevoegen" aria-label="Deelnemer toevoegen">&#10003;</button></td>
                     </tr>
                 </form>
             </table>
