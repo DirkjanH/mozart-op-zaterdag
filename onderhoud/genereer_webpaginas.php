@@ -148,6 +148,7 @@ if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
             if (window.tinymce) {
                 tinymce.init({
                     selector: '.rijke-editor',
+                    license_key: 'gpl',
                     height: 220,
                     menubar: false,
                     plugins: 'lists link',
