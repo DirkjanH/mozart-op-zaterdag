@@ -147,6 +147,11 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
             line-height: 2.2em;
             text-align: center;
         }
+
+        .actie-kolom {
+            min-width: 6em;
+            white-space: nowrap;
+        }
     </style>
 </head>
 
@@ -164,7 +169,7 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
                     <th>Plaats</th>
                     <th>Werken</th>
                     <th>Omschrijving</th>
-                    <th></th>
+                    <th class="actie-kolom"></th>
                 </tr>
                 <?php foreach ($activiteiten as $activiteit): ?>
                     <?php $gekozenWerken = $werkenPerActiviteit[$activiteit['id']] ?? []; ?>
@@ -174,7 +179,7 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
                         <tr>
                             <td><input class="w3-input" type="date" name="datum" value="<?= htmlspecialchars($activiteit['datum']) ?>" required></td>
                             <td><input class="w3-input" type="text" name="plaats" value="<?= htmlspecialchars($activiteit['plaats']) ?>" style="width:12em;" required></td>
-                            <td>
+                            <td class="actie-kolom">
                                 <select class="w3-select" name="werken[]" multiple size="1" style="min-width:16em;">
                                     <?php foreach ($werken as $werk): ?>
                                         <option value="<?= (int) $werk['id'] ?>" <?= in_array((int) $werk['id'], $gekozenWerken, true) ? 'selected' : '' ?>>
