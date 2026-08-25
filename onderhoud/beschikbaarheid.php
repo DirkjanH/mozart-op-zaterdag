@@ -80,13 +80,18 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
     $deelnemerId = (int) $_POST['deelnemer_id'];
     $activiteitId = (int) $_POST['activiteit_id'];
     $actie = $_POST['actie'];
-    // Sla instrument, partij en beschikbaarheid op vóór het versturen.
-    if (in_array($actie, ['opslaan_bevestigen', 'bevestigen', 'afwijzen'], true)) {
+    // Sla instrument, partij en beschikbaarheid op vóór het versturen, maar laat afwijzingen de status ongemoeid.
+    if (in_array($actie, ['opslaan_bevestigen', 'bevestigen'], true)) {
         $status = in_array($_POST['status'] ?? '', ['ja', 'nee', 'misschien'], true) ? $_POST['status'] : 'misschien';
         $partij = trim($_POST['partij'] ?? '') ?: null;
         $instrumentId = (int) ($_POST['instrument_id'] ?? 0) ?: null;
         $stmt = $pdo->prepare('UPDATE activiteit_deelnemers SET instrument_id = ?, partij = ?, status = ? WHERE activiteit_id = ? AND deelnemer_id = ?');
         $stmt->execute([$instrumentId, $partij, $status, $activiteitId, $deelnemerId]);
+    } elseif ($actie === 'afwijzen') {
+        $partij = trim($_POST['partij'] ?? '') ?: null;
+        $instrumentId = (int) ($_POST['instrument_id'] ?? 0) ?: null;
+        $stmt = $pdo->prepare('UPDATE activiteit_deelnemers SET instrument_id = ?, partij = ? WHERE activiteit_id = ? AND deelnemer_id = ?');
+        $stmt->execute([$instrumentId, $partij, $activiteitId, $deelnemerId]);
     }
     // Vul de gekozen mail in en pas de persoonlijke velden toe.
     if (in_array($actie, ['opslaan_bevestigen', 'bevestigen', 'afwijzen'], true)) {
