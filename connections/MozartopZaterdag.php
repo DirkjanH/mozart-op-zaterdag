@@ -1,7 +1,7 @@
 <?php
 // Verbinding met de MozartopZaterdag-database.
 // Vul de echte inloggegevens in en beveilig dit bestand (buiten de webroot of via .htaccess).
-$hostname = 'localhost';
+$hostname = 'cfb5wd2sc.mysql.service.one.com';
 $database = 'cfb5wd2sc_mozartopzaterdag';
 $username = 'cfb5wd2sc_mozartopzaterdag';
 $password = '%6riUHs##SQ!4aQGaW^Qhq';
