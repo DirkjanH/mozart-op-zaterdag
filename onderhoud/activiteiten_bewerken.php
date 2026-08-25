@@ -4,28 +4,71 @@ require_once __DIR__ . '/../connections/MozartopZaterdag.php';
 
 $melding = '';
 
+// Zet de gekozen werken om in een leesbare omschrijving, bijv.
+// "Symfonie nr. 25 (KV 183) voor 0201-0200-str & Hoornconcert nr. 2 (KV 417) voor 0201-0200-str, solist: hoorn".
+function genereerOmschrijving(array $werken): string
+{
+    $delen = [];
+    foreach ($werken as $werk) {
+        $deel = $werk['titel'] . ' (KV ' . $werk['kv_nummer'] . $werk['kv_toevoeging'] . ') voor ' . $werk['bezetting'];
+        if (!empty($werk['solo'])) {
+            $deel .= ', solist: ' . $werk['solo'];
+        }
+        $delen[] = $deel;
+    }
+    return implode(' & ', $delen);
+}
+
 // Toevoegen of bewerken
 if (isset($_POST['actie']) && $_POST['actie'] === 'opslaan') {
     $datum = trim($_POST['datum'] ?? '');
     $plaats = trim($_POST['plaats'] ?? '');
-    $omschrijving = trim($_POST['omschrijving'] ?? '');
-    $omschrijving = $omschrijving === '' ? null : $omschrijving;
+    $werk_ids = array_map('intval', $_POST['werken'] ?? []);
     $id = $_POST['id'] ?? '';
 
     if ($datum === '' || $plaats === '') {
         $melding = 'Datum en plaats zijn verplicht.';
-    } elseif ($id !== '') {
-        $stmt = $pdo->prepare('UPDATE activiteiten SET datum = ?, plaats = ?, omschrijving = ? WHERE id = ?');
-        $stmt->execute([$datum, $plaats, $omschrijving, $id]);
-        $melding = 'Activiteit bijgewerkt.';
     } else {
-        $stmt = $pdo->prepare('INSERT INTO activiteiten (datum, plaats, omschrijving) VALUES (?, ?, ?)');
-        $stmt->execute([$datum, $plaats, $omschrijving]);
-        $melding = 'Activiteit toegevoegd.';
+        // Omschrijving: gegenereerd uit de gekozen werken, anders het handmatig ingevulde veld.
+        if ($werk_ids !== []) {
+            $placeholders = implode(',', array_fill(0, count($werk_ids), '?'));
+            $stmt = $pdo->prepare("SELECT * FROM werken WHERE id IN ($placeholders) ORDER BY kv_nummer, kv_toevoeging");
+            $stmt->execute($werk_ids);
+            $omschrijving = genereerOmschrijving($stmt->fetchAll(PDO::FETCH_ASSOC));
+        } else {
+            $omschrijving = trim($_POST['omschrijving'] ?? '');
+        }
+        $omschrijving = $omschrijving === '' ? null : $omschrijving;
+
+        if ($id !== '') {
+            $stmt = $pdo->prepare('UPDATE activiteiten SET datum = ?, plaats = ?, omschrijving = ? WHERE id = ?');
+            $stmt->execute([$datum, $plaats, $omschrijving, $id]);
+            $melding = 'Activiteit bijgewerkt.';
+        } else {
+            $stmt = $pdo->prepare('INSERT INTO activiteiten (datum, plaats, omschrijving) VALUES (?, ?, ?)');
+            $stmt->execute([$datum, $plaats, $omschrijving]);
+            $id = $pdo->lastInsertId();
+            $melding = 'Activiteit toegevoegd.';
+        }
+
+        // Gekoppelde werken vervangen door de nu aangevinkte selectie.
+        $pdo->prepare('DELETE FROM activiteit_werken WHERE activiteit_id = ?')->execute([$id]);
+        if ($werk_ids !== []) {
+            $stmt = $pdo->prepare('INSERT INTO activiteit_werken (activiteit_id, werk_id) VALUES (?, ?)');
+            foreach ($werk_ids as $werk_id) {
+                $stmt->execute([$id, $werk_id]);
+            }
+        }
     }
 }
 
 $activiteiten = $pdo->query('SELECT * FROM activiteiten ORDER BY datum')->fetchAll(PDO::FETCH_ASSOC);
+$werken = $pdo->query('SELECT id, titel, kv_nummer, kv_toevoeging FROM werken ORDER BY kv_nummer, kv_toevoeging')->fetchAll(PDO::FETCH_ASSOC);
+
+$werkenPerActiviteit = [];
+foreach ($pdo->query('SELECT activiteit_id, werk_id FROM activiteit_werken') as $rij) {
+    $werkenPerActiviteit[$rij['activiteit_id']][] = (int) $rij['werk_id'];
+}
 
 // Vierde zaterdag van een maand berekenen.
 function vierdeZaterdag(int $jaar, int $maand): string
@@ -102,16 +145,27 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
                 <tr>
                     <th>Datum</th>
                     <th>Plaats</th>
+                    <th>Werken</th>
                     <th>Omschrijving</th>
                     <th></th>
                 </tr>
                 <?php foreach ($activiteiten as $activiteit): ?>
+                    <?php $gekozenWerken = $werkenPerActiviteit[$activiteit['id']] ?? []; ?>
                     <form method="post">
                         <input type="hidden" name="actie" value="opslaan">
                         <input type="hidden" name="id" value="<?= (int) $activiteit['id'] ?>">
                         <tr>
                             <td><input class="w3-input" type="date" name="datum" value="<?= htmlspecialchars($activiteit['datum']) ?>" required></td>
                             <td><input class="w3-input" type="text" name="plaats" value="<?= htmlspecialchars($activiteit['plaats']) ?>" style="width:12em;" required></td>
+                            <td>
+                                <select class="w3-select" name="werken[]" multiple size="4" style="min-width:16em;">
+                                    <?php foreach ($werken as $werk): ?>
+                                        <option value="<?= (int) $werk['id'] ?>" <?= in_array((int) $werk['id'], $gekozenWerken, true) ? 'selected' : '' ?>>
+                                            <?= htmlspecialchars($werk['titel']) ?> (KV <?= htmlspecialchars($werk['kv_nummer'] . $werk['kv_toevoeging']) ?>)
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </td>
                             <td><input class="w3-input" type="text" name="omschrijving" value="<?= htmlspecialchars($activiteit['omschrijving'] ?? '') ?>" style="min-width:24em;"></td>
                             <td><button class="w3-button w3-blue w3-small" type="submit">Opslaan</button></td>
                         </tr>
@@ -123,7 +177,14 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
                     <tr>
                         <td><input class="w3-input" type="date" name="datum" value="<?= htmlspecialchars($voorgesteldeDatum) ?>" required></td>
                         <td><input class="w3-input" type="text" name="plaats" value="Marnixzaal" style="width:12em;" required></td>
-                        <td><input class="w3-input" type="text" name="omschrijving" placeholder="Nieuwe activiteit" style="min-width:24em;"></td>
+                        <td>
+                            <select class="w3-select" name="werken[]" multiple size="4" style="min-width:16em;">
+                                <?php foreach ($werken as $werk): ?>
+                                    <option value="<?= (int) $werk['id'] ?>"><?= htmlspecialchars($werk['titel']) ?> (KV <?= htmlspecialchars($werk['kv_nummer'] . $werk['kv_toevoeging']) ?>)</option>
+                                <?php endforeach; ?>
+                            </select>
+                        </td>
+                        <td><input class="w3-input" type="text" name="omschrijving" placeholder="Nieuwe activiteit, of kies werken hiernaast" style="min-width:24em;"></td>
                         <td><button class="w3-button w3-green w3-small" type="submit">Toevoegen</button></td>
                     </tr>
                 </form>
