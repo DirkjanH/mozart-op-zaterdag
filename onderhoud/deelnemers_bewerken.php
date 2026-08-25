@@ -181,7 +181,7 @@ foreach ($pdo->query('SELECT activiteit_id, deelnemer_id, status FROM activiteit
                             <td class="kolom-details" hidden><input class="w3-input" type="text" name="telefoon" value="<?= htmlspecialchars($deelnemer['telefoon'] ?? '') ?>" style="width:9em;"></td>
                             <td class="kolom-details" hidden><input class="w3-input" type="text" name="plaats" value="<?= htmlspecialchars($deelnemer['plaats'] ?? '') ?>" style="width:10em;"></td>
                             <td>
-                                <select class="w3-select" name="instrumenten[]" multiple size="4" style="min-width:12em;">
+                                <select class="w3-select" name="instrumenten[]" multiple size="1" style="min-width:12em;">
                                     <?php foreach ($instrumenten as $instrument): ?>
                                         <option value="<?= (int) $instrument['id'] ?>" <?= in_array((int) $instrument['id'], $gekozenInstrumenten, true) ? 'selected' : '' ?>>
                                             <?= htmlspecialchars($instrument['naam']) ?>
@@ -219,7 +219,7 @@ foreach ($pdo->query('SELECT activiteit_id, deelnemer_id, status FROM activiteit
                         <td class="kolom-details" hidden><input class="w3-input" type="text" name="telefoon" style="width:9em;"></td>
                         <td class="kolom-details" hidden><input class="w3-input" type="text" name="plaats" style="width:10em;"></td>
                         <td>
-                            <select class="w3-select" name="instrumenten[]" multiple size="4" style="min-width:12em;">
+                            <select class="w3-select" name="instrumenten[]" multiple size="1" style="min-width:12em;">
                                 <?php foreach ($instrumenten as $instrument): ?>
                                     <option value="<?= (int) $instrument['id'] ?>"><?= htmlspecialchars($instrument['naam']) ?></option>
                                 <?php endforeach; ?>
