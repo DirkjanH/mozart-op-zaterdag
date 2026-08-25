@@ -13,9 +13,28 @@ $instrumenten = $pdo->query('SELECT id, naam FROM instrumenten ORDER BY id')->fe
 $standaardOnderwerp = 'Bevestiging deelname Mozart op Zaterdag';
 $standaardAfwijzingsOnderwerp = 'Mozart op Zaterdag - deze keer geen plaats';
 $gmailGebruikersnaamBestand = '/customers/e/5/3/cfb5wd2sc/users_tmp/cfb5wd2sc_ssh/mc-cfb5wd2sc_ssh/MOZART_GMAIL_USERNAME.txt';
-$gmailGebruikersnaam = is_readable($gmailGebruikersnaamBestand)
-    ? trim((string) file_get_contents($gmailGebruikersnaamBestand))
-    : 'dirkjan@pellegrina.net';
+$gmailGebruikersnaam = 'dirkjan@pellegrina.net';
+$gmailAppWachtwoord = '';
+if (is_readable($gmailGebruikersnaamBestand)) {
+    $credentialRegels = file($gmailGebruikersnaamBestand, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($credentialRegels as $nummer => $regel) {
+        $regel = trim($regel);
+        if (str_contains($regel, '=')) {
+            [$naam, $waarde] = array_map('trim', explode('=', $regel, 2));
+            if (in_array(strtolower($naam), ['username', 'gebruikersnaam', 'gmail_username', 'mozart_gmail_username'], true)) {
+                $gmailGebruikersnaam = $waarde;
+            } elseif (in_array(strtolower($naam), ['password', 'wachtwoord', 'app_password', 'gmail_app_password', 'mozart_gmail_app_password'], true)) {
+                $gmailAppWachtwoord = $waarde;
+            }
+        } elseif ($nummer === 0) {
+            $gmailGebruikersnaam = $regel;
+        } elseif ($nummer === 1) {
+            $gmailAppWachtwoord = $regel;
+        }
+    }
+}
+$gmailGebruikersnaam = getenv('MOZART_GMAIL_USERNAME') ?: $gmailGebruikersnaam;
+$gmailAppWachtwoord = getenv('MOZART_GMAIL_APP_PASSWORD') ?: $gmailAppWachtwoord;
 $standaardMail = <<<'HTML'
 Beste {{voornaam}},<br><br>
 Leuk dat je je hebt aangemeld voor Mozart op Zaterdag! We zijn blij om je te kunnen plaatsen als {{instrument}}{{partij_tekst}} voor zaterdag {{datum}} in de {{plaats}}. We spelen dan {{omschrijving}}.<br><br>
@@ -63,8 +82,8 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
             $mailer->isSMTP();
             $mailer->Host = 'smtp.gmail.com';
             $mailer->SMTPAuth = true;
-            $mailer->Username = getenv('MOZART_GMAIL_USERNAME') ?: $gmailGebruikersnaam;
-            $mailer->Password = getenv('MOZART_GMAIL_APP_PASSWORD') ?: '';
+            $mailer->Username = $gmailGebruikersnaam;
+            $mailer->Password = $gmailAppWachtwoord;
             $mailer->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
             $mailer->Port = 587;
             $mailer->CharSet = 'UTF-8';
@@ -82,10 +101,19 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
             );
             $mailer->Subject = $ingevuldOnderwerp ?: ($bevestigen ? $standaardOnderwerp : $standaardAfwijzingsOnderwerp);
             $mailer->Body = $mailTekst;
-            $mailer->send();
-            $stmt = $pdo->prepare('UPDATE activiteit_deelnemers SET toegelaten = ? WHERE activiteit_id = ? AND deelnemer_id = ?');
-            $stmt->execute([$bevestigen ? 1 : 0, $activiteitId, $deelnemerId]);
-            $melding = ($bevestigen ? 'Bevestigingsmail' : 'Afwijzingsmail') . ' verstuurd; gegevens en toelating bijgewerkt.';
+            try {
+                if ($mailer->Password === '') {
+                    throw new RuntimeException('Gmail-app-wachtwoord ontbreekt in de configuratie.');
+                }
+                $mailer->send();
+                $stmt = $pdo->prepare('UPDATE activiteit_deelnemers SET toegelaten = ? WHERE activiteit_id = ? AND deelnemer_id = ?');
+                $stmt->execute([$bevestigen ? 1 : 0, $activiteitId, $deelnemerId]);
+                $melding = ($bevestigen ? 'Bevestigingsmail' : 'Afwijzingsmail') . ' verstuurd; gegevens en toelating bijgewerkt.';
+            } catch (PHPMailer\PHPMailer\Exception $e) {
+                $melding = 'Mail niet verstuurd: ' . $e->getMessage();
+            } catch (RuntimeException $e) {
+                $melding = 'Mail niet verstuurd: ' . $e->getMessage();
+            }
         }
     }
 }
