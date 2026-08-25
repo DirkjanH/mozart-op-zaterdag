@@ -170,7 +170,7 @@ details.mail-bewerk-groen[open] > textarea, details.mail-bewerk-rood[open] > tex
 </style>
 <style>
 td.acties { min-width: 32em; white-space: nowrap; }
-td.acties > .mail-knop, td.acties > details { display: inline-flex; vertical-align: middle; height: 2.2em; box-sizing: border-box; }
+td.acties > .mail-knop, td.acties > details { display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; height: 2.2em; box-sizing: border-box; line-height: 1; }
 .tabel-scroll tr > td:last-child { min-width: 32em; white-space: nowrap; }
 .tabel-scroll tr > td:last-child > .mail-knop, .tabel-scroll tr > td:last-child > details { display: inline-flex; vertical-align: middle; height: 2.2em; box-sizing: border-box; }
 </style>
