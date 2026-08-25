@@ -19,6 +19,12 @@ function genereerOmschrijving(array $werken): string
     return implode(' & ', $delen);
 }
 
+if (isset($_POST['actie']) && $_POST['actie'] === 'verwijderen' && isset($_POST['id'])) {
+    $stmt = $pdo->prepare('DELETE FROM activiteiten WHERE id = ?');
+    $stmt->execute([$_POST['id']]);
+    $melding = 'Activiteit verwijderd.';
+}
+
 // Toevoegen of bewerken
 if (isset($_POST['actie']) && $_POST['actie'] === 'opslaan') {
     $datum = trim($_POST['datum'] ?? '');
@@ -167,7 +173,10 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
                                 </select>
                             </td>
                             <td><input class="w3-input" type="text" name="omschrijving" value="<?= htmlspecialchars($activiteit['omschrijving'] ?? '') ?>" style="min-width:24em;"></td>
-                            <td><button class="w3-button w3-blue w3-small" type="submit">Opslaan</button></td>
+                            <td>
+                                <button class="w3-button w3-blue w3-small" type="submit">Opslaan</button>
+                                <button class="w3-button w3-red w3-small" type="submit" name="actie" value="verwijderen" formnovalidate onclick="return confirm('Deze activiteit echt verwijderen?');">Wissen</button>
+                            </td>
                         </tr>
                     </form>
                 <?php endforeach; ?>
