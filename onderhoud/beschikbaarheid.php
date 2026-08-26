@@ -241,19 +241,21 @@ document.addEventListener('DOMContentLoaded', function () {
             var modal = document.getElementById(modalId);
             var mailType = btn.dataset.type;
             
+            if (!modal) return;
+            
             // Copy form data to modal
             var onderwerp = form.querySelector('input[name="mail_' + mailType + '_onderwerp"]').value;
             var tekst = form.querySelector('textarea[name="mail_' + mailType + '_tekst"]').value;
             
             modal.querySelector('.mail-modal-onderwerp').value = onderwerp;
             modal.querySelector('.mail-modal-tekst').value = tekst;
-            modal.querySelector('.mail-modal-submit').dataset.rij = rij.innerHTML;
-            modal.querySelector('.mail-modal-submit').dataset.form = new XMLSerializer().serializeToString(form);
             
+            // Show modal
             modal.classList.add('active');
         });
     });
     
+    // Close modals
     document.querySelectorAll('.mail-modal-close, .mail-cancel').forEach(function (btn) {
         btn.addEventListener('click', function () {
             var modal = btn.closest('.mail-modal');
@@ -261,6 +263,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
     
+    // Close modal when clicking outside
     document.querySelectorAll('.mail-modal').forEach(function (modal) {
         modal.addEventListener('click', function (e) {
             if (e.target === modal) {
