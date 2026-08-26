@@ -6,7 +6,7 @@ $melding = '';
 $foutmelding = '';
 
 // Haal instrumenten op in de volgorde van de instrumententabel, zonder zangstemmen.
-$instrumenten = $pdo->query("SELECT id, naam FROM instrumenten WHERE LOWER(naam) NOT LIKE '%zang%' AND LOWER(naam) NOT IN ('sopraan', 'alt', 'tenor', 'bas', 'countertenor') ORDER BY id")->fetchAll(PDO::FETCH_ASSOC);
+$instrumenten = $pdo->query("SELECT id, naam FROM instrumenten WHERE LOWER(naam) NOT LIKE '%zang%' AND LOWER(naam) NOT IN ('sopraan', 'alt', 'tenor', 'bas', 'countertenor', 'mezzosopraan', 'bariton', 'basklarinet', 'tuba', 'contrafagot', 'piano', 'clavecimbel', 'slagwerk', 'orgel') ORDER BY id")->fetchAll(PDO::FETCH_ASSOC);
 
 // Haal toekomstige activiteiten op
 $activiteiten = $pdo->query('SELECT id, datum, plaats, omschrijving FROM activiteiten WHERE datum >= CURDATE() ORDER BY datum')->fetchAll(PDO::FETCH_ASSOC);
