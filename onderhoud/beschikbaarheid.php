@@ -242,16 +242,43 @@ document.addEventListener('DOMContentLoaded', function () {
             var mailType = btn.dataset.type;
             
             if (!modal) return;
-            
-            // Copy form data to modal
-            var onderwerp = form.querySelector('input[name="mail_' + mailType + '_onderwerp"]').value;
-            var tekst = form.querySelector('textarea[name="mail_' + mailType + '_tekst"]').value;
-            
-            modal.querySelector('.mail-modal-onderwerp').value = onderwerp;
-            modal.querySelector('.mail-modal-tekst').value = tekst;
+            modal.mailForm = form;
             
             // Show modal
             modal.classList.add('active');
+        });
+    });
+
+    // Verstuur de mailtekst uit de modal via het formulier van de deelnemer.
+    document.querySelectorAll('.mail-modal-submit').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var modal = btn.closest('.mail-modal');
+            var form = modal.mailForm;
+            if (!form) return;
+
+            ['mail_' + btn.dataset.type + '_onderwerp', 'mail_' + btn.dataset.type + '_tekst', 'actie'].forEach(function (naam) {
+                var bestaand = form.querySelector('input[name="' + naam + '"], textarea[name="' + naam + '"]');
+                if (bestaand) bestaand.remove();
+            });
+
+            var onderwerp = document.createElement('input');
+            onderwerp.type = 'hidden';
+            onderwerp.name = 'mail_' + btn.dataset.type + '_onderwerp';
+            onderwerp.value = modal.querySelector('.mail-modal-onderwerp').value;
+            form.appendChild(onderwerp);
+
+            var tekst = document.createElement('input');
+            tekst.type = 'hidden';
+            tekst.name = 'mail_' + btn.dataset.type + '_tekst';
+            tekst.value = modal.querySelector('.mail-modal-tekst').value;
+            form.appendChild(tekst);
+
+            var actie = document.createElement('input');
+            actie.type = 'hidden';
+            actie.name = 'actie';
+            actie.value = btn.dataset.action;
+            form.appendChild(actie);
+            form.submit();
         });
     });
     
@@ -303,6 +330,7 @@ document.addEventListener('keydown', function (event) {
       <textarea class="mail-modal-tekst" placeholder="Mailtekst"><?= htmlspecialchars($standaardMail) ?></textarea>
     </div>
     <div class="mail-modal-footer">
+            <button class="mail-modal-submit" type="button" data-type="bevestiging" data-action="bevestigen">Versturen</button>
       <button class="mail-cancel" type="button">Annuleren</button>
     </div>
   </div>
@@ -319,6 +347,7 @@ document.addEventListener('keydown', function (event) {
       <textarea class="mail-modal-tekst" placeholder="Mailtekst"><?= htmlspecialchars($standaardAfwijzingsMail) ?></textarea>
     </div>
     <div class="mail-modal-footer">
+            <button class="mail-modal-submit" type="button" data-type="afwijzing" data-action="afwijzen">Versturen</button>
       <button class="mail-cancel" type="button">Annuleren</button>
     </div>
   </div>
