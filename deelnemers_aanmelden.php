@@ -6,7 +6,7 @@ $melding = '';
 $foutmelding = '';
 
 // Haal instrumenten op in de volgorde van de instrumententabel, zonder zangstemmen.
-$instrumenten = $pdo->query("SELECT id, naam FROM instrumenten WHERE LOWER(naam) NOT LIKE '%zang%' AND LOWER(naam) NOT IN ('sopraan', 'alt', 'tenor', 'bas', 'countertenor', 'mezzosopraan', 'bariton', 'basklarinet', 'tuba', 'contrafagot', 'piano', 'clavecimbel', 'slagwerk', 'orgel') ORDER BY id")->fetchAll(PDO::FETCH_ASSOC);
+$instrumenten = $pdo->query("SELECT id, naam FROM instrumenten WHERE LOWER(naam) NOT LIKE '%zang%' AND LOWER(naam) NOT IN ('sopraan', 'alt', 'tenor', 'bas', 'countertenor', 'mezzosopraan', 'bariton', 'basklarinet', 'tuba', 'contrafagot', 'piano', 'clavecimbel', 'slagwerk', 'orgel', 'piccolo', 'engelse hoorn') ORDER BY id")->fetchAll(PDO::FETCH_ASSOC);
 
 // Haal toekomstige activiteiten op
 $activiteiten = $pdo->query('SELECT id, datum, plaats, omschrijving FROM activiteiten WHERE datum >= CURDATE() ORDER BY datum')->fetchAll(PDO::FETCH_ASSOC);
@@ -180,16 +180,6 @@ if (!empty($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL))
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="email">E-mailadres *</label>
-                    <input type="email" id="email" name="email" value="<?= htmlspecialchars($gegevens['email'] ?? '') ?>" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="telefoon">Telefoonnummer</label>
-                    <input type="tel" id="telefoon" name="telefoon" value="<?= htmlspecialchars($gegevens['telefoon'] ?? '') ?>">
-                </div>
-
                 <div class="form-row">
                     <div class="form-group">
                         <label for="postcode">Postcode</label>
@@ -200,6 +190,16 @@ if (!empty($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL))
                         <label for="plaats">Plaats</label>
                         <input type="text" id="plaats" name="plaats" value="<?= htmlspecialchars($gegevens['plaats'] ?? '') ?>" placeholder="bijv. Utrecht">
                     </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-mailadres *</label>
+                    <input type="email" id="email" name="email" value="<?= htmlspecialchars($gegevens['email'] ?? '') ?>" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="telefoon">Telefoonnummer</label>
+                    <input type="tel" id="telefoon" name="telefoon" value="<?= htmlspecialchars($gegevens['telefoon'] ?? '') ?>">
                 </div>
             </div>
 
