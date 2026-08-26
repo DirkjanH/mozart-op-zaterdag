@@ -5,8 +5,8 @@ require_once __DIR__ . '/vendor/autoload.php';
 $melding = '';
 $foutmelding = '';
 
-// Haal alle instrumenten op
-$instrumenten = $pdo->query('SELECT id, naam FROM instrumenten ORDER BY naam')->fetchAll(PDO::FETCH_ASSOC);
+// Haal instrumenten op in de volgorde van de instrumententabel, zonder zangstemmen.
+$instrumenten = $pdo->query("SELECT id, naam FROM instrumenten WHERE LOWER(naam) NOT LIKE '%zang%' AND LOWER(naam) NOT IN ('sopraan', 'alt', 'tenor', 'bas', 'countertenor') ORDER BY id")->fetchAll(PDO::FETCH_ASSOC);
 
 // Haal toekomstige activiteiten op
 $activiteiten = $pdo->query('SELECT id, datum, plaats, omschrijving FROM activiteiten WHERE datum >= CURDATE() ORDER BY datum')->fetchAll(PDO::FETCH_ASSOC);
@@ -127,6 +127,7 @@ if (!empty($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL))
     <link href="/css/w3.css" rel="stylesheet" type="text/css">
     <style>
         .form-group { margin-bottom: 1.5em; }
+        .form-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1em; }
         .form-group label { display: block; margin-bottom: 0.5em; font-weight: bold; }
         .form-group input[type="text"],
         .form-group input[type="email"],
@@ -147,6 +148,7 @@ if (!empty($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL))
         .fout { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
         .form-section { margin-top: 2em; padding-top: 1.5em; border-top: 2px solid #ddd; }
         .form-section h3 { margin-top: 0; color: #333; }
+        @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; gap: 0; } }
     </style>
 </head>
 <body>
@@ -166,14 +168,16 @@ if (!empty($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL))
             <div class="form-section">
                 <h3>Persoonlijke gegevens</h3>
 
-                <div class="form-group">
-                    <label for="voornaam">Voornaam *</label>
-                    <input type="text" id="voornaam" name="voornaam" value="<?= htmlspecialchars($gegevens['voornaam'] ?? '') ?>" required>
-                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="voornaam">Voornaam *</label>
+                        <input type="text" id="voornaam" name="voornaam" value="<?= htmlspecialchars($gegevens['voornaam'] ?? '') ?>" required>
+                    </div>
 
-                <div class="form-group">
-                    <label for="achternaam">Achternaam *</label>
-                    <input type="text" id="achternaam" name="achternaam" value="<?= htmlspecialchars($gegevens['achternaam'] ?? '') ?>" required>
+                    <div class="form-group">
+                        <label for="achternaam">Achternaam *</label>
+                        <input type="text" id="achternaam" name="achternaam" value="<?= htmlspecialchars($gegevens['achternaam'] ?? '') ?>" required>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -186,14 +190,16 @@ if (!empty($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL))
                     <input type="tel" id="telefoon" name="telefoon" value="<?= htmlspecialchars($gegevens['telefoon'] ?? '') ?>">
                 </div>
 
-                <div class="form-group">
-                    <label for="postcode">Postcode</label>
-                    <input type="text" id="postcode" name="postcode" value="<?= htmlspecialchars($gegevens['postcode'] ?? '') ?>" placeholder="bijv. 3511 AB">
-                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="postcode">Postcode</label>
+                        <input type="text" id="postcode" name="postcode" value="<?= htmlspecialchars($gegevens['postcode'] ?? '') ?>" placeholder="bijv. 3511 AB">
+                    </div>
 
-                <div class="form-group">
-                    <label for="plaats">Plaats</label>
-                    <input type="text" id="plaats" name="plaats" value="<?= htmlspecialchars($gegevens['plaats'] ?? '') ?>" placeholder="bijv. Utrecht">
+                    <div class="form-group">
+                        <label for="plaats">Plaats</label>
+                        <input type="text" id="plaats" name="plaats" value="<?= htmlspecialchars($gegevens['plaats'] ?? '') ?>" placeholder="bijv. Utrecht">
+                    </div>
                 </div>
             </div>
 
