@@ -3,9 +3,9 @@ require_once __DIR__ . '/../includes/inloggen.php';
 require_once __DIR__ . '/../connections/MozartopZaterdag.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
-// Tijdelijke testinstelling: alle berichten gaan naar dit adres.
+// Tijdelijke testinstelling: alle berichten gaan naar dit adres (verzonden via info@mozartopzaterdag.nl).
 $melding = '';
-$testMailOntvanger = 'info@mozartopzaterdag.nl';
+$testMailOntvanger = 'dirkjan@pellegrina.net';
 set_time_limit(15);
 $activiteitId = (int) ($_GET['activiteit_id'] ?? $_POST['activiteit_id'] ?? 0);
 $toonModus = in_array($_GET['toon'] ?? 'ja_misschien', ['toegelaten', 'ja_misschien'], true) ? $_GET['toon'] : 'ja_misschien';
