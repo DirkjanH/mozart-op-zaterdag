@@ -174,6 +174,24 @@ $afgewezenDeelnemers = array_map('intval', array_column(array_filter($spelers, s
 $onbeoordeeldeDeelnemers = array_map('intval', array_column(array_filter($spelers, static fn (array $speler): bool => $speler['toegelaten'] === null), 'id'));
 $countToegeilaten = count(array_filter($spelers, static fn (array $speler): bool => (int) $speler['toegelaten'] === 1));
 $countJaMisschien = count($spelers);
+$vulMailTemplate = static function (string $template, array $speler, array $activiteit): string {
+    $voornaam = htmlspecialchars($speler['voornaam'] ?? '', ENT_QUOTES, 'UTF-8');
+    $achternaam = htmlspecialchars($speler['achternaam'] ?? '', ENT_QUOTES, 'UTF-8');
+    $datum = date('d-m-Y', strtotime($activiteit['datum']));
+    $plaats = ($activiteit['plaats'] ?? '') === 'Marnixzaal' ? 'Marnixzaal aan het Domplein' : ($activiteit['plaats'] ?? '');
+    $plaats = htmlspecialchars($plaats, ENT_QUOTES, 'UTF-8');
+    $instrument = htmlspecialchars($speler['instrument'] ?? '', ENT_QUOTES, 'UTF-8');
+    $partij = $speler['partij'] ?? '';
+    $partijTekst = $partij !== '' ? ' (partij ' . htmlspecialchars($partij, ENT_QUOTES, 'UTF-8') . ')' : '';
+    $partijVolzin = $partij !== '' ? ' Je speelt partij ' . htmlspecialchars($partij, ENT_QUOTES, 'UTF-8') . '.' : '';
+    $omschrijving = htmlspecialchars($activiteit['omschrijving'] ?? '', ENT_QUOTES, 'UTF-8');
+
+    return str_replace(
+        ['{{voornaam}}', '{{achternaam}}', '{{datum}}', '{{plaats}}', '{{instrument}}', '{{partij_tekst}}', '{{omschrijving}}', '{{partij}}', '{voornaam}', '{achternaam}', '{datum}', '{plaats}', '{instrument}', '{partij}'],
+        [$voornaam, $achternaam, $datum, $plaats, $instrument, $partijTekst, $omschrijving, $partijVolzin, $voornaam, $achternaam, $datum, $plaats, $instrument, $partijVolzin],
+        $template
+    );
+};
 ?>
 <!DOCTYPE html>
 <html lang="nl"><head><meta charset="UTF-8"><title>Beschikbaarheid</title><link href="/css/moz.css" rel="stylesheet" type="text/css"><style>
@@ -320,6 +338,7 @@ document.addEventListener('keydown', function (event) {
 
 <!-- Mail modals -->
 <?php foreach ($spelers as $speler): ?>
+<?php $popupBevestiging = $vulMailTemplate($standaardMail, $speler, $gekozenActiviteit); $popupAfwijzing = $vulMailTemplate($standaardAfwijzingsMail, $speler, $gekozenActiviteit); ?>
 <div id="modal-bevestiging-<?= (int) $speler['id'] ?>" class="mail-modal">
   <div class="mail-modal-content">
     <div class="mail-modal-header">
@@ -328,7 +347,7 @@ document.addEventListener('keydown', function (event) {
     </div>
     <div class="mail-modal-body">
       <input class="mail-modal-onderwerp" type="text" value="<?= htmlspecialchars($standaardOnderwerp) ?>" placeholder="Onderwerp">
-      <textarea class="mail-modal-tekst" placeholder="Mailtekst"><?= htmlspecialchars($standaardMail) ?></textarea>
+    <textarea class="mail-modal-tekst" placeholder="Mailtekst"><?= htmlspecialchars($popupBevestiging) ?></textarea>
     </div>
     <div class="mail-modal-footer">
             <button class="mail-modal-submit" type="button" data-type="bevestiging" data-action="bevestigen">Versturen</button>
@@ -345,7 +364,7 @@ document.addEventListener('keydown', function (event) {
     </div>
     <div class="mail-modal-body">
       <input class="mail-modal-onderwerp" type="text" value="<?= htmlspecialchars($standaardAfwijzingsOnderwerp) ?>" placeholder="Onderwerp">
-      <textarea class="mail-modal-tekst" placeholder="Mailtekst"><?= htmlspecialchars($standaardAfwijzingsMail) ?></textarea>
+    <textarea class="mail-modal-tekst" placeholder="Mailtekst"><?= htmlspecialchars($popupAfwijzing) ?></textarea>
     </div>
     <div class="mail-modal-footer">
             <button class="mail-modal-submit" type="button" data-type="afwijzing" data-action="afwijzen">Versturen</button>
