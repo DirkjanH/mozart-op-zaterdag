@@ -114,12 +114,12 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
                 }
                 $mailer = new PHPMailer\PHPMailer\PHPMailer(true);
                 $mailer->isSMTP();
-                $mailer->Host = 'mailout.one.com';
+                $mailer->Host = 'send.one.com';
                 $mailer->SMTPAuth = true;
                 $mailer->Username = $gmailGebruikersnaam;
                 $mailer->Password = $gmailAppWachtwoord;
                 $mailer->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
-                $mailer->Port = 587;
+                $mailer->Port = 465;
                 $mailer->Timeout = 8;
                 $mailer->SMTPKeepAlive = false;
                 $mailer->SMTPDebug = 2;
