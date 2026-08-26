@@ -153,6 +153,7 @@ if (!empty($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL))
 </head>
 <body>
     <div class="w3-content w3-mobile w3-white w3-panel" style="max-width:800px">
+        <img src="/images/Mozart.jpg" alt="Mozart op Zaterdag" style="display: block; width: 100%; max-width: 250px; height: auto; margin-bottom: 1em;">
         <h2>Aanmelden Mozart op Zaterdag</h2>
 
         <?php if ($melding): ?>
