@@ -149,8 +149,10 @@ if (!empty($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL))
         .form-section { margin-top: 2em; padding-top: 1.5em; border-top: 2px solid #ddd; }
         .form-section h3 { margin-top: 0; color: #333; }
         .pagina-kop { display: flex; align-items: center; gap: 1.5em; margin-bottom: 1em; }
+        .pagina-kop { margin-top: 1em; }
         .pagina-kop img { display: block; width: 100%; max-width: 250px; height: auto; }
         .pagina-kop h2 { margin: 0; }
+        .instrument-separator { grid-column: 1 / -1; border-top: 1px solid #bbb; margin-top: 0.25em; padding-top: 0.75em; }
         @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; gap: 0; } }
         @media (max-width: 600px) { .pagina-kop { align-items: flex-start; gap: 1em; } .pagina-kop img { max-width: 160px; } }
     </style>
@@ -216,7 +218,8 @@ if (!empty($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL))
                 <p>Welke instrumenten speel je? (meerdere selecties mogelijk)</p>
                 <div class="checkboxes">
                     <?php foreach ($instrumenten as $instrument): ?>
-                        <div class="checkbox-item">
+                        <?php if (strtolower(trim($instrument['naam'])) === 'viool'): ?><div class="instrument-separator"></div><?php endif; ?>
+                        <div class="checkbox-item<?= strtolower(trim($instrument['naam'])) === 'viool' ? ' instrument-na-separator' : '' ?>">
                             <input type="checkbox" id="instr_<?= (int) $instrument['id'] ?>" name="instrumenten[]" value="<?= (int) $instrument['id'] ?>" <?= in_array((int) $instrument['id'], $geselecteerde_instrumenten) ? 'checked' : '' ?>>
                             <label for="instr_<?= (int) $instrument['id'] ?>" style="margin: 0; font-weight: normal;"><?= htmlspecialchars($instrument['naam']) ?></label>
                         </div>

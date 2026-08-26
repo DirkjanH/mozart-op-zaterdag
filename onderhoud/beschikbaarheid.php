@@ -60,7 +60,7 @@ if ($gmailOmgevingsWachtwoord !== false && $gmailOmgevingsWachtwoord !== '') {
 $standaardMail = <<<'HTML'
 Beste {{voornaam}},<br><br>
 Leuk dat je je hebt aangemeld voor Mozart op Zaterdag! We zijn blij om je te kunnen plaatsen als {{instrument}}{{partij_tekst}} voor zaterdag {{datum}} in de {{plaats}}. We spelen dan {{omschrijving}}.<br><br>
-De bezetting vind je op de <a href="https://mozartopzaterdag.nl">website</a>. Je kunt inloggen op de pagina voor deelnemers met <strong>WolfGang</strong> (let op de hoofdletters).<br><br>
+De bezetting vind je op de <a href="https://mozartopzaterdag.nl">website van Mozart op Zaterdag</a>. Je kunt inloggen op de pagina voor deelnemers met <strong>WolfGang</strong> (let op de hoofdletters).<br><br>
 Mocht je voor het concert moeten afzeggen, dan stellen we het op prijs als je een vervanger aandraagt.<br><br>
 Alle partijen staan ook op de <a href="https://mozartopzaterdag.nl">website</a>.<br><br>
 Nog even wat aanvullende opmerkingen over Mozart op Zaterdag:<br>
@@ -129,6 +129,7 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
                 };
                 $mailer->CharSet = 'UTF-8';
                 $mailer->setFrom($mailer->Username, 'Mozart op Zaterdag');
+                $mailer->addReplyTo($mailer->Username, 'Mozart op Zaterdag');
                 $mailer->addAddress($testMailOntvanger, 'Dirkjan Horringa');
                 $mailer->isHTML(true);
                 $ingevuldOnderwerp = trim($_POST[$bevestigen ? 'mail_bevestiging_onderwerp' : 'mail_afwijzing_onderwerp'] ?? '');
@@ -142,7 +143,8 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
                 );
                 $mailer->Subject = $ingevuldOnderwerp ?: ($bevestigen ? $standaardOnderwerp : $standaardAfwijzingsOnderwerp);
                 $mailer->Body = $mailTekst;
-                $mailer->AltBody = trim(html_entity_decode(strip_tags($mailTekst), ENT_QUOTES, 'UTF-8'));
+                $plainMailTekst = preg_replace('/<a\s+[^>]*href=["\']([^"\']+)["\'][^>]*>(.*?)<\/a>/is', '$2 ($1)', $mailTekst);
+                $mailer->AltBody = trim(html_entity_decode(strip_tags($plainMailTekst), ENT_QUOTES, 'UTF-8'));
                 $mailer->send();
                 // Toelating wordt pas vastgelegd nadat de mail is verzonden.
                 $stmt = $pdo->prepare('UPDATE activiteit_deelnemers SET toegelaten = ? WHERE activiteit_id = ? AND deelnemer_id = ?');
