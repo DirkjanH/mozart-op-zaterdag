@@ -210,7 +210,7 @@
                     <tr>
                         <td></td>
                         <td><i>vacature</i></td>
-                        <td>altviool (aanvoerder)</td>
+                        <td>altviool</td>
                     </tr>
                     <tr>
                         <td>Sytse</td>
