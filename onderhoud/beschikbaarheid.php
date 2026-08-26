@@ -106,7 +106,7 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
             $naam = htmlspecialchars($speler['voornaam'], ENT_QUOTES, 'UTF-8');
             $datum = date('d-m-Y', strtotime($speler['datum']));
             $partij = $speler['partij'] ? ' Je speelt partij ' . htmlspecialchars($speler['partij'], ENT_QUOTES, 'UTF-8') . '.' : '';
-            $partijTekst = $speler['partij'] ? ' (partij ' . htmlspecialchars($speler['partij'], ENT_QUOTES, 'UTF-8') . ')' : '';
+            $partijTekst = $speler['partij'] ? '&nbsp;' . htmlspecialchars($speler['partij'], ENT_QUOTES, 'UTF-8') : '';
             $smtpDebug = [];
             try {
                 if ($gmailAppWachtwoord === '') {
@@ -182,7 +182,7 @@ $vulMailTemplate = static function (string $template, array $speler, array $acti
     $plaats = htmlspecialchars($plaats, ENT_QUOTES, 'UTF-8');
     $instrument = htmlspecialchars($speler['instrument'] ?? '', ENT_QUOTES, 'UTF-8');
     $partij = $speler['partij'] ?? '';
-    $partijTekst = $partij !== '' ? ' (partij ' . htmlspecialchars($partij, ENT_QUOTES, 'UTF-8') . ')' : '';
+    $partijTekst = $partij !== '' ? '&nbsp;' . htmlspecialchars($partij, ENT_QUOTES, 'UTF-8') : '';
     $partijVolzin = $partij !== '' ? ' Je speelt partij ' . htmlspecialchars($partij, ENT_QUOTES, 'UTF-8') . '.' : '';
     $omschrijving = htmlspecialchars($activiteit['omschrijving'] ?? '', ENT_QUOTES, 'UTF-8');
 
@@ -261,7 +261,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var mailType = btn.dataset.type;
             
             if (!modal) return;
-            modal.mailForm = form;
+            modal.mailRow = rij;
             
             // Show modal
             modal.classList.add('active');
@@ -272,31 +272,30 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.mail-modal-submit').forEach(function (btn) {
         btn.addEventListener('click', function () {
             var modal = btn.closest('.mail-modal');
-            var form = modal.mailForm;
-            if (!form) return;
+            var rij = modal.mailRow;
+            if (!rij) return;
 
-            ['mail_' + btn.dataset.type + '_onderwerp', 'mail_' + btn.dataset.type + '_tekst', 'actie'].forEach(function (naam) {
-                var bestaand = form.querySelector('input[name="' + naam + '"], textarea[name="' + naam + '"]');
-                if (bestaand) bestaand.remove();
+            var form = document.createElement('form');
+            form.method = 'post';
+            form.action = window.location.href;
+            var velden = {
+                activiteit_id: rij.querySelector('input[name="activiteit_id"]')?.value || '',
+                deelnemer_id: rij.querySelector('input[name="deelnemer_id"]')?.value || '',
+                instrument_id: rij.querySelector('[name="instrument_id"]')?.value || '',
+                status: rij.querySelector('[name="status"]')?.value || '',
+                partij: rij.querySelector('[name="partij"]')?.value || '',
+                actie: btn.dataset.action
+            };
+            velden['mail_' + btn.dataset.type + '_onderwerp'] = modal.querySelector('.mail-modal-onderwerp').value;
+            velden['mail_' + btn.dataset.type + '_tekst'] = modal.querySelector('.mail-modal-tekst').value;
+            Object.keys(velden).forEach(function (naam) {
+                var veld = document.createElement('input');
+                veld.type = 'hidden';
+                veld.name = naam;
+                veld.value = velden[naam];
+                form.appendChild(veld);
             });
-
-            var onderwerp = document.createElement('input');
-            onderwerp.type = 'hidden';
-            onderwerp.name = 'mail_' + btn.dataset.type + '_onderwerp';
-            onderwerp.value = modal.querySelector('.mail-modal-onderwerp').value;
-            form.appendChild(onderwerp);
-
-            var tekst = document.createElement('input');
-            tekst.type = 'hidden';
-            tekst.name = 'mail_' + btn.dataset.type + '_tekst';
-            tekst.value = modal.querySelector('.mail-modal-tekst').value;
-            form.appendChild(tekst);
-
-            var actie = document.createElement('input');
-            actie.type = 'hidden';
-            actie.name = 'actie';
-            actie.value = btn.dataset.action;
-            form.appendChild(actie);
+            document.body.appendChild(form);
             form.submit();
         });
     });
