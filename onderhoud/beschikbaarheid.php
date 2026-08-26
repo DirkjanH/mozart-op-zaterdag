@@ -143,8 +143,8 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
                 $mailer->Body = $mailTekst;
                 $mailer->send();
                 // Toelating wordt pas vastgelegd nadat de mail is verzonden.
-                $stmt = $pdo->prepare('UPDATE activiteit_deelnemers SET toegelaten = ?, afgewezen = ? WHERE activiteit_id = ? AND deelnemer_id = ?');
-                $stmt->execute([$bevestigen ? 1 : 0, $bevestigen ? 0 : 1, $activiteitId, $deelnemerId]);
+                $stmt = $pdo->prepare('UPDATE activiteit_deelnemers SET toegelaten = ? WHERE activiteit_id = ? AND deelnemer_id = ?');
+                $stmt->execute([$bevestigen ? 1 : 0, $activiteitId, $deelnemerId]);
                 $melding = ($bevestigen ? 'Bevestigingsmail' : 'Afwijzingsmail') . ' verstuurd; gegevens en toelating bijgewerkt.';
             } catch (PHPMailer\PHPMailer\Exception $e) {
                 $melding = 'Mail niet verstuurd: ' . $e->getMessage() . ' SMTP: ' . implode(' | ', $smtpDebug);
@@ -163,15 +163,15 @@ foreach ($activiteiten as $activiteit) if ((int) $activiteit['id'] === $activite
 $spelers = [];
 if ($gekozenActiviteit) {
     if ($toonModus === 'toegelaten') {
-        $stmt = $pdo->prepare("SELECT d.id, d.voornaam, d.achternaam, d.email, ad.status, ad.toegelaten, ad.afgewezen, COALESCE(ad.instrument_id, di.instrument_id) AS instrument_id, ad.partij, i.naam AS instrument FROM activiteit_deelnemers ad JOIN deelnemers d ON d.id = ad.deelnemer_id LEFT JOIN (SELECT deelnemer_id, MIN(instrument_id) AS instrument_id FROM deelnemer_instrumenten GROUP BY deelnemer_id) di ON di.deelnemer_id = d.id LEFT JOIN instrumenten i ON i.id = COALESCE(ad.instrument_id, di.instrument_id) WHERE ad.activiteit_id = ? AND ad.status <> 'nee' AND ad.toegelaten = 1 ORDER BY CASE WHEN i.id IS NULL THEN 1 ELSE 0 END, i.id, d.achternaam, d.voornaam");
+        $stmt = $pdo->prepare("SELECT d.id, d.voornaam, d.achternaam, d.email, ad.status, ad.toegelaten, COALESCE(ad.instrument_id, di.instrument_id) AS instrument_id, ad.partij, i.naam AS instrument FROM activiteit_deelnemers ad JOIN deelnemers d ON d.id = ad.deelnemer_id LEFT JOIN (SELECT deelnemer_id, MIN(instrument_id) AS instrument_id FROM deelnemer_instrumenten GROUP BY deelnemer_id) di ON di.deelnemer_id = d.id LEFT JOIN instrumenten i ON i.id = COALESCE(ad.instrument_id, di.instrument_id) WHERE ad.activiteit_id = ? AND ad.status <> 'nee' AND ad.toegelaten = 1 ORDER BY CASE WHEN i.id IS NULL THEN 1 ELSE 0 END, i.id, d.achternaam, d.voornaam");
     } else {
-        $stmt = $pdo->prepare("SELECT d.id, d.voornaam, d.achternaam, d.email, ad.status, ad.toegelaten, ad.afgewezen, COALESCE(ad.instrument_id, di.instrument_id) AS instrument_id, ad.partij, i.naam AS instrument FROM activiteit_deelnemers ad JOIN deelnemers d ON d.id = ad.deelnemer_id LEFT JOIN (SELECT deelnemer_id, MIN(instrument_id) AS instrument_id FROM deelnemer_instrumenten GROUP BY deelnemer_id) di ON di.deelnemer_id = d.id LEFT JOIN instrumenten i ON i.id = COALESCE(ad.instrument_id, di.instrument_id) WHERE ad.activiteit_id = ? AND ad.status <> 'nee' AND ad.status IN ('ja', 'misschien') ORDER BY CASE WHEN i.id IS NULL THEN 1 ELSE 0 END, i.id, d.achternaam, d.voornaam");
+        $stmt = $pdo->prepare("SELECT d.id, d.voornaam, d.achternaam, d.email, ad.status, ad.toegelaten, COALESCE(ad.instrument_id, di.instrument_id) AS instrument_id, ad.partij, i.naam AS instrument FROM activiteit_deelnemers ad JOIN deelnemers d ON d.id = ad.deelnemer_id LEFT JOIN (SELECT deelnemer_id, MIN(instrument_id) AS instrument_id FROM deelnemer_instrumenten GROUP BY deelnemer_id) di ON di.deelnemer_id = d.id LEFT JOIN instrumenten i ON i.id = COALESCE(ad.instrument_id, di.instrument_id) WHERE ad.activiteit_id = ? AND ad.status <> 'nee' AND ad.status IN ('ja', 'misschien') ORDER BY CASE WHEN i.id IS NULL THEN 1 ELSE 0 END, i.id, d.achternaam, d.voornaam");
     }
     $stmt->execute([$activiteitId]);
     $spelers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-$afgewezenDeelnemers = array_map('intval', array_column(array_filter($spelers, static fn (array $speler): bool => (int) $speler['afgewezen'] === 1), 'id'));
-$onbeoordeeldeDeelnemers = array_map('intval', array_column(array_filter($spelers, static fn (array $speler): bool => (int) $speler['toegelaten'] === 0 && (int) $speler['afgewezen'] === 0), 'id'));
+$afgewezenDeelnemers = array_map('intval', array_column(array_filter($spelers, static fn (array $speler): bool => $speler['toegelaten'] !== null && (int) $speler['toegelaten'] === 0), 'id'));
+$onbeoordeeldeDeelnemers = array_map('intval', array_column(array_filter($spelers, static fn (array $speler): bool => $speler['toegelaten'] === null), 'id'));
 $countToegeilaten = count(array_filter($spelers, static fn (array $speler): bool => (int) $speler['toegelaten'] === 1));
 $countJaMisschien = count($spelers);
 ?>
@@ -205,11 +205,12 @@ select[name="instrument_id"], select[name="status"], input[name="partij"] { back
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.tabel-scroll tr').forEach(function (rij) {
-        var afgewezen = rij.querySelector('input[name="afgewezen"]');
         var naam = rij.querySelector('td:first-child');
         var deelnemer = rij.querySelector('input[name="deelnemer_id"]');
-        if (deelnemer && naam) {
-            var deelnemerId = Number(deelnemer.value);
+            var modalKnop = rij.querySelector('.mail-modal-btn');
+            if (modalKnop && naam) {
+                var modalOnderdelen = modalKnop.dataset.modal.split('-');
+                var deelnemerId = Number(modalOnderdelen[modalOnderdelen.length - 1]);
             // Markeer afgewezen deelnemers met rood kruis
             if (<?= json_encode($afgewezenDeelnemers) ?>.includes(deelnemerId) && !naam.querySelector('.afgewezen-kruis')) {
                 var kruis = document.createElement('span');
