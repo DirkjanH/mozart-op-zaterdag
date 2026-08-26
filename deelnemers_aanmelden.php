@@ -148,13 +148,19 @@ if (!empty($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL))
         .fout { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
         .form-section { margin-top: 2em; padding-top: 1.5em; border-top: 2px solid #ddd; }
         .form-section h3 { margin-top: 0; color: #333; }
+        .pagina-kop { display: flex; align-items: center; gap: 1.5em; margin-bottom: 1em; }
+        .pagina-kop img { display: block; width: 100%; max-width: 250px; height: auto; }
+        .pagina-kop h2 { margin: 0; }
         @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; gap: 0; } }
+        @media (max-width: 600px) { .pagina-kop { align-items: flex-start; gap: 1em; } .pagina-kop img { max-width: 160px; } }
     </style>
 </head>
 <body>
     <div class="w3-content w3-mobile w3-white w3-panel" style="max-width:800px">
-        <img src="/images/Mozart.jpg" alt="Mozart op Zaterdag" style="display: block; width: 100%; max-width: 250px; height: auto; margin-bottom: 1em;">
-        <h2>Aanmelden Mozart op Zaterdag</h2>
+        <div class="pagina-kop">
+            <img src="/images/Mozart.jpg" alt="Mozart op Zaterdag">
+            <h2>Aanmelden Mozart op Zaterdag</h2>
+        </div>
 
         <?php if ($melding): ?>
             <div class="melding succes"><?= htmlspecialchars($melding) ?></div>
