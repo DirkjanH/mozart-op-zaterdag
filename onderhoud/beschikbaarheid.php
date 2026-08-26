@@ -3,12 +3,12 @@ require_once __DIR__ . '/../includes/inloggen.php';
 require_once __DIR__ . '/../connections/MozartopZaterdag.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
-// Tijdelijke testinstelling: alle berichten gaan naar dit adres (verzonden via info@mozartopzaterdag.nl).
 $melding = '';
 $testMailOntvanger = 'dirkjan@pellegrina.net';
 set_time_limit(15);
 $activiteitId = (int) ($_GET['activiteit_id'] ?? $_POST['activiteit_id'] ?? 0);
-$toonModus = in_array($_GET['toon'] ?? 'ja_misschien', ['toegelaten', 'ja_misschien'], true) ? $_GET['toon'] : 'ja_misschien';
+$toonParameter = $_GET['toon'] ?? null;
+$toonModus = in_array($toonParameter, ['toegelaten', 'ja_misschien'], true) ? $toonParameter : 'ja_misschien';
 // Toon alleen activiteiten die nog moeten plaatsvinden.
 $activiteiten = $pdo->query('SELECT id, datum, plaats, omschrijving FROM activiteiten WHERE datum >= CURDATE() ORDER BY datum')->fetchAll(PDO::FETCH_ASSOC);
 if ($activiteitId === 0 && $activiteiten !== []) $activiteitId = (int) $activiteiten[0]['id'];
@@ -108,6 +108,7 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
             $partij = $speler['partij'] ? ' Je speelt partij ' . htmlspecialchars($speler['partij'], ENT_QUOTES, 'UTF-8') . '.' : '';
             $partijTekst = $speler['partij'] ? '&nbsp;' . htmlspecialchars($speler['partij'], ENT_QUOTES, 'UTF-8') : '';
             $smtpDebug = [];
+            $mailer = null;
             try {
                 if ($gmailAppWachtwoord === '') {
                     throw new RuntimeException('Gmail-app-wachtwoord ontbreekt in de configuratie.');
@@ -147,7 +148,8 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
                 $stmt->execute([$bevestigen ? 1 : 0, $activiteitId, $deelnemerId]);
                 $melding = ($bevestigen ? 'Bevestigingsmail' : 'Afwijzingsmail') . ' verstuurd; gegevens en toelating bijgewerkt.';
             } catch (PHPMailer\PHPMailer\Exception $e) {
-                $melding = 'Mail niet verstuurd: ' . $e->getMessage() . ' SMTP: ' . implode(' | ', $smtpDebug);
+                $smtpFout = $mailer instanceof PHPMailer\PHPMailer\PHPMailer ? $mailer->ErrorInfo : implode(' | ', $smtpDebug);
+                $melding = 'Mail niet verstuurd: ' . $e->getMessage() . ' SMTP: ' . $smtpFout;
             } catch (RuntimeException $e) {
                 $melding = 'Mail niet verstuurd: ' . $e->getMessage();
             } catch (Throwable $e) {
