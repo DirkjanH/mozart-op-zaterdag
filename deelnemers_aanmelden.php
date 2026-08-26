@@ -6,7 +6,19 @@ $melding = '';
 $foutmelding = '';
 
 // Haal instrumenten op in de volgorde van de instrumententabel, zonder zangstemmen.
-$instrumenten = $pdo->query("SELECT id, naam FROM instrumenten WHERE LOWER(naam) NOT LIKE '%zang%' AND LOWER(naam) NOT IN ('sopraan', 'alt', 'tenor', 'bas', 'countertenor', 'mezzosopraan', 'bariton', 'basklarinet', 'tuba', 'contrafagot', 'piano', 'clavecimbel', 'slagwerk', 'orgel', 'piccolo', 'engelse hoorn') ORDER BY id")->fetchAll(PDO::FETCH_ASSOC);
+$uitgeslotenInstrumenten = ['sopraan', 'alt', 'tenor', 'bas', 'countertenor', 'mezzosopraan', 'bariton', 'basklarinet', 'tuba', 'contrafagot', 'piano', 'clavecimbel', 'slagwerk', 'orgel', 'piccolo', 'engelse hoorn'];
+$instrumenten = $pdo->query('SELECT * FROM instrumenten')->fetchAll(PDO::FETCH_ASSOC);
+$instrumenten = array_values(array_filter($instrumenten, static function (array $instrument) use ($uitgeslotenInstrumenten): bool {
+    $naam = strtolower(trim((string) ($instrument['naam'] ?? '')));
+    return $naam !== '' && !str_contains($naam, 'zang') && !in_array($naam, $uitgeslotenInstrumenten, true);
+}));
+usort($instrumenten, static function (array $eerste, array $tweede): int {
+    return ((int) ($eerste['id'] ?? $eerste['instrument_id'] ?? 0)) <=> ((int) ($tweede['id'] ?? $tweede['instrument_id'] ?? 0));
+});
+foreach ($instrumenten as &$instrument) {
+    $instrument['id'] = (int) ($instrument['id'] ?? $instrument['instrument_id'] ?? 0);
+}
+unset($instrument);
 $pauken = null;
 foreach ($instrumenten as $index => $instrument) {
     if (strtolower(trim($instrument['naam'])) === 'pauken') {
