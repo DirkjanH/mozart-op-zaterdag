@@ -178,10 +178,22 @@ $countJaMisschien = count($spelers);
 <!DOCTYPE html>
 <html lang="nl"><head><meta charset="UTF-8"><title>Beschikbaarheid</title><link href="/css/moz.css" rel="stylesheet" type="text/css"><style>
 .tabel-scroll{max-height:90vh;overflow:auto}.tabel-scroll th{position:sticky;top:0;z-index:2;background:#fff}.tabel-scroll th:first-child{position:sticky;left:0;z-index:3;background:#fff}.tabel-scroll td:first-child{position:sticky;left:0;z-index:1;background:#fff}.mail-knop{margin:.15em}.toegelaten-vinkje{color:#198754;font-size:1.25em;font-weight:bold;margin-left:.35em}details.mail-editor{display:inline-block;margin:.15em 0;vertical-align:middle}details.mail-editor summary{display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;height:2.2em;min-width:4.5em;padding:0 .6em;border-radius:2px;list-style:none;box-sizing:border-box}details.mail-editor summary::-webkit-details-marker{display:none}.mail-bewerk-groen summary{background:#198754}.mail-bewerk-rood summary{background:#dc3545}details.mail-editor[open] > :not(summary){position:fixed;left:50%;transform:translateX(-50%);z-index:10;width:min(90vw,700px);box-sizing:border-box}details.mail-editor[open] > input{top:12vh;padding:.6em;background:#fff;border:1px solid #777}details.mail-editor[open] > textarea{top:calc(12vh + 3.6em);height:65vh;padding:.6em;background:#fff;border:1px solid #777;resize:vertical}
-details.mail-bewerk-groen, details.mail-bewerk-rood { display: inline-block; margin: .15em 0; vertical-align: middle; }
-details.mail-bewerk-groen summary, details.mail-bewerk-rood summary { display: inline-flex; align-items: center; justify-content: center; height: 2.2em; min-width: 4.5em; padding: 0 .6em; line-height: 1; box-sizing: border-box; }
-details.mail-bewerk-groen[open] > input, details.mail-bewerk-rood[open] > input { position: fixed; top: 12vh; left: 50%; z-index: 10; width: min(90vw, 700px); transform: translateX(-50%); box-sizing: border-box; padding: .6em; background: #fff; border: 1px solid #777; }
-details.mail-bewerk-groen[open] > textarea, details.mail-bewerk-rood[open] > textarea { position: fixed; top: calc(12vh + 3.6em); left: 50%; z-index: 10; width: min(90vw, 700px); height: 65vh; transform: translateX(-50%); box-sizing: border-box; padding: .6em; background: #fff; border: 1px solid #777; resize: vertical; }
+.mail-modal { display: none; position: fixed; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 100; align-items: center; justify-content: center; }
+.mail-modal.active { display: flex; }
+.mail-modal-content { background: #fff; border-radius: 4px; box-sizing: border-box; width: min(90vw, 700px); max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+.mail-modal-header { padding: 1em; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; background: #f9f9f9; }
+.mail-modal-header h3 { margin: 0; font-size: 1.1em; }
+.mail-modal-close { background: #dc3545; color: white; border: none; width: 2.2em; height: 2.2em; border-radius: 50%; cursor: pointer; font-size: 1.2em; display: flex; align-items: center; justify-content: center; }
+.mail-modal-close:hover { background: #c82333; }
+.mail-modal-body { padding: 1em; overflow-y: auto; flex: 1; }
+.mail-modal-body > input { width: 100%; margin-bottom: 1em; padding: 0.6em; border: 1px solid #777; box-sizing: border-box; }
+.mail-modal-body > textarea { width: 100%; padding: 0.6em; border: 1px solid #777; box-sizing: border-box; resize: vertical; min-height: 300px; }
+.mail-modal-footer { padding: 1em; border-top: 1px solid #ddd; display: flex; gap: 0.5em; justify-content: flex-end; background: #f9f9f9; }
+.mail-modal-footer button { padding: 0.6em 1.2em; cursor: pointer; border-radius: 2px; border: none; font-size: 0.95em; }
+.mail-modal-footer .mail-submit { background: #198754; color: white; }
+.mail-modal-footer .mail-submit:hover { background: #157347; }
+.mail-modal-footer .mail-cancel { background: #6c757d; color: white; }
+.mail-modal-footer .mail-cancel:hover { background: #5c636a; }
 td.acties { min-width: 32em; white-space: nowrap; }
 td.acties > .mail-knop, td.acties > details { display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; height: 2.2em; padding: 0; line-height: 1; box-sizing: border-box; }
 .tabel-scroll tr > td:last-child > .mail-knop { padding-left: 8px; padding-right: 8px; }
@@ -218,11 +230,50 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     });
+    
+    // Mail modal handling
+    document.querySelectorAll('.mail-modal-btn').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            var rij = btn.closest('tr');
+            var form = rij.querySelector('form');
+            var modalId = btn.dataset.modal;
+            var modal = document.getElementById(modalId);
+            var mailType = btn.dataset.type;
+            
+            // Copy form data to modal
+            var onderwerp = form.querySelector('input[name="mail_' + mailType + '_onderwerp"]').value;
+            var tekst = form.querySelector('textarea[name="mail_' + mailType + '_tekst"]').value;
+            
+            modal.querySelector('.mail-modal-onderwerp').value = onderwerp;
+            modal.querySelector('.mail-modal-tekst').value = tekst;
+            modal.querySelector('.mail-modal-submit').dataset.rij = rij.innerHTML;
+            modal.querySelector('.mail-modal-submit').dataset.form = new XMLSerializer().serializeToString(form);
+            
+            modal.classList.add('active');
+        });
+    });
+    
+    document.querySelectorAll('.mail-modal-close, .mail-cancel').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var modal = btn.closest('.mail-modal');
+            modal.classList.remove('active');
+        });
+    });
+    
+    document.querySelectorAll('.mail-modal').forEach(function (modal) {
+        modal.addEventListener('click', function (e) {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+    });
 });
+
 document.addEventListener('keydown', function (event) {
     if (event.key === 'Escape') {
-        document.querySelectorAll('details[open]').forEach(function (popup) {
-            popup.removeAttribute('open');
+        document.querySelectorAll('.mail-modal.active').forEach(function (modal) {
+            modal.classList.remove('active');
         });
     }
 });
@@ -234,4 +285,39 @@ document.addEventListener('keydown', function (event) {
 <?php $toggleWaarde = $toonModus === 'toegelaten' ? 'ja_misschien' : 'toegelaten'; $toggleTekst = $toonModus === 'toegelaten' ? 'Toon: ja/misschien (alle) (' . $countJaMisschien . ')' : 'Toon: alleen toegelaten (' . $countToegeilaten . ')'; $toggleButtonClass = $toonModus === 'toegelaten' ? 'w3-button w3-small w3-border w3-green' : 'w3-button w3-small w3-border w3-light-grey'; ?>
 <form method="get" style="margin:0 0 12px"><input type="hidden" name="activiteit_id" value="<?= (int) $activiteitId ?>"><button class="<?= $toggleButtonClass ?>" type="submit" name="toon" value="<?= htmlspecialchars($toggleWaarde, ENT_QUOTES, 'UTF-8') ?>" title="<?= $toonModus === 'toegelaten' ? 'Klik om alle ja/misschien deelnemers te tonen' : 'Klik om alleen toegelaten deelnemers te tonen' ?>"><?= htmlspecialchars($toggleTekst) ?></button></form>
 <div class="tabel-scroll"><table class="w3-table w3-bordered w3-striped w3-small"><tr><th>Speler</th><th>Instrument</th><th>Status</th><th>Partij</th><th>Acties</th></tr>
-<?php foreach ($spelers as $speler): ?><tr><form method="post"><input type="hidden" name="activiteit_id" value="<?= $activiteitId ?>"><input type="hidden" name="deelnemer_id" value="<?= (int) $speler['id'] ?>"><td><?= htmlspecialchars($speler['voornaam'] . ' ' . $speler['achternaam']) ?><?php if ((int) $speler['toegelaten'] === 1): ?><span class="toegelaten-vinkje" title="Toegelaten" aria-label="Toegelaten">&#10003;</span><?php endif; ?></td><td><select class="w3-select" name="instrument_id"><option value="0">(onbekend)</option><?php foreach ($instrumenten as $instrument): ?><option value="<?= (int) $instrument['id'] ?>" <?= (int) $speler['instrument_id'] === (int) $instrument['id'] ? 'selected' : '' ?>><?= htmlspecialchars($instrument['naam']) ?></option><?php endforeach; ?></select></td><td><select class="w3-select" name="status"><?php foreach (['ja', 'misschien', 'nee'] as $status): ?><option value="<?= $status ?>" <?= $speler['status'] === $status ? 'selected' : '' ?>><?= $status ?></option><?php endforeach; ?></select></td><td><input class="w3-input" type="text" name="partij" value="<?= htmlspecialchars($speler['partij'] ?? '') ?>" placeholder="bijv. 1" style="width:8em"></td><td><button class="w3-button w3-green w3-small mail-knop" type="submit" name="actie" value="opslaan_bevestigen" formnovalidate onclick="return confirm('Bevestigingsmail versturen?')">Sla op &amp; bevestig</button><details class="mail-bewerk-groen"><summary>Bev.ml</summary><input class="w3-input" type="text" name="mail_bevestiging_onderwerp" value="<?= htmlspecialchars($standaardOnderwerp) ?>"><textarea class="w3-input" name="mail_bevestiging_tekst" rows="8"><?= htmlspecialchars($standaardMail) ?></textarea></details><button class="w3-button w3-red w3-small mail-knop" type="submit" name="actie" value="afwijzen" formnovalidate onclick="return confirm('Afwijzingsmail versturen?')">Wijs af</button><details class="mail-bewerk-rood"><summary>Afw.ml</summary><input class="w3-input" type="text" name="mail_afwijzing_onderwerp" value="<?= htmlspecialchars($standaardAfwijzingsOnderwerp) ?>"><textarea class="w3-input" name="mail_afwijzing_tekst" rows="8"><?= htmlspecialchars($standaardAfwijzingsMail) ?></textarea></details></td></form></tr><?php endforeach; ?></table></div><?php else: ?><p>Er zijn geen toekomstige activiteiten.</p><?php endif; ?></div></body></html>
+<?php foreach ($spelers as $speler): ?><tr><form method="post"><input type="hidden" name="activiteit_id" value="<?= $activiteitId ?>"><input type="hidden" name="deelnemer_id" value="<?= (int) $speler['id'] ?>"><td><?= htmlspecialchars($speler['voornaam'] . ' ' . $speler['achternaam']) ?><?php if ((int) $speler['toegelaten'] === 1): ?><span class="toegelaten-vinkje" title="Toegelaten" aria-label="Toegelaten">&#10003;</span><?php endif; ?></td><td><select class="w3-select" name="instrument_id"><option value="0">(onbekend)</option><?php foreach ($instrumenten as $instrument): ?><option value="<?= (int) $instrument['id'] ?>" <?= (int) $speler['instrument_id'] === (int) $instrument['id'] ? 'selected' : '' ?>><?= htmlspecialchars($instrument['naam']) ?></option><?php endforeach; ?></select></td><td><select class="w3-select" name="status"><?php foreach (['ja', 'misschien', 'nee'] as $status): ?><option value="<?= $status ?>" <?= $speler['status'] === $status ? 'selected' : '' ?>><?= $status ?></option><?php endforeach; ?></select></td><td><input class="w3-input" type="text" name="partij" value="<?= htmlspecialchars($speler['partij'] ?? '') ?>" placeholder="bijv. 1" style="width:8em"></td><td><button class="w3-button w3-green w3-small mail-knop" type="submit" name="actie" value="opslaan_bevestigen" formnovalidate onclick="return confirm('Bevestigingsmail versturen?')">Sla op &amp; bevestig</button><button class="w3-button w3-small mail-knop mail-modal-btn" type="button" data-modal="modal-bevestiging-<?= (int) $speler['id'] ?>" data-type="bevestiging" style="background:#198754;color:white">Bev.ml</button><button class="w3-button w3-red w3-small mail-knop" type="submit" name="actie" value="afwijzen" formnovalidate onclick="return confirm('Afwijzingsmail versturen?')">Wijs af</button><button class="w3-button w3-small mail-knop mail-modal-btn" type="button" data-modal="modal-afwijzing-<?= (int) $speler['id'] ?>" data-type="afwijzing" style="background:#dc3545;color:white">Afw.ml</button><input type="hidden" name="mail_bevestiging_onderwerp" value="<?= htmlspecialchars($standaardOnderwerp) ?>"><textarea style="display:none" name="mail_bevestiging_tekst"><?= htmlspecialchars($standaardMail) ?></textarea><input type="hidden" name="mail_afwijzing_onderwerp" value="<?= htmlspecialchars($standaardAfwijzingsOnderwerp) ?>"><textarea style="display:none" name="mail_afwijzing_tekst"><?= htmlspecialchars($standaardAfwijzingsMail) ?></textarea></td></form></tr><?php endforeach; ?></table></div>
+
+<!-- Mail modals -->
+<?php foreach ($spelers as $speler): ?>
+<div id="modal-bevestiging-<?= (int) $speler['id'] ?>" class="mail-modal">
+  <div class="mail-modal-content">
+    <div class="mail-modal-header">
+      <h3>Bevestigingsmail voor <?= htmlspecialchars($speler['voornaam'] . ' ' . $speler['achternaam']) ?></h3>
+      <button class="mail-modal-close" type="button" title="Sluiten">✕</button>
+    </div>
+    <div class="mail-modal-body">
+      <input class="mail-modal-onderwerp" type="text" value="<?= htmlspecialchars($standaardOnderwerp) ?>" placeholder="Onderwerp">
+      <textarea class="mail-modal-tekst" placeholder="Mailtekst"><?= htmlspecialchars($standaardMail) ?></textarea>
+    </div>
+    <div class="mail-modal-footer">
+      <button class="mail-cancel" type="button">Annuleren</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-afwijzing-<?= (int) $speler['id'] ?>" class="mail-modal">
+  <div class="mail-modal-content">
+    <div class="mail-modal-header">
+      <h3>Afwijzingsmail voor <?= htmlspecialchars($speler['voornaam'] . ' ' . $speler['achternaam']) ?></h3>
+      <button class="mail-modal-close" type="button" title="Sluiten">✕</button>
+    </div>
+    <div class="mail-modal-body">
+      <input class="mail-modal-onderwerp" type="text" value="<?= htmlspecialchars($standaardAfwijzingsOnderwerp) ?>" placeholder="Onderwerp">
+      <textarea class="mail-modal-tekst" placeholder="Mailtekst"><?= htmlspecialchars($standaardAfwijzingsMail) ?></textarea>
+    </div>
+    <div class="mail-modal-footer">
+      <button class="mail-cancel" type="button">Annuleren</button>
+    </div>
+  </div>
+</div>
+<?php endforeach; ?><?php else: ?><p>Er zijn geen toekomstige activiteiten.</p><?php endif; ?></div></body></html>
