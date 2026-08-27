@@ -58,7 +58,35 @@ function html(string $waarde): string
     return htmlspecialchars($waarde, ENT_QUOTES, 'UTF-8');
 }
 
-if (isset($_POST['actie']) && $_POST['actie'] === 'genereer') {
+function leesPaginaConfiguratie(string $map): array
+{
+    $bestand = $map . '/.mozart-webpagina.json';
+    if (!is_file($bestand)) {
+        return [];
+    }
+
+    $inhoud = json_decode((string) file_get_contents($bestand), true);
+    return is_array($inhoud) ? $inhoud : [];
+}
+
+function bewaarPaginaConfiguratie(string $map, array $configuratie): bool
+{
+    $inhoud = json_encode($configuratie, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    return $inhoud !== false && file_put_contents($map . '/.mozart-webpagina.json', $inhoud . PHP_EOL) !== false;
+}
+
+$paginaConfiguratie = [];
+$gekozenActiviteit = null;
+foreach ($activiteiten as $activiteit) {
+    if ((int) $activiteit['id'] === $activiteitId) {
+        $gekozenActiviteit = $activiteit;
+        $paginaConfiguratie = leesPaginaConfiguratie(dirname(__DIR__) . '/' . $activiteit['datum']);
+        break;
+    }
+}
+
+if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'genereer'], true)) {
+    $genereerPagina = $_POST['actie'] === 'genereer';
     $activiteitId = (int) ($_POST['activiteit_id'] ?? 0);
     $toelichting = trim($_POST['toelichting'] ?? '');
     $solisten = trim($_POST['solisten'] ?? '');
@@ -76,12 +104,36 @@ if (isset($_POST['actie']) && $_POST['actie'] === 'genereer') {
             $melding = 'De datummap kon niet worden aangemaakt.';
         } else {
             $partijen = leesPartijen($map);
+            $partijConfiguratie = [];
+            foreach ($partijen as $index => $partij) {
+                $ingevoerdBestand = basename((string) ($_POST['partijen'][$index]['bestand'] ?? ''));
+                if ($ingevoerdBestand !== $partij['bestand']) {
+                    continue;
+                }
+                $partijConfiguratie[$partij['bestand']] = [
+                    'label' => trim((string) ($_POST['partijen'][$index]['label'] ?? '')),
+                    'link' => trim((string) ($_POST['partijen'][$index]['link'] ?? '')),
+                    'betekend' => isset($_POST['partijen'][$index]['betekend']),
+                ];
+            }
+            $versie = max(0, (int) ($paginaConfiguratie['versie'] ?? 0)) + ($genereerPagina ? 1 : 0);
+            $paginaConfiguratie = [
+                'versie' => $versie,
+                'toelichting' => $toelichting,
+                'solisten' => $solisten,
+                'partijen' => $partijConfiguratie,
+            ];
+            if (!bewaarPaginaConfiguratie($map, $paginaConfiguratie)) {
+                $melding = 'De pagina-inhoud kon niet worden opgeslagen.';
+            } elseif (!$genereerPagina) {
+                $melding = 'Pagina-inhoud opgeslagen.';
+            } else {
             $stmt = $pdo->prepare(
                 'SELECT d.voornaam, d.achternaam, ad.partij, i.naam AS instrument
                  FROM activiteit_deelnemers ad
                  JOIN deelnemers d ON d.id = ad.deelnemer_id
                  LEFT JOIN instrumenten i ON i.id = ad.instrument_id
-                 WHERE ad.activiteit_id = ? AND ad.status = \'ja\'
+                 WHERE ad.activiteit_id = ? AND ad.toegelaten = 1
                  ORDER BY COALESCE(i.id, 999999), ad.partij, d.achternaam, d.voornaam'
             );
             $stmt->execute([$activiteitId]);
@@ -89,11 +141,13 @@ if (isset($_POST['actie']) && $_POST['actie'] === 'genereer') {
 
             $partijenHtml = '';
             foreach ($partijen as $partij) {
-                $label = $partij['label'];
-                if ($partij['strijker'] && in_array($partij['bestand'], $betekendeBestanden, true)) {
+                $instellingen = $partijConfiguratie[$partij['bestand']] ?? [];
+                $label = $instellingen['label'] ?: $partij['label'];
+                $link = $instellingen['link'] ?: $partij['bestand'];
+                if ($partij['strijker'] && !empty($instellingen['betekend'])) {
                     $label .= ' (betekend)';
                 }
-                $partijenHtml .= '            <li><a href="' . html($partij['bestand']) . '" target="_blank">' . html($label) . "</a></li>\n";
+                $partijenHtml .= '            <li><a href="' . html($link) . '" target="_blank">' . html($label) . "</a></li>\n";
             }
             if ($partijenHtml === '') {
                 $partijenHtml = "            <li>Er zijn nog geen PDF-partijen in deze map.</li>\n";
@@ -122,6 +176,7 @@ if (isset($_POST['actie']) && $_POST['actie'] === 'genereer') {
             $gegenereerd .= "        <?php require_once '../navigatie.htm'; ?>\n";
             $gegenereerd .= '        <h3>Mozart op Zaterdag op ' . date('d F Y', strtotime($datum)) . ":</h3>\n";
             $gegenereerd .= '        <h1>' . html($titel) . "</h1>\n";
+            $gegenereerd .= '        <p><small>Versie ' . $versie . ', gegenereerd op ' . date('d-m-Y H:i') . "</small></p>\n";
             $gegenereerd .= $omschrijvingHtml;
             $gegenereerd .= $solistenHtml;
             $gegenereerd .= "        <h3>Partijen</h3>\n        <ul style=\"column-count: 3;\">\n" . $partijenHtml . "        </ul>\n";
@@ -135,17 +190,11 @@ if (isset($_POST['actie']) && $_POST['actie'] === 'genereer') {
                 $voorbeeldPartijen = $partijen;
                 $melding = 'Webpagina gegenereerd in ' . $datum . '/index.php.';
             }
+            }
         }
     }
 }
 
-$gekozenActiviteit = null;
-foreach ($activiteiten as $activiteit) {
-    if ((int) $activiteit['id'] === $activiteitId) {
-        $gekozenActiviteit = $activiteit;
-        break;
-    }
-}
 if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
     $voorbeeldPartijen = leesPartijen(dirname(__DIR__) . '/' . $gekozenActiviteit['datum']);
 }
@@ -193,39 +242,48 @@ if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
         </form>
 
         <form method="post">
-            <input type="hidden" name="actie" value="genereer">
             <input type="hidden" name="activiteit_id" value="<?= $activiteitId ?>">
             <?php if ($gekozenActiviteit !== null): ?>
                 <h4><?= html($gekozenActiviteit['omschrijving'] ?: 'Mozart op Zaterdag') ?></h4>
             <?php endif; ?>
             <p>
                 <label for="toelichting">Toelichting</label>
-                <textarea class="rijke-editor" id="toelichting" name="toelichting" rows="8" placeholder="Schrijf hier de toelichting voor de webpagina..."></textarea>
+                <textarea class="rijke-editor" id="toelichting" name="toelichting" rows="8" placeholder="Schrijf hier de toelichting voor de webpagina..."><?= html((string) ($paginaConfiguratie['toelichting'] ?? '')) ?></textarea>
             </p>
             <p>
                 <label for="solisten">Solist(en), facultatief</label>
-                <textarea class="rijke-editor" id="solisten" name="solisten" rows="5" placeholder="Bijvoorbeeld: &lt;h4&gt;Naam (instrument)&lt;/h4&gt;&lt;p&gt;Biografie...&lt;/p&gt;"></textarea>
+                <textarea class="rijke-editor" id="solisten" name="solisten" rows="5" placeholder="Bijvoorbeeld: &lt;h4&gt;Naam (instrument)&lt;/h4&gt;&lt;p&gt;Biografie...&lt;/p&gt;"><?= html((string) ($paginaConfiguratie['solisten'] ?? '')) ?></textarea>
             </p>
             <h4>Partijen in de datummap</h4>
             <?php if ($voorbeeldPartijen === []): ?>
                 <p>Geen PDF-partijen gevonden in de map.</p>
             <?php else: ?>
                 <ul>
-                    <?php foreach ($voorbeeldPartijen as $partij): ?>
+                    <?php foreach ($voorbeeldPartijen as $index => $partij): ?>
+                        <?php $instellingen = $paginaConfiguratie['partijen'][$partij['bestand']] ?? []; ?>
                         <li>
+                            <input type="hidden" name="partijen[<?= $index ?>][bestand]" value="<?= html($partij['bestand']) ?>">
+                            <label>
+                                Tekst
+                                <input class="w3-input" type="text" name="partijen[<?= $index ?>][label]" value="<?= html((string) ($instellingen['label'] ?? $partij['label'])) ?>" style="display:inline-block; width:18em;">
+                            </label>
+                            <label>
+                                Link
+                                <input class="w3-input" type="text" name="partijen[<?= $index ?>][link]" value="<?= html((string) ($instellingen['link'] ?? $partij['bestand'])) ?>" style="display:inline-block; width:24em;">
+                            </label>
                             <?php if ($partij['strijker']): ?>
                                 <label>
-                                    <input type="checkbox" name="betekend[]" value="<?= html($partij['bestand']) ?>" <?= in_array($partij['bestand'], $betekendeBestanden, true) || (isset($_POST['actie']) === false && preg_match('/betekend/i', $partij['bestand'])) ? 'checked' : '' ?>>
+                                    <input type="checkbox" name="partijen[<?= $index ?>][betekend]" <?= !empty($instellingen['betekend']) || (!isset($paginaConfiguratie['partijen'][$partij['bestand']]) && preg_match('/betekend/i', $partij['bestand'])) ? 'checked' : '' ?>>
                                     betekend
                                 </label>
                             <?php endif; ?>
-                            <?= html($partij['label']) ?> (<?= html($partij['bestand']) ?>)
                         </li>
                     <?php endforeach; ?>
                 </ul>
             <?php endif; ?>
-            <p>De bezetting wordt automatisch opgebouwd uit deelnemers met status <strong>ja</strong>, inclusief hun toegewezen partij.</p>
-            <button class="w3-button w3-blue" type="submit">Webpagina genereren</button>
+            <p>De bezetting wordt automatisch opgebouwd uit bevestigde deelnemers, inclusief hun toegewezen partij. De volgende generatie wordt versie <?= max(0, (int) ($paginaConfiguratie['versie'] ?? 0)) + 1 ?>.</p>
+            <button class="w3-button w3-light-grey" type="submit" name="actie" value="opslaan">Opslaan</button>
+            <button class="w3-button w3-blue" type="submit" name="actie" value="genereer">Webpagina genereren</button>
         </form>
     </div>
 </body>
