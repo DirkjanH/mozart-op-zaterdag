@@ -446,13 +446,6 @@ if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
             </p>
         </form>
 
-        <form method="post" enctype="multipart/form-data">
-            <input type="hidden" name="activiteit_id" value="<?= $activiteitId ?>">
-            <label for="pagina_json">Laad opgeslagen pagina-inhoud (.json)</label>
-            <input id="pagina_json" type="file" name="pagina_json" accept="application/json,.json" required>
-            <button class="w3-button w3-light-grey" type="submit" name="actie" value="laad_json" onclick="return confirm('De huidige opgeslagen pagina-inhoud voor deze activiteit wordt vervangen. Doorgaan?');">JSON laden</button>
-        </form>
-
         <form method="post">
             <input type="hidden" name="activiteit_id" value="<?= $activiteitId ?>">
             <?php if ($gekozenActiviteit !== null): ?>
