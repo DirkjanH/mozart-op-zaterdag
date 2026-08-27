@@ -61,14 +61,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // Zoek bestaande deelnemer
-        $stmt = $pdo->prepare('SELECT id FROM deelnemers WHERE email = ?');
+        $stmt = $pdo->prepare('SELECT deelnemer_id FROM deelnemers WHERE email = ?');
         $stmt->execute([$email]);
         $bestaande = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($bestaande) {
-            $deelnemerId = (int) $bestaande['id'];
+            $deelnemerId = (int) $bestaande['deelnemer_id'];
             // Update bestaande deelnemer
-            $stmt = $pdo->prepare('UPDATE deelnemers SET voornaam = ?, achternaam = ?, telefoon = ?, postcode = ?, plaats = ? WHERE id = ?');
+            $stmt = $pdo->prepare('UPDATE deelnemers SET voornaam = ?, achternaam = ?, telefoon = ?, postcode = ?, plaats = ? WHERE deelnemer_id = ?');
             $stmt->execute([$voornaam, $achternaam, $telefoon, $postcode, $plaats, $deelnemerId]);
         } else {
             // Maak nieuwe deelnemer
@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             // Zoek bestaande inschrijving
-            $stmt = $pdo->prepare('SELECT id FROM activiteit_deelnemers WHERE activiteit_id = ? AND deelnemer_id = ?');
+            $stmt = $pdo->prepare('SELECT 1 FROM activiteit_deelnemers WHERE activiteit_id = ? AND deelnemer_id = ?');
             $stmt->execute([(int) $activiteit['id'], $deelnemerId]);
             $bestaande_inschrijving = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -125,12 +125,12 @@ $geselecteerde_instrumenten = [];
 $activiteit_statussen = [];
 
 if (!empty($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)) {
-    $stmt = $pdo->prepare('SELECT id, voornaam, achternaam, email, telefoon, postcode, plaats FROM deelnemers WHERE email = ?');
+    $stmt = $pdo->prepare('SELECT deelnemer_id, voornaam, achternaam, email, telefoon, postcode, plaats FROM deelnemers WHERE email = ?');
     $stmt->execute([$_GET['email']]);
     $gegevens = $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
 
     if ($gegevens) {
-        $deelnemerId = (int) $gegevens['id'];
+        $deelnemerId = (int) $gegevens['deelnemer_id'];
 
         // Haal instrumenten op
         $stmt = $pdo->prepare('SELECT instrument_id FROM deelnemer_instrumenten WHERE deelnemer_id = ?');
