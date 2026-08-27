@@ -71,9 +71,9 @@ Nog even wat aanvullende opmerkingen over Mozart op Zaterdag:<br>
 </ul>
 Met enthousiaste groet,<br><br>
 Dirkjan Horringa<br><br>
-P.S. Mocht je ook in de toekomst weer willen meespelen, <a href="https://mozartopzaterdag.nl/deelnemers_aanmelden.php">vul dan dit formulier in</a>.
+P.S. Mocht je ook in de toekomst weer willen meespelen, <a href="{{aanmeldlink}}">vul dan dit formulier in</a>. Je bestaande gegevens staan daar alvast ingevuld.
 HTML;
-$standaardAfwijzingsMail = 'Beste {{voornaam}},<br><br>Een tijdje terug heb je in het aanmeldingsformulier voor Mozart op Zaterdag aangegeven dat je (misschien) wilde meespelen op {{datum}} in {{omschrijving}}. De belangstelling voor deze aflevering van Mozart op Zaterdag is echter groot. Helaas kan ik je voor die datum niet plaatsen. Ik hoop je bij een van de volgende afleveringen of in andere projecten weer te zien.<br><br>Hartelijke groet<br><br>Dirkjan Horringa';
+$standaardAfwijzingsMail = 'Beste {{voornaam}},<br><br>Een tijdje terug heb je in het aanmeldingsformulier voor Mozart op Zaterdag aangegeven dat je (misschien) wilde meespelen op {{datum}} in {{omschrijving}}. De belangstelling voor deze aflevering van Mozart op Zaterdag is echter groot. Helaas kan ik je voor die datum niet plaatsen. Ik hoop je bij een van de volgende afleveringen of in andere projecten weer te zien.<br><br>Hartelijke groet<br><br>Dirkjan Horringa<br><br>P.S. Mocht je ook in de toekomst weer willen meespelen, <a href="{{aanmeldlink}}">vul dan dit formulier in</a>. Je bestaande gegevens staan daar alvast ingevuld.';
 $standaardAfwijzingsMail = (string) ($standaardAfwijzingsMail ?? '');
 
 // Verwerk wijzigingen en verstuur alleen na expliciete keuze een mail.
@@ -136,9 +136,10 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
                 $ingevuldeMail = trim($_POST[$bevestigen ? 'mail_bevestiging_tekst' : 'mail_afwijzing_tekst'] ?? '');
                 $mailTekst = $ingevuldeMail ?: ($bevestigen ? $standaardMail : $standaardAfwijzingsMail);
                 $plaats = $speler['plaats'] === 'Marnixzaal' ? 'Marnixzaal aan het Domplein' : $speler['plaats'];
+                $aanmeldlink = 'https://mozartopzaterdag.nl/deelnemers_aanmelden.php?email=' . rawurlencode($speler['email']);
                 $mailTekst = str_replace(
-                    ['{{voornaam}}', '{{achternaam}}', '{{datum}}', '{{plaats}}', '{{instrument}}', '{{partij_tekst}}', '{{omschrijving}}', '{voornaam}', '{achternaam}', '{datum}', '{plaats}', '{instrument}', '{partij}'],
-                    [$naam, htmlspecialchars($speler['achternaam'], ENT_QUOTES, 'UTF-8'), $datum, htmlspecialchars($plaats, ENT_QUOTES, 'UTF-8'), htmlspecialchars($speler['instrument'] ?? '', ENT_QUOTES, 'UTF-8'), $partijTekst, htmlspecialchars($speler['omschrijving'] ?? '', ENT_QUOTES, 'UTF-8'), $naam, htmlspecialchars($speler['achternaam'], ENT_QUOTES, 'UTF-8'), $datum, htmlspecialchars($plaats, ENT_QUOTES, 'UTF-8'), htmlspecialchars($speler['instrument'] ?? '', ENT_QUOTES, 'UTF-8'), $partij],
+                    ['{{voornaam}}', '{{achternaam}}', '{{datum}}', '{{plaats}}', '{{instrument}}', '{{partij_tekst}}', '{{omschrijving}}', '{{aanmeldlink}}', '{voornaam}', '{achternaam}', '{datum}', '{plaats}', '{instrument}', '{partij}'],
+                    [$naam, htmlspecialchars($speler['achternaam'], ENT_QUOTES, 'UTF-8'), $datum, htmlspecialchars($plaats, ENT_QUOTES, 'UTF-8'), htmlspecialchars($speler['instrument'] ?? '', ENT_QUOTES, 'UTF-8'), $partijTekst, htmlspecialchars($speler['omschrijving'] ?? '', ENT_QUOTES, 'UTF-8'), $aanmeldlink, $naam, htmlspecialchars($speler['achternaam'], ENT_QUOTES, 'UTF-8'), $datum, htmlspecialchars($plaats, ENT_QUOTES, 'UTF-8'), htmlspecialchars($speler['instrument'] ?? '', ENT_QUOTES, 'UTF-8'), $partij],
                     $mailTekst
                 );
                 $mailer->Subject = $ingevuldOnderwerp ?: ($bevestigen ? $standaardOnderwerp : $standaardAfwijzingsOnderwerp);
@@ -190,10 +191,11 @@ $vulMailTemplate = static function (string $template, array $speler, array $acti
     $partijTekst = $partij !== '' ? '&nbsp;' . htmlspecialchars($partij, ENT_QUOTES, 'UTF-8') : '';
     $partijVolzin = $partij !== '' ? ' Je speelt partij ' . htmlspecialchars($partij, ENT_QUOTES, 'UTF-8') . '.' : '';
     $omschrijving = htmlspecialchars($activiteit['omschrijving'] ?? '', ENT_QUOTES, 'UTF-8');
+    $aanmeldlink = 'https://mozartopzaterdag.nl/deelnemers_aanmelden.php?email=' . rawurlencode($speler['email'] ?? '');
 
     return str_replace(
-        ['{{voornaam}}', '{{achternaam}}', '{{datum}}', '{{plaats}}', '{{instrument}}', '{{partij_tekst}}', '{{omschrijving}}', '{{partij}}', '{voornaam}', '{achternaam}', '{datum}', '{plaats}', '{instrument}', '{partij}'],
-        [$voornaam, $achternaam, $datum, $plaats, $instrument, $partijTekst, $omschrijving, $partijVolzin, $voornaam, $achternaam, $datum, $plaats, $instrument, $partijVolzin],
+        ['{{voornaam}}', '{{achternaam}}', '{{datum}}', '{{plaats}}', '{{instrument}}', '{{partij_tekst}}', '{{omschrijving}}', '{{aanmeldlink}}', '{{partij}}', '{voornaam}', '{achternaam}', '{datum}', '{plaats}', '{instrument}', '{partij}'],
+        [$voornaam, $achternaam, $datum, $plaats, $instrument, $partijTekst, $omschrijving, $aanmeldlink, $partijVolzin, $voornaam, $achternaam, $datum, $plaats, $instrument, $partijVolzin],
         $template
     );
 };
