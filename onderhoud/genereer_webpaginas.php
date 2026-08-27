@@ -134,6 +134,37 @@ function partijenPerWerk(array $partijen): array
     return $groepen;
 }
 
+function sorteerPartijenVolgensConfiguratie(array $partijen, array $configuratie): array
+{
+    usort($partijen, static function (array $eerste, array $tweede) use ($configuratie): int {
+        $eersteVolgorde = (int) ($configuratie[$eerste['bestand']]['volgorde'] ?? 0);
+        $tweedeVolgorde = (int) ($configuratie[$tweede['bestand']]['volgorde'] ?? 0);
+        if ($eersteVolgorde !== 0 || $tweedeVolgorde !== 0) {
+            return [
+                $eersteVolgorde === 0 ? PHP_INT_MAX : $eersteVolgorde,
+                $eerste['sortering']['instrument_volgorde'],
+                $eerste['sortering']['partij_nummer'],
+                $eerste['label'],
+            ] <=> [
+                $tweedeVolgorde === 0 ? PHP_INT_MAX : $tweedeVolgorde,
+                $tweede['sortering']['instrument_volgorde'],
+                $tweede['sortering']['partij_nummer'],
+                $tweede['label'],
+            ];
+        }
+        return [
+            $eerste['sortering']['instrument_volgorde'],
+            $eerste['sortering']['partij_nummer'],
+            $eerste['label'],
+        ] <=> [
+            $tweede['sortering']['instrument_volgorde'],
+            $tweede['sortering']['partij_nummer'],
+            $tweede['label'],
+        ];
+    });
+    return $partijen;
+}
+
 function html(string $waarde): string
 {
     return htmlspecialchars($waarde, ENT_QUOTES, 'UTF-8');
@@ -195,10 +226,12 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
                 $partijConfiguratie[$partij['bestand']] = [
                     'label' => trim((string) ($_POST['partijen'][$index]['label'] ?? '')),
                     'link' => trim((string) ($_POST['partijen'][$index]['link'] ?? '')),
+                    'volgorde' => max(0, (int) ($_POST['partijen'][$index]['volgorde'] ?? 0)),
                     'betekend' => isset($_POST['partijen'][$index]['betekend']),
                 ];
             }
             $partijConfiguratie = array_intersect_key($partijConfiguratie, array_flip(array_column($partijen, 'bestand')));
+            $partijen = sorteerPartijenVolgensConfiguratie($partijen, $partijConfiguratie);
             $versie = max(0, (int) ($paginaConfiguratie['versie'] ?? 0)) + ($genereerPagina ? 1 : 0);
             $paginaConfiguratie = [
                 'versie' => $versie,
@@ -242,8 +275,11 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
                         $werkPartijenHtml .= $item;
                     }
                 }
+                $partijenHtml .= "        <p><strong>Partituur</strong></p>\n";
                 if ($partiturenHtml !== '') {
-                    $partijenHtml .= "        <p><strong>Partituur</strong></p>\n        <ul>\n" . $partiturenHtml . "        </ul>\n";
+                    $partijenHtml .= "        <ul>\n" . $partiturenHtml . "        </ul>\n";
+                } else {
+                    $partijenHtml .= "        <p>Nog niet beschikbaar.</p>\n";
                 }
                 if ($werkPartijenHtml !== '') {
                     $partijenHtml .= "        <ul style=\"column-count: 3;\">\n" . $werkPartijenHtml . "        </ul>\n";
@@ -297,6 +333,7 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
 
 if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
     $voorbeeldPartijen = leesPartijen(dirname(__DIR__) . '/' . $gekozenActiviteit['datum'], $instrumenten);
+    $voorbeeldPartijen = sorteerPartijenVolgensConfiguratie($voorbeeldPartijen, $paginaConfiguratie['partijen'] ?? []);
 }
 ?>
 <!DOCTYPE html>
@@ -371,6 +408,10 @@ if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
                         <li>
                             <?php if ($partij['partituur']): ?><strong>Partituur</strong><?php endif; ?>
                             <input type="hidden" name="partijen[<?= $index ?>][bestand]" value="<?= html($partij['bestand']) ?>">
+                            <label>
+                                Volgorde
+                                <input class="w3-input" type="number" name="partijen[<?= $index ?>][volgorde]" value="<?= (int) ($instellingen['volgorde'] ?? 0) ?>" min="0" title="0 gebruikt de automatische instrumentvolgorde" style="display:inline-block; width:5em;">
+                            </label>
                             <label>
                                 Tekst
                                 <input class="w3-input" type="text" name="partijen[<?= $index ?>][label]" value="<?= html((string) ($instellingen['label'] ?? $partij['label'])) ?>" style="display:inline-block; width:18em;">
