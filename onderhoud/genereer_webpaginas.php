@@ -77,7 +77,7 @@ function partijSorteerGegevens(string $bestand, array $instrumenten): array
     ];
 }
 
-function leesPartijen(string $map, array $instrumenten): array
+function leesPartijen(string $map, array $instrumenten = []): array
 {
     if (!is_dir($map)) {
         return [];
