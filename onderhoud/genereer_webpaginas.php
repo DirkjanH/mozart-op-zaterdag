@@ -245,6 +245,10 @@ if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
             <input type="hidden" name="activiteit_id" value="<?= $activiteitId ?>">
             <?php if ($gekozenActiviteit !== null): ?>
                 <h4><?= html($gekozenActiviteit['omschrijving'] ?: 'Mozart op Zaterdag') ?></h4>
+                <?php $gegenereerdePagina = dirname(__DIR__) . '/' . $gekozenActiviteit['datum'] . '/index.php'; ?>
+                <?php if (is_file($gegenereerdePagina)): ?>
+                    <p><a href="/<?= html($gekozenActiviteit['datum']) ?>/index.php" target="_blank">Open de gegenereerde pagina</a></p>
+                <?php endif; ?>
             <?php endif; ?>
             <p>
                 <label for="toelichting">Toelichting</label>
