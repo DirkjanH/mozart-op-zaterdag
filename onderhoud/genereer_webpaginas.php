@@ -257,37 +257,26 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
             $stmt->execute([$activiteitId]);
             $deelnemers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            $partijenHtml = '';
-            foreach (partijenPerWerk($partijen) as $werkPartijen) {
-                $partiturenHtml = '';
-                $werkPartijenHtml = '';
-                foreach ($werkPartijen as $partij) {
-                    $instellingen = $partijConfiguratie[$partij['bestand']] ?? [];
-                    $label = ($instellingen['label'] ?? '') ?: $partij['label'];
-                    $link = ($instellingen['link'] ?? '') ?: $partij['bestand'];
-                    if ($partij['strijker'] && !empty($instellingen['betekend'])) {
-                        $label .= ' (betekend)';
-                    }
-                    $item = '            <li><a href="' . html($link) . '" target="_blank">' . html($label) . "</a></li>\n";
-                    if ($partij['partituur']) {
-                        $partiturenHtml .= $item;
-                    } else {
-                        $werkPartijenHtml .= $item;
-                    }
+            $partiturenHtml = '';
+            $werkPartijenHtml = '';
+            foreach ($partijen as $partij) {
+                $instellingen = $partijConfiguratie[$partij['bestand']] ?? [];
+                $label = ($instellingen['label'] ?? '') ?: $partij['label'];
+                $link = ($instellingen['link'] ?? '') ?: $partij['bestand'];
+                if ($partij['strijker'] && !empty($instellingen['betekend'])) {
+                    $label .= ' (betekend)';
                 }
-                $partijenHtml .= "        <p><strong>Partituur</strong></p>\n";
-                if ($partiturenHtml !== '') {
-                    $partijenHtml .= "        <ul>\n" . $partiturenHtml . "        </ul>\n";
+                $item = '            <li><a href="' . html($link) . '" target="_blank">' . html($label) . "</a></li>\n";
+                if ($partij['partituur']) {
+                    $partiturenHtml .= $item;
                 } else {
-                    $partijenHtml .= "        <p>Nog niet beschikbaar.</p>\n";
-                }
-                if ($werkPartijenHtml !== '') {
-                    $partijenHtml .= "        <ul style=\"column-count: 3;\">\n" . $werkPartijenHtml . "        </ul>\n";
+                    $werkPartijenHtml .= $item;
                 }
             }
-            if ($partijenHtml === '') {
-                $partijenHtml = "        <p>Er zijn nog geen PDF-partijen in deze map.</p>\n";
-            }
+            $partijenHtml = "        <h4>Partituur</h4>\n";
+            $partijenHtml .= $partiturenHtml === '' ? "        <p>Nog niet beschikbaar.</p>\n" : "        <ul>\n" . $partiturenHtml . "        </ul>\n";
+            $partijenHtml .= "        <h4>Partijen</h4>\n";
+            $partijenHtml .= $werkPartijenHtml === '' ? "        <p>Er zijn nog geen PDF-partijen in deze map.</p>\n" : "        <ul style=\"column-count: 3;\">\n" . $werkPartijenHtml . "        </ul>\n";
 
             $deelnemersHtml = '';
             foreach ($deelnemers as $deelnemer) {
