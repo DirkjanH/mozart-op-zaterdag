@@ -40,6 +40,7 @@ function instrumentZoektermen(string $instrument): array
     $varianten = [
         'viool' => ['violin'],
         'altviool' => ['viola'],
+        'cello-bas' => ['cello'],
         'hobo' => ['oboe'],
         'hoorn' => ['corno', 'horn'],
         'fagot' => ['bassoon'],
@@ -52,11 +53,12 @@ function partijSorteerGegevens(string $bestand, array $instrumenten): array
 {
     $naam = strtolower(pathinfo($bestand, PATHINFO_FILENAME));
     $instrumentVolgorde = count($instrumenten) + 1;
+    $langsteOvereenkomst = 0;
     foreach ($instrumenten as $volgorde => $instrument) {
         foreach (instrumentZoektermen((string) $instrument['naam']) as $zoekterm) {
-            if (str_contains($naam, $zoekterm)) {
+            if (str_contains($naam, $zoekterm) && strlen($zoekterm) > $langsteOvereenkomst) {
                 $instrumentVolgorde = $volgorde;
-                break 2;
+                $langsteOvereenkomst = strlen($zoekterm);
             }
         }
     }
@@ -120,6 +122,16 @@ function leesPartijen(string $map, array $instrumenten = []): array
         return [$a['instrument_volgorde'], $a['partij_nummer'], $eerste['label']] <=> [$b['instrument_volgorde'], $b['partij_nummer'], $tweede['label']];
     });
     return $partijen;
+}
+
+function partijenPerWerk(array $partijen): array
+{
+    $groepen = [];
+    foreach ($partijen as $partij) {
+        $werk = $partij['sortering']['werk'] ?: 'overig';
+        $groepen[$werk][] = $partij;
+    }
+    return $groepen;
 }
 
 function html(string $waarde): string
@@ -213,18 +225,32 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
             $deelnemers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             $partijenHtml = '';
-            foreach ($partijen as $partij) {
-                $instellingen = $partijConfiguratie[$partij['bestand']] ?? [];
-                $label = ($instellingen['label'] ?? '') ?: $partij['label'];
-                $link = ($instellingen['link'] ?? '') ?: $partij['bestand'];
-                if ($partij['strijker'] && !empty($instellingen['betekend'])) {
-                    $label .= ' (betekend)';
+            foreach (partijenPerWerk($partijen) as $werkPartijen) {
+                $partiturenHtml = '';
+                $werkPartijenHtml = '';
+                foreach ($werkPartijen as $partij) {
+                    $instellingen = $partijConfiguratie[$partij['bestand']] ?? [];
+                    $label = ($instellingen['label'] ?? '') ?: $partij['label'];
+                    $link = ($instellingen['link'] ?? '') ?: $partij['bestand'];
+                    if ($partij['strijker'] && !empty($instellingen['betekend'])) {
+                        $label .= ' (betekend)';
+                    }
+                    $item = '            <li><a href="' . html($link) . '" target="_blank">' . html($label) . "</a></li>\n";
+                    if ($partij['partituur']) {
+                        $partiturenHtml .= $item;
+                    } else {
+                        $werkPartijenHtml .= $item;
+                    }
                 }
-                $partituurMarkering = $partij['partituur'] ? '<strong>Partituur: </strong>' : '';
-                $partijenHtml .= '            <li>' . $partituurMarkering . '<a href="' . html($link) . '" target="_blank">' . html($label) . "</a></li>\n";
+                if ($partiturenHtml !== '') {
+                    $partijenHtml .= "        <p><strong>Partituur</strong></p>\n        <ul>\n" . $partiturenHtml . "        </ul>\n";
+                }
+                if ($werkPartijenHtml !== '') {
+                    $partijenHtml .= "        <ul style=\"column-count: 3;\">\n" . $werkPartijenHtml . "        </ul>\n";
+                }
             }
             if ($partijenHtml === '') {
-                $partijenHtml = "            <li>Er zijn nog geen PDF-partijen in deze map.</li>\n";
+                $partijenHtml = "        <p>Er zijn nog geen PDF-partijen in deze map.</p>\n";
             }
 
             $deelnemersHtml = '';
@@ -253,7 +279,7 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
             $gegenereerd .= '        <p><small>Versie ' . $versie . ', gegenereerd op ' . date('d-m-Y H:i') . "</small></p>\n";
             $gegenereerd .= $omschrijvingHtml;
             $gegenereerd .= $solistenHtml;
-            $gegenereerd .= "        <h3>Partijen</h3>\n        <ul style=\"column-count: 3;\">\n" . $partijenHtml . "        </ul>\n";
+            $gegenereerd .= "        <h3>Partijen</h3>\n" . $partijenHtml;
             $gegenereerd .= "        <h2>Bezetting</h2>\n";
             $gegenereerd .= '        <p>Er zijn ' . count($deelnemers) . " toegelaten deelnemers.</p>\n";
             $gegenereerd .= "        <table class=\"w3-table w3-striped w3-bordered\" id=\"deelnemers\">\n            <thead><tr><th>voornaam</th><th>achternaam</th><th>instrument</th></tr></thead>\n            <tbody>\n" . $deelnemersHtml . "            </tbody>\n        </table>\n    </div>\n</body>\n</html>\n";
