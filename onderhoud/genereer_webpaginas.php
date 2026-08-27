@@ -230,16 +230,17 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
                 $partijen = leesPartijen($map, $instrumenten);
             }
             $partijConfiguratie = $herbouwPartijen ? ($paginaConfiguratie['partijen'] ?? []) : [];
-            foreach ($partijen as $index => $partij) {
-                $ingevoerdBestand = basename((string) ($_POST['partijen'][$index]['bestand'] ?? ''));
-                if ($ingevoerdBestand !== $partij['bestand']) {
+            $beschikbareBestanden = array_flip(array_column($partijen, 'bestand'));
+            foreach ($_POST['partijen'] ?? [] as $partij) {
+                $bestand = basename((string) ($partij['bestand'] ?? ''));
+                if (!isset($beschikbareBestanden[$bestand])) {
                     continue;
                 }
-                $partijConfiguratie[$partij['bestand']] = [
-                    'label' => trim((string) ($_POST['partijen'][$index]['label'] ?? '')),
-                    'link' => trim((string) ($_POST['partijen'][$index]['link'] ?? '')),
-                    'volgorde' => max(0, (int) ($_POST['partijen'][$index]['volgorde'] ?? 0)),
-                    'betekend' => isset($_POST['partijen'][$index]['betekend']),
+                $partijConfiguratie[$bestand] = [
+                    'label' => trim((string) ($partij['label'] ?? '')),
+                    'link' => trim((string) ($partij['link'] ?? '')),
+                    'volgorde' => max(0, (int) ($partij['volgorde'] ?? 0)),
+                    'betekend' => isset($partij['betekend']),
                 ];
             }
             $partijConfiguratie = array_intersect_key($partijConfiguratie, array_flip(array_column($partijen, 'bestand')));
@@ -334,6 +335,37 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
     }
 }
 
+if (isset($_POST['actie']) && $_POST['actie'] === 'laad_json') {
+    $activiteitId = (int) ($_POST['activiteit_id'] ?? 0);
+    $stmt = $pdo->prepare('SELECT datum FROM activiteiten WHERE id = ?');
+    $stmt->execute([$activiteitId]);
+    $activiteit = $stmt->fetch(PDO::FETCH_ASSOC);
+    $uploadFout = $_FILES['pagina_json']['error'] ?? UPLOAD_ERR_NO_FILE;
+
+    if (!$activiteit) {
+        $melding = 'Activiteit niet gevonden.';
+    } elseif ($uploadFout !== UPLOAD_ERR_OK) {
+        $melding = 'Selecteer een geldig JSON-bestand.';
+    } elseif (strtolower(pathinfo($_FILES['pagina_json']['name'] ?? '', PATHINFO_EXTENSION)) !== 'json') {
+        $melding = 'Alleen JSON-bestanden kunnen worden geladen.';
+    } else {
+        $configuratie = json_decode((string) file_get_contents($_FILES['pagina_json']['tmp_name']), true);
+        if (!is_array($configuratie)) {
+            $melding = 'Het geselecteerde bestand bevat geen geldige JSON.';
+        } else {
+            $map = dirname(__DIR__) . '/' . $activiteit['datum'];
+            if (!is_dir($map) && !mkdir($map, 0755, true)) {
+                $melding = 'De datummap kon niet worden aangemaakt.';
+            } elseif (!bewaarPaginaConfiguratie($map, $configuratie)) {
+                $melding = 'De JSON-inhoud kon niet worden opgeslagen.';
+            } else {
+                $paginaConfiguratie = $configuratie;
+                $melding = 'Opgeslagen pagina-inhoud geladen. Je kunt deze nu verder bewerken.';
+            }
+        }
+    }
+}
+
 if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
     $voorbeeldPartijen = leesPartijen(dirname(__DIR__) . '/' . $gekozenActiviteit['datum'], $instrumenten);
     $voorbeeldPartijen = sorteerPartijenVolgensConfiguratie($voorbeeldPartijen, $paginaConfiguratie['partijen'] ?? []);
@@ -412,6 +444,13 @@ if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
                     <?php endforeach; ?>
                 </select>
             </p>
+        </form>
+
+        <form method="post" enctype="multipart/form-data">
+            <input type="hidden" name="activiteit_id" value="<?= $activiteitId ?>">
+            <label for="pagina_json">Laad opgeslagen pagina-inhoud (.json)</label>
+            <input id="pagina_json" type="file" name="pagina_json" accept="application/json,.json" required>
+            <button class="w3-button w3-light-grey" type="submit" name="actie" value="laad_json" onclick="return confirm('De huidige opgeslagen pagina-inhoud voor deze activiteit wordt vervangen. Doorgaan?');">JSON laden</button>
         </form>
 
         <form method="post">
