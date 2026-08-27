@@ -485,10 +485,7 @@ if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
                                 <input type="checkbox" name="verwijder[]" value="<?= html($partij['bestand']) ?>">
                                 Wissen
                             </label>
-                            <label>
-                                Volgorde
-                                <input class="w3-input" type="number" name="partijen[<?= $index ?>][volgorde]" value="<?= (int) ($instellingen['volgorde'] ?? 0) ?>" min="0" title="0 gebruikt de automatische instrumentvolgorde" style="display:inline-block; width:5em;">
-                            </label>
+                            <input type="hidden" name="partijen[<?= $index ?>][volgorde]" value="<?= (int) ($instellingen['volgorde'] ?? 0) ?>">
                             <label>
                                 Tekst
                                 <input class="w3-input" type="text" name="partijen[<?= $index ?>][label]" value="<?= html((string) ($instellingen['label'] ?? $partij['label'])) ?>" style="display:inline-block; width:18em;">
