@@ -70,7 +70,7 @@ function partijSorteerGegevens(string $bestand, array $instrumenten): array
     };
     preg_match('/\b(?:kv?|k)\s*[_ .-]*(\d+)/i', $naam, $werk);
     return [
-        'instrument_volgorde' => $instrumentVolgorde,
+        'instrument_volgorde' => isPartituur($bestand) ? 0 : $instrumentVolgorde,
         'partij_nummer' => $partijNummer,
         'werk' => $werk[1] ?? '',
         'partituur' => isPartituur($bestand),
@@ -100,12 +100,23 @@ function leesPartijen(string $map, array $instrumenten): array
         ];
     }
 
+    foreach ($partijen as &$partituur) {
+        if (!$partituur['partituur']) {
+            continue;
+        }
+        foreach ($partijen as $partij) {
+            if ($partituur['sortering']['werk'] !== '' && $partituur['sortering']['werk'] === $partij['sortering']['werk'] && !$partij['partituur']) {
+                $partituur['sortering']['instrument_volgorde'] = $partij['sortering']['instrument_volgorde'];
+                $partituur['sortering']['partij_nummer'] = -1;
+                break;
+            }
+        }
+    }
+    unset($partituur);
+
     usort($partijen, static function (array $eerste, array $tweede): int {
         $a = $eerste['sortering'];
         $b = $tweede['sortering'];
-        if ($a['werk'] !== '' && $a['werk'] === $b['werk'] && $a['partituur'] !== $b['partituur']) {
-            return $a['partituur'] ? -1 : 1;
-        }
         return [$a['instrument_volgorde'], $a['partij_nummer'], $eerste['label']] <=> [$b['instrument_volgorde'], $b['partij_nummer'], $tweede['label']];
     });
     return $partijen;
@@ -162,7 +173,7 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
         if (!is_dir($map) && !mkdir($map, 0755, true)) {
             $melding = 'De datummap kon niet worden aangemaakt.';
         } else {
-            $partijen = leesPartijen($map);
+            $partijen = leesPartijen($map, $instrumenten);
             $partijConfiguratie = $herbouwPartijen ? ($paginaConfiguratie['partijen'] ?? []) : [];
             foreach ($partijen as $index => $partij) {
                 $ingevoerdBestand = basename((string) ($_POST['partijen'][$index]['bestand'] ?? ''));
@@ -209,7 +220,8 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
                 if ($partij['strijker'] && !empty($instellingen['betekend'])) {
                     $label .= ' (betekend)';
                 }
-                $partijenHtml .= '            <li><a href="' . html($link) . '" target="_blank">' . html($label) . "</a></li>\n";
+                $partituurMarkering = $partij['partituur'] ? '<strong>Partituur: </strong>' : '';
+                $partijenHtml .= '            <li>' . $partituurMarkering . '<a href="' . html($link) . '" target="_blank">' . html($label) . "</a></li>\n";
             }
             if ($partijenHtml === '') {
                 $partijenHtml = "            <li>Er zijn nog geen PDF-partijen in deze map.</li>\n";
@@ -258,7 +270,7 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
 }
 
 if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
-    $voorbeeldPartijen = leesPartijen(dirname(__DIR__) . '/' . $gekozenActiviteit['datum']);
+    $voorbeeldPartijen = leesPartijen(dirname(__DIR__) . '/' . $gekozenActiviteit['datum'], $instrumenten);
 }
 ?>
 <!DOCTYPE html>
@@ -331,6 +343,7 @@ if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
                     <?php foreach ($voorbeeldPartijen as $index => $partij): ?>
                         <?php $instellingen = $paginaConfiguratie['partijen'][$partij['bestand']] ?? []; ?>
                         <li>
+                            <?php if ($partij['partituur']): ?><strong>Partituur</strong><?php endif; ?>
                             <input type="hidden" name="partijen[<?= $index ?>][bestand]" value="<?= html($partij['bestand']) ?>">
                             <label>
                                 Tekst
