@@ -31,7 +31,7 @@ function isStrijkerPartij(string $bestand): bool
 
 function isPartituur(string $bestand): bool
 {
-    return str_starts_with(pathinfo($bestand, PATHINFO_FILENAME), 'Partituur ');
+    return str_starts_with(strtolower(pathinfo($bestand, PATHINFO_FILENAME)), 'partituur ');
 }
 
 function instrumentZoektermen(string $instrument): array
@@ -342,6 +342,12 @@ if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
     <meta charset="UTF-8">
     <title>Genereer webpagina's</title>
     <link href="/css/moz.css" rel="stylesheet" type="text/css">
+    <style>
+        .partijen-lijst { list-style: none; margin: 0; padding: 0; }
+        .partij-item { display: flex; align-items: center; flex-wrap: wrap; gap: .6em; padding: .5em; border-bottom: 1px solid #ddd; }
+        .partij-item.slepen { opacity: .5; }
+        .partij-greep { cursor: grab; font-size: 1.3em; line-height: 1; padding: .2em .4em; }
+    </style>
     <script src="/vendor/tinymce/tinymce/tinymce.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -358,6 +364,30 @@ if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
                     }
                 });
             }
+
+            document.querySelectorAll('.partijen-lijst').forEach(function (lijst) {
+                var gesleeptItem = null;
+                lijst.querySelectorAll('.partij-item').forEach(function (item) {
+                    item.addEventListener('dragstart', function () {
+                        gesleeptItem = item;
+                        item.classList.add('slepen');
+                    });
+                    item.addEventListener('dragend', function () {
+                        item.classList.remove('slepen');
+                        gesleeptItem = null;
+                        lijst.querySelectorAll('.partij-item').forEach(function (rij, index) {
+                            rij.querySelector('[name$="[volgorde]"]').value = index + 1;
+                        });
+                    });
+                    item.addEventListener('dragover', function (event) {
+                        event.preventDefault();
+                        if (gesleeptItem && gesleeptItem !== item) {
+                            var midden = item.getBoundingClientRect().top + item.getBoundingClientRect().height / 2;
+                            lijst.insertBefore(gesleeptItem, event.clientY < midden ? item : item.nextSibling);
+                        }
+                    });
+                });
+            });
         });
     </script>
 </head>
@@ -402,10 +432,11 @@ if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
             <?php if ($voorbeeldPartijen === []): ?>
                 <p>Geen PDF-partijen gevonden in de map.</p>
             <?php else: ?>
-                <ul>
+                <ul class="partijen-lijst">
                     <?php foreach ($voorbeeldPartijen as $index => $partij): ?>
                         <?php $instellingen = $paginaConfiguratie['partijen'][$partij['bestand']] ?? []; ?>
-                        <li>
+                        <li class="partij-item" draggable="true">
+                            <span class="partij-greep" title="Sleep om de volgorde te wijzigen" aria-hidden="true">&#9776;</span>
                             <?php if ($partij['partituur']): ?><strong>Partituur</strong><?php endif; ?>
                             <input type="hidden" name="partijen[<?= $index ?>][bestand]" value="<?= html($partij['bestand']) ?>">
                             <label>
