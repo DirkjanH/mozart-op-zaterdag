@@ -293,7 +293,7 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
                 $titel = $kvNummer === 'overig' ? 'Partituur' : 'Partituur KV ' . $kvNummer;
                 $partijenHtml .= '        <h4>' . html($titel) . "</h4>\n";
                 $partijenHtml .= $partiturenHtml === '' ? "        <p>Nog niet beschikbaar.</p>\n" : "        <ul>\n" . $partiturenHtml . "        </ul>\n";
-                $partijenHtml .= $werkPartijenHtml === '' ? '' : "        <ul style=\"column-count: 3;\">\n" . $werkPartijenHtml . "        </ul>\n";
+                $partijenHtml .= $werkPartijenHtml === '' ? "        <p>[partijen nog niet beschikbaar]</p>\n" : "        <ul style=\"column-count: 3;\">\n" . $werkPartijenHtml . "        </ul>\n";
             }
             if ($partijenHtml === '') {
                 $partijenHtml = "        <p>Er zijn nog geen PDF-partijen in deze map.</p>\n";
