@@ -85,8 +85,9 @@ foreach ($activiteiten as $activiteit) {
     }
 }
 
-if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'genereer'], true)) {
+if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_partijen', 'genereer'], true)) {
     $genereerPagina = $_POST['actie'] === 'genereer';
+    $herbouwPartijen = $_POST['actie'] === 'herbouw_partijen';
     $activiteitId = (int) ($_POST['activiteit_id'] ?? 0);
     $toelichting = trim($_POST['toelichting'] ?? '');
     $solisten = trim($_POST['solisten'] ?? '');
@@ -104,7 +105,7 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'genereer'],
             $melding = 'De datummap kon niet worden aangemaakt.';
         } else {
             $partijen = leesPartijen($map);
-            $partijConfiguratie = [];
+            $partijConfiguratie = $herbouwPartijen ? ($paginaConfiguratie['partijen'] ?? []) : [];
             foreach ($partijen as $index => $partij) {
                 $ingevoerdBestand = basename((string) ($_POST['partijen'][$index]['bestand'] ?? ''));
                 if ($ingevoerdBestand !== $partij['bestand']) {
@@ -116,6 +117,7 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'genereer'],
                     'betekend' => isset($_POST['partijen'][$index]['betekend']),
                 ];
             }
+            $partijConfiguratie = array_intersect_key($partijConfiguratie, array_flip(array_column($partijen, 'bestand')));
             $versie = max(0, (int) ($paginaConfiguratie['versie'] ?? 0)) + ($genereerPagina ? 1 : 0);
             $paginaConfiguratie = [
                 'versie' => $versie,
@@ -125,6 +127,8 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'genereer'],
             ];
             if (!bewaarPaginaConfiguratie($map, $paginaConfiguratie)) {
                 $melding = 'De pagina-inhoud kon niet worden opgeslagen.';
+            } elseif ($herbouwPartijen) {
+                $melding = 'Partijenindeling opnieuw opgebouwd.';
             } elseif (!$genereerPagina) {
                 $melding = 'Pagina-inhoud opgeslagen.';
             } else {
@@ -215,7 +219,10 @@ if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
                     height: 220,
                     menubar: false,
                     plugins: 'lists link',
-                    toolbar: 'bold italic | bullist numlist | link | undo redo'
+                    toolbar: 'bold italic | bullist numlist | link | undo redo',
+                    init_instance_callback: function (editor) {
+                        editor.setContent(editor.getElement().value);
+                    }
                 });
             }
         });
@@ -287,6 +294,7 @@ if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
             <?php endif; ?>
             <p>De bezetting wordt automatisch opgebouwd uit bevestigde deelnemers, inclusief hun toegewezen partij. De volgende generatie wordt versie <?= max(0, (int) ($paginaConfiguratie['versie'] ?? 0)) + 1 ?>.</p>
             <button class="w3-button w3-light-grey" type="submit" name="actie" value="opslaan">Opslaan</button>
+            <button class="w3-button w3-light-grey" type="submit" name="actie" value="herbouw_partijen">Partijenindeling opnieuw opbouwen</button>
             <button class="w3-button w3-blue" type="submit" name="actie" value="genereer">Webpagina genereren</button>
         </form>
     </div>
