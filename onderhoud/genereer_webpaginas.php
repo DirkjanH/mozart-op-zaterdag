@@ -8,6 +8,7 @@ $voorbeeldPartijen = [];
 $activiteiten = $pdo->query(
     'SELECT id, datum, plaats, omschrijving FROM activiteiten ORDER BY datum'
 )->fetchAll(PDO::FETCH_ASSOC);
+$instrumenten = $pdo->query('SELECT id, naam FROM instrumenten ORDER BY id')->fetchAll(PDO::FETCH_ASSOC);
 
 $activiteitId = (int) ($_POST['activiteit_id'] ?? $_GET['activiteit_id'] ?? 0);
 $betekendeBestanden = array_map('basename', $_POST['betekend'] ?? []);
@@ -28,7 +29,55 @@ function isStrijkerPartij(string $bestand): bool
     return (bool) preg_match('/viool|violin|altviool|viola|cello|contrabas|double.?bass|strijk/i', $bestand);
 }
 
-function leesPartijen(string $map): array
+function isPartituur(string $bestand): bool
+{
+    return str_starts_with(pathinfo($bestand, PATHINFO_FILENAME), 'Partituur ');
+}
+
+function instrumentZoektermen(string $instrument): array
+{
+    $termen = [strtolower($instrument)];
+    $varianten = [
+        'viool' => ['violin'],
+        'altviool' => ['viola'],
+        'hobo' => ['oboe'],
+        'hoorn' => ['corno', 'horn'],
+        'fagot' => ['bassoon'],
+        'contrabas' => ['double bass'],
+    ];
+    return array_merge($termen, $varianten[strtolower($instrument)] ?? []);
+}
+
+function partijSorteerGegevens(string $bestand, array $instrumenten): array
+{
+    $naam = strtolower(pathinfo($bestand, PATHINFO_FILENAME));
+    $instrumentVolgorde = count($instrumenten) + 1;
+    foreach ($instrumenten as $volgorde => $instrument) {
+        foreach (instrumentZoektermen((string) $instrument['naam']) as $zoekterm) {
+            if (str_contains($naam, $zoekterm)) {
+                $instrumentVolgorde = $volgorde;
+                break 2;
+            }
+        }
+    }
+    preg_match('/(?:viool|violin|oboe|hobo|corno|hoorn|viola|altviool|cello|fagot|bassoon)\s*[_ .-]*(\d+|i{1,3})/i', $naam, $nummer);
+    $partijNummer = strtolower($nummer[1] ?? '0');
+    $partijNummer = match ($partijNummer) {
+        'i' => 1,
+        'ii' => 2,
+        'iii' => 3,
+        default => (int) $partijNummer,
+    };
+    preg_match('/\b(?:kv?|k)\s*[_ .-]*(\d+)/i', $naam, $werk);
+    return [
+        'instrument_volgorde' => $instrumentVolgorde,
+        'partij_nummer' => $partijNummer,
+        'werk' => $werk[1] ?? '',
+        'partituur' => isPartituur($bestand),
+    ];
+}
+
+function leesPartijen(string $map, array $instrumenten): array
 {
     if (!is_dir($map)) {
         return [];
@@ -46,10 +95,19 @@ function leesPartijen(string $map): array
             'bestand' => $bestand,
             'label' => partijLabel($bestand),
             'strijker' => isStrijkerPartij($bestand),
+            'partituur' => isPartituur($bestand),
+            'sortering' => partijSorteerGegevens($bestand, $instrumenten),
         ];
     }
 
-    usort($partijen, static fn (array $a, array $b): int => strnatcasecmp($a['label'], $b['label']));
+    usort($partijen, static function (array $eerste, array $tweede): int {
+        $a = $eerste['sortering'];
+        $b = $tweede['sortering'];
+        if ($a['werk'] !== '' && $a['werk'] === $b['werk'] && $a['partituur'] !== $b['partituur']) {
+            return $a['partituur'] ? -1 : 1;
+        }
+        return [$a['instrument_volgorde'], $a['partij_nummer'], $eerste['label']] <=> [$b['instrument_volgorde'], $b['partij_nummer'], $tweede['label']];
+    });
     return $partijen;
 }
 
