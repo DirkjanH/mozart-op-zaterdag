@@ -35,14 +35,13 @@ if (isset($_POST['actie']) && $_POST['actie'] === 'opslaan') {
     if ($datum === '' || $plaats === '') {
         $melding = 'Datum en plaats zijn verplicht.';
     } else {
-        // Omschrijving: gegenereerd uit de gekozen werken, anders het handmatig ingevulde veld.
-        if ($werk_ids !== []) {
+        // Een handmatig aangepaste omschrijving heeft voorrang op de gekozen werken.
+        $omschrijving = trim($_POST['omschrijving'] ?? '');
+        if ($omschrijving === '' && $werk_ids !== []) {
             $placeholders = implode(',', array_fill(0, count($werk_ids), '?'));
             $stmt = $pdo->prepare("SELECT * FROM werken WHERE id IN ($placeholders) ORDER BY kv_nummer, kv_toevoeging");
             $stmt->execute($werk_ids);
             $omschrijving = genereerOmschrijving($stmt->fetchAll(PDO::FETCH_ASSOC));
-        } else {
-            $omschrijving = trim($_POST['omschrijving'] ?? '');
         }
         $omschrijving = $omschrijving === '' ? null : $omschrijving;
 
