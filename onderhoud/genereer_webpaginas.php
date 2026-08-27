@@ -229,7 +229,7 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
                 }
                 $partijen = leesPartijen($map, $instrumenten);
             }
-            $partijConfiguratie = $herbouwPartijen ? ($paginaConfiguratie['partijen'] ?? []) : [];
+            $partijConfiguratie = $paginaConfiguratie['partijen'] ?? [];
             $beschikbareBestanden = array_flip(array_column($partijen, 'bestand'));
             foreach ($_POST['partijen'] ?? [] as $partij) {
                 $bestand = basename((string) ($partij['bestand'] ?? ''));
@@ -469,10 +469,10 @@ if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
             <?php else: ?>
                 <ul class="partijen-lijst">
                     <?php foreach ($voorbeeldPartijen as $index => $partij): ?>
+                        <?php if ($partij['partituur']) continue; ?>
                         <?php $instellingen = $paginaConfiguratie['partijen'][$partij['bestand']] ?? []; ?>
                         <li class="partij-item" draggable="true">
                             <span class="partij-greep" title="Sleep om de volgorde te wijzigen" aria-hidden="true">&#9776;</span>
-                            <?php if ($partij['partituur']): ?><strong>Partituur</strong><?php endif; ?>
                             <input type="hidden" name="partijen[<?= $index ?>][bestand]" value="<?= html($partij['bestand']) ?>">
                             <label>
                                 <input type="checkbox" name="verwijder[]" value="<?= html($partij['bestand']) ?>">
