@@ -146,8 +146,8 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
             $partijenHtml = '';
             foreach ($partijen as $partij) {
                 $instellingen = $partijConfiguratie[$partij['bestand']] ?? [];
-                $label = $instellingen['label'] ?: $partij['label'];
-                $link = $instellingen['link'] ?: $partij['bestand'];
+                $label = ($instellingen['label'] ?? '') ?: $partij['label'];
+                $link = ($instellingen['link'] ?? '') ?: $partij['bestand'];
                 if ($partij['strijker'] && !empty($instellingen['betekend'])) {
                     $label .= ' (betekend)';
                 }
