@@ -107,7 +107,7 @@
             deelnemers.</p>
         <div class="">
             <h2>Bezetting</h2>
-            <p>Er zijn nu 26 deelnemers. Er is nog plaats voor een altviool.</p>
+            <p>Er zijn nu 27 deelnemers. De bezetting is compleet.</p>
             <table class="w3-table w3-striped w3-bordered" id="deelnemers">
                 <thead>
                     <tr>
@@ -208,8 +208,8 @@
                         <td>altviool</td>
                     </tr>
                     <tr>
-                        <td></td>
-                        <td><i>vacature</i></td>
+                        <td>Lotte</td>
+                        <td>Pull ter Gunne</td>
                         <td>altviool</td>
                     </tr>
                     <tr>
