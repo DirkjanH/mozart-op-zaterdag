@@ -204,6 +204,7 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
     $activiteitId = (int) ($_POST['activiteit_id'] ?? 0);
     $toelichting = trim($_POST['toelichting'] ?? '');
     $solisten = trim($_POST['solisten'] ?? '');
+    $toonDeelnemers = isset($_POST['toon_deelnemers']);
 
     $stmt = $pdo->prepare('SELECT * FROM activiteiten WHERE id = ?');
     $stmt->execute([$activiteitId]);
@@ -250,6 +251,7 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
                 'versie' => $versie,
                 'toelichting' => $toelichting,
                 'solisten' => $solisten,
+                'toon_deelnemers' => $toonDeelnemers,
                 'partijen' => $partijConfiguratie,
             ];
             if (!bewaarPaginaConfiguratie($map, $paginaConfiguratie)) {
@@ -313,12 +315,19 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
             $titel = $activiteit['omschrijving'] ?: 'Mozart op Zaterdag';
             $omschrijvingHtml = $toelichting === '' ? '' : "        <div>\n" . $toelichting . "\n        </div>\n";
             $solistenHtml = $solisten === '' ? '' : "        <h2>De solisten</h2>\n        <div>\n" . $solisten . "\n        </div>\n";
+            $bezettingHtml = "        <h2>Bezetting</h2>\n";
+            if ($toonDeelnemers) {
+                $bezettingHtml .= '        <p>Er zijn ' . count($deelnemers) . " toegelaten deelnemers.</p>\n";
+                $bezettingHtml .= "        <table class=\"w3-table w3-striped w3-bordered\" id=\"deelnemers\">\n            <thead><tr><th>voornaam</th><th>achternaam</th><th>instrument</th></tr></thead>\n            <tbody>\n" . $deelnemersHtml . "            </tbody>\n        </table>\n";
+            } else {
+                $bezettingHtml .= "        <p>Hier wordt binnenkort de bezetting getoond</p>\n";
+            }
             $gegenereerd = '<?php require_once \'../includes/inloggen.php\'; ?>' . "\n";
             $gegenereerd .= '<!DOCTYPE html>' . "\n<html lang=\"nl\">\n<head>\n";
             $gegenereerd .= '    <meta charset="UTF-8">' . "\n";
             $gegenereerd .= '    <meta name="viewport" content="width=device-width, initial-scale=1.0">' . "\n";
             $gegenereerd .= '    <title>' . html($titel) . "</title>\n    <link href=\"/css/moz.css\" rel=\"stylesheet\" type=\"text/css\">\n</head>\n<body>\n";
-            $gegenereerd .= "    <div class=\"w3-content w3-white w3-panel\">\n";
+            $gegenereerd .= "    <div class=\"w3-content w3-white w3-panel\" style=\"padding-bottom: 3em;\">\n";
             $gegenereerd .= "        <?php require_once '../navigatie.htm'; ?>\n";
             $gegenereerd .= '        <h3>Mozart op Zaterdag op ' . date('d F Y', strtotime($datum)) . ":</h3>\n";
             $gegenereerd .= '        <h1>' . html($titel) . "</h1>\n";
@@ -326,9 +335,8 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
             $gegenereerd .= $omschrijvingHtml;
             $gegenereerd .= $solistenHtml;
             $gegenereerd .= "        <h3>Partijen</h3>\n" . $partijenHtml;
-            $gegenereerd .= "        <h2>Bezetting</h2>\n";
-            $gegenereerd .= '        <p>Er zijn ' . count($deelnemers) . " toegelaten deelnemers.</p>\n";
-            $gegenereerd .= "        <table class=\"w3-table w3-striped w3-bordered\" id=\"deelnemers\">\n            <thead><tr><th>voornaam</th><th>achternaam</th><th>instrument</th></tr></thead>\n            <tbody>\n" . $deelnemersHtml . "            </tbody>\n        </table>\n    </div>\n</body>\n</html>\n";
+            $gegenereerd .= $bezettingHtml;
+            $gegenereerd .= "    </div>\n</body>\n</html>\n";
 
             if (file_put_contents($map . '/index.php', $gegenereerd) === false) {
                 $melding = 'De webpagina kon niet worden geschreven.';
@@ -504,6 +512,12 @@ if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
                 </ul>
             <?php endif; ?>
             <p>De bezetting wordt automatisch opgebouwd uit bevestigde deelnemers, inclusief hun toegewezen partij. De volgende generatie wordt versie <?= max(0, (int) ($paginaConfiguratie['versie'] ?? 0)) + 1 ?>.</p>
+            <p>
+                <label>
+                    <input type="checkbox" name="toon_deelnemers" <?= !empty($paginaConfiguratie['toon_deelnemers']) ? 'checked' : '' ?>>
+                    Namen van toegelaten deelnemers tonen
+                </label>
+            </p>
             <button class="w3-button w3-light-grey" type="submit" name="actie" value="opslaan">Opslaan</button>
             <button class="w3-button w3-light-grey" type="submit" name="actie" value="herbouw_partijen">Partijenindeling opnieuw opbouwen</button>
             <button class="w3-button w3-red" type="submit" name="actie" value="verwijder_partijen" onclick="return confirm('De aangevinkte PDF-partijen worden definitief verwijderd. Doorgaan?');">Geselecteerde partijen wissen</button>
