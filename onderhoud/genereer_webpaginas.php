@@ -197,10 +197,11 @@ foreach ($activiteiten as $activiteit) {
     }
 }
 
-if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_partijen', 'verwijder_partijen', 'genereer'], true)) {
+if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_partijen', 'verwijder_partijen', 'reset_versie', 'genereer'], true)) {
     $genereerPagina = $_POST['actie'] === 'genereer';
     $herbouwPartijen = $_POST['actie'] === 'herbouw_partijen';
     $verwijderPartijen = $_POST['actie'] === 'verwijder_partijen';
+    $resetVersie = $_POST['actie'] === 'reset_versie';
     $activiteitId = (int) ($_POST['activiteit_id'] ?? 0);
     $toelichting = trim($_POST['toelichting'] ?? '');
     $solisten = trim($_POST['solisten'] ?? '');
@@ -246,7 +247,7 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
             }
             $partijConfiguratie = array_intersect_key($partijConfiguratie, array_flip(array_column($partijen, 'bestand')));
             $partijen = sorteerPartijenVolgensConfiguratie($partijen, $partijConfiguratie);
-            $versie = max(0, (int) ($paginaConfiguratie['versie'] ?? 0)) + ($genereerPagina ? 1 : 0);
+            $versie = $resetVersie ? 1 : max(0, (int) ($paginaConfiguratie['versie'] ?? 0)) + ($genereerPagina ? 1 : 0);
             $paginaConfiguratie = [
                 'versie' => $versie,
                 'toelichting' => $toelichting,
@@ -260,6 +261,8 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
                 $melding = $verwijderd === 0 ? 'Geen partijen verwijderd.' : $verwijderd . ' partij(en) verwijderd.';
             } elseif ($herbouwPartijen) {
                 $melding = 'Partijenindeling opnieuw opgebouwd.';
+            } elseif ($resetVersie) {
+                $melding = 'Het versienummer is teruggezet naar 1.';
             } elseif (!$genereerPagina) {
                 $melding = 'Pagina-inhoud opgeslagen.';
             } else {
@@ -441,7 +444,7 @@ if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
     </script>
 </head>
 <body>
-    <div class="w3-content w3-mobile w3-white w3-panel" style="max-width:1100px;">
+    <div class="w3-content w3-mobile w3-white w3-panel" style="max-width:1100px; padding-bottom:3em;">
         <h3>Genereer webpagina's</h3>
         <?php if ($melding !== ''): ?>
             <p class="w3-panel w3-pale-green w3-leftbar w3-border-green"><?= html($melding) ?></p>
@@ -463,7 +466,7 @@ if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
         <form method="post">
             <input type="hidden" name="activiteit_id" value="<?= $activiteitId ?>">
             <?php if ($gekozenActiviteit !== null): ?>
-                <h4><?= html($gekozenActiviteit['omschrijving'] ?: 'Mozart op Zaterdag') ?></h4>
+                <h4><strong><?= html($gekozenActiviteit['omschrijving'] ?: 'Mozart op Zaterdag') ?></strong></h4>
                 <?php $gegenereerdePagina = dirname(__DIR__) . '/' . $gekozenActiviteit['datum'] . '/index.php'; ?>
                 <?php if (is_file($gegenereerdePagina)): ?>
                     <p><a href="/<?= html($gekozenActiviteit['datum']) ?>/index.php" target="_blank">Open de gegenereerde pagina</a></p>
@@ -520,6 +523,7 @@ if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
             </p>
             <button class="w3-button w3-light-grey" type="submit" name="actie" value="opslaan">Opslaan</button>
             <button class="w3-button w3-light-grey" type="submit" name="actie" value="herbouw_partijen">Partijenindeling opnieuw opbouwen</button>
+            <button class="w3-button w3-light-grey" type="submit" name="actie" value="reset_versie" onclick="return confirm('Het versienummer wordt teruggezet naar 1. Doorgaan?');">Versienummer terugzetten naar 1</button>
             <button class="w3-button w3-red" type="submit" name="actie" value="verwijder_partijen" onclick="return confirm('De aangevinkte PDF-partijen worden definitief verwijderd. Doorgaan?');">Geselecteerde partijen wissen</button>
             <button class="w3-button w3-blue" type="submit" name="actie" value="genereer">Webpagina genereren</button>
         </form>

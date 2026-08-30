@@ -57,7 +57,7 @@
             </li>
             <li>
                 <b>24 oktober:</b> “Parijse” Ouverture in D KV 311a & “Parijse” Symfonie nr. 31 in D KV 297 voor 2 fluiten,
-                2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns, 2 trompetten, pauken en strijkers. <a xxxx="/2026-10-24/Moz_2026-10-24.php" target="_blank">Meer info & partijen vind je binnenkort hier</a>.
+                2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns, 2 trompetten, pauken en strijkers. <a href="/2026-10-24/index.php" target="_blank">Meer info & partijen vind je hier</a>.
             </li>
             <li>
                 <b>21 november:</b> concertaria’s voor sopraan, bas en orkest en het duet <i>Per queste tue manine</i> KV 540b voor 2 fluiten, 2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns en strijkers. De solisten zijn: Ingrid Nugteren (sopraan) en Mitchell Sandler (bas). <a xxxx="/2026-11-21/Moz_2026-11-21.php" target="_blank">Meer info & partijen vind je binnenkort hier</a>.
