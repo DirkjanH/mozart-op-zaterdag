@@ -5,6 +5,30 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 $melding = '';
 $resultaten = [];
+$actie = $_POST['actie'] ?? '';
+
+if ($actie === 'json_laden') {
+    $upload = $_FILES['mailconcept'] ?? null;
+    if (!is_array($upload) || ($upload['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) {
+        $melding = 'Kies een geldig JSON-bestand om te laden.';
+    } elseif (($upload['size'] ?? 0) > 2 * 1024 * 1024) {
+        $melding = 'Het JSON-bestand mag maximaal 2 MB groot zijn.';
+    } else {
+        try {
+            $concept = json_decode((string) file_get_contents($upload['tmp_name']), true, 8, JSON_THROW_ON_ERROR);
+            if (!is_array($concept) || ($concept['versie'] ?? null) !== 1 || !is_string($concept['onderwerp'] ?? null) || !is_string($concept['bericht'] ?? null)) {
+                throw new RuntimeException('Onbekend of onvolledig mailconcept.');
+            }
+            $_POST['activiteit_id'] = (int) ($concept['activiteit_id'] ?? 0);
+            $_POST['onderwerp'] = $concept['onderwerp'];
+            $_POST['bericht'] = $concept['bericht'];
+            $melding = 'Het mailconcept is geladen.';
+        } catch (Throwable $e) {
+            $melding = 'Mailconcept niet geladen: ' . $e->getMessage();
+        }
+    }
+}
+
 $activiteitId = (int) ($_GET['activiteit_id'] ?? $_POST['activiteit_id'] ?? 0);
 $activiteiten = $pdo->query(
     'SELECT id, datum, plaats, omschrijving FROM activiteiten ORDER BY datum DESC'
@@ -43,6 +67,19 @@ $standaardBericht = <<<'HTML'
 HTML;
 $onderwerp = trim($_POST['onderwerp'] ?? $standaardOnderwerp);
 $bericht = trim($_POST['bericht'] ?? $standaardBericht);
+
+if ($actie === 'json_downloaden') {
+    $bestandsnaam = 'mozart-mailconcept-' . date('Y-m-d-His') . '.json';
+    header('Content-Type: application/json; charset=UTF-8');
+    header('Content-Disposition: attachment; filename="' . $bestandsnaam . '"');
+    echo json_encode([
+        'versie' => 1,
+        'activiteit_id' => $activiteitId,
+        'onderwerp' => $onderwerp,
+        'bericht' => $bericht,
+    ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
+    exit;
+}
 
 function vulMailTemplate(string $template, array $deelnemer, array $activiteit): string
 {
@@ -143,8 +180,123 @@ function leesMailInstellingen(): array
     return [$gebruikersnaam, $wachtwoord];
 }
 
-$actie = $_POST['actie'] ?? '';
-if (in_array($actie, ['versturen', 'test'], true)) {
+$wachtrijSleutel = 'mozart_deelnemers_mail_wachtrij';
+$wachtrij = $_SESSION[$wachtrijSleutel] ?? null;
+if ($actie === 'versturen' && $gekozenActiviteit !== null && $onderwerp !== '' && $bericht !== '' && $deelnemers !== []) {
+    $wachtrij = [
+        'activiteit' => $gekozenActiviteit,
+        'onderwerp' => $onderwerp,
+        'bericht' => $bericht,
+        'aangemaakt_op' => date(DATE_ATOM),
+        'volgende_pluk_op' => time(),
+        'ontvangers' => array_map(static function (array $deelnemer): array {
+            $deelnemer['status'] = 'wachtend';
+            $deelnemer['pogingen'] = 0;
+            $deelnemer['fout'] = '';
+            $deelnemer['verzonden_op'] = null;
+            return $deelnemer;
+        }, $deelnemers),
+    ];
+    $_SESSION[$wachtrijSleutel] = $wachtrij;
+    $actie = 'verwerk_pluk';
+}
+
+if ($actie === 'opnieuw_proberen' && is_array($wachtrij)) {
+    foreach ($wachtrij['ontvangers'] as &$ontvanger) {
+        if ($ontvanger['status'] === 'mislukt') {
+            $ontvanger['status'] = 'wachtend';
+            $ontvanger['fout'] = '';
+        }
+    }
+    unset($ontvanger);
+    $wachtrij['volgende_pluk_op'] = time();
+    $_SESSION[$wachtrijSleutel] = $wachtrij;
+    $actie = 'verwerk_pluk';
+}
+
+if ($actie === 'wachtrij_wissen') {
+    unset($_SESSION[$wachtrijSleutel]);
+    $wachtrij = null;
+    $melding = 'De verzendwachtrij is gewist.';
+}
+
+if ($actie === 'verwerk_pluk' && is_array($wachtrij)) {
+    $wachtendeIndexen = [];
+    foreach ($wachtrij['ontvangers'] as $index => $ontvanger) {
+        if ($ontvanger['status'] === 'wachtend') {
+            $wachtendeIndexen[] = $index;
+        }
+        if (count($wachtendeIndexen) === 20) {
+            break;
+        }
+    }
+
+    if ($wachtendeIndexen === []) {
+        $melding = 'Er staan geen onverzonden mails meer in de wachtrij.';
+    } elseif (time() < (int) $wachtrij['volgende_pluk_op']) {
+        $melding = 'De volgende pluk kan vanaf ' . date('H:i:s', (int) $wachtrij['volgende_pluk_op']) . ' worden verstuurd.';
+    } else {
+        [$gebruikersnaam, $wachtwoord] = leesMailInstellingen();
+        if ($wachtwoord === '') {
+            $melding = 'Mail niet verstuurd: het app-wachtwoord ontbreekt in de configuratie.';
+        } else {
+            set_time_limit(0);
+            $mailer = new PHPMailer\PHPMailer\PHPMailer(true);
+            try {
+                $mailer->isSMTP();
+                $mailer->Host = 'send.one.com';
+                $mailer->SMTPAuth = true;
+                $mailer->Username = $gebruikersnaam;
+                $mailer->Password = $wachtwoord;
+                $mailer->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
+                $mailer->Port = 465;
+                $mailer->Timeout = 15;
+                $mailer->SMTPKeepAlive = true;
+                $mailer->CharSet = 'UTF-8';
+                $mailer->setFrom($gebruikersnaam, 'Mozart op Zaterdag');
+                $mailer->addReplyTo($gebruikersnaam, 'Mozart op Zaterdag');
+                $mailer->isHTML(true);
+
+                foreach ($wachtendeIndexen as $index) {
+                    $ontvanger = &$wachtrij['ontvangers'][$index];
+                    $naam = trim($ontvanger['voornaam'] . ' ' . $ontvanger['achternaam']);
+                    $ontvanger['pogingen']++;
+                    try {
+                        if (!filter_var($ontvanger['email'], FILTER_VALIDATE_EMAIL)) {
+                            throw new RuntimeException('Ongeldig e-mailadres');
+                        }
+                        $mailer->clearAddresses();
+                        $mailer->clearAttachments();
+                        $mailer->addAddress($ontvanger['email'], $naam);
+                        $mailer->Subject = str_replace(["\r", "\n"], '', html_entity_decode(vulMailTemplate($wachtrij['onderwerp'], $ontvanger, $wachtrij['activiteit']), ENT_QUOTES, 'UTF-8'));
+                        $mailer->Body = sluitLokaleAfbeeldingenIn(vulMailTemplate($wachtrij['bericht'], $ontvanger, $wachtrij['activiteit']), $mailer);
+                        $mailer->AltBody = trim(html_entity_decode(strip_tags(str_replace(['</p>', '<br>', '<br/>', '<br />'], "\n", $mailer->Body)), ENT_QUOTES, 'UTF-8'));
+                        $mailer->send();
+                        $ontvanger['status'] = 'verzonden';
+                        $ontvanger['verzonden_op'] = date(DATE_ATOM);
+                        $resultaten[] = ['gelukt' => true, 'naam' => $naam, 'bericht' => $ontvanger['email']];
+                    } catch (Throwable $e) {
+                        $ontvanger['status'] = 'mislukt';
+                        $ontvanger['fout'] = $e->getMessage();
+                        $resultaten[] = ['gelukt' => false, 'naam' => $naam, 'bericht' => $e->getMessage()];
+                    }
+                    unset($ontvanger);
+                    $_SESSION[$wachtrijSleutel] = $wachtrij;
+                }
+                $mailer->smtpClose();
+                $nogWachtend = count(array_filter($wachtrij['ontvangers'], static fn (array $ontvanger): bool => $ontvanger['status'] === 'wachtend'));
+                $wachtrij['volgende_pluk_op'] = $nogWachtend > 0 ? time() + 600 : null;
+                $_SESSION[$wachtrijSleutel] = $wachtrij;
+                $aantalGelukt = count(array_filter($resultaten, static fn (array $resultaat): bool => $resultaat['gelukt']));
+                $melding = $aantalGelukt . ' mails verstuurd in deze pluk; ' . $nogWachtend . ' wachten nog.';
+            } catch (Throwable $e) {
+                $melding = 'Mail niet verstuurd: ' . $e->getMessage();
+            }
+        }
+    }
+}
+
+if ($actie === 'test') {
     if ($gekozenActiviteit === null) {
         $melding = 'Kies eerst een geldige activiteit.';
     } elseif ($onderwerp === '' || $bericht === '') {
@@ -156,8 +308,7 @@ if (in_array($actie, ['versturen', 'test'], true)) {
         if ($wachtwoord === '') {
             $melding = 'Mail niet verstuurd: het app-wachtwoord ontbreekt in de configuratie.';
         } else {
-            $isTest = $actie === 'test';
-            $teVersturenDeelnemers = $isTest ? [$deelnemers[0]] : $deelnemers;
+            $teVersturenDeelnemers = [$deelnemers[0]];
             set_time_limit(0);
             $mailer = new PHPMailer\PHPMailer\PHPMailer(true);
             try {
@@ -177,8 +328,8 @@ if (in_array($actie, ['versturen', 'test'], true)) {
 
                 foreach ($teVersturenDeelnemers as $deelnemer) {
                     $naam = trim($deelnemer['voornaam'] . ' ' . $deelnemer['achternaam']);
-                    $ontvangerEmail = $isTest ? 'dirkjan@pellegrina.net' : $deelnemer['email'];
-                    $ontvangerNaam = $isTest ? 'Dirkjan Horringa' : $naam;
+                    $ontvangerEmail = 'dirkjan@pellegrina.net';
+                    $ontvangerNaam = 'Dirkjan Horringa';
                     if (!filter_var($ontvangerEmail, FILTER_VALIDATE_EMAIL)) {
                         $resultaten[] = ['gelukt' => false, 'naam' => $naam, 'bericht' => 'ongeldig e-mailadres'];
                         continue;
@@ -188,7 +339,7 @@ if (in_array($actie, ['versturen', 'test'], true)) {
                         $mailer->clearAttachments();
                         $mailer->addAddress($ontvangerEmail, $ontvangerNaam);
                         $ingevuldOnderwerp = str_replace(["\r", "\n"], '', html_entity_decode(vulMailTemplate($onderwerp, $deelnemer, $gekozenActiviteit), ENT_QUOTES, 'UTF-8'));
-                        $mailer->Subject = ($isTest ? '[TEST] ' : '') . $ingevuldOnderwerp;
+                        $mailer->Subject = '[TEST] ' . $ingevuldOnderwerp;
                         $mailer->Body = sluitLokaleAfbeeldingenIn(vulMailTemplate($bericht, $deelnemer, $gekozenActiviteit), $mailer);
                         $mailer->AltBody = trim(html_entity_decode(strip_tags(str_replace(['</p>', '<br>', '<br/>', '<br />'], "\n", $mailer->Body)), ENT_QUOTES, 'UTF-8'));
                         $mailer->send();
@@ -199,12 +350,21 @@ if (in_array($actie, ['versturen', 'test'], true)) {
                 }
                 $mailer->smtpClose();
                 $aantalGelukt = count(array_filter($resultaten, static fn (array $resultaat): bool => $resultaat['gelukt']));
-                $melding = $isTest
-                    ? ($aantalGelukt === 1 ? 'Testmail verstuurd naar dirkjan@pellegrina.net met de gegevens van ' . $deelnemers[0]['voornaam'] . '.' : 'Testmail niet verstuurd.')
-                    : $aantalGelukt . ' van ' . count($deelnemers) . ' mails verstuurd.';
+                $melding = $aantalGelukt === 1
+                    ? 'Testmail verstuurd naar dirkjan@pellegrina.net met de gegevens van ' . $deelnemers[0]['voornaam'] . '.'
+                    : 'Testmail niet verstuurd.';
             } catch (Throwable $e) {
                 $melding = 'Mail niet verstuurd: ' . $e->getMessage();
             }
+        }
+    }
+}
+
+$wachtrijTellingen = ['wachtend' => 0, 'verzonden' => 0, 'mislukt' => 0];
+if (is_array($wachtrij)) {
+    foreach ($wachtrij['ontvangers'] as $ontvanger) {
+        if (isset($wachtrijTellingen[$ontvanger['status']])) {
+            $wachtrijTellingen[$ontvanger['status']]++;
         }
     }
 }
@@ -241,6 +401,57 @@ if (in_array($actie, ['versturen', 'test'], true)) {
             </select>
         </form>
 
+        <form method="post" enctype="multipart/form-data" class="w3-margin-bottom">
+            <label for="mailconcept"><strong>Mailconcept laden</strong></label>
+            <input class="w3-input w3-border" id="mailconcept" name="mailconcept" type="file" accept="application/json,.json" required>
+            <button class="w3-button w3-light-grey w3-margin-top" type="submit" name="actie" value="json_laden">JSON laden</button>
+        </form>
+
+        <?php if (is_array($wachtrij)): ?>
+            <section class="w3-panel w3-pale-blue w3-leftbar w3-border-blue">
+                <h4>Verzendwachtrij</h4>
+                <p>
+                    <strong><?= htmlspecialchars(date('d-m-Y', strtotime($wachtrij['activiteit']['datum'])) . ' - ' . $wachtrij['activiteit']['plaats']) ?></strong><br>
+                    <?= $wachtrijTellingen['verzonden'] ?> verzonden,
+                    <?= $wachtrijTellingen['wachtend'] ?> wachtend,
+                    <?= $wachtrijTellingen['mislukt'] ?> mislukt.
+                </p>
+                <?php if ($wachtrijTellingen['wachtend'] > 0): ?>
+                    <p id="volgende-pluk-melding"></p>
+                    <form method="post" id="volgende-pluk-formulier" style="display:inline-block">
+                        <input type="hidden" name="actie" value="verwerk_pluk">
+                        <button class="w3-button w3-blue" type="submit">Volgende pluk van maximaal 20 versturen</button>
+                    </form>
+                <?php endif; ?>
+                <?php if ($wachtrijTellingen['mislukt'] > 0): ?>
+                    <form method="post" style="display:inline-block">
+                        <button class="w3-button w3-orange" type="submit" name="actie" value="opnieuw_proberen">Mislukte mails opnieuw proberen</button>
+                    </form>
+                <?php endif; ?>
+                <form method="post" style="display:inline-block" onsubmit="return confirm('De volledige verzendwachtrij wissen?');">
+                    <button class="w3-button w3-light-grey" type="submit" name="actie" value="wachtrij_wissen">Wachtrij wissen</button>
+                </form>
+
+                <details class="w3-margin-top">
+                    <summary>Status per ontvanger</summary>
+                    <div class="w3-responsive">
+                        <table class="w3-table w3-bordered w3-small">
+                            <tr><th>Naam</th><th>E-mail</th><th>Status</th><th>Pogingen</th><th>Fout</th></tr>
+                            <?php foreach ($wachtrij['ontvangers'] as $ontvanger): ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($ontvanger['voornaam'] . ' ' . $ontvanger['achternaam']) ?></td>
+                                    <td><?= htmlspecialchars($ontvanger['email']) ?></td>
+                                    <td><?= htmlspecialchars($ontvanger['status']) ?></td>
+                                    <td><?= (int) $ontvanger['pogingen'] ?></td>
+                                    <td><?= htmlspecialchars($ontvanger['fout']) ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </table>
+                    </div>
+                </details>
+            </section>
+        <?php endif; ?>
+
         <?php if ($gekozenActiviteit !== null): ?>
             <p><strong><?= count($deelnemers) ?> toegelaten deelnemers</strong></p>
             <?php if ($deelnemers !== []): ?>
@@ -272,7 +483,8 @@ if (in_array($actie, ['versturen', 'test'], true)) {
                 <textarea id="bericht" name="bericht" required><?= htmlspecialchars($bericht) ?></textarea>
 
                 <button class="w3-button w3-green w3-margin-top" type="submit" name="actie" value="test" <?= $deelnemers === [] ? 'disabled' : '' ?>>Testmail naar Dirkjan</button>
-                <button class="w3-button w3-blue w3-margin-top" type="submit" name="actie" value="versturen" <?= $deelnemers === [] ? 'disabled' : '' ?>>Mail aan alle deelnemers versturen</button>
+                <button class="w3-button w3-blue w3-margin-top" type="submit" name="actie" value="versturen" <?= $deelnemers === [] ? 'disabled' : '' ?>>Verzending in plukjes starten</button>
+                <button class="w3-button w3-light-grey w3-margin-top" type="submit" name="actie" value="json_downloaden">Concept als JSON opslaan</button>
             </form>
         <?php endif; ?>
 
@@ -294,16 +506,44 @@ if (in_array($actie, ['versturen', 'test'], true)) {
             if (event.submitter && event.submitter.value === 'test') {
                 return confirm('Testmail naar dirkjan@pellegrina.net versturen met de gegevens van de eerste deelnemer?');
             }
-            return confirm('Deze mail nu afzonderlijk naar alle <?= count($deelnemers) ?> toegelaten deelnemers versturen?');
+            if (event.submitter && event.submitter.value === 'json_downloaden') {
+                return true;
+            }
+            return confirm('Een nieuwe wachtrij voor <?= count($deelnemers) ?> deelnemers starten en de eerste pluk van maximaal 20 nu versturen?');
         }
 
-        CKEDITOR.replace('bericht', {
-            height: 360,
-            language: 'nl',
-            versionCheck: false,
-            extraPlugins: 'autogrow,autolink,codesnippet,emoji,placeholder,tableresize,uicolor',
-            removePlugins: 'a11ychecker,ckfinder,cloudservices,easyimage,exportpdf'
-        });
+        <?php if (is_array($wachtrij) && $wachtrijTellingen['wachtend'] > 0): ?>
+            const volgendePlukOp = <?= (int) $wachtrij['volgende_pluk_op'] ?> * 1000;
+            const plukMelding = document.getElementById('volgende-pluk-melding');
+            const plukFormulier = document.getElementById('volgende-pluk-formulier');
+            let plukWordtVerstuurd = false;
+
+            function werkAftellerBij() {
+                const resterendeSeconden = Math.max(0, Math.ceil((volgendePlukOp - Date.now()) / 1000));
+                const minuten = Math.floor(resterendeSeconden / 60);
+                const seconden = String(resterendeSeconden % 60).padStart(2, '0');
+                plukMelding.textContent = resterendeSeconden > 0
+                    ? `Volgende pluk automatisch over ${minuten}:${seconden}, zolang deze pagina openstaat.`
+                    : 'De volgende pluk wordt nu verstuurd.';
+                if (resterendeSeconden === 0 && !plukWordtVerstuurd) {
+                    plukWordtVerstuurd = true;
+                    plukFormulier.requestSubmit();
+                }
+            }
+
+            werkAftellerBij();
+            window.setInterval(werkAftellerBij, 1000);
+        <?php endif; ?>
+
+        if (document.getElementById('bericht')) {
+            CKEDITOR.replace('bericht', {
+                height: 360,
+                language: 'nl',
+                versionCheck: false,
+                extraPlugins: 'autogrow,autolink,codesnippet,emoji,placeholder,tableresize,uicolor',
+                removePlugins: 'a11ychecker,ckfinder,cloudservices,easyimage,exportpdf'
+            });
+        }
     </script>
 </body>
 
