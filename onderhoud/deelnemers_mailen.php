@@ -66,6 +66,44 @@ function vulMailTemplate(string $template, array $deelnemer, array $activiteit):
     );
 }
 
+function sluitLokaleAfbeeldingenIn(string $html, PHPMailer\PHPMailer\PHPMailer $mailer): string
+{
+    $webroot = realpath(__DIR__ . '/..');
+    if ($webroot === false) {
+        return $html;
+    }
+
+    $ingeslotenAfbeeldingen = [];
+    return preg_replace_callback(
+        '/(<img\b[^>]*\bsrc\s*=\s*)(["\'])(.*?)(\2)/i',
+        static function (array $match) use ($mailer, $webroot, &$ingeslotenAfbeeldingen): string {
+            $url = html_entity_decode($match[3], ENT_QUOTES, 'UTF-8');
+            $urlDelen = parse_url($url);
+            $host = strtolower((string) ($urlDelen['host'] ?? ''));
+            if (!in_array($host, ['', 'mozartopzaterdag.nl', 'www.mozartopzaterdag.nl'], true)) {
+                return $match[0];
+            }
+
+            $urlPad = (string) ($urlDelen['path'] ?? '');
+            $lokaalPad = rawurldecode(str_replace('+', '%20', $urlPad));
+            $bestand = realpath($webroot . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, ltrim($lokaalPad, '/')));
+            if ($bestand === false || !is_file($bestand) || !str_starts_with(strtolower($bestand), strtolower($webroot . DIRECTORY_SEPARATOR))) {
+                return $match[0];
+            }
+
+            $cid = 'mozart-' . sha1($bestand);
+            if (!isset($ingeslotenAfbeeldingen[$cid])) {
+                $mimeType = function_exists('mime_content_type') ? mime_content_type($bestand) : false;
+                $mailer->addEmbeddedImage($bestand, $cid, basename($bestand), 'base64', $mimeType ?: 'application/octet-stream');
+                $ingeslotenAfbeeldingen[$cid] = true;
+            }
+
+            return $match[1] . $match[2] . 'cid:' . $cid . $match[4];
+        },
+        $html
+    ) ?? $html;
+}
+
 function leesMailInstellingen(): array
 {
     $gebruikersnaam = 'info@mozartopzaterdag.nl';
@@ -147,10 +185,11 @@ if (in_array($actie, ['versturen', 'test'], true)) {
                     }
                     try {
                         $mailer->clearAddresses();
+                        $mailer->clearAttachments();
                         $mailer->addAddress($ontvangerEmail, $ontvangerNaam);
                         $ingevuldOnderwerp = str_replace(["\r", "\n"], '', html_entity_decode(vulMailTemplate($onderwerp, $deelnemer, $gekozenActiviteit), ENT_QUOTES, 'UTF-8'));
                         $mailer->Subject = ($isTest ? '[TEST] ' : '') . $ingevuldOnderwerp;
-                        $mailer->Body = vulMailTemplate($bericht, $deelnemer, $gekozenActiviteit);
+                        $mailer->Body = sluitLokaleAfbeeldingenIn(vulMailTemplate($bericht, $deelnemer, $gekozenActiviteit), $mailer);
                         $mailer->AltBody = trim(html_entity_decode(strip_tags(str_replace(['</p>', '<br>', '<br/>', '<br />'], "\n", $mailer->Body)), ENT_QUOTES, 'UTF-8'));
                         $mailer->send();
                         $resultaten[] = ['gelukt' => true, 'naam' => $naam, 'bericht' => $ontvangerEmail];
