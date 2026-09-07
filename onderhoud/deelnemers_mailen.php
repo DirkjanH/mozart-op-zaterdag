@@ -59,6 +59,15 @@ if ($gekozenActiviteit !== null) {
     $deelnemers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+$selectieIngediend = isset($_POST['selectie_ingediend']);
+$geselecteerdeDeelnemerIds = $selectieIngediend && is_array($_POST['deelnemer_ids'] ?? null)
+    ? array_values(array_unique(array_filter(array_map('intval', $_POST['deelnemer_ids']), static fn (int $id): bool => $id > 0)))
+    : array_map(static fn (array $deelnemer): int => (int) $deelnemer['id'], $deelnemers);
+$geselecteerdeDeelnemers = array_values(array_filter(
+    $deelnemers,
+    static fn (array $deelnemer): bool => in_array((int) $deelnemer['id'], $geselecteerdeDeelnemerIds, true)
+));
+
 $standaardOnderwerp = 'Mozart op Zaterdag';
 $standaardBericht = <<<'HTML'
 <p>Beste {{voornaam}},</p>
@@ -182,23 +191,31 @@ function leesMailInstellingen(): array
 
 $wachtrijSleutel = 'mozart_deelnemers_mail_wachtrij';
 $wachtrij = $_SESSION[$wachtrijSleutel] ?? null;
-if ($actie === 'versturen' && $gekozenActiviteit !== null && $onderwerp !== '' && $bericht !== '' && $deelnemers !== []) {
-    $wachtrij = [
-        'activiteit' => $gekozenActiviteit,
-        'onderwerp' => $onderwerp,
-        'bericht' => $bericht,
-        'aangemaakt_op' => date(DATE_ATOM),
-        'volgende_pluk_op' => time(),
-        'ontvangers' => array_map(static function (array $deelnemer): array {
-            $deelnemer['status'] = 'wachtend';
-            $deelnemer['pogingen'] = 0;
-            $deelnemer['fout'] = '';
-            $deelnemer['verzonden_op'] = null;
-            return $deelnemer;
-        }, $deelnemers),
-    ];
-    $_SESSION[$wachtrijSleutel] = $wachtrij;
-    $actie = 'verwerk_pluk';
+if ($actie === 'versturen') {
+    if ($gekozenActiviteit === null) {
+        $melding = 'Kies eerst een geldige activiteit.';
+    } elseif ($onderwerp === '' || $bericht === '') {
+        $melding = 'Onderwerp en bericht zijn verplicht.';
+    } elseif ($geselecteerdeDeelnemers === []) {
+        $melding = 'Selecteer ten minste één deelnemer voor verzending.';
+    } else {
+        $wachtrij = [
+            'activiteit' => $gekozenActiviteit,
+            'onderwerp' => $onderwerp,
+            'bericht' => $bericht,
+            'aangemaakt_op' => date(DATE_ATOM),
+            'volgende_pluk_op' => time(),
+            'ontvangers' => array_map(static function (array $deelnemer): array {
+                $deelnemer['status'] = 'wachtend';
+                $deelnemer['pogingen'] = 0;
+                $deelnemer['fout'] = '';
+                $deelnemer['verzonden_op'] = null;
+                return $deelnemer;
+            }, $geselecteerdeDeelnemers),
+        ];
+        $_SESSION[$wachtrijSleutel] = $wachtrij;
+        $actie = 'verwerk_pluk';
+    }
 }
 
 if ($actie === 'opnieuw_proberen' && is_array($wachtrij)) {
@@ -301,14 +318,14 @@ if ($actie === 'test') {
         $melding = 'Kies eerst een geldige activiteit.';
     } elseif ($onderwerp === '' || $bericht === '') {
         $melding = 'Onderwerp en bericht zijn verplicht.';
-    } elseif ($deelnemers === []) {
-        $melding = 'Deze activiteit heeft geen toegelaten deelnemers.';
+    } elseif ($geselecteerdeDeelnemers === []) {
+        $melding = 'Selecteer ten minste één deelnemer voor de testmail.';
     } else {
         [$gebruikersnaam, $wachtwoord] = leesMailInstellingen();
         if ($wachtwoord === '') {
             $melding = 'Mail niet verstuurd: het app-wachtwoord ontbreekt in de configuratie.';
         } else {
-            $teVersturenDeelnemers = [$deelnemers[0]];
+            $teVersturenDeelnemers = [$geselecteerdeDeelnemers[0]];
             set_time_limit(0);
             $mailer = new PHPMailer\PHPMailer\PHPMailer(true);
             try {
@@ -351,7 +368,7 @@ if ($actie === 'test') {
                 $mailer->smtpClose();
                 $aantalGelukt = count(array_filter($resultaten, static fn (array $resultaat): bool => $resultaat['gelukt']));
                 $melding = $aantalGelukt === 1
-                    ? 'Testmail verstuurd naar dirkjan@pellegrina.net met de gegevens van ' . $deelnemers[0]['voornaam'] . '.'
+                    ? 'Testmail verstuurd naar dirkjan@pellegrina.net met de gegevens van ' . $geselecteerdeDeelnemers[0]['voornaam'] . '.'
                     : 'Testmail niet verstuurd.';
             } catch (Throwable $e) {
                 $melding = 'Mail niet verstuurd: ' . $e->getMessage();
@@ -453,13 +470,32 @@ if (is_array($wachtrij)) {
         <?php endif; ?>
 
         <?php if ($gekozenActiviteit !== null): ?>
-            <p><strong><?= count($deelnemers) ?> toegelaten deelnemers</strong></p>
+            <p>
+                <strong><?= count($deelnemers) ?> toegelaten deelnemers</strong><br>
+                <span id="selectie-aantal"><?= count($geselecteerdeDeelnemers) ?> geselecteerd</span>
+            </p>
             <?php if ($deelnemers !== []): ?>
                 <div class="w3-responsive w3-margin-bottom" style="max-height:250px; overflow:auto;">
                     <table class="w3-table w3-bordered w3-striped w3-small">
-                        <tr><th>Naam</th><th>E-mail</th><th>Instrument + partij</th></tr>
+                        <tr>
+                            <th>
+                                <input id="selecteer-alles" type="checkbox" aria-label="Alle deelnemers selecteren" <?= count($geselecteerdeDeelnemers) === count($deelnemers) ? 'checked' : '' ?>>
+                            </th>
+                            <th>Naam</th><th>E-mail</th><th>Instrument + partij</th>
+                        </tr>
                         <?php foreach ($deelnemers as $deelnemer): ?>
                             <tr>
+                                <td>
+                                    <input
+                                        class="deelnemer-selectie"
+                                        type="checkbox"
+                                        name="deelnemer_ids[]"
+                                        value="<?= (int) $deelnemer['id'] ?>"
+                                        form="mail-formulier"
+                                        aria-label="<?= htmlspecialchars($deelnemer['voornaam'] . ' ' . $deelnemer['achternaam']) ?> selecteren"
+                                        <?= in_array((int) $deelnemer['id'], $geselecteerdeDeelnemerIds, true) ? 'checked' : '' ?>
+                                    >
+                                </td>
                                 <td><?= htmlspecialchars($deelnemer['voornaam'] . ' ' . $deelnemer['achternaam']) ?></td>
                                 <td><?= htmlspecialchars($deelnemer['email']) ?></td>
                                 <td><?= htmlspecialchars(trim(($deelnemer['instrument'] ?? '') . ' ' . ($deelnemer['partij'] ?? ''))) ?></td>
@@ -469,8 +505,9 @@ if (is_array($wachtrij)) {
                 </div>
             <?php endif; ?>
 
-            <form method="post" onsubmit="return bevestigVerzending(event);">
+            <form method="post" id="mail-formulier" onsubmit="return bevestigVerzending(event);">
                 <input type="hidden" name="activiteit_id" value="<?= $activiteitId ?>">
+                <input type="hidden" name="selectie_ingediend" value="1">
 
                 <label for="onderwerp"><strong>Onderwerp</strong></label>
                 <input class="w3-input w3-border w3-margin-bottom" id="onderwerp" name="onderwerp" value="<?= htmlspecialchars($onderwerp) ?>" required>
@@ -482,8 +519,8 @@ if (is_array($wachtrij)) {
                 <label for="bericht"><strong>Bericht</strong></label>
                 <textarea id="bericht" name="bericht" required><?= htmlspecialchars($bericht) ?></textarea>
 
-                <button class="w3-button w3-green w3-margin-top" type="submit" name="actie" value="test" <?= $deelnemers === [] ? 'disabled' : '' ?>>Testmail naar Dirkjan</button>
-                <button class="w3-button w3-blue w3-margin-top" type="submit" name="actie" value="versturen" <?= $deelnemers === [] ? 'disabled' : '' ?>>Verzending in plukjes starten</button>
+                <button class="w3-button w3-green w3-margin-top" type="submit" name="actie" value="test" data-selectie-vereist <?= $geselecteerdeDeelnemers === [] ? 'disabled' : '' ?>>Testmail naar Dirkjan</button>
+                <button class="w3-button w3-blue w3-margin-top" type="submit" name="actie" value="versturen" data-selectie-vereist <?= $geselecteerdeDeelnemers === [] ? 'disabled' : '' ?>>Verzending in plukjes starten</button>
                 <button class="w3-button w3-light-grey w3-margin-top" type="submit" name="actie" value="json_downloaden">Concept als JSON opslaan</button>
             </form>
         <?php endif; ?>
@@ -503,14 +540,42 @@ if (is_array($wachtrij)) {
 
     <script>
         function bevestigVerzending(event) {
+            const aantalGeselecteerd = document.querySelectorAll('.deelnemer-selectie:checked').length;
             if (event.submitter && event.submitter.value === 'test') {
-                return confirm('Testmail naar dirkjan@pellegrina.net versturen met de gegevens van de eerste deelnemer?');
+                return confirm('Testmail naar dirkjan@pellegrina.net versturen met de gegevens van de eerste geselecteerde deelnemer?');
             }
             if (event.submitter && event.submitter.value === 'json_downloaden') {
                 return true;
             }
-            return confirm('Een nieuwe wachtrij voor <?= count($deelnemers) ?> deelnemers starten en de eerste pluk van maximaal 20 nu versturen?');
+            return confirm(`Een nieuwe wachtrij voor ${aantalGeselecteerd} geselecteerde deelnemers starten en de eerste pluk van maximaal 20 nu versturen?`);
         }
+
+        const deelnemerSelecties = Array.from(document.querySelectorAll('.deelnemer-selectie'));
+        const selecteerAlles = document.getElementById('selecteer-alles');
+        const selectieAantal = document.getElementById('selectie-aantal');
+
+        function werkSelectieBij() {
+            const aantalGeselecteerd = deelnemerSelecties.filter((checkbox) => checkbox.checked).length;
+            if (selectieAantal) {
+                selectieAantal.textContent = `${aantalGeselecteerd} geselecteerd`;
+            }
+            if (selecteerAlles) {
+                selecteerAlles.checked = deelnemerSelecties.length > 0 && aantalGeselecteerd === deelnemerSelecties.length;
+                selecteerAlles.indeterminate = aantalGeselecteerd > 0 && aantalGeselecteerd < deelnemerSelecties.length;
+            }
+            document.querySelectorAll('[data-selectie-vereist]').forEach((knop) => {
+                knop.disabled = aantalGeselecteerd === 0;
+            });
+        }
+
+        selecteerAlles?.addEventListener('change', () => {
+            deelnemerSelecties.forEach((checkbox) => {
+                checkbox.checked = selecteerAlles.checked;
+            });
+            werkSelectieBij();
+        });
+        deelnemerSelecties.forEach((checkbox) => checkbox.addEventListener('change', werkSelectieBij));
+        werkSelectieBij();
 
         <?php if (is_array($wachtrij) && $wachtrijTellingen['wachtend'] > 0): ?>
             const volgendePlukOp = <?= (int) $wachtrij['volgende_pluk_op'] ?> * 1000;
