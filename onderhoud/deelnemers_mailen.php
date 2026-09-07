@@ -261,6 +261,7 @@ if (in_array($actie, ['versturen', 'test'], true)) {
         CKEDITOR.replace('bericht', {
             height: 360,
             language: 'nl',
+            versionCheck: false,
             extraPlugins: 'autogrow,autolink,codesnippet,emoji,placeholder,tableresize,uicolor',
             removePlugins: 'a11ychecker,ckfinder,cloudservices,easyimage,exportpdf'
         });
