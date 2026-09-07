@@ -91,8 +91,8 @@
                     target="_blank">Viool 2 (betekend)</a>
             </li>
             <li>
-                <a href="\2026-09-26\K299.Viola.pdf"
-                    target="_blank">Altviool</a>
+                <a href="\2026-09-26\K299.Viola betekend.pdf"
+                    target="_blank">Altviool (betekend)</a>
             </li>
             <li>
                 <a href="\2026-09-26\K299.Cello betekend.pdf"
