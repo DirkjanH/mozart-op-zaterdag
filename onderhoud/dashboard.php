@@ -13,8 +13,10 @@ require_once __DIR__ . '/../includes/inloggen.php';
 
 <body>
     <div class="w3-content w3-mobile w3-white w3-panel" style="max-width:700px;">
-        <img src="/images/Mozart.jpg" alt="Mozart op Zaterdag" class="geenlijn" style="width:100%; height:auto;">
-        <h3>Mozart op Zaterdag - Dashboard</h3>
+        <header style="display:flex; align-items:center; gap:24px; margin-bottom:20px;">
+            <img src="/images/Mozart.jpg" alt="Mozart op Zaterdag" class="geenlijn" style="width:180px; max-width:35%; height:auto;">
+            <h3 style="margin:0;">Mozart op Zaterdag - Dashboard</h3>
+        </header>
         <div class="w3-bar-block">
             <a href="deelnemers_bewerken.php" target="_blank" class="w3-bar-item w3-button w3-blue w3-margin-bottom">Deelnemers bewerken</a>
             <a href="werken_bewerken.php" target="_blank" class="w3-bar-item w3-button w3-blue w3-margin-bottom">Werken bewerken</a>
