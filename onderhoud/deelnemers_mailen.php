@@ -2,6 +2,9 @@
 require_once __DIR__ . '/../includes/inloggen.php';
 require_once __DIR__ . '/../connections/MozartopZaterdag.php';
 require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../includes/mail_tracking.php';
+
+zorgVoorMailTrackingTabel($pdo);
 
 $melding = '';
 $resultaten = [];
@@ -210,6 +213,7 @@ if ($actie === 'versturen') {
                 $deelnemer['pogingen'] = 0;
                 $deelnemer['fout'] = '';
                 $deelnemer['verzonden_op'] = null;
+                $deelnemer['tracking_token'] = bin2hex(random_bytes(32));
                 return $deelnemer;
             }, $geselecteerdeDeelnemers),
         ];
@@ -286,9 +290,15 @@ if ($actie === 'verwerk_pluk' && is_array($wachtrij)) {
                         $mailer->clearAttachments();
                         $mailer->addAddress($ontvanger['email'], $naam);
                         $mailer->Subject = str_replace(["\r", "\n"], '', html_entity_decode(vulMailTemplate($wachtrij['onderwerp'], $ontvanger, $wachtrij['activiteit']), ENT_QUOTES, 'UTF-8'));
-                        $mailer->Body = sluitLokaleAfbeeldingenIn(vulMailTemplate($wachtrij['bericht'], $ontvanger, $wachtrij['activiteit']), $mailer);
+                        $ontvanger['tracking_token'] ??= bin2hex(random_bytes(32));
+                        registreerMailTracking($pdo, $ontvanger['tracking_token'], (int) $wachtrij['activiteit']['id'], (int) $ontvanger['id'], $ontvanger['email']);
+                        $mailer->Body = voegTrackingPixelToe(
+                            sluitLokaleAfbeeldingenIn(vulMailTemplate($wachtrij['bericht'], $ontvanger, $wachtrij['activiteit']), $mailer),
+                            $ontvanger['tracking_token']
+                        );
                         $mailer->AltBody = trim(html_entity_decode(strip_tags(str_replace(['</p>', '<br>', '<br/>', '<br />'], "\n", $mailer->Body)), ENT_QUOTES, 'UTF-8'));
                         $mailer->send();
+                        markeerMailVerzonden($pdo, $ontvanger['tracking_token']);
                         $ontvanger['status'] = 'verzonden';
                         $ontvanger['verzonden_op'] = date(DATE_ATOM);
                         $resultaten[] = ['gelukt' => true, 'naam' => $naam, 'bericht' => $ontvanger['email']];
@@ -377,6 +387,17 @@ if ($actie === 'test') {
     }
 }
 
+$geopendPerToken = [];
+if (is_array($wachtrij)) {
+    $trackingTokens = array_values(array_filter(array_column($wachtrij['ontvangers'], 'tracking_token')));
+    if ($trackingTokens !== []) {
+        $placeholders = implode(',', array_fill(0, count($trackingTokens), '?'));
+        $stmt = $pdo->prepare("SELECT token, geopend_op FROM mail_tracking WHERE token IN ($placeholders)");
+        $stmt->execute($trackingTokens);
+        $geopendPerToken = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+    }
+}
+
 $wachtrijTellingen = ['wachtend' => 0, 'verzonden' => 0, 'mislukt' => 0];
 if (is_array($wachtrij)) {
     foreach ($wachtrij['ontvangers'] as $ontvanger) {
@@ -453,12 +474,18 @@ if (is_array($wachtrij)) {
                     <summary>Status per ontvanger</summary>
                     <div class="w3-responsive">
                         <table class="w3-table w3-bordered w3-small">
-                            <tr><th>Naam</th><th>E-mail</th><th>Status</th><th>Pogingen</th><th>Fout</th></tr>
+                            <tr><th>Naam</th><th>E-mail</th><th>Status</th><th>Geopend</th><th>Pogingen</th><th>Fout</th></tr>
                             <?php foreach ($wachtrij['ontvangers'] as $ontvanger): ?>
+                                <?php $geopendOp = $geopendPerToken[$ontvanger['tracking_token'] ?? ''] ?? null; ?>
                                 <tr>
                                     <td><?= htmlspecialchars($ontvanger['voornaam'] . ' ' . $ontvanger['achternaam']) ?></td>
                                     <td><?= htmlspecialchars($ontvanger['email']) ?></td>
                                     <td><?= htmlspecialchars($ontvanger['status']) ?></td>
+                                    <td>
+                                        <?php if ($geopendOp !== null): ?>
+                                            <span class="w3-text-green" title="Geopend op <?= htmlspecialchars(date('d-m-Y H:i', strtotime($geopendOp))) ?>" aria-label="Geopend">&#10004;</span>
+                                        <?php endif; ?>
+                                    </td>
                                     <td><?= (int) $ontvanger['pogingen'] ?></td>
                                     <td><?= htmlspecialchars($ontvanger['fout']) ?></td>
                                 </tr>
