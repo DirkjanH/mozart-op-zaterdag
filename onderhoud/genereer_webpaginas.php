@@ -400,20 +400,35 @@ if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
         .partij-item.slepen { opacity: .5; }
         .partij-greep { cursor: grab; font-size: 1.3em; line-height: 1; padding: .2em .4em; }
     </style>
-    <script src="/vendor/tinymce/tinymce/tinymce.min.js"></script>
+    <script src="https://cdn.ckeditor.com/4.22.1/full-all/ckeditor.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            if (window.tinymce) {
-                tinymce.init({
-                    selector: '.rijke-editor',
-                    license_key: 'gpl',
-                    height: 220,
-                    menubar: false,
-                    plugins: 'lists link',
-                    toolbar: 'bold italic | bullist numlist | link | undo redo',
-                    init_instance_callback: function (editor) {
-                        editor.setContent(editor.getElement().value);
-                    }
+            if (window.CKEDITOR) {
+                document.querySelectorAll('.rijke-editor').forEach(function (editor) {
+                    CKEDITOR.replace(editor.id, {
+                        height: editor.id === 'toelichting' ? 320 : 240,
+                        language: 'nl',
+                        versionCheck: false,
+                        extraPlugins: 'autogrow,autolink,codesnippet,emoji,placeholder,tableresize,uicolor',
+                        removePlugins: 'a11ychecker,ckfinder,cloudservices,easyimage,exportpdf',
+                        toolbarGroups: [
+                            { name: 'document', groups: ['mode', 'document', 'doctools'] },
+                            { name: 'clipboard', groups: ['clipboard', 'undo'] },
+                            { name: 'editing', groups: ['find', 'selection', 'spellchecker'] },
+                            { name: 'forms' },
+                            '/',
+                            { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
+                            { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi'] },
+                            { name: 'links' },
+                            { name: 'insert' },
+                            '/',
+                            { name: 'styles' },
+                            { name: 'colors' },
+                            { name: 'tools' },
+                            { name: 'others' },
+                            { name: 'about' }
+                        ]
+                    });
                 });
             }
 

@@ -6,7 +6,6 @@
   "require": {
     "phpmailer/phpmailer": "^7.1",
     "pelago/emogrifier": "^8.2",
-    "tinymce/tinymce": "^8.8",
     "league/oauth2-google": "^5.0",
     "mollie/mollie-api-php": "^3.13",
     "php81_bc/strftime": "^0.7.6",
