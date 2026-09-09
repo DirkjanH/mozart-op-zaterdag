@@ -34,7 +34,7 @@ if ($actie === 'json_laden') {
 
 $activiteitId = (int) ($_GET['activiteit_id'] ?? $_POST['activiteit_id'] ?? 0);
 $activiteiten = $pdo->query(
-    'SELECT id, datum, plaats, omschrijving FROM activiteiten ORDER BY datum DESC'
+    'SELECT id, datum, plaats, omschrijving FROM activiteiten ORDER BY datum ASC'
 )->fetchAll(PDO::FETCH_ASSOC);
 if ($activiteitId === 0 && $activiteiten !== []) {
     $activiteitId = (int) $activiteiten[0]['id'];
