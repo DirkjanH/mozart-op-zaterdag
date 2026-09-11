@@ -7,8 +7,11 @@ function zorgVoorUitvoeringskolommen(PDO $pdo): void
     if ($pdo->query("SHOW COLUMNS FROM werken LIKE 'uitgevoerd_op'")->fetch() === false) {
         $pdo->exec('ALTER TABLE werken ADD COLUMN uitgevoerd_op DATE NULL');
     }
-    if ($pdo->query("SHOW COLUMNS FROM werken LIKE 'met_solist'")->fetch() === false) {
-        $pdo->exec('ALTER TABLE werken ADD COLUMN met_solist VARCHAR(50) NULL');
+    $metSolistKolom = $pdo->query("SHOW COLUMNS FROM werken LIKE 'met_solist'")->fetch(PDO::FETCH_ASSOC);
+    if ($metSolistKolom === false) {
+        $pdo->exec('ALTER TABLE werken ADD COLUMN met_solist VARCHAR(100) NULL');
+    } elseif (preg_match('/^varchar\((\d+)\)$/i', $metSolistKolom['Type'], $delen) && (int) $delen[1] < 100) {
+        $pdo->exec('ALTER TABLE werken MODIFY COLUMN met_solist VARCHAR(100) NULL');
     }
 }
 
@@ -35,8 +38,8 @@ if (isset($_POST['actie']) && $_POST['actie'] === 'opslaan') {
 
     if ($titel === '' || $kv_nummer === '' || $jaar === '') {
         $melding = 'Titel, KV-nummer en jaar zijn verplicht.';
-    } elseif ($met_solist !== null && mb_strlen($met_solist) > 50) {
-        $melding = 'Met solist mag maximaal 50 tekens bevatten.';
+    } elseif ($met_solist !== null && mb_strlen($met_solist) > 100) {
+        $melding = 'Met solist mag maximaal 100 tekens bevatten.';
     } elseif ($id !== '') {
         $stmt = $pdo->prepare(
             'UPDATE werken SET titel = ?, kv_nummer = ?, kv_toevoeging = ?, jaar = ?, soort = ?, bezetting = ?, solo = ?, uitgevoerd_op = ?, met_solist = ? WHERE id = ?'
@@ -145,7 +148,7 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
                         <td><input class="w3-input" type="text" name="bezetting" value="<?= htmlspecialchars($werk['bezetting']) ?>"></td>
                         <td><input class="w3-input" type="text" name="solo" value="<?= htmlspecialchars($werk['solo'] ?? '') ?>"></td>
                         <td><input class="w3-input" type="date" name="uitgevoerd_op" value="<?= htmlspecialchars($werk['uitgevoerd_op'] ?? '') ?>"></td>
-                        <td><input class="w3-input" type="text" name="met_solist" value="<?= htmlspecialchars($werk['met_solist'] ?? '') ?>" maxlength="50" style="width:14em;"></td>
+                        <td><input class="w3-input" type="text" name="met_solist" value="<?= htmlspecialchars($werk['met_solist'] ?? '') ?>" maxlength="100" style="width:14em;"></td>
                         <td class="actie-kolom">
                             <button class="w3-button w3-blue actie-knop" type="submit" title="Werk opslaan" aria-label="Werk opslaan">&#10003;</button>
                         </td>
@@ -170,7 +173,7 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
                     <td><input class="w3-input" type="text" name="bezetting"></td>
                     <td><input class="w3-input" type="text" name="solo"></td>
                     <td><input class="w3-input" type="date" name="uitgevoerd_op"></td>
-                    <td><input class="w3-input" type="text" name="met_solist" maxlength="50" style="width:14em;"></td>
+                    <td><input class="w3-input" type="text" name="met_solist" maxlength="100" style="width:14em;"></td>
                     <td class="actie-kolom">
                         <button class="w3-button w3-green w3-small" type="submit">Toevoegen</button>
                     </td>
