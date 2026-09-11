@@ -65,9 +65,50 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
     <title>Werken bewerken</title>
     <link href="/css/moz.css" rel="stylesheet" type="text/css">
     <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+
+        .pagina {
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100vh;
+            margin: 0 !important;
+            padding: 8px 16px !important;
+        }
+
+        .pagina-kop {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1em;
+            flex-wrap: wrap;
+        }
+
+        .pagina-kop h3 {
+            margin: 8px 0;
+        }
+
+        .filterknoppen {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
         .tabel-scroll {
-            max-height: 75vh;
+            flex: 1;
+            min-height: 0;
+            width: 100%;
             overflow: auto;
+        }
+
+        .tabel-scroll table {
+            width: 100%;
         }
 
         .tabel-scroll th {
@@ -130,8 +171,16 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
 </head>
 
 <body>
-    <div class="w3-content w3-mobile w3-white w3-panel" style="max-width:1100px;">
-        <h3>Werken bewerken</h3>
+    <div class="pagina w3-mobile w3-white w3-panel">
+        <div class="pagina-kop">
+            <h3>Werken bewerken</h3>
+            <div class="filterknoppen" role="group" aria-label="Werken filteren">
+                <button class="w3-button w3-blue filterknop" type="button" data-filter="alle" aria-pressed="true">Alle werken</button>
+                <button class="w3-button w3-light-grey filterknop" type="button" data-filter="symfonie" aria-pressed="false">Symfonieën</button>
+                <button class="w3-button w3-light-grey filterknop" type="button" data-filter="concert" aria-pressed="false">Concerten</button>
+                <button class="w3-button w3-light-grey filterknop" type="button" data-filter="ander" aria-pressed="false">Overig</button>
+            </div>
+        </div>
         <?php if ($melding !== ''): ?>
             <p class="w3-panel w3-pale-green w3-leftbar w3-border-green"><?= htmlspecialchars($melding) ?></p>
         <?php endif; ?>
@@ -154,7 +203,7 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
                 <form method="post">
                     <input type="hidden" name="actie" value="opslaan">
                     <input type="hidden" name="id" value="<?= (int) $werk['id'] ?>">
-                    <tr>
+                    <tr class="werk-rij" data-soort="<?= htmlspecialchars($werk['soort'], ENT_QUOTES, 'UTF-8') ?>">
                         <td><input class="w3-input<?= !empty($werk['uitgevoerd_op']) ? ' uitgevoerd-titel' : '' ?>" type="text" name="titel" value="<?= htmlspecialchars($werk['titel']) ?>" style="min-width:20em;" required></td>
                         <td><input class="w3-input veld-kv" type="number" name="kv_nummer" value="<?= htmlspecialchars($werk['kv_nummer']) ?>" required></td>
                         <td><input class="w3-input" type="text" name="kv_toevoeging" value="<?= htmlspecialchars($werk['kv_toevoeging'] ?? '') ?>" style="width:4em;"></td>
@@ -203,6 +252,27 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
         </table>
         </div>
     </div>
+    <script>
+        const filterknoppen = document.querySelectorAll('.filterknop');
+        const werkRijen = document.querySelectorAll('.werk-rij');
+
+        filterknoppen.forEach((knop) => {
+            knop.addEventListener('click', () => {
+                const filter = knop.dataset.filter;
+
+                werkRijen.forEach((rij) => {
+                    rij.hidden = filter !== 'alle' && rij.dataset.soort !== filter;
+                });
+
+                filterknoppen.forEach((filterknop) => {
+                    const isActief = filterknop === knop;
+                    filterknop.classList.toggle('w3-blue', isActief);
+                    filterknop.classList.toggle('w3-light-grey', !isActief);
+                    filterknop.setAttribute('aria-pressed', isActief ? 'true' : 'false');
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
