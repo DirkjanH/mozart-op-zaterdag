@@ -105,6 +105,27 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
             padding: 0.2em !important;
             white-space: nowrap;
         }
+
+        .veld-kv {
+            width: 4.5em;
+        }
+
+        .veld-jaar {
+            width: 5em;
+        }
+
+        .veld-soort {
+            min-width: 8em;
+        }
+
+        .veld-solo {
+            min-width: 12em;
+        }
+
+        .uitgevoerd-titel {
+            color: #c00;
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -134,19 +155,19 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
                     <input type="hidden" name="actie" value="opslaan">
                     <input type="hidden" name="id" value="<?= (int) $werk['id'] ?>">
                     <tr>
-                        <td><input class="w3-input" type="text" name="titel" value="<?= htmlspecialchars($werk['titel']) ?>" style="min-width:20em;" required></td>
-                        <td><input class="w3-input" type="number" name="kv_nummer" value="<?= htmlspecialchars($werk['kv_nummer']) ?>" style="width:6em;" required></td>
+                        <td><input class="w3-input<?= !empty($werk['uitgevoerd_op']) ? ' uitgevoerd-titel' : '' ?>" type="text" name="titel" value="<?= htmlspecialchars($werk['titel']) ?>" style="min-width:20em;" required></td>
+                        <td><input class="w3-input veld-kv" type="number" name="kv_nummer" value="<?= htmlspecialchars($werk['kv_nummer']) ?>" required></td>
                         <td><input class="w3-input" type="text" name="kv_toevoeging" value="<?= htmlspecialchars($werk['kv_toevoeging'] ?? '') ?>" style="width:4em;"></td>
-                        <td><input class="w3-input" type="number" name="jaar" value="<?= htmlspecialchars($werk['jaar']) ?>" style="width:6em;" required></td>
+                        <td><input class="w3-input veld-jaar" type="number" name="jaar" value="<?= htmlspecialchars($werk['jaar']) ?>" required></td>
                         <td>
-                            <select class="w3-select" name="soort">
+                            <select class="w3-select veld-soort" name="soort">
                                 <?php foreach ($soorten as $soort): ?>
                                     <option value="<?= $soort ?>" <?= $werk['soort'] === $soort ? 'selected' : '' ?>><?= $soort ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </td>
                         <td><input class="w3-input" type="text" name="bezetting" value="<?= htmlspecialchars($werk['bezetting']) ?>"></td>
-                        <td><input class="w3-input" type="text" name="solo" value="<?= htmlspecialchars($werk['solo'] ?? '') ?>"></td>
+                        <td><input class="w3-input veld-solo" type="text" name="solo" value="<?= htmlspecialchars($werk['solo'] ?? '') ?>"></td>
                         <td><input class="w3-input" type="date" name="uitgevoerd_op" value="<?= htmlspecialchars($werk['uitgevoerd_op'] ?? '') ?>"></td>
                         <td><input class="w3-input" type="text" name="met_solist" value="<?= htmlspecialchars($werk['met_solist'] ?? '') ?>" maxlength="100" style="width:14em;"></td>
                         <td class="actie-kolom">
@@ -160,18 +181,18 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
                 <input type="hidden" name="actie" value="opslaan">
                 <tr>
                     <td><input class="w3-input" type="text" name="titel" placeholder="Nieuw werk" style="min-width:20em;" required></td>
-                    <td><input class="w3-input" type="number" name="kv_nummer" style="width:6em;" required></td>
+                    <td><input class="w3-input veld-kv" type="number" name="kv_nummer" required></td>
                     <td><input class="w3-input" type="text" name="kv_toevoeging" style="width:4em;"></td>
-                    <td><input class="w3-input" type="number" name="jaar" style="width:6em;" required></td>
+                    <td><input class="w3-input veld-jaar" type="number" name="jaar" required></td>
                     <td>
-                        <select class="w3-select" name="soort">
+                        <select class="w3-select veld-soort" name="soort">
                             <?php foreach ($soorten as $soort): ?>
                                 <option value="<?= $soort ?>"><?= $soort ?></option>
                             <?php endforeach; ?>
                         </select>
                     </td>
                     <td><input class="w3-input" type="text" name="bezetting"></td>
-                    <td><input class="w3-input" type="text" name="solo"></td>
+                    <td><input class="w3-input veld-solo" type="text" name="solo"></td>
                     <td><input class="w3-input" type="date" name="uitgevoerd_op"></td>
                     <td><input class="w3-input" type="text" name="met_solist" maxlength="100" style="width:14em;"></td>
                     <td class="actie-kolom">
