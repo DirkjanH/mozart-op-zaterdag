@@ -56,7 +56,7 @@
                 <b>26 september:</b> Concert voor fluit en harp in C KV 299 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. Solisten zijn: Elisa Bartolomé Gómez, dwarsfluit, en Maria Palma, harp. <a href="/2026-09-26/index.php" target="_blank">Meer info & partijen vind je hier</a>. Er zijn nu 27 deelnemers. De bezetting is compleet.
             </li>
             <li>
-                <b>24 oktober:</b> “Parijse” Ouverture in D KV 311a & “Parijse” Symfonie nr. 31 in D KV 297 voor 2 fluiten,
+                <b>24 oktober:</b> “Parijse” Ouverture in Bes KV 311a & “Parijse” Symfonie nr. 31 in D KV 297 voor 2 fluiten,
                 2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns, 2 trompetten, pauken en strijkers. <a href="/2026-10-24/index.php" target="_blank">Meer info & partijen vind je hier</a>.
             </li>
             <li>
