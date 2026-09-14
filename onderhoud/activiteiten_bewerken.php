@@ -2,6 +2,10 @@
 require_once __DIR__ . '/../includes/inloggen.php';
 require_once __DIR__ . '/../connections/MozartopZaterdag.php';
 
+if ($pdo->query("SHOW COLUMNS FROM activiteiten LIKE 'gewenste_bezetting'")->fetch() === false) {
+    $pdo->exec('ALTER TABLE activiteiten ADD COLUMN gewenste_bezetting VARCHAR(100) NULL');
+}
+
 $melding = '';
 
 // Zet de gekozen werken om in een leesbare omschrijving, bijv.
@@ -29,6 +33,8 @@ if (isset($_POST['actie']) && $_POST['actie'] === 'verwijderen' && isset($_POST[
 if (isset($_POST['actie']) && $_POST['actie'] === 'opslaan') {
     $datum = trim($_POST['datum'] ?? '');
     $plaats = trim($_POST['plaats'] ?? '');
+    $gewenste_bezetting = trim($_POST['gewenste_bezetting'] ?? '');
+    $gewenste_bezetting = $gewenste_bezetting === '' ? null : $gewenste_bezetting;
     $werk_ids = array_map('intval', $_POST['werken'] ?? []);
     $id = $_POST['id'] ?? '';
 
@@ -46,12 +52,12 @@ if (isset($_POST['actie']) && $_POST['actie'] === 'opslaan') {
         $omschrijving = $omschrijving === '' ? null : $omschrijving;
 
         if ($id !== '') {
-            $stmt = $pdo->prepare('UPDATE activiteiten SET datum = ?, plaats = ?, omschrijving = ? WHERE id = ?');
-            $stmt->execute([$datum, $plaats, $omschrijving, $id]);
+            $stmt = $pdo->prepare('UPDATE activiteiten SET datum = ?, plaats = ?, gewenste_bezetting = ?, omschrijving = ? WHERE id = ?');
+            $stmt->execute([$datum, $plaats, $gewenste_bezetting, $omschrijving, $id]);
             $melding = 'Activiteit bijgewerkt.';
         } else {
-            $stmt = $pdo->prepare('INSERT INTO activiteiten (datum, plaats, omschrijving) VALUES (?, ?, ?)');
-            $stmt->execute([$datum, $plaats, $omschrijving]);
+            $stmt = $pdo->prepare('INSERT INTO activiteiten (datum, plaats, gewenste_bezetting, omschrijving) VALUES (?, ?, ?, ?)');
+            $stmt->execute([$datum, $plaats, $gewenste_bezetting, $omschrijving]);
             $id = $pdo->lastInsertId();
             $melding = 'Activiteit toegevoegd.';
         }
@@ -166,6 +172,7 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
                 <tr>
                     <th>Datum</th>
                     <th>Plaats</th>
+                    <th>Gewenste bezetting</th>
                     <th>Werken</th>
                     <th>Omschrijving</th>
                     <th class="actie-kolom"></th>
@@ -178,6 +185,7 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
                         <tr>
                             <td><input class="w3-input" type="date" name="datum" value="<?= htmlspecialchars($activiteit['datum']) ?>" required></td>
                             <td><input class="w3-input" type="text" name="plaats" value="<?= htmlspecialchars($activiteit['plaats']) ?>" style="width:12em;" required></td>
+                            <td><input class="w3-input" type="text" name="gewenste_bezetting" value="<?= htmlspecialchars($activiteit['gewenste_bezetting'] ?? '') ?>" placeholder="houtblazers-koperblazers-pauken-strijkers" maxlength="100" style="min-width:18em;"></td>
                             <td>
                                 <select class="w3-select" name="werken[]" multiple size="1" style="min-width:16em;">
                                     <?php foreach ($werken as $werk): ?>
@@ -201,6 +209,7 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
                     <tr>
                         <td><input class="w3-input" type="date" name="datum" value="<?= htmlspecialchars($voorgesteldeDatum) ?>" required></td>
                         <td><input class="w3-input" type="text" name="plaats" value="Marnixzaal" style="width:12em;" required></td>
+                        <td><input class="w3-input" type="text" name="gewenste_bezetting" placeholder="houtblazers-koperblazers-pauken-strijkers" maxlength="100" style="min-width:18em;"></td>
                         <td>
                             <select class="w3-select" name="werken[]" multiple size="1" style="min-width:16em;">
                                 <?php foreach ($werken as $werk): ?>
