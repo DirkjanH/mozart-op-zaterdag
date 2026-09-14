@@ -29,6 +29,16 @@ function zonderPdfExtensie(string $label): string
     return trim((string) preg_replace('/\.pdf$/i', '', trim($label)));
 }
 
+function metPdfExtensie(string $link): string
+{
+    $link = trim($link);
+    if ($link === '' || preg_match('/\.pdf(?:[?#]|$)/i', $link)) {
+        return $link;
+    }
+    preg_match('/^([^?#]*)(.*)$/', $link, $delen);
+    return $delen[1] . '.pdf' . ($delen[2] ?? '');
+}
+
 function isStrijkerPartij(string $bestand): bool
 {
     return (bool) preg_match('/viool|violin|altviool|viola|cello|contrabas|double.?bass|strijk/i', $bestand);
@@ -382,7 +392,7 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
                 }
                 $partijConfiguratie[$bestand] = [
                     'label' => zonderPdfExtensie((string) ($partij['label'] ?? '')),
-                    'link' => trim((string) ($partij['link'] ?? '')),
+                    'link' => metPdfExtensie((string) ($partij['link'] ?? '')),
                     'volgorde' => max(0, (int) ($partij['volgorde'] ?? 0)),
                     'betekend' => isset($partij['betekend']),
                 ];
@@ -426,7 +436,7 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
                 foreach ($werkPartijen as $partij) {
                     $instellingen = $partijConfiguratie[$partij['bestand']] ?? [];
                     $label = zonderPdfExtensie(($instellingen['label'] ?? '') ?: $partij['label']);
-                    $link = ($instellingen['link'] ?? '') ?: $partij['bestand'];
+                    $link = metPdfExtensie(($instellingen['link'] ?? '') ?: $partij['bestand']);
                     if ($partij['strijker'] && !empty($instellingen['betekend'])) {
                         $label .= ' (betekend)';
                     }
@@ -664,7 +674,7 @@ if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
                             </label>
                             <label>
                                 Link
-                                <input class="w3-input" type="text" name="partijen[<?= $index ?>][link]" value="<?= html((string) ($instellingen['link'] ?? $partij['bestand'])) ?>" style="display:inline-block; width:24em;">
+                                <input class="w3-input" type="text" name="partijen[<?= $index ?>][link]" value="<?= html(metPdfExtensie((string) ($instellingen['link'] ?? $partij['bestand']))) ?>" style="display:inline-block; width:24em;">
                             </label>
                             <?php if ($partij['strijker']): ?>
                                 <label>
