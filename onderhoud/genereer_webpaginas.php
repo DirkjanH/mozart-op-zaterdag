@@ -449,7 +449,7 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
             $deelnemersHtml = '';
             foreach (maakBezettingsRijen($deelnemers, $instrumenten, $gewensteBezetting ?? []) as $bezettingsRij) {
                 if ($bezettingsRij['vacature']) {
-                    $deelnemersHtml .= '                <tr><td><i>vacature</i></td><td></td><td>' . html($bezettingsRij['stemgroep']) . "</td></tr>\n";
+                    $deelnemersHtml .= '                <tr><td></td><td><i>vacature</i></td><td>' . html($bezettingsRij['stemgroep']) . "</td></tr>\n";
                     continue;
                 }
                 $deelnemer = $bezettingsRij['speler'];
