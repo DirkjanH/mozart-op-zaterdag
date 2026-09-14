@@ -118,9 +118,37 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
     <title>Activiteiten bewerken</title>
     <link href="/css/moz.css" rel="stylesheet" type="text/css">
     <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+
+        .pagina {
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100vh;
+            margin: 0 !important;
+            padding: 8px 16px !important;
+        }
+
+        .pagina h3 {
+            flex: 0 0 auto;
+            margin: 8px 0;
+        }
+
         .tabel-scroll {
-            max-height: 75vh;
+            flex: 1 1 auto;
+            min-height: 0;
+            width: 100%;
             overflow: auto;
+        }
+
+        .tabel-scroll table {
+            width: 100%;
         }
 
         .tabel-scroll th {
@@ -161,7 +189,7 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
 </head>
 
 <body>
-    <div class="w3-content w3-mobile w3-white w3-panel" style="max-width:1000px;">
+    <div class="pagina w3-mobile w3-white w3-panel">
         <h3>Activiteiten bewerken</h3>
         <?php if ($melding !== ''): ?>
             <p class="w3-panel w3-pale-green w3-leftbar w3-border-green"><?= htmlspecialchars($melding) ?></p>
