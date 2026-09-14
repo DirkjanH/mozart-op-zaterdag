@@ -24,6 +24,11 @@ function partijLabel(string $bestand): string
     return trim($naam);
 }
 
+function zonderPdfExtensie(string $label): string
+{
+    return trim((string) preg_replace('/\.pdf$/i', '', trim($label)));
+}
+
 function isStrijkerPartij(string $bestand): bool
 {
     return (bool) preg_match('/viool|violin|altviool|viola|cello|contrabas|double.?bass|strijk/i', $bestand);
@@ -239,7 +244,7 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
                     continue;
                 }
                 $partijConfiguratie[$bestand] = [
-                    'label' => trim((string) ($partij['label'] ?? '')),
+                    'label' => zonderPdfExtensie((string) ($partij['label'] ?? '')),
                     'link' => trim((string) ($partij['link'] ?? '')),
                     'volgorde' => max(0, (int) ($partij['volgorde'] ?? 0)),
                     'betekend' => isset($partij['betekend']),
@@ -283,7 +288,7 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
                 $werkPartijenHtml = '';
                 foreach ($werkPartijen as $partij) {
                     $instellingen = $partijConfiguratie[$partij['bestand']] ?? [];
-                    $label = ($instellingen['label'] ?? '') ?: $partij['label'];
+                    $label = zonderPdfExtensie(($instellingen['label'] ?? '') ?: $partij['label']);
                     $link = ($instellingen['link'] ?? '') ?: $partij['bestand'];
                     if ($partij['strijker'] && !empty($instellingen['betekend'])) {
                         $label .= ' (betekend)';
@@ -513,7 +518,7 @@ if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
                             <input type="hidden" name="partijen[<?= $index ?>][volgorde]" value="<?= (int) ($instellingen['volgorde'] ?? 0) ?>">
                             <label>
                                 Tekst
-                                <input class="w3-input" type="text" name="partijen[<?= $index ?>][label]" value="<?= html((string) ($instellingen['label'] ?? $partij['label'])) ?>" style="display:inline-block; width:18em;">
+                                <input class="w3-input" type="text" name="partijen[<?= $index ?>][label]" value="<?= html(zonderPdfExtensie((string) ($instellingen['label'] ?? $partij['label']))) ?>" style="display:inline-block; width:18em;">
                             </label>
                             <label>
                                 Link
