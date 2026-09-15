@@ -107,7 +107,7 @@
             deelnemers.</p>
         <div class="">
             <h2>Bezetting</h2>
-            <p>Er zijn nu 27 deelnemers. De bezetting is compleet.</p>
+            <p>Er zijn nu 26 deelnemers. De bezetting is compleet.</p>
             <table class="w3-table w3-striped w3-bordered" id="deelnemers">
                 <thead>
                     <tr>
@@ -126,11 +126,6 @@
                         <td>Liesbeth</td>
                         <td>Feikema</td>
                         <td>hobo 2</td>
-                    </tr>
-                    <tr>
-                        <td>Yolande </td>
-                        <td>Krooshof</td>
-                        <td>fagot</td>
                     </tr>
                     <tr>
                         <td>Ietsje</td>
