@@ -5,6 +5,14 @@ require_once __DIR__ . '/vendor/autoload.php';
 $melding = '';
 $foutmelding = '';
 
+$voorkeurKolom = $pdo->query("SHOW COLUMNS FROM deelnemers LIKE 'op_de_hoogte_houden'")->fetch(PDO::FETCH_ASSOC);
+if ($voorkeurKolom === false) {
+    $pdo->exec('ALTER TABLE deelnemers ADD COLUMN op_de_hoogte_houden TINYINT(1) NOT NULL DEFAULT 1');
+} elseif ((string) $voorkeurKolom['Default'] === '0') {
+    $pdo->exec('UPDATE deelnemers SET op_de_hoogte_houden = 1 WHERE op_de_hoogte_houden = 0');
+    $pdo->exec('ALTER TABLE deelnemers MODIFY op_de_hoogte_houden TINYINT(1) NOT NULL DEFAULT 1');
+}
+
 // Haal instrumenten op in de volgorde van de instrumententabel, zonder zangstemmen.
 $uitgeslotenInstrumenten = ['sopraan', 'alt', 'tenor', 'bas', 'countertenor', 'mezzosopraan', 'bariton', 'basklarinet', 'tuba', 'contrafagot', 'piano', 'clavecimbel', 'slagwerk', 'orgel', 'piccolo', 'engelse hoorn'];
 $instrumenten = $pdo->query('SELECT * FROM instrumenten')->fetchAll(PDO::FETCH_ASSOC);
@@ -50,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $telefoon = trim($_POST['telefoon'] ?? '');
         $postcode = trim($_POST['postcode'] ?? '');
         $plaats = trim($_POST['plaats'] ?? '');
+        $opDeHoogteHouden = $_POST['op_de_hoogte_houden'] ?? '';
         $instrumenten_gekozen = array_filter($_POST['instrumenten'] ?? []);
 
         if (empty($voornaam) || empty($achternaam) || empty($email)) {
@@ -60,6 +69,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception('Ongeldig e-mailadres.');
         }
 
+        if (!in_array($opDeHoogteHouden, ['0', '1'], true)) {
+            throw new Exception('Geef aan of je op de hoogte gehouden wilt worden.');
+        }
+
         // Zoek bestaande deelnemer
         $stmt = $pdo->prepare('SELECT id FROM deelnemers WHERE email = ?');
         $stmt->execute([$email]);
@@ -68,12 +81,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($bestaande) {
             $deelnemerId = (int) $bestaande['id'];
             // Update bestaande deelnemer
-            $stmt = $pdo->prepare('UPDATE deelnemers SET voornaam = ?, achternaam = ?, telefoon = ?, postcode = ?, plaats = ? WHERE id = ?');
-            $stmt->execute([$voornaam, $achternaam, $telefoon, $postcode, $plaats, $deelnemerId]);
+            $stmt = $pdo->prepare('UPDATE deelnemers SET voornaam = ?, achternaam = ?, telefoon = ?, postcode = ?, plaats = ?, op_de_hoogte_houden = ? WHERE id = ?');
+            $stmt->execute([$voornaam, $achternaam, $telefoon, $postcode, $plaats, (int) $opDeHoogteHouden, $deelnemerId]);
         } else {
             // Maak nieuwe deelnemer
-            $stmt = $pdo->prepare('INSERT INTO deelnemers (voornaam, achternaam, email, telefoon, postcode, plaats) VALUES (?, ?, ?, ?, ?, ?)');
-            $stmt->execute([$voornaam, $achternaam, $email, $telefoon, $postcode, $plaats]);
+            $stmt = $pdo->prepare('INSERT INTO deelnemers (voornaam, achternaam, email, telefoon, postcode, plaats, op_de_hoogte_houden) VALUES (?, ?, ?, ?, ?, ?, ?)');
+            $stmt->execute([$voornaam, $achternaam, $email, $telefoon, $postcode, $plaats, (int) $opDeHoogteHouden]);
             $deelnemerId = (int) $pdo->lastInsertId();
         }
 
@@ -125,7 +138,7 @@ $geselecteerde_instrumenten = [];
 $activiteit_statussen = [];
 
 if (!empty($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)) {
-    $stmt = $pdo->prepare('SELECT id, voornaam, achternaam, email, telefoon, postcode, plaats FROM deelnemers WHERE email = ?');
+    $stmt = $pdo->prepare('SELECT id, voornaam, achternaam, email, telefoon, postcode, plaats, op_de_hoogte_houden FROM deelnemers WHERE email = ?');
     $stmt->execute([$_GET['email']]);
     $gegevens = $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
 
@@ -238,6 +251,20 @@ if (!empty($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL))
                 <div class="form-group">
                     <label for="telefoon">Telefoonnummer</label>
                     <input type="tel" id="telefoon" name="telefoon" value="<?= htmlspecialchars($gegevens['telefoon'] ?? '') ?>">
+                </div>
+
+                <div class="form-group">
+                    <label>Ik wil graag op de hoogte gehouden worden van de activiteiten van Mozart op Zaterdag</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="op_de_hoogte_ja" name="op_de_hoogte_houden" value="1" <?= isset($gegevens['op_de_hoogte_houden']) && (int) $gegevens['op_de_hoogte_houden'] === 1 ? 'checked' : '' ?> required>
+                            <label for="op_de_hoogte_ja" style="margin:0;font-weight:normal">Ja</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="op_de_hoogte_nee" name="op_de_hoogte_houden" value="0" <?= isset($gegevens['op_de_hoogte_houden']) && (int) $gegevens['op_de_hoogte_houden'] === 0 ? 'checked' : '' ?> required>
+                            <label for="op_de_hoogte_nee" style="margin:0;font-weight:normal">Nee</label>
+                        </div>
+                    </div>
                 </div>
             </div>
 
