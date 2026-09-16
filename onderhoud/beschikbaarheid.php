@@ -245,11 +245,18 @@ document.addEventListener('DOMContentLoaded', function () {
     if (opgeslagenScrollPositie !== null) {
         sessionStorage.removeItem(scrollSleutel);
         requestAnimationFrame(function () {
-            window.scrollTo(0, Number(opgeslagenScrollPositie));
+            var positie = JSON.parse(opgeslagenScrollPositie);
+            window.scrollTo(0, positie.windowY || 0);
+            var tabelScroll = document.querySelector('.tabel-scroll');
+            if (tabelScroll) tabelScroll.scrollTop = positie.tabelY || 0;
         });
     }
     var bewaarScrollPositie = function () {
-        sessionStorage.setItem(scrollSleutel, String(window.scrollY));
+        var tabelScroll = document.querySelector('.tabel-scroll');
+        sessionStorage.setItem(scrollSleutel, JSON.stringify({
+            windowY: window.scrollY,
+            tabelY: tabelScroll ? tabelScroll.scrollTop : 0
+        }));
     };
     document.querySelectorAll('form').forEach(function (form) {
         form.addEventListener('submit', bewaarScrollPositie);
