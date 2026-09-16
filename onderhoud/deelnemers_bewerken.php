@@ -11,6 +11,25 @@ $activiteiten = $pdo->query(
 
 $instrumenten = $pdo->query('SELECT id, naam FROM instrumenten ORDER BY id')->fetchAll(PDO::FETCH_ASSOC);
 
+if (isset($_POST['actie']) && $_POST['actie'] === 'verwijderen') {
+    $id = (int) ($_POST['id'] ?? 0);
+
+    if ($id > 0) {
+        $pdo->beginTransaction();
+        try {
+            $pdo->prepare('DELETE FROM mail_tracking WHERE deelnemer_id = ?')->execute([$id]);
+            $pdo->prepare('DELETE FROM activiteit_deelnemers WHERE deelnemer_id = ?')->execute([$id]);
+            $pdo->prepare('DELETE FROM deelnemer_instrumenten WHERE deelnemer_id = ?')->execute([$id]);
+            $pdo->prepare('DELETE FROM deelnemers WHERE id = ?')->execute([$id]);
+            $pdo->commit();
+            $melding = 'Deelnemer volledig verwijderd.';
+        } catch (Throwable $e) {
+            $pdo->rollBack();
+            throw $e;
+        }
+    }
+}
+
 // Toevoegen of bewerken van een deelnemer, met instrumenten en beschikbaarheid in dezelfde submit.
 if (isset($_POST['actie']) && $_POST['actie'] === 'opslaan') {
     $voornaam = trim($_POST['voornaam'] ?? '');
@@ -136,7 +155,7 @@ foreach ($pdo->query('SELECT activiteit_id, deelnemer_id, status FROM activiteit
             }
 
             .actie-kolom {
-                width: 2.6em;
+                width: 5.2em;
                 white-space: nowrap;
             }
 
@@ -217,7 +236,10 @@ foreach ($pdo->query('SELECT activiteit_id, deelnemer_id, status FROM activiteit
                                     </select>
                                 </td>
                             <?php endforeach; ?>
-                                <td class="actie-kolom"><button class="w3-button w3-blue actie-knop" type="submit" title="Deelnemer opslaan" aria-label="Deelnemer opslaan">&#10003;</button></td>
+                                <td class="actie-kolom">
+                                    <button class="w3-button w3-blue actie-knop" type="submit" title="Deelnemer opslaan" aria-label="Deelnemer opslaan">&#10003;</button>
+                                    <button class="w3-button w3-red actie-knop" type="submit" name="actie" value="verwijderen" formnovalidate title="Deelnemer verwijderen" aria-label="Deelnemer verwijderen" onclick="return confirm('Weet je zeker dat je deze deelnemer helemaal wilt verwijderen?');">&#10005;</button>
+                                </td>
                         </tr>
                     </form>
                 <?php endforeach; ?>
