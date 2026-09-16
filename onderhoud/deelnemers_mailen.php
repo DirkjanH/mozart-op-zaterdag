@@ -103,7 +103,6 @@ if ($actie === 'json_downloaden') {
     if ($gekozenActiviteit === null) {
         $melding = 'Kies eerst een geldige activiteit.';
     } else {
-        $map = dirname(__DIR__) . '/' . $gekozenActiviteit['datum'];
         try {
             $inhoud = json_encode([
                 'versie' => 1,
@@ -112,15 +111,13 @@ if ($actie === 'json_downloaden') {
                 'bericht' => $bericht,
             ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
 
-            if (!is_dir($map) && !mkdir($map, 0755, true)) {
-                throw new RuntimeException('De datummap kon niet worden aangemaakt.');
-            }
-            if (file_put_contents($map . '/mozart-mailconcept.json', $inhoud . PHP_EOL, LOCK_EX) === false) {
-                throw new RuntimeException('Het mailconcept kon niet worden geschreven.');
-            }
-            $melding = 'Mailconcept opgeslagen in ' . $gekozenActiviteit['datum'] . '/mozart-mailconcept.json.';
+            header('Content-Type: application/json; charset=UTF-8');
+            header('Content-Disposition: attachment; filename="mozart-mailconcept.json"');
+            header('Content-Length: ' . strlen($inhoud . PHP_EOL));
+            echo $inhoud . PHP_EOL;
+            exit;
         } catch (Throwable $e) {
-            $melding = 'Mailconcept niet opgeslagen: ' . $e->getMessage();
+            $melding = 'Mailconcept niet gedownload: ' . $e->getMessage();
         }
     }
 }
@@ -581,7 +578,7 @@ if (is_array($wachtrij)) {
 
                 <button class="w3-button w3-green w3-margin-top" type="submit" name="actie" value="test" data-selectie-vereist <?= $geselecteerdeDeelnemers === [] ? 'disabled' : '' ?>>Testmail naar Dirkjan</button>
                 <button class="w3-button w3-blue w3-margin-top" type="submit" name="actie" value="versturen" data-selectie-vereist <?= $geselecteerdeDeelnemers === [] ? 'disabled' : '' ?>>Verzending in plukjes starten</button>
-                <button class="w3-button w3-light-grey w3-margin-top" type="submit" name="actie" value="json_downloaden">Concept als JSON opslaan</button>
+                <button class="w3-button w3-light-grey w3-margin-top" type="submit" name="actie" value="json_downloaden">Concept als JSON downloaden</button>
             </form>
         <?php endif; ?>
 
