@@ -240,6 +240,21 @@ select[name="instrument_id"], select[name="status"], input[name="partij"] { back
 <style>.toegelaten-vinkje,.afgewezen-kruis,.onbeoordeeld-vraagteken{display:inline-flex;align-items:center;justify-content:center;width:1.35em;height:1.35em;margin-left:.35em;border-radius:50%;color:#fff;font-size:1em;font-weight:bold;line-height:1}.toegelaten-vinkje{background:#198754}.afgewezen-kruis{background:#dc3545}.onbeoordeeld-vraagteken{background:#ff9800}</style>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+    var scrollSleutel = 'beschikbaarheid-scroll-' + window.location.pathname;
+    var opgeslagenScrollPositie = sessionStorage.getItem(scrollSleutel);
+    if (opgeslagenScrollPositie !== null) {
+        sessionStorage.removeItem(scrollSleutel);
+        requestAnimationFrame(function () {
+            window.scrollTo(0, Number(opgeslagenScrollPositie));
+        });
+    }
+    var bewaarScrollPositie = function () {
+        sessionStorage.setItem(scrollSleutel, String(window.scrollY));
+    };
+    document.querySelectorAll('form').forEach(function (form) {
+        form.addEventListener('submit', bewaarScrollPositie);
+    });
+
     var testModusKnop = document.getElementById('testmodus-knop');
     testModusKnop?.addEventListener('click', function () {
         var actief = testModusKnop.dataset.actief !== '1';
@@ -327,6 +342,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 form.appendChild(veld);
             });
             document.body.appendChild(form);
+            bewaarScrollPositie();
             form.submit();
         });
     });
