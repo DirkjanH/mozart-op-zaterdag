@@ -180,6 +180,14 @@ foreach ($pdo->query('SELECT activiteit_id, deelnemer_id, status FROM activiteit
                 ? 'E-mail / telefoon / plaats / voorkeur verbergen'
                 : 'E-mail / telefoon / plaats / voorkeur tonen';
         }
+
+        function bevestigVerwijderen(event) {
+            if (event.submitter && event.submitter.value === 'verwijderen') {
+                return confirm('Weet je zeker dat je deze deelnemer helemaal wilt verwijderen?');
+            }
+
+            return true;
+        }
     </script>
 </head>
 
@@ -208,7 +216,7 @@ foreach ($pdo->query('SELECT activiteit_id, deelnemer_id, status FROM activiteit
                 </tr>
                 <?php foreach ($deelnemers as $deelnemer): ?>
                     <?php $gekozenInstrumenten = $instrumentenPerDeelnemer[$deelnemer['id']] ?? []; ?>
-                    <form method="post">
+                    <form method="post" onsubmit="return bevestigVerwijderen(event);">
                         <input type="hidden" name="actie" value="opslaan">
                         <input type="hidden" name="id" value="<?= (int) $deelnemer['id'] ?>">
                         <tr>
@@ -244,7 +252,7 @@ foreach ($pdo->query('SELECT activiteit_id, deelnemer_id, status FROM activiteit
                             <?php endforeach; ?>
                                 <td class="actie-kolom">
                                     <button class="w3-button w3-blue actie-knop" type="submit" title="Deelnemer opslaan" aria-label="Deelnemer opslaan">&#10003;</button>
-                                    <button class="w3-button w3-red actie-knop" type="submit" name="actie" value="verwijderen" formnovalidate title="Deelnemer verwijderen" aria-label="Deelnemer verwijderen" onclick="return confirm('Weet je zeker dat je deze deelnemer helemaal wilt verwijderen?');">&#10005;</button>
+                                    <button class="w3-button w3-red actie-knop" type="submit" name="actie" value="verwijderen" formnovalidate title="Deelnemer verwijderen" aria-label="Deelnemer verwijderen">&#10005;</button>
                                 </td>
                         </tr>
                     </form>
