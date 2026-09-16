@@ -42,12 +42,18 @@ if (isset($_POST['actie']) && $_POST['actie'] === 'opslaan') {
     $instrument_ids = array_map('intval', $_POST['instrumenten'] ?? []);
     $voorkeuren = trim($_POST['voorkeuren'] ?? '');
     $voorkeuren = $voorkeuren === '' ? null : $voorkeuren;
-    $id = $_POST['id'] ?? '';
+    $id = (int) ($_POST['id'] ?? 0);
+
+    $stmt = $pdo->prepare('SELECT 1 FROM deelnemers WHERE email = ? AND id <> ? LIMIT 1');
+    $stmt->execute([$email, $id]);
+    $emailInGebruik = (bool) $stmt->fetchColumn();
 
     if ($voornaam === '' || $achternaam === '' || $email === '') {
         $melding = 'Voornaam, achternaam en e-mail zijn verplicht.';
+    } elseif ($emailInGebruik) {
+        $melding = 'Dit e-mailadres is al in gebruik bij een andere deelnemer.';
     } else {
-        if ($id !== '') {
+        if ($id > 0) {
             $stmt = $pdo->prepare(
                 'UPDATE deelnemers SET voornaam = ?, achternaam = ?, email = ?, telefoon = ?, plaats = ? WHERE id = ?'
             );
