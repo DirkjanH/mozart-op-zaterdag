@@ -337,6 +337,7 @@ document.addEventListener('DOMContentLoaded', function () {
             CKEDITOR.replace(editor.id, {
                 toolbar: 'Full',
                 height: 260,
+                versionCheck: false,
                 allowedContent: true,
                 removePlugins: 'cloudservices,easyimage,exportpdf'
             });

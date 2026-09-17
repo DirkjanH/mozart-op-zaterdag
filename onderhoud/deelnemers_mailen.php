@@ -659,6 +659,7 @@ if (is_array($wachtrij)) {
 
         if (document.getElementById('bericht')) {
             CKEDITOR.replace('bericht', {
+                versionCheck: false,
                 height: 360,
                 language: 'nl',
                 versionCheck: false,
