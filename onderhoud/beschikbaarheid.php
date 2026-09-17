@@ -464,7 +464,7 @@ document.addEventListener('keydown', function (event) {
 });
 </script>
  </head><body><div class="w3-content w3-mobile w3-white w3-panel" style="max-width:1400px"><h3>Beschikbaarheid</h3>
-<details id="mailteksten-beheer" class="mailteksten-beheer" open>
+<details id="mailteksten-beheer" class="mailteksten-beheer">
 <summary>Mailteksten bewerken</summary>
 <form id="mailteksten-formulier" class="mailteksten-formulier" method="post">
 <input type="hidden" name="actie" value="mailteksten_opslaan">
