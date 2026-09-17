@@ -115,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $bestaande_inschrijving = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($bestaande_inschrijving) {
-                // Update alleen status (niet toegelaten/afgewezen flags)
+                // Update alleen status; de toelatingsbeslissing blijft ongewijzigd.
                 $stmt = $pdo->prepare('UPDATE activiteit_deelnemers SET status = ? WHERE activiteit_id = ? AND deelnemer_id = ?');
                 $stmt->execute([$status, (int) $activiteit['id'], $deelnemerId]);
             } else {

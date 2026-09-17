@@ -3,6 +3,16 @@ require_once __DIR__ . '/../includes/inloggen.php';
 require_once __DIR__ . '/../connections/MozartopZaterdag.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
+$toegelatenKolom = $pdo->query("SHOW COLUMNS FROM activiteit_deelnemers LIKE 'toegelaten'")->fetch(PDO::FETCH_ASSOC);
+if ($toegelatenKolom !== false && ($toegelatenKolom['Null'] !== 'YES' || $toegelatenKolom['Default'] !== null)) {
+    $pdo->exec('ALTER TABLE activiteit_deelnemers MODIFY toegelaten TINYINT(1) NULL DEFAULT NULL');
+}
+$afgewezenKolom = $pdo->query("SHOW COLUMNS FROM activiteit_deelnemers LIKE 'afgewezen'")->fetch(PDO::FETCH_ASSOC);
+if ($afgewezenKolom !== false) {
+    $pdo->exec('UPDATE activiteit_deelnemers SET toegelaten = CASE WHEN afgewezen = 1 THEN 0 WHEN toegelaten = 1 THEN 1 ELSE NULL END');
+    $pdo->exec('ALTER TABLE activiteit_deelnemers DROP COLUMN afgewezen');
+}
+
 $melding = '';
 set_time_limit(15);
 $activiteitId = (int) ($_GET['activiteit_id'] ?? $_POST['activiteit_id'] ?? 0);
