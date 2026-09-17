@@ -74,6 +74,62 @@ P.S. Mocht je ook in de toekomst weer willen meespelen, <a href="{{aanmeldlink}}
 HTML;
 $standaardAfwijzingsMail = 'Beste {{voornaam}},<br><br>Een tijdje terug heb je in het aanmeldingsformulier voor Mozart op Zaterdag aangegeven dat je (misschien) wilde meespelen op {{datum}} in {{omschrijving}}. De belangstelling voor deze aflevering van Mozart op Zaterdag is echter groot. Helaas kan ik je voor die datum niet plaatsen. Ik hoop je bij een van de volgende afleveringen of in andere projecten weer te zien.<br><br>Hartelijke groet<br><br>Dirkjan Horringa<br><br>P.S. Mocht je ook in de toekomst weer willen meespelen, <a href="{{aanmeldlink}}">vul dan dit formulier in</a>. Je bestaande gegevens staan daar alvast ingevuld.';
 $standaardAfwijzingsMail = (string) ($standaardAfwijzingsMail ?? '');
+$toelatingsOnderwerp = $standaardOnderwerp;
+$toelatingsMail = $standaardMail;
+$mailteksten = [
+    'toelaten' => ['onderwerp' => $toelatingsOnderwerp, 'tekst' => $toelatingsMail],
+    'uitnodigen' => ['onderwerp' => $standaardOnderwerp, 'tekst' => $standaardMail],
+    'afwijzen' => ['onderwerp' => $standaardAfwijzingsOnderwerp, 'tekst' => $standaardAfwijzingsMail],
+];
+$mailtekstenBestand = __DIR__ . '/../JSON/mailteksten.json';
+try {
+    if (!is_readable($mailtekstenBestand)) {
+        throw new RuntimeException('Bestand niet gevonden: JSON/mailteksten.json.');
+    }
+    $geladenMailteksten = json_decode((string) file_get_contents($mailtekstenBestand), true, 16, JSON_THROW_ON_ERROR);
+    foreach (['toelaten', 'uitnodigen', 'afwijzen'] as $mailtype) {
+        if (!is_string($geladenMailteksten[$mailtype]['onderwerp'] ?? null) || !is_string($geladenMailteksten[$mailtype]['tekst'] ?? null)) {
+            throw new RuntimeException('Mailtekst ' . $mailtype . ' ontbreekt of is ongeldig.');
+        }
+    }
+    $mailteksten = $geladenMailteksten;
+    $toelatingsOnderwerp = $mailteksten['toelaten']['onderwerp'];
+    $toelatingsMail = $mailteksten['toelaten']['tekst'];
+    $standaardOnderwerp = $mailteksten['uitnodigen']['onderwerp'];
+    $standaardMail = $mailteksten['uitnodigen']['tekst'];
+    $standaardAfwijzingsOnderwerp = $mailteksten['afwijzen']['onderwerp'];
+    $standaardAfwijzingsMail = $mailteksten['afwijzen']['tekst'];
+} catch (Throwable $e) {
+    $melding = 'De JSON-mailteksten konden niet worden geladen; de standaardteksten worden gebruikt. ' . $e->getMessage();
+}
+
+if (($_POST['actie'] ?? '') === 'mailteksten_opslaan') {
+    try {
+        $nieuweMailteksten = [];
+        foreach (['toelaten', 'uitnodigen', 'afwijzen'] as $mailtype) {
+            $onderwerp = trim((string) ($_POST['mailteksten'][$mailtype]['onderwerp'] ?? ''));
+            $tekst = trim((string) ($_POST['mailteksten'][$mailtype]['tekst'] ?? ''));
+            if ($onderwerp === '' || $tekst === '') {
+                throw new RuntimeException('Onderwerp en tekst zijn verplicht voor ' . $mailtype . '.');
+            }
+            $nieuweMailteksten[$mailtype] = ['onderwerp' => $onderwerp, 'tekst' => $tekst];
+        }
+        $json = json_encode($nieuweMailteksten, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
+        if (file_put_contents($mailtekstenBestand, $json . PHP_EOL, LOCK_EX) === false) {
+            throw new RuntimeException('JSON/mailteksten.json kon niet worden geschreven.');
+        }
+        $mailteksten = $nieuweMailteksten;
+        $toelatingsOnderwerp = $mailteksten['toelaten']['onderwerp'];
+        $toelatingsMail = $mailteksten['toelaten']['tekst'];
+        $standaardOnderwerp = $mailteksten['uitnodigen']['onderwerp'];
+        $standaardMail = $mailteksten['uitnodigen']['tekst'];
+        $standaardAfwijzingsOnderwerp = $mailteksten['afwijzen']['onderwerp'];
+        $standaardAfwijzingsMail = $mailteksten['afwijzen']['tekst'];
+        $melding = 'De drie mailteksten zijn opgeslagen in JSON/mailteksten.json.';
+    } catch (Throwable $e) {
+        $melding = 'Mailteksten niet opgeslagen: ' . $e->getMessage();
+    }
+}
 
 // Verwerk wijzigingen en verstuur alleen na expliciete keuze een mail.
 if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
@@ -236,7 +292,8 @@ td.acties > .mail-knop, td.acties > details { display: inline-flex; align-items:
 .tabel-scroll tr > td:last-child > .mail-knop, .tabel-scroll tr > td:last-child > details { display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; height: 2.2em; padding: 0 8px; line-height: 1; box-sizing: border-box; }
 select[name="instrument_id"], select[name="status"], input[name="partij"] { background-color: transparent; }
 </style>
-<style>.toegelaten-vinkje,.afgewezen-kruis,.onbeoordeeld-vraagteken{display:inline-flex;align-items:center;justify-content:center;width:1.35em;height:1.35em;margin-left:.35em;border-radius:50%;color:#fff;font-size:1em;font-weight:bold;line-height:1}.toegelaten-vinkje{background:#198754}.afgewezen-kruis{background:#dc3545}.onbeoordeeld-vraagteken{background:#ff9800}</style>
+<style>.toegelaten-vinkje,.afgewezen-kruis,.onbeoordeeld-vraagteken{display:inline-flex;align-items:center;justify-content:center;width:1.35em;height:1.35em;margin-left:.35em;border-radius:50%;color:#fff;font-size:1em;font-weight:bold;line-height:1}.toegelaten-vinkje{background:#198754}.afgewezen-kruis{background:#dc3545}.onbeoordeeld-vraagteken{background:#ff9800}.mailteksten-beheer{margin:0 0 1em;border:1px solid #bbb}.mailteksten-beheer>summary{padding:.75em;cursor:pointer;font-weight:bold;background:#f1f1f1}.mailteksten-formulier{padding:1em}.mailtekst-sectie+ .mailtekst-sectie{margin-top:1.5em;padding-top:1.5em;border-top:1px solid #ccc}.mailtekst-sectie h4{margin:0 0 .75em}.mailtekst-sectie label{display:block;margin:.5em 0 .25em;font-weight:bold}.mailtekst-sectie input{width:100%;box-sizing:border-box}.mailtekst-hulp{margin:.5em 0 1em;color:#555}</style>
+<script src="https://cdn.ckeditor.com/4.22.1/full-all/ckeditor.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     var scrollSleutel = 'beschikbaarheid-scroll-' + window.location.pathname;
@@ -259,6 +316,31 @@ document.addEventListener('DOMContentLoaded', function () {
     };
     document.querySelectorAll('form').forEach(function (form) {
         form.addEventListener('submit', bewaarScrollPositie);
+    });
+
+    var mailtekstenBeheer = document.getElementById('mailteksten-beheer');
+    var mailtekstenEditorsGestart = false;
+    var startMailtekstenEditors = function () {
+        if (mailtekstenEditorsGestart || typeof CKEDITOR === 'undefined') return;
+        mailtekstenEditorsGestart = true;
+        document.querySelectorAll('.mailtekst-editor').forEach(function (editor) {
+            CKEDITOR.replace(editor.id, {
+                toolbar: 'Full',
+                height: 260,
+                allowedContent: true,
+                removePlugins: 'cloudservices,easyimage,exportpdf'
+            });
+        });
+    };
+    if (mailtekstenBeheer?.open) startMailtekstenEditors();
+    mailtekstenBeheer?.addEventListener('toggle', function () {
+        if (mailtekstenBeheer.open) startMailtekstenEditors();
+    });
+    document.getElementById('mailteksten-formulier')?.addEventListener('submit', function () {
+        if (typeof CKEDITOR === 'undefined') return;
+        Object.keys(CKEDITOR.instances).forEach(function (naam) {
+            CKEDITOR.instances[naam].updateElement();
+        });
     });
 
     var testModusKnop = document.getElementById('testmodus-knop');
@@ -371,6 +453,23 @@ document.addEventListener('keydown', function (event) {
 });
 </script>
  </head><body><div class="w3-content w3-mobile w3-white w3-panel" style="max-width:1400px"><h3>Beschikbaarheid</h3>
+<details id="mailteksten-beheer" class="mailteksten-beheer" open>
+<summary>Mailteksten bewerken</summary>
+<form id="mailteksten-formulier" class="mailteksten-formulier" method="post">
+<input type="hidden" name="actie" value="mailteksten_opslaan">
+<p class="mailtekst-hulp">Beschikbare invoegcodes: {{voornaam}}, {{achternaam}}, {{datum}}, {{plaats}}, {{instrument}}, {{partij_tekst}}, {{omschrijving}} en {{aanmeldlink}}.</p>
+<?php foreach (['toelaten' => 'Toelaten', 'uitnodigen' => 'Uitnodigen', 'afwijzen' => 'Afwijzen'] as $mailtype => $mailtypeLabel): ?>
+<section class="mailtekst-sectie">
+<h4><?= $mailtypeLabel ?></h4>
+<label for="mailtekst-<?= $mailtype ?>-onderwerp">Onderwerp</label>
+<input class="w3-input w3-border" id="mailtekst-<?= $mailtype ?>-onderwerp" name="mailteksten[<?= $mailtype ?>][onderwerp]" value="<?= htmlspecialchars($mailteksten[$mailtype]['onderwerp'], ENT_QUOTES, 'UTF-8') ?>" required>
+<label for="mailtekst-<?= $mailtype ?>">Mailtekst</label>
+<textarea class="mailtekst-editor" id="mailtekst-<?= $mailtype ?>" name="mailteksten[<?= $mailtype ?>][tekst]" required><?= htmlspecialchars($mailteksten[$mailtype]['tekst'], ENT_QUOTES, 'UTF-8') ?></textarea>
+</section>
+<?php endforeach; ?>
+<button class="w3-button w3-blue w3-margin-top" type="submit">Alle mailteksten opslaan</button>
+</form>
+</details>
 <button id="testmodus-knop" class="w3-button w3-light-grey w3-margin-bottom" type="button" data-actief="0" aria-pressed="false">Testmodus uit</button>
 <?php if ($melding !== ''): ?><p class="w3-panel w3-pale-green w3-leftbar w3-border-green"><?= htmlspecialchars($melding) ?></p><?php endif; ?>
 <form method="get"><label for="activiteit_id">Activiteit:</label><select class="w3-select" id="activiteit_id" name="activiteit_id" onchange="this.form.submit()" style="max-width:32em;display:inline-block"><?php foreach ($activiteiten as $activiteit): ?><option value="<?= (int) $activiteit['id'] ?>" <?= (int) $activiteit['id'] === $activiteitId ? 'selected' : '' ?>><?= htmlspecialchars(date('d-m-Y', strtotime($activiteit['datum'])) . ' - ' . $activiteit['plaats']) ?></option><?php endforeach; ?></select></form>
