@@ -240,11 +240,11 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
         }
 
         .kolom-uitvoering {
-            display: none;
+            display: none !important;
         }
 
         .tabel-scroll.toon-uitvoering .kolom-uitvoering {
-            display: table-cell;
+            display: table-cell !important;
         }
     </style>
 </head>
