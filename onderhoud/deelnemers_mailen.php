@@ -695,6 +695,35 @@ if (is_array($wachtrij)) {
                 ]
             });
         }
+
+        // Onthoud de scrollpositie zodat je na een actie terugkomt waar je bezig was.
+        (function () {
+            var scrollSleutel = 'onderhoud-scroll-' + window.location.pathname;
+            var opgeslagenPositie = sessionStorage.getItem(scrollSleutel);
+            if (opgeslagenPositie !== null) {
+                sessionStorage.removeItem(scrollSleutel);
+                requestAnimationFrame(function () {
+                    var positie = JSON.parse(opgeslagenPositie);
+                    window.scrollTo(0, positie.windowY || 0);
+                    var tabelScroll = document.querySelector('.tabel-scroll');
+                    if (tabelScroll) {
+                        tabelScroll.scrollTop = positie.tabelY || 0;
+                        tabelScroll.scrollLeft = positie.tabelX || 0;
+                    }
+                });
+            }
+            var bewaarScrollPositie = function () {
+                var tabelScroll = document.querySelector('.tabel-scroll');
+                sessionStorage.setItem(scrollSleutel, JSON.stringify({
+                    windowY: window.scrollY,
+                    tabelY: tabelScroll ? tabelScroll.scrollTop : 0,
+                    tabelX: tabelScroll ? tabelScroll.scrollLeft : 0
+                }));
+            };
+            document.querySelectorAll('form').forEach(function (form) {
+                form.addEventListener('submit', bewaarScrollPositie);
+            });
+        })();
     </script>
 </body>
 

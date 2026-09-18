@@ -388,6 +388,35 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
         if (toggleUitvoeringKnop) {
             pasUitvoeringToggleToe(localStorage.getItem('werkenToonUitvoering') === '1');
         }
+
+        // Onthoud de scrollpositie zodat je na opslaan terugkomt waar je bezig was.
+        (function () {
+            var scrollSleutel = 'onderhoud-scroll-' + window.location.pathname;
+            var opgeslagenPositie = sessionStorage.getItem(scrollSleutel);
+            if (opgeslagenPositie !== null) {
+                sessionStorage.removeItem(scrollSleutel);
+                requestAnimationFrame(function () {
+                    var positie = JSON.parse(opgeslagenPositie);
+                    window.scrollTo(0, positie.windowY || 0);
+                    var scrollContainer = document.querySelector('.tabel-scroll');
+                    if (scrollContainer) {
+                        scrollContainer.scrollTop = positie.tabelY || 0;
+                        scrollContainer.scrollLeft = positie.tabelX || 0;
+                    }
+                });
+            }
+            var bewaarScrollPositie = function () {
+                var scrollContainer = document.querySelector('.tabel-scroll');
+                sessionStorage.setItem(scrollSleutel, JSON.stringify({
+                    windowY: window.scrollY,
+                    tabelY: scrollContainer ? scrollContainer.scrollTop : 0,
+                    tabelX: scrollContainer ? scrollContainer.scrollLeft : 0
+                }));
+            };
+            document.querySelectorAll('form').forEach(function (form) {
+                form.addEventListener('submit', bewaarScrollPositie);
+            });
+        })();
     </script>
 </body>
 
