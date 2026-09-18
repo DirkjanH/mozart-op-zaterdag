@@ -5,14 +5,6 @@ require_once __DIR__ . '/vendor/autoload.php';
 $melding = '';
 $foutmelding = '';
 
-$voorkeurKolom = $pdo->query("SHOW COLUMNS FROM deelnemers LIKE 'op_de_hoogte_houden'")->fetch(PDO::FETCH_ASSOC);
-if ($voorkeurKolom === false) {
-    $pdo->exec('ALTER TABLE deelnemers ADD COLUMN op_de_hoogte_houden TINYINT(1) NOT NULL DEFAULT 1');
-} elseif ((string) $voorkeurKolom['Default'] === '0') {
-    $pdo->exec('UPDATE deelnemers SET op_de_hoogte_houden = 1 WHERE op_de_hoogte_houden = 0');
-    $pdo->exec('ALTER TABLE deelnemers MODIFY op_de_hoogte_houden TINYINT(1) NOT NULL DEFAULT 1');
-}
-
 // Haal instrumenten op in de volgorde van de instrumententabel, zonder zangstemmen.
 $uitgeslotenInstrumenten = ['sopraan', 'alt', 'tenor', 'bas', 'countertenor', 'mezzosopraan', 'bariton', 'basklarinet', 'tuba', 'contrafagot', 'piano', 'clavecimbel', 'slagwerk', 'orgel', 'piccolo', 'engelse hoorn'];
 $instrumenten = $pdo->query('SELECT * FROM instrumenten')->fetchAll(PDO::FETCH_ASSOC);
@@ -303,7 +295,7 @@ if (!empty($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL))
                                 <label for="status_misschien_<?= (int) $activiteit['id'] ?>" style="margin: 0; font-weight: normal;">Misschien, nog onzeker</label>
                             </div>
                             <div class="radio-item">
-                                <input type="radio" id="status_nee_<?= (int) $activiteit['id'] ?>" name="status_<?= (int) $activiteit['id'] ?>" value="nee" <?= $status_geselecteerd === 'nee' ? 'checked' : '' ?> checked>
+                                <input type="radio" id="status_nee_<?= (int) $activiteit['id'] ?>" name="status_<?= (int) $activiteit['id'] ?>" value="nee" <?= $status_geselecteerd === 'nee' ? 'checked' : '' ?>>
                                 <label for="status_nee_<?= (int) $activiteit['id'] ?>" style="margin: 0; font-weight: normal;">Nee, niet beschikbaar</label>
                             </div>
                         </div>
