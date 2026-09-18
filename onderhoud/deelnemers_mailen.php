@@ -128,6 +128,11 @@ function vulMailTemplate(string $template, array $deelnemer, array $activiteit):
 {
     $instrument = trim((string) ($deelnemer['instrument'] ?? ''));
     $partij = trim((string) ($deelnemer['partij'] ?? ''));
+    $plaats = match ($activiteit['plaats'] ?? '') {
+        'Marnixzaal' => 'de Marnixzaal aan het Domplein',
+        'Stadsklooster' => 'het Stadsklooster',
+        default => $activiteit['plaats'] ?? '',
+    };
     $waarden = [
         '{{voornaam}}' => $deelnemer['voornaam'] ?? '',
         '{{achternaam}}' => $deelnemer['achternaam'] ?? '',
@@ -135,7 +140,7 @@ function vulMailTemplate(string $template, array $deelnemer, array $activiteit):
         '{{partij}}' => $partij,
         '{{instrument_partij}}' => trim($instrument . ' ' . $partij),
         '{{datum}}' => date('d-m-Y', strtotime($activiteit['datum'])),
-        '{{plaats}}' => $activiteit['plaats'] ?? '',
+        '{{plaats}}' => $plaats,
         '{{omschrijving}}' => $activiteit['omschrijving'] ?? '',
     ];
 

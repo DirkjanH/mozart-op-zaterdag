@@ -95,7 +95,7 @@ if ($gmailOmgevingsWachtwoord !== false && $gmailOmgevingsWachtwoord !== '') {
 }
 $standaardMail = <<<'HTML'
 Beste {{voornaam}},<br><br>
-Leuk dat je je hebt aangemeld voor Mozart op Zaterdag! We zijn blij om je te kunnen plaatsen als {{instrument}}{{partij_tekst}} voor zaterdag {{datum}} in de {{plaats}}. We spelen dan {{omschrijving}}.<br><br>
+Leuk dat je je hebt aangemeld voor Mozart op Zaterdag! We zijn blij om je te kunnen plaatsen als {{instrument}}{{partij_tekst}} voor zaterdag {{datum}} in {{plaats}}. We spelen dan {{omschrijving}}.<br><br>
 De bezetting vind je op de <a href="https://mozartopzaterdag.nl">website van Mozart op Zaterdag</a>. Je kunt inloggen op de pagina voor deelnemers met <strong>WolfGang</strong> (let op de hoofdletters).<br><br>
 Mocht je voor het concert moeten afzeggen, dan stellen we het op prijs als je een vervanger aandraagt.<br><br>
 Alle partijen staan ook op de <a href="https://mozartopzaterdag.nl">website</a>.<br><br>
@@ -347,7 +347,11 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
                 };
                 $mailTekst = $ingevuldeMail ?: $standaardTekstVoorType;
                 $mailOnderwerp = $ingevuldOnderwerp ?: $standaardOnderwerpVoorType;
-                $plaats = $speler['plaats'] === 'Marnixzaal' ? 'Marnixzaal aan het Domplein' : $speler['plaats'];
+                $plaats = match ($speler['plaats']) {
+                    'Marnixzaal' => 'de Marnixzaal aan het Domplein',
+                    'Stadsklooster' => 'het Stadsklooster',
+                    default => $speler['plaats'],
+                };
                 $aanmeldlink = 'https://mozartopzaterdag.nl/deelnemers_aanmelden.php?email=' . rawurlencode($speler['email']);
                 $activiteitUrl = 'https://mozartopzaterdag.nl/' . date('Y-m-d', strtotime($speler['datum'])) . '/';
                 $invoegcodes = ['{{voornaam}}', '{{achternaam}}', '{{datum}}', '{{plaats}}', '{{instrument}}', '{{partij_tekst}}', '{{omschrijving}}', '{{aanmeldlink}}', '{{activiteit_url}}', '{voornaam}', '{achternaam}', '{datum}', '{plaats}', '{instrument}', '{partij}'];
@@ -424,7 +428,11 @@ $vulMailTemplate = static function (string $template, array $speler, array $acti
     $voornaam = htmlspecialchars($speler['voornaam'] ?? '', ENT_QUOTES, 'UTF-8');
     $achternaam = htmlspecialchars($speler['achternaam'] ?? '', ENT_QUOTES, 'UTF-8');
     $datum = date('d-m-Y', strtotime($activiteit['datum']));
-    $plaats = ($activiteit['plaats'] ?? '') === 'Marnixzaal' ? 'Marnixzaal aan het Domplein' : ($activiteit['plaats'] ?? '');
+    $plaats = match ($activiteit['plaats'] ?? '') {
+        'Marnixzaal' => 'de Marnixzaal aan het Domplein',
+        'Stadsklooster' => 'het Stadsklooster',
+        default => $activiteit['plaats'] ?? '',
+    };
     $plaats = htmlspecialchars($plaats, ENT_QUOTES, 'UTF-8');
     $instrument = htmlspecialchars($speler['instrument'] ?? '', ENT_QUOTES, 'UTF-8');
     $partij = $speler['partij'] ?? '';
