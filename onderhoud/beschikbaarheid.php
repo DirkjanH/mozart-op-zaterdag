@@ -91,10 +91,16 @@ $mailteksten = [
     'uitnodigen' => ['onderwerp' => $standaardOnderwerp, 'tekst' => $standaardMail],
     'afwijzen' => ['onderwerp' => $standaardAfwijzingsOnderwerp, 'tekst' => $standaardAfwijzingsMail],
 ];
-$mailtekstenBestand = __DIR__ . '/../JSON/mailteksten.json';
+$mailtekstenMap = __DIR__ . '/../JSON';
+$mailtekstenBestanden = glob($mailtekstenMap . '/mailteksten*.json') ?: [];
+usort($mailtekstenBestanden, static function (string $eerste, string $tweede): int {
+    return (filemtime($tweede) ?: 0) <=> (filemtime($eerste) ?: 0);
+});
+$mailtekstenBestand = $mailtekstenBestanden[0] ?? $mailtekstenMap . '/mailteksten.json';
+$mailtekstenBestandsnaam = basename($mailtekstenBestand);
 try {
     if (!is_readable($mailtekstenBestand)) {
-        throw new RuntimeException('Bestand niet gevonden: JSON/mailteksten.json.');
+        throw new RuntimeException('Bestand niet gevonden: JSON/' . $mailtekstenBestandsnaam . '.');
     }
     $geladenMailteksten = json_decode((string) file_get_contents($mailtekstenBestand), true, 16, JSON_THROW_ON_ERROR);
     foreach (['toelaten', 'uitnodigen', 'afwijzen'] as $mailtype) {
@@ -126,7 +132,7 @@ if (($_POST['actie'] ?? '') === 'mailteksten_opslaan') {
         }
         $json = json_encode($nieuweMailteksten, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
         if (file_put_contents($mailtekstenBestand, $json . PHP_EOL, LOCK_EX) === false) {
-            throw new RuntimeException('JSON/mailteksten.json kon niet worden geschreven.');
+            throw new RuntimeException('JSON/' . $mailtekstenBestandsnaam . ' kon niet worden geschreven.');
         }
         $mailteksten = $nieuweMailteksten;
         $toelatingsOnderwerp = $mailteksten['toelaten']['onderwerp'];
@@ -135,7 +141,7 @@ if (($_POST['actie'] ?? '') === 'mailteksten_opslaan') {
         $standaardMail = $mailteksten['uitnodigen']['tekst'];
         $standaardAfwijzingsOnderwerp = $mailteksten['afwijzen']['onderwerp'];
         $standaardAfwijzingsMail = $mailteksten['afwijzen']['tekst'];
-        $melding = 'De drie mailteksten zijn opgeslagen in JSON/mailteksten.json.';
+        $melding = 'De drie mailteksten zijn opgeslagen in JSON/' . $mailtekstenBestandsnaam . '.';
     } catch (Throwable $e) {
         $melding = 'Mailteksten niet opgeslagen: ' . $e->getMessage();
     }
@@ -514,6 +520,7 @@ document.addEventListener('keydown', function (event) {
 <summary>Mailteksten bewerken</summary>
 <form id="mailteksten-formulier" class="mailteksten-formulier" method="post">
 <input type="hidden" name="actie" value="mailteksten_opslaan">
+<p class="mailtekst-hulp">Geladen bestand: <strong>JSON/<?= htmlspecialchars($mailtekstenBestandsnaam, ENT_QUOTES, 'UTF-8') ?></strong></p>
 <p class="mailtekst-hulp">In onderwerp en mailtekst beschikbare invoegcodes: {{voornaam}}, {{achternaam}}, {{datum}}, {{plaats}}, {{instrument}}, {{partij_tekst}}, {{omschrijving}} en {{aanmeldlink}}.</p>
 <?php foreach (['toelaten' => 'Toelaten', 'uitnodigen' => 'Uitnodigen', 'afwijzen' => 'Afwijzen'] as $mailtype => $mailtypeLabel): ?>
 <section class="mailtekst-sectie">
