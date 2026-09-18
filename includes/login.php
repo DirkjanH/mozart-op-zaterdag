@@ -1,9 +1,11 @@
 <?php
+require_once __DIR__ . '/csrf.php';
+
 // Gebruik voor de beheersessie veilige cookie-instellingen en accepteer geen onbekende sessie-ID's.
 ini_set('display_errors', '0');
 ini_set('log_errors', '1');
 ini_set('session.use_strict_mode', '1');
-// Voorkom dat de serversessie (en dus het CSRF-token) al na ~24 minuten inactiviteit verloopt.
+// Voorkom dat de serversessie al na ~24 minuten inactiviteit verloopt.
 ini_set('session.gc_maxlifetime', '14400');
 session_set_cookie_params([
     'httponly' => true,
@@ -19,10 +21,8 @@ header('X-Content-Type-Options: nosniff');
 header('X-Frame-Options: SAMEORIGIN');
 header('Referrer-Policy: same-origin');
 
-if (!isset($_SESSION['csrf_token']) || !is_string($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-}
-$csrfToken = $_SESSION['csrf_token'];
+// Cookie-gebaseerd CSRF-token: blijft werken als GET/POST door verschillende servers worden afgehandeld.
+$csrfToken = csrfTokenOphalen();
 
 $foutmelding = '';
 

@@ -3,6 +3,7 @@ require_once __DIR__ . '/../includes/inloggen.php';
 require_once __DIR__ . '/../connections/MozartopZaterdag.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../includes/mail_tracking.php';
+require_once __DIR__ . '/../includes/csrf.php';
 
 zorgVoorMailTrackingTabel($pdo);
 
@@ -15,18 +16,10 @@ header('X-Content-Type-Options: nosniff');
 header('X-Frame-Options: SAMEORIGIN');
 header('Referrer-Policy: same-origin');
 
-// Accepteer wijzigingen alleen vanuit een formulier uit deze beheersessie.
-if (!isset($_SESSION['csrf_token']) || !is_string($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-}
-$csrfToken = $_SESSION['csrf_token'];
+// Accepteer wijzigingen alleen vanuit een formulier met een geldig CSRF-cookietoken.
+$csrfToken = csrfTokenOphalen();
+csrfValiderenOfAfwijzen();
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
-    $ontvangenCsrfToken = $_POST['csrf_token'] ?? null;
-    if (!is_string($ontvangenCsrfToken) || !hash_equals($csrfToken, $ontvangenCsrfToken)) {
-        http_response_code(403);
-        exit('Ongeldige of verlopen formulieraanvraag. Vernieuw de pagina en probeer opnieuw.');
-    }
-
     $toegestaneActies = [
         'mailteksten_opslaan',
         'status_opslaan',
