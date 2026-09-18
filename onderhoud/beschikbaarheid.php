@@ -46,6 +46,8 @@ $melding = is_string($_SESSION['beschikbaarheid_melding'] ?? null)
     ? $_SESSION['beschikbaarheid_melding']
     : '';
 unset($_SESSION['beschikbaarheid_melding']);
+$mailtekstenZojuistOpgeslagen = ($_SESSION['beschikbaarheid_mailteksten_opgeslagen'] ?? false) === true;
+unset($_SESSION['beschikbaarheid_mailteksten_opgeslagen']);
 set_time_limit(15);
 $activiteitId = (int) ($_GET['activiteit_id'] ?? $_POST['activiteit_id'] ?? 0);
 $toonParameter = $_GET['toon'] ?? null;
@@ -158,6 +160,7 @@ try {
     $melding = 'De JSON-mailteksten konden niet worden geladen; de standaardteksten worden gebruikt. ' . $e->getMessage();
 }
 
+$mailtekstenOpslaanGelukt = false;
 if (($_POST['actie'] ?? '') === 'mailteksten_opslaan') {
     try {
         $backupBestandsnaam = null;
@@ -202,6 +205,7 @@ if (($_POST['actie'] ?? '') === 'mailteksten_opslaan') {
         if (file_put_contents($mailtekstenBestand, $json . PHP_EOL, LOCK_EX) === false) {
             throw new RuntimeException('JSON/' . $mailtekstenBestandsnaam . ' kon niet worden geschreven.');
         }
+        $mailtekstenOpslaanGelukt = true;
         clearstatcache(true, $mailtekstenBestand);
         $mailtekstenGewijzigdOp = date('d-m-Y H:i:s', filemtime($mailtekstenBestand));
         $mailteksten = $nieuweMailteksten;
@@ -401,6 +405,9 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
 // Voorkom dat vernieuwen van de pagina dezelfde mutatie of mail nogmaals uitvoert.
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     $_SESSION['beschikbaarheid_melding'] = $melding;
+    if ($mailtekstenOpslaanGelukt) {
+        $_SESSION['beschikbaarheid_mailteksten_opgeslagen'] = true;
+    }
     $redirectParameters = ['activiteit_id' => $activiteitId, 'toon' => $toonModus];
     header('Location: beschikbaarheid.php?' . http_build_query($redirectParameters));
     exit;
@@ -648,7 +655,7 @@ document.addEventListener('keydown', function (event) {
 });
 </script>
  </head><body><div class="w3-content w3-mobile w3-white w3-panel" style="max-width:1400px"><h3>Beschikbaarheid</h3>
-<p class="mailtekst-hulp">Mailteksten geladen: <strong>JSON/<?= htmlspecialchars($mailtekstenBestandsnaam, ENT_QUOTES, 'UTF-8') ?></strong> (versie <?= htmlspecialchars($mailtekstenGewijzigdOp, ENT_QUOTES, 'UTF-8') ?>)</p>
+<p class="mailtekst-hulp">Mailteksten <?= $mailtekstenZojuistOpgeslagen ? 'opgeslagen' : 'geladen' ?>: <strong>JSON/<?= htmlspecialchars($mailtekstenBestandsnaam, ENT_QUOTES, 'UTF-8') ?></strong> (versie <?= htmlspecialchars($mailtekstenGewijzigdOp, ENT_QUOTES, 'UTF-8') ?>)</p>
 <details id="mailteksten-beheer" class="mailteksten-beheer">
 <summary>Mailteksten bewerken</summary>
 <form id="mailteksten-formulier" class="mailteksten-formulier" method="post">
