@@ -126,18 +126,11 @@ $mailteksten = [
     'afwijzen' => ['onderwerp' => $standaardAfwijzingsOnderwerp, 'tekst' => $standaardAfwijzingsMail],
 ];
 $mailtekstenMap = __DIR__ . '/../JSON';
-// PHP-FPM-workers bewaren stat-/realpath-cache tussen requests; wis die zodat we altijd de actuele bestandsinformatie van de server lezen.
-clearstatcache(true);
-$mailtekstenBestanden = glob($mailtekstenMap . '/mailteksten*.json') ?: [];
-$mailtekstenBestanden = array_values(array_filter(
-    $mailtekstenBestanden,
-    static fn (string $bestand): bool => !str_starts_with(basename($bestand), 'mailteksten-backup-')
-));
-usort($mailtekstenBestanden, static function (string $eerste, string $tweede): int {
-    return (filemtime($tweede) ?: 0) <=> (filemtime($eerste) ?: 0);
-});
-$mailtekstenBestand = $mailtekstenBestanden[0] ?? $mailtekstenMap . '/mailteksten.json';
+// Eén vast bestand voor laden én opslaan; een losse "nieuwste van meerdere bestanden"-selectie kan per ongeluk een stray kopie kiezen.
+$mailtekstenBestand = $mailtekstenMap . '/mailteksten.json';
 $mailtekstenBestandsnaam = basename($mailtekstenBestand);
+// PHP-FPM-workers bewaren stat-/realpath-cache tussen requests; wis die zodat we altijd de actuele bestandsinformatie van de server lezen.
+clearstatcache(true, $mailtekstenBestand);
 $mailtekstenGewijzigdOp = is_file($mailtekstenBestand)
     ? date('d-m-Y H:i:s', filemtime($mailtekstenBestand))
     : 'nog niet opgeslagen';
