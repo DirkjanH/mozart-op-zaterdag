@@ -218,7 +218,7 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
         }
 
         .veld-bezetting {
-            min-width: 26em;
+            min-width: 13em;
         }
 
         .veld-solo {
@@ -238,6 +238,14 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
         .tabel-scroll select.w3-select {
             background-color: #fffdd0;
         }
+
+        .kolom-uitvoering {
+            display: none;
+        }
+
+        .tabel-scroll.toon-uitvoering .kolom-uitvoering {
+            display: table-cell;
+        }
     </style>
 </head>
 
@@ -250,6 +258,7 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
                 <button class="w3-button w3-light-grey filterknop" type="button" data-filter="symfonie" aria-pressed="false">Symfonieën</button>
                 <button class="w3-button w3-light-grey filterknop" type="button" data-filter="concert" aria-pressed="false">Concerten</button>
                 <button class="w3-button w3-light-grey filterknop" type="button" data-filter="ander" aria-pressed="false">Overig</button>
+                <button id="toggle-uitvoering" class="w3-button w3-light-grey" type="button" aria-pressed="false">Toon uitvoering en solist</button>
             </div>
         </div>
         <?php if ($melding !== ''): ?>
@@ -279,8 +288,8 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
                 <th>Soort</th>
                 <th>Bezetting</th>
                 <th>Solo</th>
-                <th>Uitgevoerd op</th>
-                <th>Met solist</th>
+                <th class="kolom-uitvoering">Uitgevoerd op</th>
+                <th class="kolom-uitvoering">Met solist</th>
                 <th class="actie-kolom"></th>
             </tr>
             <?php foreach ($werken as $werk): ?>
@@ -300,8 +309,8 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
                     </td>
                     <td><input class="w3-input veld-bezetting" type="text" name="bezetting" form="<?= $werkFormId ?>" value="<?= htmlspecialchars($werk['bezetting']) ?>" maxlength="255"></td>
                     <td><input class="w3-input veld-solo" type="text" name="solo" form="<?= $werkFormId ?>" value="<?= htmlspecialchars($werk['solo'] ?? '') ?>" maxlength="255"></td>
-                    <td><input class="w3-input" type="date" name="uitgevoerd_op" form="<?= $werkFormId ?>" value="<?= htmlspecialchars($werk['uitgevoerd_op'] ?? '') ?>"></td>
-                    <td><input class="w3-input" type="text" name="met_solist" form="<?= $werkFormId ?>" value="<?= htmlspecialchars($werk['met_solist'] ?? '') ?>" maxlength="100" style="width:14em;"></td>
+                    <td class="kolom-uitvoering"><input class="w3-input" type="date" name="uitgevoerd_op" form="<?= $werkFormId ?>" value="<?= htmlspecialchars($werk['uitgevoerd_op'] ?? '') ?>"></td>
+                    <td class="kolom-uitvoering"><input class="w3-input" type="text" name="met_solist" form="<?= $werkFormId ?>" value="<?= htmlspecialchars($werk['met_solist'] ?? '') ?>" maxlength="100" style="width:14em;"></td>
                     <td class="actie-kolom">
                         <button class="w3-button w3-blue actie-knop" type="submit" form="<?= $werkFormId ?>" title="Werk opslaan" aria-label="Werk opslaan">&#10003;</button>
                     </td>
@@ -323,8 +332,8 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
                 </td>
                 <td><input class="w3-input veld-bezetting" type="text" name="bezetting" form="werk-form-nieuw" maxlength="255"></td>
                 <td><input class="w3-input veld-solo" type="text" name="solo" form="werk-form-nieuw" maxlength="255"></td>
-                <td><input class="w3-input" type="date" name="uitgevoerd_op" form="werk-form-nieuw"></td>
-                <td><input class="w3-input" type="text" name="met_solist" form="werk-form-nieuw" maxlength="100" style="width:14em;"></td>
+                <td class="kolom-uitvoering"><input class="w3-input" type="date" name="uitgevoerd_op" form="werk-form-nieuw"></td>
+                <td class="kolom-uitvoering"><input class="w3-input" type="text" name="met_solist" form="werk-form-nieuw" maxlength="100" style="width:14em;"></td>
                 <td class="actie-kolom">
                     <button class="w3-button w3-green w3-small" type="submit" form="werk-form-nieuw">Toevoegen</button>
                 </td>
@@ -351,6 +360,16 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
                     filterknop.setAttribute('aria-pressed', isActief ? 'true' : 'false');
                 });
             });
+        });
+
+        const toggleUitvoeringKnop = document.getElementById('toggle-uitvoering');
+        const tabelScroll = document.querySelector('.tabel-scroll');
+        toggleUitvoeringKnop?.addEventListener('click', () => {
+            const zichtbaar = tabelScroll.classList.toggle('toon-uitvoering');
+            toggleUitvoeringKnop.setAttribute('aria-pressed', zichtbaar ? 'true' : 'false');
+            toggleUitvoeringKnop.textContent = zichtbaar ? 'Verberg uitvoering en solist' : 'Toon uitvoering en solist';
+            toggleUitvoeringKnop.classList.toggle('w3-blue', zichtbaar);
+            toggleUitvoeringKnop.classList.toggle('w3-light-grey', !zichtbaar);
         });
     </script>
 </body>
