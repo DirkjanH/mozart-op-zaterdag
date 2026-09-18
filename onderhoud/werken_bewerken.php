@@ -345,32 +345,49 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
         const filterknoppen = document.querySelectorAll('.filterknop');
         const werkRijen = document.querySelectorAll('.werk-rij');
 
+        const pasFilterToe = (filter) => {
+            werkRijen.forEach((rij) => {
+                rij.hidden = filter !== 'alle' && rij.dataset.soort !== filter;
+            });
+
+            filterknoppen.forEach((filterknop) => {
+                const isActief = filterknop.dataset.filter === filter;
+                filterknop.classList.toggle('w3-blue', isActief);
+                filterknop.classList.toggle('w3-light-grey', !isActief);
+                filterknop.setAttribute('aria-pressed', isActief ? 'true' : 'false');
+            });
+        };
+
         filterknoppen.forEach((knop) => {
             knop.addEventListener('click', () => {
                 const filter = knop.dataset.filter;
-
-                werkRijen.forEach((rij) => {
-                    rij.hidden = filter !== 'alle' && rij.dataset.soort !== filter;
-                });
-
-                filterknoppen.forEach((filterknop) => {
-                    const isActief = filterknop === knop;
-                    filterknop.classList.toggle('w3-blue', isActief);
-                    filterknop.classList.toggle('w3-light-grey', !isActief);
-                    filterknop.setAttribute('aria-pressed', isActief ? 'true' : 'false');
-                });
+                localStorage.setItem('werkenFilter', filter);
+                pasFilterToe(filter);
             });
         });
 
+        // Onthoud de laatst gekozen filter over een refresh en het opslaan van het formulier heen.
+        pasFilterToe(localStorage.getItem('werkenFilter') || 'alle');
+
         const toggleUitvoeringKnop = document.getElementById('toggle-uitvoering');
         const tabelScroll = document.querySelector('.tabel-scroll');
-        toggleUitvoeringKnop?.addEventListener('click', () => {
-            const zichtbaar = tabelScroll.classList.toggle('toon-uitvoering');
+        const pasUitvoeringToggleToe = (zichtbaar) => {
+            tabelScroll.classList.toggle('toon-uitvoering', zichtbaar);
             toggleUitvoeringKnop.setAttribute('aria-pressed', zichtbaar ? 'true' : 'false');
             toggleUitvoeringKnop.textContent = zichtbaar ? 'Verberg uitvoering en solist' : 'Toon uitvoering en solist';
             toggleUitvoeringKnop.classList.toggle('w3-blue', zichtbaar);
             toggleUitvoeringKnop.classList.toggle('w3-light-grey', !zichtbaar);
+        };
+        toggleUitvoeringKnop?.addEventListener('click', () => {
+            const zichtbaar = !tabelScroll.classList.contains('toon-uitvoering');
+            localStorage.setItem('werkenToonUitvoering', zichtbaar ? '1' : '0');
+            pasUitvoeringToggleToe(zichtbaar);
         });
+
+        // Onthoud de laatst gekozen zichtbaarheid over een refresh en het opslaan van het formulier heen.
+        if (toggleUitvoeringKnop) {
+            pasUitvoeringToggleToe(localStorage.getItem('werkenToonUitvoering') === '1');
+        }
     </script>
 </body>
 
