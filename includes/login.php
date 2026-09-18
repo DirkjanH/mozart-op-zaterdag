@@ -1,33 +1,72 @@
 <?php
-// Start de sessie op elke pagina waar je wilt inloggen of controleren
+// Gebruik voor de beheersessie veilige cookie-instellingen en accepteer geen onbekende sessie-ID's.
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
+ini_set('session.use_strict_mode', '1');
+session_set_cookie_params([
+    'httponly' => true,
+    'secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
+    'samesite' => 'Lax',
+]);
 session_start();
+
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: SAMEORIGIN');
+header('Referrer-Policy: same-origin');
+
+if (!isset($_SESSION['csrf_token']) || !is_string($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+$csrfToken = $_SESSION['csrf_token'];
 
 $foutmelding = '';
 
-// Controleer of het formulier is verzonden
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $gebruikersnaam = $_POST['gebruikersnaam'] ?? '';
-    $wachtwoord = $_POST['wachtwoord'] ?? '';
+// Bewaar alleen recente mislukte pogingen om eenvoudig geautomatiseerd raden af te remmen.
+$grensTijdstip = time() - 900;
+$loginPogingen = array_values(array_filter(
+    is_array($_SESSION['login_pogingen'] ?? null) ? $_SESSION['login_pogingen'] : [],
+    static fn ($tijdstip): bool => is_int($tijdstip) && $tijdstip >= $grensTijdstip
+));
+$_SESSION['login_pogingen'] = $loginPogingen;
 
-    // **Simpele authenticatie logica (VERVANG DIT DOOR ECHTE DATABASE CHECK!)**
-    $correct_wachtwoord = 'WolfGang'; // Gebruik in het echt nooit plain text wachtwoorden!
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
+    $ontvangenCsrfToken = $_POST['csrf_token'] ?? null;
+    $wachtwoord = $_POST['wachtwoord'] ?? null;
 
-    if ($wachtwoord === $correct_wachtwoord) {
-        // Succesvol ingelogd: Zet de sessievariabele
-        $_SESSION['ingelogd'] = true;
+    if (!is_string($ontvangenCsrfToken) || !hash_equals($csrfToken, $ontvangenCsrfToken)) {
+        http_response_code(403);
+        $foutmelding = 'Ongeldige of verlopen formulieraanvraag. Vernieuw de pagina.';
+    } elseif (count($loginPogingen) >= 5) {
+        http_response_code(429);
+        $foutmelding = 'Te veel mislukte pogingen. Probeer het over vijftien minuten opnieuw.';
+    } elseif (!is_string($wachtwoord) || strlen($wachtwoord) > 255) {
+        http_response_code(400);
+        $foutmelding = 'Ongeldige invoer.';
+    } else {
+        $correct_wachtwoord = 'WolfGang';
 
-        //print_r($_SESSION);
+        if (hash_equals($correct_wachtwoord, $wachtwoord)) {
+            // Voorkom dat een vooraf bekende sessie-ID na het inloggen bruikbaar blijft.
+            session_regenerate_id(true);
+            $_SESSION['ingelogd'] = true;
+            unset($_SESSION['login_pogingen']);
 
-        // Stuur de gebruiker door naar de beveiligde pagina
-        if (isset($_SESSION['redirect_na_inloggen']) AND !empty($_SESSION['redirect_na_inloggen'])) {
-            $redirect_url = $_SESSION['redirect_na_inloggen'];
-            unset($_SESSION['redirect_na_inloggen']); // Verwijder de redirect variabele na gebruik
-            header('Location: ' . $redirect_url);
+            // Sta alleen redirects binnen deze website toe.
+            $redirect_url = (string) ($_SESSION['redirect_na_inloggen'] ?? '');
+            unset($_SESSION['redirect_na_inloggen']);
+            if (preg_match('#^/[^\r\n]*$#', $redirect_url)) {
+                header('Location: ' . $redirect_url);
+                exit;
+            }
+            header('Location: /index.php');
             exit;
         } else {
-            header('Location: /index.php');
+            $_SESSION['login_pogingen'][] = time();
+            $foutmelding = 'Ongeldige gebruikersnaam of wachtwoord.';
         }
-    } else $foutmelding = 'Ongeldige gebruikersnaam of wachtwoord.';
+    }
 }
 ?>
 
@@ -50,8 +89,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php endif; ?>
 
     <form method="POST" action="login.php">
+        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
         <label for="wachtwoord">Wachtwoord:</label>
-        <input type="password" id="wachtwoord" name="wachtwoord" required><br><br>
+        <input type="password" id="wachtwoord" name="wachtwoord" maxlength="255" autocomplete="current-password" required><br><br>
         <button type="submit">Inloggen</button>
     </form>
 </div>

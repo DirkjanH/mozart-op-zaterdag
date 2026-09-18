@@ -32,6 +32,38 @@ function markeerMailVerzonden(PDO $pdo, string $token): void
     $stmt->execute([$token]);
 }
 
+function reserveerMailVerzending(PDO $pdo, string $token, int $activiteitId, int $deelnemerId, string $email): bool
+{
+    $genormaliseerdEmail = strtolower(trim($email));
+    $slotNaam = 'mozart-mail-' . substr(hash('sha256', $genormaliseerdEmail), 0, 48);
+    $slotStmt = $pdo->prepare('SELECT GET_LOCK(?, 5)');
+    $slotStmt->execute([$slotNaam]);
+    if ((int) $slotStmt->fetchColumn() !== 1) {
+        throw new RuntimeException('De controle op dubbele verzending is tijdelijk bezet. Probeer het opnieuw.');
+    }
+
+    try {
+        // De database-lock voorkomt dat twee gelijktijdige verzoeken hetzelfde adres reserveren.
+        $controleStmt = $pdo->prepare(
+            'SELECT 1 FROM mail_tracking
+             WHERE LOWER(TRIM(email)) = ?
+               AND verzonden_op >= DATE_SUB(NOW(), INTERVAL 5 MINUTE)
+             LIMIT 1'
+        );
+        $controleStmt->execute([$genormaliseerdEmail]);
+        if ($controleStmt->fetchColumn()) {
+            return false;
+        }
+
+        registreerMailTracking($pdo, $token, $activiteitId, $deelnemerId, $genormaliseerdEmail);
+        markeerMailVerzonden($pdo, $token);
+        return true;
+    } finally {
+        $vrijgevenStmt = $pdo->prepare('SELECT RELEASE_LOCK(?)');
+        $vrijgevenStmt->execute([$slotNaam]);
+    }
+}
+
 function voegTrackingPixelToe(string $html, string $token): string
 {
     $basisUrl = rtrim(getenv('MOZART_TRACKING_BASE_URL') ?: 'https://www.mozartopzaterdag.nl', '/');

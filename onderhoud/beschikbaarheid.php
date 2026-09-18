@@ -2,18 +2,50 @@
 require_once __DIR__ . '/../includes/inloggen.php';
 require_once __DIR__ . '/../connections/MozartopZaterdag.php';
 require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../includes/mail_tracking.php';
 
-$toegelatenKolom = $pdo->query("SHOW COLUMNS FROM activiteit_deelnemers LIKE 'toegelaten'")->fetch(PDO::FETCH_ASSOC);
-if ($toegelatenKolom !== false && ($toegelatenKolom['Null'] !== 'YES' || $toegelatenKolom['Default'] !== null)) {
-    $pdo->exec('ALTER TABLE activiteit_deelnemers MODIFY toegelaten TINYINT(1) NULL DEFAULT NULL');
+zorgVoorMailTrackingTabel($pdo);
+
+// Beheerpagina's bevatten persoonsgegevens en mogen niet worden gecachet of ingesloten.
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: SAMEORIGIN');
+header('Referrer-Policy: same-origin');
+
+// Accepteer wijzigingen alleen vanuit een formulier uit deze beheersessie.
+if (!isset($_SESSION['csrf_token']) || !is_string($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
-$afgewezenKolom = $pdo->query("SHOW COLUMNS FROM activiteit_deelnemers LIKE 'afgewezen'")->fetch(PDO::FETCH_ASSOC);
-if ($afgewezenKolom !== false) {
-    $pdo->exec('UPDATE activiteit_deelnemers SET toegelaten = CASE WHEN afgewezen = 1 THEN 0 WHEN toegelaten = 1 THEN 1 ELSE NULL END');
-    $pdo->exec('ALTER TABLE activiteit_deelnemers DROP COLUMN afgewezen');
+$csrfToken = $_SESSION['csrf_token'];
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
+    $ontvangenCsrfToken = $_POST['csrf_token'] ?? null;
+    if (!is_string($ontvangenCsrfToken) || !hash_equals($csrfToken, $ontvangenCsrfToken)) {
+        http_response_code(403);
+        exit('Ongeldige of verlopen formulieraanvraag. Vernieuw de pagina en probeer opnieuw.');
+    }
+
+    $toegestaneActies = [
+        'mailteksten_opslaan',
+        'status_opslaan',
+        'toelating_intrekken',
+        'toelaten',
+        'uitnodigen',
+        'afwijzen_met_mail',
+        'toelaten_met_mail',
+    ];
+    if (!in_array($_POST['actie'] ?? '', $toegestaneActies, true)) {
+        http_response_code(400);
+        exit('Onbekende actie.');
+    }
 }
 
-$melding = '';
+$melding = is_string($_SESSION['beschikbaarheid_melding'] ?? null)
+    ? $_SESSION['beschikbaarheid_melding']
+    : '';
+unset($_SESSION['beschikbaarheid_melding']);
 set_time_limit(15);
 $activiteitId = (int) ($_GET['activiteit_id'] ?? $_POST['activiteit_id'] ?? 0);
 $toonParameter = $_GET['toon'] ?? null;
@@ -102,6 +134,9 @@ usort($mailtekstenBestanden, static function (string $eerste, string $tweede): i
 });
 $mailtekstenBestand = $mailtekstenBestanden[0] ?? $mailtekstenMap . '/mailteksten.json';
 $mailtekstenBestandsnaam = basename($mailtekstenBestand);
+$mailtekstenGewijzigdOp = is_file($mailtekstenBestand)
+    ? date('d-m-Y H:i:s', filemtime($mailtekstenBestand))
+    : 'nog niet opgeslagen';
 try {
     if (!is_readable($mailtekstenBestand)) {
         throw new RuntimeException('Bestand niet gevonden: JSON/' . $mailtekstenBestandsnaam . '.');
@@ -125,19 +160,50 @@ try {
 
 if (($_POST['actie'] ?? '') === 'mailteksten_opslaan') {
     try {
+        $backupBestandsnaam = null;
         $nieuweMailteksten = [];
+        $ingediendeMailteksten = $_POST['mailteksten'] ?? null;
+        if (!is_array($ingediendeMailteksten)) {
+            throw new RuntimeException('De mailteksten ontbreken of hebben een ongeldig formaat.');
+        }
         foreach (['toelaten', 'uitnodigen', 'afwijzen'] as $mailtype) {
-            $onderwerp = trim((string) ($_POST['mailteksten'][$mailtype]['onderwerp'] ?? ''));
-            $tekst = trim((string) ($_POST['mailteksten'][$mailtype]['tekst'] ?? ''));
+            $ingediendeMailtekst = $ingediendeMailteksten[$mailtype] ?? null;
+            if (!is_array($ingediendeMailtekst) || !is_string($ingediendeMailtekst['onderwerp'] ?? null) || !is_string($ingediendeMailtekst['tekst'] ?? null)) {
+                throw new RuntimeException('Mailtekst ' . $mailtype . ' heeft een ongeldig formaat.');
+            }
+            $onderwerp = trim($ingediendeMailtekst['onderwerp']);
+            $tekst = trim($ingediendeMailtekst['tekst']);
             if ($onderwerp === '' || $tekst === '') {
                 throw new RuntimeException('Onderwerp en tekst zijn verplicht voor ' . $mailtype . '.');
+            }
+            if (strlen($onderwerp) > 255 || preg_match('/[\r\n]/', $onderwerp)) {
+                throw new RuntimeException('Het onderwerp voor ' . $mailtype . ' is te lang of bevat een regeleinde.');
+            }
+            if (strlen($tekst) > 200000) {
+                throw new RuntimeException('De tekst voor ' . $mailtype . ' is te groot.');
             }
             $nieuweMailteksten[$mailtype] = ['onderwerp' => $onderwerp, 'tekst' => $tekst];
         }
         $json = json_encode($nieuweMailteksten, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
+        // Bewaar eerst de laatst geldige versie; een mislukte write kan zo geen tekst vernietigen.
+        if (is_file($mailtekstenBestand)) {
+            $backupTijdstip = date('Ymd-His');
+            $backupBestand = $mailtekstenMap . '/mailteksten-backup-' . $backupTijdstip . '.json';
+            $backupVolgnummer = 1;
+            while (file_exists($backupBestand)) {
+                $backupBestand = $mailtekstenMap . '/mailteksten-backup-' . $backupTijdstip . '-' . $backupVolgnummer . '.json';
+                $backupVolgnummer++;
+            }
+            if (!copy($mailtekstenBestand, $backupBestand)) {
+                throw new RuntimeException('Backup van JSON/' . $mailtekstenBestandsnaam . ' kon niet worden gemaakt.');
+            }
+            $backupBestandsnaam = basename($backupBestand);
+        }
         if (file_put_contents($mailtekstenBestand, $json . PHP_EOL, LOCK_EX) === false) {
             throw new RuntimeException('JSON/' . $mailtekstenBestandsnaam . ' kon niet worden geschreven.');
         }
+        clearstatcache(true, $mailtekstenBestand);
+        $mailtekstenGewijzigdOp = date('d-m-Y H:i:s', filemtime($mailtekstenBestand));
         $mailteksten = $nieuweMailteksten;
         $toelatingsOnderwerp = $mailteksten['toelaten']['onderwerp'];
         $toelatingsMail = $mailteksten['toelaten']['tekst'];
@@ -146,6 +212,9 @@ if (($_POST['actie'] ?? '') === 'mailteksten_opslaan') {
         $standaardAfwijzingsOnderwerp = $mailteksten['afwijzen']['onderwerp'];
         $standaardAfwijzingsMail = $mailteksten['afwijzen']['tekst'];
         $melding = 'De drie mailteksten zijn opgeslagen in JSON/' . $mailtekstenBestandsnaam . '.';
+        if ($backupBestandsnaam !== null) {
+            $melding .= ' De vorige versie staat in JSON/' . $backupBestandsnaam . '.';
+        }
     } catch (Throwable $e) {
         $melding = 'Mailteksten niet opgeslagen: ' . $e->getMessage();
     }
@@ -155,11 +224,43 @@ if (($_POST['actie'] ?? '') === 'mailteksten_opslaan') {
 if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
     $deelnemerId = (int) $_POST['deelnemer_id'];
     $activiteitId = (int) $_POST['activiteit_id'];
-    $actie = $_POST['actie'];
+    $actie = (string) $_POST['actie'];
     $testModus = ($_POST['testmodus'] ?? '') === '1';
-    $status = in_array($_POST['status'] ?? '', ['ja', 'nee', 'misschien'], true) ? $_POST['status'] : 'misschien';
-    $partij = trim($_POST['partij'] ?? '') ?: null;
-    $instrumentId = (int) ($_POST['instrument_id'] ?? 0) ?: null;
+    $status = $_POST['status'] ?? null;
+    $partijWaarde = $_POST['partij'] ?? '';
+    $instrumentWaarde = $_POST['instrument_id'] ?? '0';
+
+    // Controleer alle identifiers tegen de gegevens die deze beheerpagina zelf aanbiedt.
+    $geldigeActiviteitIds = array_map('intval', array_column($activiteiten, 'id'));
+    $geldigeInstrumentIds = array_map('intval', array_column($instrumenten, 'id'));
+    if ($deelnemerId < 1 || !in_array($activiteitId, $geldigeActiviteitIds, true)) {
+        http_response_code(400);
+        exit('Ongeldige deelnemer of activiteit.');
+    }
+    if (!is_string($status) || !in_array($status, ['ja', 'nee', 'misschien'], true)) {
+        http_response_code(400);
+        exit('Ongeldige deelnemersstatus.');
+    }
+    if (!is_string($partijWaarde) || strlen($partijWaarde) > 100) {
+        http_response_code(400);
+        exit('Ongeldige of te lange partij-aanduiding.');
+    }
+    $partij = trim($partijWaarde) ?: null;
+    if (!is_scalar($instrumentWaarde) || !preg_match('/^\d+$/', (string) $instrumentWaarde)) {
+        http_response_code(400);
+        exit('Ongeldig instrument.');
+    }
+    $instrumentId = (int) $instrumentWaarde ?: null;
+    if ($instrumentId !== null && !in_array($instrumentId, $geldigeInstrumentIds, true)) {
+        http_response_code(400);
+        exit('Onbekend instrument.');
+    }
+    $stmt = $pdo->prepare('SELECT 1 FROM activiteit_deelnemers WHERE activiteit_id = ? AND deelnemer_id = ?');
+    $stmt->execute([$activiteitId, $deelnemerId]);
+    if (!$stmt->fetchColumn()) {
+        http_response_code(404);
+        exit('Deze deelnemer is niet aan de gekozen activiteit gekoppeld.');
+    }
 
     if ($actie === 'status_opslaan') {
         $stmt = $pdo->prepare('UPDATE activiteit_deelnemers SET instrument_id = ?, partij = ?, status = ? WHERE activiteit_id = ? AND deelnemer_id = ?');
@@ -219,16 +320,26 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
                 $mailer->setFrom($mailer->Username, 'Mozart op Zaterdag');
                 $mailer->addReplyTo($mailer->Username, 'Mozart op Zaterdag');
                 if ($testModus) {
-                    $mailer->addAddress('dirkjan@pellegrina.net', 'Dirkjan Horringa');
+                    $ontvangerEmail = 'dirkjan@pellegrina.net';
+                    $mailer->addAddress($ontvangerEmail, 'Dirkjan Horringa');
                 } else {
-                    $mailer->addAddress($speler['email'], trim($speler['voornaam'] . ' ' . $speler['achternaam']));
+                    $ontvangerEmail = $speler['email'];
+                    $mailer->addAddress($ontvangerEmail, trim($speler['voornaam'] . ' ' . $speler['achternaam']));
                     if (strcasecmp($speler['email'], 'dirkjan@pellegrina.net') !== 0) {
                         $mailer->addCC('dirkjan@pellegrina.net', 'Dirkjan Horringa');
                     }
                 }
                 $mailer->isHTML(true);
-                $ingevuldOnderwerp = trim($_POST['mail_' . $mailtype . '_onderwerp'] ?? '');
-                $ingevuldeMail = trim($_POST['mail_' . $mailtype . '_tekst'] ?? '');
+                $onderwerpWaarde = $_POST['mail_' . $mailtype . '_onderwerp'] ?? '';
+                $mailWaarde = $_POST['mail_' . $mailtype . '_tekst'] ?? '';
+                if (!is_string($onderwerpWaarde) || !is_string($mailWaarde)) {
+                    throw new RuntimeException('De mailinhoud heeft een ongeldig formaat.');
+                }
+                $ingevuldOnderwerp = trim($onderwerpWaarde);
+                $ingevuldeMail = trim($mailWaarde);
+                if (strlen($ingevuldOnderwerp) > 255 || preg_match('/[\r\n]/', $ingevuldOnderwerp) || strlen($ingevuldeMail) > 200000) {
+                    throw new RuntimeException('De mailinhoud is te lang of het onderwerp bevat een regeleinde.');
+                }
                 $standaardTekstVoorType = match ($mailtype) {
                     'toelating' => $toelatingsMail,
                     'bevestiging' => $standaardMail,
@@ -252,6 +363,10 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
                 $mailer->Body = $mailTekst;
                 $plainMailTekst = preg_replace('/<a\s+[^>]*href=["\']([^"\']+)["\'][^>]*>(.*?)<\/a>/is', '$2 ($1)', $mailTekst);
                 $mailer->AltBody = trim(html_entity_decode(strip_tags($plainMailTekst), ENT_QUOTES, 'UTF-8'));
+                $trackingToken = bin2hex(random_bytes(32));
+                if (!reserveerMailVerzending($pdo, $trackingToken, $activiteitId, $deelnemerId, $ontvangerEmail)) {
+                    throw new RuntimeException('Aan ' . $ontvangerEmail . ' is in de afgelopen vijf minuten al een mail verzonden.');
+                }
                 $mailer->send();
                 if ($actie === 'afwijzen_met_mail') {
                     $stmt = $pdo->prepare('UPDATE activiteit_deelnemers SET toegelaten = 0 WHERE activiteit_id = ? AND deelnemer_id = ?');
@@ -271,14 +386,24 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
                 }
             } catch (PHPMailer\PHPMailer\Exception $e) {
                 $smtpFout = $mailer instanceof PHPMailer\PHPMailer\PHPMailer ? $mailer->ErrorInfo : implode(' | ', $smtpDebug);
-                $melding = 'Mail niet verstuurd: ' . $e->getMessage() . ' SMTP: ' . $smtpFout;
+                error_log('Beschikbaarheid: PHPMailer-fout: ' . $e->getMessage() . ' SMTP: ' . $smtpFout);
+                $melding = 'Mail niet verstuurd. De technische details zijn vastgelegd in het serverlog.';
             } catch (RuntimeException $e) {
                 $melding = 'Mail niet verstuurd: ' . $e->getMessage();
             } catch (Throwable $e) {
-                $melding = 'Mail niet verstuurd: ' . $e->getMessage() . ' SMTP: ' . implode(' | ', $smtpDebug);
+                error_log('Beschikbaarheid: onverwachte mailfout: ' . $e->getMessage() . ' SMTP: ' . implode(' | ', $smtpDebug));
+                $melding = 'Mail niet verstuurd. De technische details zijn vastgelegd in het serverlog.';
             }
         }
     }
+}
+
+// Voorkom dat vernieuwen van de pagina dezelfde mutatie of mail nogmaals uitvoert.
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
+    $_SESSION['beschikbaarheid_melding'] = $melding;
+    $redirectParameters = ['activiteit_id' => $activiteitId, 'toon' => $toonModus];
+    header('Location: beschikbaarheid.php?' . http_build_query($redirectParameters));
+    exit;
 }
 
 $gekozenActiviteit = null;
@@ -443,7 +568,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
     
-    // Mail modal handling
+    // Open het juiste mailvenster voor de gekozen deelnemer.
     document.querySelectorAll('.mail-modal-btn').forEach(function (btn) {
         btn.addEventListener('click', function (e) {
             e.preventDefault();
@@ -456,7 +581,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!modal) return;
             modal.mailRow = rij;
             
-            // Show modal
+            // Bewaar de rij zodat alleen de bijbehorende deelnemergegevens worden verstuurd.
             modal.classList.add('active');
         });
     });
@@ -478,7 +603,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 status: rij.querySelector('[name="status"]')?.value || '',
                 partij: rij.querySelector('[name="partij"]')?.value || '',
                 actie: btn.dataset.action,
-                testmodus: testModusKnop?.dataset.actief === '1' ? '1' : '0'
+                testmodus: testModusKnop?.dataset.actief === '1' ? '1' : '0',
+                csrf_token: <?= json_encode($csrfToken, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>
             };
             velden['mail_' + btn.dataset.type + '_onderwerp'] = modal.querySelector('.mail-modal-onderwerp').value;
             velden['mail_' + btn.dataset.type + '_tekst'] = modal.querySelector('.mail-modal-tekst').value;
@@ -495,7 +621,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
     
-    // Close modals
+    // Sluit een mailvenster met de sluit- of annuleerknop.
     document.querySelectorAll('.mail-modal-close, .mail-cancel').forEach(function (btn) {
         btn.addEventListener('click', function () {
             var modal = btn.closest('.mail-modal');
@@ -503,7 +629,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
     
-    // Close modal when clicking outside
+    // Sluit een mailvenster ook bij een klik op de verduisterde achtergrond.
     document.querySelectorAll('.mail-modal').forEach(function (modal) {
         modal.addEventListener('click', function (e) {
             if (e.target === modal) {
@@ -522,17 +648,18 @@ document.addEventListener('keydown', function (event) {
 });
 </script>
  </head><body><div class="w3-content w3-mobile w3-white w3-panel" style="max-width:1400px"><h3>Beschikbaarheid</h3>
+<p class="mailtekst-hulp">Mailteksten geladen: <strong>JSON/<?= htmlspecialchars($mailtekstenBestandsnaam, ENT_QUOTES, 'UTF-8') ?></strong> (versie <?= htmlspecialchars($mailtekstenGewijzigdOp, ENT_QUOTES, 'UTF-8') ?>)</p>
 <details id="mailteksten-beheer" class="mailteksten-beheer">
 <summary>Mailteksten bewerken</summary>
 <form id="mailteksten-formulier" class="mailteksten-formulier" method="post">
 <input type="hidden" name="actie" value="mailteksten_opslaan">
-<p class="mailtekst-hulp">Geladen bestand: <strong>JSON/<?= htmlspecialchars($mailtekstenBestandsnaam, ENT_QUOTES, 'UTF-8') ?></strong></p>
+<input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
 <p class="mailtekst-hulp">In onderwerp en mailtekst beschikbare invoegcodes: {{voornaam}}, {{achternaam}}, {{datum}}, {{plaats}}, {{instrument}}, {{partij_tekst}}, {{omschrijving}}, {{activiteit_url}} en {{aanmeldlink}}.</p>
 <?php foreach (['toelaten' => 'Toelaten', 'uitnodigen' => 'Uitnodigen', 'afwijzen' => 'Afwijzen'] as $mailtype => $mailtypeLabel): ?>
 <section class="mailtekst-sectie">
 <h4><?= $mailtypeLabel ?></h4>
 <label for="mailtekst-<?= $mailtype ?>-onderwerp">Onderwerp</label>
-<input class="w3-input w3-border" id="mailtekst-<?= $mailtype ?>-onderwerp" name="mailteksten[<?= $mailtype ?>][onderwerp]" value="<?= htmlspecialchars($mailteksten[$mailtype]['onderwerp'], ENT_QUOTES, 'UTF-8') ?>" required>
+<input class="w3-input w3-border" id="mailtekst-<?= $mailtype ?>-onderwerp" name="mailteksten[<?= $mailtype ?>][onderwerp]" value="<?= htmlspecialchars($mailteksten[$mailtype]['onderwerp'], ENT_QUOTES, 'UTF-8') ?>" maxlength="255" required>
 <label for="mailtekst-<?= $mailtype ?>">Mailtekst</label>
 <textarea class="mailtekst-editor" id="mailtekst-<?= $mailtype ?>" name="mailteksten[<?= $mailtype ?>][tekst]" required><?= htmlspecialchars($mailteksten[$mailtype]['tekst'], ENT_QUOTES, 'UTF-8') ?></textarea>
 </section>
@@ -547,7 +674,7 @@ document.addEventListener('keydown', function (event) {
 <?php $toggleWaarde = $toonModus === 'toegelaten' ? 'ja_misschien' : 'toegelaten'; $toggleTekst = $toonModus === 'toegelaten' ? 'Toon: ja/misschien (alle) (' . $countJaMisschien . ')' : 'Toon: alleen toegelaten (' . $countToegeilaten . ')'; $toggleButtonClass = $toonModus === 'toegelaten' ? 'w3-button w3-small w3-border w3-green' : 'w3-button w3-small w3-border w3-light-grey'; ?>
 <form method="get" style="margin:0 0 12px"><input type="hidden" name="activiteit_id" value="<?= (int) $activiteitId ?>"><button class="<?= $toggleButtonClass ?>" type="submit" name="toon" value="<?= htmlspecialchars($toggleWaarde, ENT_QUOTES, 'UTF-8') ?>" title="<?= $toonModus === 'toegelaten' ? 'Klik om alle ja/misschien deelnemers te tonen' : 'Klik om alleen toegelaten deelnemers te tonen' ?>"><?= htmlspecialchars($toggleTekst) ?></button></form>
 <div class="tabel-scroll"><table class="w3-table w3-bordered w3-striped w3-small"><tr><th>Speler</th><th>Instrument</th><th>Status</th><th>Partij</th><th>Acties</th></tr>
-<?php foreach ($spelers as $speler): ?><tr><form method="post"><input type="hidden" name="activiteit_id" value="<?= $activiteitId ?>"><input type="hidden" name="deelnemer_id" value="<?= (int) $speler['id'] ?>"><td><span class="deelnemer-id"><?= (int) $speler['id'] ?></span><?= htmlspecialchars($speler['voornaam'] . ' ' . $speler['achternaam']) ?><?php if ((int) $speler['toegelaten'] === 1): ?><span class="toegelaten-vinkje" title="Toegelaten" aria-label="Toegelaten">&#10003;</span><?php elseif (in_array($speler['toegelaten'], [0, '0'], true)): ?><span class="afgewezen-kruis" title="Afgewezen" aria-label="Afgewezen">&#10005;</span><?php endif; ?></td><td><select class="w3-select" name="instrument_id"><option value="0">(onbekend)</option><?php foreach ($instrumenten as $instrument): ?><option value="<?= (int) $instrument['id'] ?>" <?= (int) $speler['instrument_id'] === (int) $instrument['id'] ? 'selected' : '' ?>><?= htmlspecialchars($instrument['naam']) ?></option><?php endforeach; ?></select></td><td><select class="w3-select" name="status" onchange="this.form.querySelector('.status-opslaan-knop').click()"><?php foreach (['ja', 'misschien', 'nee'] as $status): ?><option value="<?= $status ?>" <?= $speler['status'] === $status ? 'selected' : '' ?>><?= $status ?></option><?php endforeach; ?></select></td><td><input class="w3-input" type="text" name="partij" value="<?= htmlspecialchars($speler['partij'] ?? '') ?>" placeholder="bijv. 1" style="width:8em"></td><td><button class="status-opslaan-knop" type="submit" name="actie" value="status_opslaan" hidden></button><?php if ($speler['status'] === 'ja'): ?><button class="w3-button w3-green w3-small mail-knop" type="submit" name="actie" value="toelaten" formnovalidate>Toelaten</button><?php elseif ($speler['status'] === 'misschien'): ?><button class="w3-button w3-small mail-knop mail-modal-btn" type="button" data-modal="modal-bevestiging-<?= (int) $speler['id'] ?>" data-type="bevestiging" style="background:#198754;color:white">Uitnodigen</button><?php endif; ?><button class="w3-button w3-small mail-knop mail-modal-btn" type="button" data-modal="modal-toelating-<?= (int) $speler['id'] ?>" data-type="toelating" style="background:#198754;color:white">Toelaten met mail</button><button class="w3-button w3-small mail-knop mail-modal-btn" type="button" data-modal="modal-afwijzing-<?= (int) $speler['id'] ?>" data-type="afwijzing" style="background:#dc3545;color:white">Afwijzen</button><?php if ((int) $speler['toegelaten'] === 1): ?><button class="w3-button w3-orange w3-small mail-knop" type="submit" name="actie" value="toelating_intrekken" formnovalidate onclick="return confirm('De toelating van deze deelnemer intrekken zonder e-mail?')">Toelating intrekken</button><?php endif; ?><input type="hidden" name="mail_bevestiging_onderwerp" value="<?= htmlspecialchars($standaardOnderwerp) ?>"><textarea style="display:none" name="mail_bevestiging_tekst"><?= htmlspecialchars($standaardMail) ?></textarea><input type="hidden" name="mail_afwijzing_onderwerp" value="<?= htmlspecialchars($standaardAfwijzingsOnderwerp) ?>"><textarea style="display:none" name="mail_afwijzing_tekst"><?= htmlspecialchars($standaardAfwijzingsMail) ?></textarea></td></form></tr><?php endforeach; ?></table></div>
+<?php foreach ($spelers as $speler): ?><tr><form method="post"><input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>"><input type="hidden" name="activiteit_id" value="<?= $activiteitId ?>"><input type="hidden" name="deelnemer_id" value="<?= (int) $speler['id'] ?>"><td><span class="deelnemer-id"><?= (int) $speler['id'] ?></span><?= htmlspecialchars($speler['voornaam'] . ' ' . $speler['achternaam']) ?><?php if ((int) $speler['toegelaten'] === 1): ?><span class="toegelaten-vinkje" title="Toegelaten" aria-label="Toegelaten">&#10003;</span><?php elseif (in_array($speler['toegelaten'], [0, '0'], true)): ?><span class="afgewezen-kruis" title="Afgewezen" aria-label="Afgewezen">&#10005;</span><?php endif; ?></td><td><select class="w3-select" name="instrument_id"><option value="0">(onbekend)</option><?php foreach ($instrumenten as $instrument): ?><option value="<?= (int) $instrument['id'] ?>" <?= (int) $speler['instrument_id'] === (int) $instrument['id'] ? 'selected' : '' ?>><?= htmlspecialchars($instrument['naam']) ?></option><?php endforeach; ?></select></td><td><select class="w3-select" name="status" onchange="this.form.querySelector('.status-opslaan-knop').click()"><?php foreach (['ja', 'misschien', 'nee'] as $status): ?><option value="<?= $status ?>" <?= $speler['status'] === $status ? 'selected' : '' ?>><?= $status ?></option><?php endforeach; ?></select></td><td><input class="w3-input" type="text" name="partij" value="<?= htmlspecialchars($speler['partij'] ?? '') ?>" maxlength="100" placeholder="bijv. 1" style="width:8em"></td><td><button class="status-opslaan-knop" type="submit" name="actie" value="status_opslaan" hidden></button><?php if ($speler['status'] === 'ja'): ?><button class="w3-button w3-green w3-small mail-knop" type="submit" name="actie" value="toelaten" formnovalidate>Toelaten</button><?php elseif ($speler['status'] === 'misschien'): ?><button class="w3-button w3-small mail-knop mail-modal-btn" type="button" data-modal="modal-bevestiging-<?= (int) $speler['id'] ?>" data-type="bevestiging" style="background:#198754;color:white">Uitnodigen</button><?php endif; ?><button class="w3-button w3-small mail-knop mail-modal-btn" type="button" data-modal="modal-toelating-<?= (int) $speler['id'] ?>" data-type="toelating" style="background:#198754;color:white">Toelaten met mail</button><button class="w3-button w3-small mail-knop mail-modal-btn" type="button" data-modal="modal-afwijzing-<?= (int) $speler['id'] ?>" data-type="afwijzing" style="background:#dc3545;color:white">Afwijzen</button><?php if ((int) $speler['toegelaten'] === 1): ?><button class="w3-button w3-orange w3-small mail-knop" type="submit" name="actie" value="toelating_intrekken" formnovalidate onclick="return confirm('De toelating van deze deelnemer intrekken zonder e-mail?')">Toelating intrekken</button><?php endif; ?><input type="hidden" name="mail_bevestiging_onderwerp" value="<?= htmlspecialchars($standaardOnderwerp) ?>"><textarea style="display:none" name="mail_bevestiging_tekst"><?= htmlspecialchars($standaardMail) ?></textarea><input type="hidden" name="mail_afwijzing_onderwerp" value="<?= htmlspecialchars($standaardAfwijzingsOnderwerp) ?>"><textarea style="display:none" name="mail_afwijzing_tekst"><?= htmlspecialchars($standaardAfwijzingsMail) ?></textarea></td></form></tr><?php endforeach; ?></table></div>
 
 <!-- Mail modals -->
 <?php foreach ($spelers as $speler): ?>

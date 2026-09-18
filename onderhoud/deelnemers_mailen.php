@@ -322,17 +322,21 @@ if ($actie === 'verwerk_pluk' && is_array($wachtrij)) {
                         $mailer->addAddress($ontvanger['email'], $naam);
                         $mailer->Subject = str_replace(["\r", "\n"], '', html_entity_decode(vulMailTemplate($wachtrij['onderwerp'], $ontvanger, $wachtrij['activiteit']), ENT_QUOTES, 'UTF-8'));
                         $ontvanger['tracking_token'] ??= bin2hex(random_bytes(32));
-                        registreerMailTracking($pdo, $ontvanger['tracking_token'], (int) $wachtrij['activiteit']['id'], (int) $ontvanger['id'], $ontvanger['email']);
                         $mailer->Body = voegTrackingPixelToe(
                             sluitLokaleAfbeeldingenIn(vulMailTemplate($wachtrij['bericht'], $ontvanger, $wachtrij['activiteit']), $mailer),
                             $ontvanger['tracking_token']
                         );
                         $mailer->AltBody = trim(html_entity_decode(strip_tags(str_replace(['</p>', '<br>', '<br/>', '<br />'], "\n", $mailer->Body)), ENT_QUOTES, 'UTF-8'));
-                        $mailer->send();
-                        markeerMailVerzonden($pdo, $ontvanger['tracking_token']);
-                        $ontvanger['status'] = 'verzonden';
-                        $ontvanger['verzonden_op'] = date(DATE_ATOM);
-                        $resultaten[] = ['gelukt' => true, 'naam' => $naam, 'bericht' => $ontvanger['email']];
+                        if (!reserveerMailVerzending($pdo, $ontvanger['tracking_token'], (int) $wachtrij['activiteit']['id'], (int) $ontvanger['id'], $ontvanger['email'])) {
+                            $ontvanger['status'] = 'overgeslagen';
+                            $ontvanger['fout'] = 'Binnen vijf minuten is al een mail naar dit adres verzonden.';
+                            $resultaten[] = ['gelukt' => false, 'naam' => $naam, 'bericht' => $ontvanger['fout']];
+                        } else {
+                            $mailer->send();
+                            $ontvanger['status'] = 'verzonden';
+                            $ontvanger['verzonden_op'] = date(DATE_ATOM);
+                            $resultaten[] = ['gelukt' => true, 'naam' => $naam, 'bericht' => $ontvanger['email']];
+                        }
                     } catch (Throwable $e) {
                         $ontvanger['status'] = 'mislukt';
                         $ontvanger['fout'] = $e->getMessage();
@@ -400,6 +404,10 @@ if ($actie === 'test') {
                         $mailer->Subject = '[TEST] ' . $ingevuldOnderwerp;
                         $mailer->Body = sluitLokaleAfbeeldingenIn(vulMailTemplate($bericht, $deelnemer, $gekozenActiviteit), $mailer);
                         $mailer->AltBody = trim(html_entity_decode(strip_tags(str_replace(['</p>', '<br>', '<br/>', '<br />'], "\n", $mailer->Body)), ENT_QUOTES, 'UTF-8'));
+                        $trackingToken = bin2hex(random_bytes(32));
+                        if (!reserveerMailVerzending($pdo, $trackingToken, (int) $gekozenActiviteit['id'], (int) $deelnemer['id'], $ontvangerEmail)) {
+                            throw new RuntimeException('Binnen vijf minuten is al een testmail naar dit adres verzonden.');
+                        }
                         $mailer->send();
                         $resultaten[] = ['gelukt' => true, 'naam' => $naam, 'bericht' => $ontvangerEmail];
                     } catch (Throwable $e) {
@@ -429,7 +437,7 @@ if (is_array($wachtrij)) {
     }
 }
 
-$wachtrijTellingen = ['wachtend' => 0, 'verzonden' => 0, 'mislukt' => 0];
+$wachtrijTellingen = ['wachtend' => 0, 'verzonden' => 0, 'mislukt' => 0, 'overgeslagen' => 0];
 if (is_array($wachtrij)) {
     foreach ($wachtrij['ontvangers'] as $ontvanger) {
         if (isset($wachtrijTellingen[$ontvanger['status']])) {
@@ -484,7 +492,8 @@ if (is_array($wachtrij)) {
                     <strong><?= htmlspecialchars(date('d-m-Y', strtotime($wachtrij['activiteit']['datum'])) . ' - ' . $wachtrij['activiteit']['plaats']) ?></strong><br>
                     <?= $wachtrijTellingen['verzonden'] ?> verzonden,
                     <?= $wachtrijTellingen['wachtend'] ?> wachtend,
-                    <?= $wachtrijTellingen['mislukt'] ?> mislukt.
+                    <?= $wachtrijTellingen['mislukt'] ?> mislukt,
+                    <?= $wachtrijTellingen['overgeslagen'] ?> binnen vijf minuten overgeslagen.
                 </p>
                 <?php if ($wachtrijTellingen['wachtend'] > 0): ?>
                     <p id="volgende-pluk-melding"></p>
