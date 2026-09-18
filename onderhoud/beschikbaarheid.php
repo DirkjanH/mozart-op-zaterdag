@@ -126,6 +126,8 @@ $mailteksten = [
     'afwijzen' => ['onderwerp' => $standaardAfwijzingsOnderwerp, 'tekst' => $standaardAfwijzingsMail],
 ];
 $mailtekstenMap = __DIR__ . '/../JSON';
+// PHP-FPM-workers bewaren stat-/realpath-cache tussen requests; wis die zodat we altijd de actuele bestandsinformatie van de server lezen.
+clearstatcache(true);
 $mailtekstenBestanden = glob($mailtekstenMap . '/mailteksten*.json') ?: [];
 $mailtekstenBestanden = array_values(array_filter(
     $mailtekstenBestanden,
@@ -143,6 +145,8 @@ try {
     if (!is_readable($mailtekstenBestand)) {
         throw new RuntimeException('Bestand niet gevonden: JSON/' . $mailtekstenBestandsnaam . '.');
     }
+    // Lees de inhoud rechtstreeks van schijf; nooit een eerder in dit proces gebufferde versie gebruiken.
+    clearstatcache(true, $mailtekstenBestand);
     $geladenMailteksten = json_decode((string) file_get_contents($mailtekstenBestand), true, 16, JSON_THROW_ON_ERROR);
     foreach (['toelaten', 'uitnodigen', 'afwijzen'] as $mailtype) {
         if (!is_string($geladenMailteksten[$mailtype]['onderwerp'] ?? null) || !is_string($geladenMailteksten[$mailtype]['tekst'] ?? null)) {
@@ -189,6 +193,7 @@ if (($_POST['actie'] ?? '') === 'mailteksten_opslaan') {
         }
         $json = json_encode($nieuweMailteksten, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
         // Bewaar eerst de laatst geldige versie; een mislukte write kan zo geen tekst vernietigen.
+        clearstatcache(true, $mailtekstenBestand);
         if (is_file($mailtekstenBestand)) {
             $backupTijdstip = date('Ymd-His');
             $backupBestand = $mailtekstenMap . '/mailteksten-backup-' . $backupTijdstip . '.json';
