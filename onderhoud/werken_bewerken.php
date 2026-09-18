@@ -103,6 +103,16 @@ if (isset($_POST['actie']) && $_POST['actie'] === 'opslaan') {
     }
 }
 
+// Voorkom dat Ctrl+R/Ctrl+F5 na het opslaan dezelfde POST (en dus een verlopen CSRF-token) opnieuw verstuurt.
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
+    $_SESSION['werken_bewerken_melding'] = $melding;
+    header('Location: werken_bewerken.php');
+    exit;
+}
+
+$melding = is_string($_SESSION['werken_bewerken_melding'] ?? null) ? $_SESSION['werken_bewerken_melding'] : $melding;
+unset($_SESSION['werken_bewerken_melding']);
+
 $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
