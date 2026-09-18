@@ -8,7 +8,7 @@ $voorbeeldPartijen = [];
 $activiteiten = $pdo->query(
     'SELECT id, datum, plaats, omschrijving FROM activiteiten ORDER BY datum'
 )->fetchAll(PDO::FETCH_ASSOC);
-$instrumenten = $pdo->query('SELECT id, naam FROM instrumenten ORDER BY id')->fetchAll(PDO::FETCH_ASSOC);
+$instrumenten = $pdo->query("SELECT id, naam FROM instrumenten ORDER BY CASE WHEN LOWER(TRIM(naam)) = 'pauken' THEN COALESCE((SELECT MIN(i2.id) FROM instrumenten i2 WHERE LOWER(TRIM(i2.naam)) LIKE 'trompet%'), id) ELSE id END, CASE WHEN LOWER(TRIM(naam)) = 'pauken' THEN 1 ELSE 0 END, id")->fetchAll(PDO::FETCH_ASSOC);
 
 $activiteitId = (int) ($_POST['activiteit_id'] ?? $_GET['activiteit_id'] ?? 0);
 $betekendeBestanden = array_map('basename', $_POST['betekend'] ?? []);
@@ -189,8 +189,8 @@ function ontleedGewensteBezetting(string $notatie): ?array
     $koper = array_map('intval', str_split($delen[2]));
     $strijkers = array_map('intval', str_split($delen[4]));
     return array_combine(
-        ['fluit', 'hobo', 'klarinet', 'fagot', 'hoorn', 'trompet', 'trombone', 'tuba', 'pauken', 'viool 1', 'viool 2', 'altviool', 'cello', 'contrabas'],
-        [...$hout, ...$koper, $delen[3] === '' ? 0 : 1, ...$strijkers]
+        ['fluit', 'hobo', 'klarinet', 'fagot', 'hoorn', 'trompet', 'pauken', 'trombone', 'tuba', 'viool 1', 'viool 2', 'altviool', 'cello', 'contrabas'],
+        [...$hout, $koper[0], $koper[1], $delen[3] === '' ? 0 : 1, $koper[2], $koper[3], ...$strijkers]
     );
 }
 
@@ -204,7 +204,7 @@ function bepaalStemgroep(string $instrument, string $partij): string
     if (str_contains($instrument, 'viool')) {
         return preg_match('/\b2\b/', $partij) ? 'viool 2' : 'viool 1';
     }
-    foreach (['contrabas', 'cello', 'fluit', 'hobo', 'klarinet', 'fagot', 'hoorn', 'trompet', 'trombone', 'tuba', 'pauken'] as $stemgroep) {
+    foreach (['contrabas', 'cello', 'fluit', 'hobo', 'klarinet', 'fagot', 'hoorn', 'trompet', 'pauken', 'trombone', 'tuba'] as $stemgroep) {
         if (str_contains($instrument, $stemgroep)) {
             return $stemgroep;
         }

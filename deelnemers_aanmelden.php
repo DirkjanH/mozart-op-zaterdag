@@ -29,11 +29,16 @@ foreach ($instrumenten as $index => $instrument) {
 }
 if ($pauken !== null) {
     $instrumenten = array_values($instrumenten);
+    $paukenIngevoegd = false;
     foreach ($instrumenten as $index => $instrument) {
-        if (strtolower(trim($instrument['naam'])) === 'trombone') {
+        if (str_starts_with(strtolower(trim($instrument['naam'])), 'trompet')) {
             array_splice($instrumenten, $index + 1, 0, [$pauken]);
+            $paukenIngevoegd = true;
             break;
         }
+    }
+    if (!$paukenIngevoegd) {
+        $instrumenten[] = $pauken;
     }
 }
 
