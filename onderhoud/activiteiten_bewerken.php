@@ -223,7 +223,7 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
                                 </select>
                             </td>
                             <td><input class="w3-input" type="text" name="omschrijving" value="<?= htmlspecialchars($activiteit['omschrijving'] ?? '') ?>" style="min-width:24em;"></td>
-                            <td><input class="w3-input" type="text" name="gewenste_bezetting" value="<?= htmlspecialchars($activiteit['gewenste_bezetting'] ?? '') ?>" placeholder="0201-0200-timp-66442" maxlength="100" style="min-width:18em;"></td>
+                            <td><input class="w3-input" type="text" name="gewenste_bezetting" value="<?= htmlspecialchars($activiteit['gewenste_bezetting'] ?? '') ?>" placeholder="0201-2000-timp-66442" maxlength="100" style="min-width:18em;"></td>
                             <td class="actie-kolom">
                                 <button class="w3-button w3-blue actie-knop" type="submit" title="Activiteit opslaan" aria-label="Activiteit opslaan">&#10003;</button>
                                 <button class="w3-button w3-red actie-knop" type="submit" name="actie" value="verwijderen" formnovalidate title="Activiteit wissen" aria-label="Activiteit wissen" onclick="return confirm('Deze activiteit echt verwijderen?');">&#10005;</button>
