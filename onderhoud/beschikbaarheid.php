@@ -567,6 +567,16 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     
     // Open het juiste mailvenster voor de gekozen deelnemer.
+    var startPopupEditor = function (textarea) {
+        if (!textarea || typeof CKEDITOR === 'undefined' || CKEDITOR.instances[textarea.id]) return;
+        CKEDITOR.replace(textarea.id, {
+            toolbar: 'Full',
+            height: 260,
+            versionCheck: false,
+            allowedContent: true,
+            removePlugins: 'cloudservices,easyimage,exportpdf'
+        });
+    };
     document.querySelectorAll('.mail-modal-btn').forEach(function (btn) {
         btn.addEventListener('click', function (e) {
             e.preventDefault();
@@ -581,6 +591,7 @@ document.addEventListener('DOMContentLoaded', function () {
             
             // Bewaar de rij zodat alleen de bijbehorende deelnemergegevens worden verstuurd.
             modal.classList.add('active');
+            startPopupEditor(modal.querySelector('.mail-modal-tekst'));
         });
     });
 
@@ -605,7 +616,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 csrf_token: <?= json_encode($csrfToken, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>
             };
             velden['mail_' + btn.dataset.type + '_onderwerp'] = modal.querySelector('.mail-modal-onderwerp').value;
-            velden['mail_' + btn.dataset.type + '_tekst'] = modal.querySelector('.mail-modal-tekst').value;
+            var tekstVeld = modal.querySelector('.mail-modal-tekst');
+            var editorInstantie = typeof CKEDITOR !== 'undefined' ? CKEDITOR.instances[tekstVeld.id] : null;
+            velden['mail_' + btn.dataset.type + '_tekst'] = editorInstantie ? editorInstantie.getData() : tekstVeld.value;
             Object.keys(velden).forEach(function (naam) {
                 var veld = document.createElement('input');
                 veld.type = 'hidden';
@@ -685,7 +698,7 @@ document.addEventListener('keydown', function (event) {
         </div>
         <div class="mail-modal-body">
             <input class="mail-modal-onderwerp" type="text" value="<?= htmlspecialchars($toelatingsOnderwerp) ?>" placeholder="Onderwerp">
-            <textarea class="mail-modal-tekst" placeholder="Mailtekst"><?= htmlspecialchars($popupToelating) ?></textarea>
+            <textarea class="mail-modal-tekst" id="mail-modal-tekst-toelating-<?= (int) $speler['id'] ?>" placeholder="Mailtekst"><?= htmlspecialchars($popupToelating) ?></textarea>
         </div>
         <div class="mail-modal-footer">
             <button class="mail-modal-submit" type="button" data-type="toelating" data-action="toelaten_met_mail">Toelaten en bevestiging versturen</button>
@@ -702,7 +715,7 @@ document.addEventListener('keydown', function (event) {
     </div>
     <div class="mail-modal-body">
       <input class="mail-modal-onderwerp" type="text" value="<?= htmlspecialchars($standaardOnderwerp) ?>" placeholder="Onderwerp">
-    <textarea class="mail-modal-tekst" placeholder="Mailtekst"><?= htmlspecialchars($popupBevestiging) ?></textarea>
+    <textarea class="mail-modal-tekst" id="mail-modal-tekst-bevestiging-<?= (int) $speler['id'] ?>" placeholder="Mailtekst"><?= htmlspecialchars($popupBevestiging) ?></textarea>
     </div>
     <div class="mail-modal-footer">
             <button class="mail-modal-submit" type="button" data-type="bevestiging" data-action="uitnodigen">Uitnodiging versturen</button>
@@ -719,7 +732,7 @@ document.addEventListener('keydown', function (event) {
     </div>
     <div class="mail-modal-body">
       <input class="mail-modal-onderwerp" type="text" value="<?= htmlspecialchars($standaardAfwijzingsOnderwerp) ?>" placeholder="Onderwerp">
-    <textarea class="mail-modal-tekst" placeholder="Mailtekst"><?= htmlspecialchars($popupAfwijzing) ?></textarea>
+    <textarea class="mail-modal-tekst" id="mail-modal-tekst-afwijzing-<?= (int) $speler['id'] ?>" placeholder="Mailtekst"><?= htmlspecialchars($popupAfwijzing) ?></textarea>
     </div>
     <div class="mail-modal-footer">
             <button class="mail-modal-submit" type="button" data-type="afwijzing" data-action="afwijzen_met_mail">Afwijzing versturen</button>
