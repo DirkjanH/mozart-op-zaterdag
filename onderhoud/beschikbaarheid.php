@@ -125,7 +125,7 @@ $mailtekstenBestandsnaam = basename($mailtekstenBestand);
 // PHP-FPM-workers bewaren stat-/realpath-cache tussen requests; wis die zodat we altijd de actuele bestandsinformatie van de server lezen.
 clearstatcache(true, $mailtekstenBestand);
 $mailtekstenGewijzigdOp = is_file($mailtekstenBestand)
-    ? date('d-m-Y H:i:s', filemtime($mailtekstenBestand))
+    ? (new DateTimeImmutable('@' . filemtime($mailtekstenBestand)))->setTimezone(new DateTimeZone('Europe/Amsterdam'))->format('d-m-Y H:i:s')
     : 'nog niet opgeslagen';
 try {
     if (!is_readable($mailtekstenBestand)) {
@@ -198,7 +198,7 @@ if (($_POST['actie'] ?? '') === 'mailteksten_opslaan') {
         }
         $mailtekstenOpslaanGelukt = true;
         clearstatcache(true, $mailtekstenBestand);
-        $mailtekstenGewijzigdOp = date('d-m-Y H:i:s', filemtime($mailtekstenBestand));
+        $mailtekstenGewijzigdOp = (new DateTimeImmutable('@' . filemtime($mailtekstenBestand)))->setTimezone(new DateTimeZone('Europe/Amsterdam'))->format('d-m-Y H:i:s');
         $mailteksten = $nieuweMailteksten;
         $toelatingsOnderwerp = $mailteksten['toelaten']['onderwerp'];
         $toelatingsMail = $mailteksten['toelaten']['tekst'];
