@@ -217,8 +217,12 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
             min-width: 8em;
         }
 
+        .veld-bezetting {
+            min-width: 26em;
+        }
+
         .veld-solo {
-            min-width: 12em;
+            min-width: 7em;
         }
 
         .veld-duur {
@@ -228,6 +232,11 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
         .uitgevoerd-titel {
             color: #c00;
             font-weight: bold;
+        }
+
+        .tabel-scroll input.w3-input,
+        .tabel-scroll select.w3-select {
+            background-color: #fffdd0;
         }
     </style>
 </head>
@@ -289,7 +298,7 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
                             <?php endforeach; ?>
                         </select>
                     </td>
-                    <td><input class="w3-input" type="text" name="bezetting" form="<?= $werkFormId ?>" value="<?= htmlspecialchars($werk['bezetting']) ?>" maxlength="255"></td>
+                    <td><input class="w3-input veld-bezetting" type="text" name="bezetting" form="<?= $werkFormId ?>" value="<?= htmlspecialchars($werk['bezetting']) ?>" maxlength="255"></td>
                     <td><input class="w3-input veld-solo" type="text" name="solo" form="<?= $werkFormId ?>" value="<?= htmlspecialchars($werk['solo'] ?? '') ?>" maxlength="255"></td>
                     <td><input class="w3-input" type="date" name="uitgevoerd_op" form="<?= $werkFormId ?>" value="<?= htmlspecialchars($werk['uitgevoerd_op'] ?? '') ?>"></td>
                     <td><input class="w3-input" type="text" name="met_solist" form="<?= $werkFormId ?>" value="<?= htmlspecialchars($werk['met_solist'] ?? '') ?>" maxlength="100" style="width:14em;"></td>
@@ -312,7 +321,7 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
                         <?php endforeach; ?>
                     </select>
                 </td>
-                <td><input class="w3-input" type="text" name="bezetting" form="werk-form-nieuw" maxlength="255"></td>
+                <td><input class="w3-input veld-bezetting" type="text" name="bezetting" form="werk-form-nieuw" maxlength="255"></td>
                 <td><input class="w3-input veld-solo" type="text" name="solo" form="werk-form-nieuw" maxlength="255"></td>
                 <td><input class="w3-input" type="date" name="uitgevoerd_op" form="werk-form-nieuw"></td>
                 <td><input class="w3-input" type="text" name="met_solist" form="werk-form-nieuw" maxlength="100" style="width:14em;"></td>
