@@ -22,6 +22,7 @@ csrfValiderenOfAfwijzen();
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     $toegestaneActies = [
         'mailteksten_opslaan',
+        'mailteksten_json_laden',
         'status_opslaan',
         'toelating_intrekken',
         'toelaten',
@@ -150,7 +151,55 @@ try {
     $melding = 'De JSON-mailteksten konden niet worden geladen; de standaardteksten worden gebruikt. ' . $e->getMessage();
 }
 
+// Toon een net geüploade JSON meteen in de formuliervelden, nog vóór een expliciete opslaan-actie.
+if (is_array($_SESSION['beschikbaarheid_mailteksten_geladen'] ?? null)) {
+    $mailteksten = $_SESSION['beschikbaarheid_mailteksten_geladen'];
+    $toelatingsOnderwerp = $mailteksten['toelaten']['onderwerp'];
+    $toelatingsMail = $mailteksten['toelaten']['tekst'];
+    $standaardOnderwerp = $mailteksten['uitnodigen']['onderwerp'];
+    $standaardMail = $mailteksten['uitnodigen']['tekst'];
+    $standaardAfwijzingsOnderwerp = $mailteksten['afwijzen']['onderwerp'];
+    $standaardAfwijzingsMail = $mailteksten['afwijzen']['tekst'];
+    unset($_SESSION['beschikbaarheid_mailteksten_geladen']);
+}
+
 $mailtekstenOpslaanGelukt = false;
+if (($_POST['actie'] ?? '') === 'mailteksten_json_laden') {
+    try {
+        $upload = $_FILES['mailteksten_json'] ?? null;
+        if (!is_array($upload) || ($upload['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) {
+            throw new RuntimeException('Kies een geldig JSON-bestand om te laden.');
+        }
+        if ($upload['size'] > 300000) {
+            throw new RuntimeException('Het JSON-bestand is te groot.');
+        }
+        $geuploadeMailteksten = json_decode((string) file_get_contents($upload['tmp_name']), true, 16, JSON_THROW_ON_ERROR);
+        $nieuweGeladenMailteksten = [];
+        foreach (['toelaten', 'uitnodigen', 'afwijzen'] as $mailtype) {
+            $ingeladenMailtekst = $geuploadeMailteksten[$mailtype] ?? null;
+            if (!is_array($ingeladenMailtekst) || !is_string($ingeladenMailtekst['onderwerp'] ?? null) || !is_string($ingeladenMailtekst['tekst'] ?? null)) {
+                throw new RuntimeException('Mailtekst ' . $mailtype . ' ontbreekt of is ongeldig in het geüploade bestand.');
+            }
+            $onderwerp = trim($ingeladenMailtekst['onderwerp']);
+            $tekst = trim($ingeladenMailtekst['tekst']);
+            if ($onderwerp === '' || $tekst === '') {
+                throw new RuntimeException('Onderwerp en tekst zijn verplicht voor ' . $mailtype . '.');
+            }
+            if (strlen($onderwerp) > 255 || preg_match('/[\r\n]/', $onderwerp)) {
+                throw new RuntimeException('Het onderwerp voor ' . $mailtype . ' is te lang of bevat een regeleinde.');
+            }
+            if (strlen($tekst) > 200000) {
+                throw new RuntimeException('De tekst voor ' . $mailtype . ' is te groot.');
+            }
+            $nieuweGeladenMailteksten[$mailtype] = ['onderwerp' => $onderwerp, 'tekst' => $tekst];
+        }
+        $_SESSION['beschikbaarheid_mailteksten_geladen'] = $nieuweGeladenMailteksten;
+        $melding = 'JSON geladen in de formuliervelden. Controleer de inhoud en klik op "Alle mailteksten opslaan" om te bevestigen.';
+    } catch (Throwable $e) {
+        $melding = 'JSON niet geladen: ' . $e->getMessage();
+    }
+}
+
 if (($_POST['actie'] ?? '') === 'mailteksten_opslaan') {
     try {
         $backupBestandsnaam = null;
@@ -668,8 +717,16 @@ document.addEventListener('keydown', function (event) {
 </script>
  </head><body><div class="w3-content w3-mobile w3-white w3-panel" style="max-width:1400px"><h3>Beschikbaarheid</h3>
 <p class="mailtekst-hulp">Mailteksten <?= $mailtekstenZojuistOpgeslagen ? 'opgeslagen' : 'geladen' ?>: <strong>JSON/<?= htmlspecialchars($mailtekstenBestandsnaam, ENT_QUOTES, 'UTF-8') ?></strong> (versie <?= htmlspecialchars($mailtekstenGewijzigdOp, ENT_QUOTES, 'UTF-8') ?>)</p>
-<details id="mailteksten-beheer" class="mailteksten-beheer">
+<?php $mailtekstenPaneelOpen = str_starts_with($melding, 'JSON geladen'); ?>
+<details id="mailteksten-beheer" class="mailteksten-beheer"<?= $mailtekstenPaneelOpen ? ' open' : '' ?>>
 <summary>Mailteksten bewerken</summary>
+<form method="post" enctype="multipart/form-data" style="padding:1em 1em 0">
+<input type="hidden" name="actie" value="mailteksten_json_laden">
+<input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
+<label for="mailteksten_json">Andere mailteksten laden uit JSON</label><br>
+<input class="w3-input w3-border" id="mailteksten_json" name="mailteksten_json" type="file" accept="application/json,.json" style="max-width:32em;display:inline-block">
+<button class="w3-button w3-light-grey" type="submit">JSON laden</button>
+</form>
 <form id="mailteksten-formulier" class="mailteksten-formulier" method="post">
 <input type="hidden" name="actie" value="mailteksten_opslaan">
 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
