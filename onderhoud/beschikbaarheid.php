@@ -51,8 +51,8 @@ $activiteiten = $pdo->query('SELECT id, datum, plaats, omschrijving FROM activit
 if ($activiteitId === 0 && $activiteiten !== []) $activiteitId = (int) $activiteiten[0]['id'];
 $instrumenten = $pdo->query("SELECT id, naam FROM instrumenten ORDER BY CASE WHEN LOWER(TRIM(naam)) = 'pauken' THEN COALESCE((SELECT MIN(i2.id) FROM instrumenten i2 WHERE LOWER(TRIM(i2.naam)) LIKE 'trompet%'), id) ELSE id END, CASE WHEN LOWER(TRIM(naam)) = 'pauken' THEN 1 ELSE 0 END, id")->fetchAll(PDO::FETCH_ASSOC);
 
-$standaardOnderwerp = 'Bevestiging deelname Mozart op Zaterdag';
-$standaardAfwijzingsOnderwerp = 'Mozart op Zaterdag - deze keer geen plaats';
+$standaardOnderwerp = '';
+$standaardAfwijzingsOnderwerp = '';
 $gmailGebruikersnaam = 'info@mozartopzaterdag.nl';
 $gmailGebruikersnaamBestand = __DIR__ . '/../includes/_tst/MOZART_GMAIL_USERNAME.txt';
 $gmailAppWachtwoord = '';
@@ -94,24 +94,9 @@ if ($gmailOmgevingsWachtwoord !== false && $gmailOmgevingsWachtwoord !== '') {
     $gmailAppWachtwoord = preg_replace('/\s+/', '', $gmailOmgevingsWachtwoord);
     $gmailWachtwoordBron = 'omgeving';
 }
-$standaardMail = <<<'HTML'
-Beste {{voornaam}},<br><br>
-Leuk dat je je hebt aangemeld voor Mozart op Zaterdag! We zijn blij om je te kunnen plaatsen als {{instrument}}{{partij_tekst}} voor zaterdag {{datum}} in {{plaats}}. We spelen dan {{omschrijving}}.<br><br>
-De bezetting vind je op de <a href="https://mozartopzaterdag.nl">website van Mozart op Zaterdag</a>. Je kunt inloggen op de pagina voor deelnemers met <strong>WolfGang</strong> (let op de hoofdletters).<br><br>
-Mocht je voor het concert moeten afzeggen, dan stellen we het op prijs als je een vervanger aandraagt.<br><br>
-Alle partijen staan ook op de <a href="https://mozartopzaterdag.nl">website</a>.<br><br>
-Nog even wat aanvullende opmerkingen over Mozart op Zaterdag:<br>
-<ul>
-<li>De Marnixzaal ligt aan het Domplein 4, op nog geen kwartier lopen van het station.</li>
-<li>Dress code: kleurige vrije-tijdskleren.</li>
-<li>Je hoeft geen lessenaar mee te nemen; die zijn aanwezig in de zaal.</li>
-</ul>
-Met enthousiaste groet,<br><br>
-Dirkjan Horringa<br><br>
-P.S. Mocht je ook in de toekomst weer willen meespelen, <a href="{{aanmeldlink}}">vul dan dit formulier in</a>. Je bestaande gegevens staan daar alvast ingevuld.
-HTML;
-$standaardAfwijzingsMail = 'Beste {{voornaam}},<br><br>Een tijdje terug heb je in het aanmeldingsformulier voor Mozart op Zaterdag aangegeven dat je (misschien) wilde meespelen op {{datum}} in {{omschrijving}}. De belangstelling voor deze aflevering van Mozart op Zaterdag is echter groot. Helaas kan ik je voor die datum niet plaatsen. Ik hoop je bij een van de volgende afleveringen of in andere projecten weer te zien.<br><br>Hartelijke groet<br><br>Dirkjan Horringa<br><br>P.S. Mocht je ook in de toekomst weer willen meespelen, <a href="{{aanmeldlink}}">vul dan dit formulier in</a>. Je bestaande gegevens staan daar alvast ingevuld.';
-$standaardAfwijzingsMail = (string) ($standaardAfwijzingsMail ?? '');
+// Mailteksten komen uitsluitend uit JSON/mailteksten.json; er zijn geen ingebouwde standaardteksten meer.
+$standaardMail = '';
+$standaardAfwijzingsMail = '';
 $toelatingsOnderwerp = $standaardOnderwerp;
 $toelatingsMail = $standaardMail;
 $mailteksten = [
@@ -148,7 +133,7 @@ try {
     $standaardAfwijzingsOnderwerp = $mailteksten['afwijzen']['onderwerp'];
     $standaardAfwijzingsMail = $mailteksten['afwijzen']['tekst'];
 } catch (Throwable $e) {
-    $melding = 'De JSON-mailteksten konden niet worden geladen; de standaardteksten worden gebruikt. ' . $e->getMessage();
+    $melding = 'De JSON-mailteksten konden niet worden geladen; vul de mailteksten hieronder handmatig in. ' . $e->getMessage();
 }
 
 // Toon een net geüploade JSON meteen in de formuliervelden, nog vóór een expliciete opslaan-actie.
