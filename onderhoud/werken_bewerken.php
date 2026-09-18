@@ -246,6 +246,18 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
         <?php endif; ?>
 
         <div class="tabel-scroll">
+        <?php /* Losse forms buiten de tabel: een <form> als kind van <table>/<tr> is ongeldige HTML en kan velden laten verdwijnen. */ ?>
+        <?php foreach ($werken as $werk): ?>
+            <form id="werk-form-<?= (int) $werk['id'] ?>" method="post">
+                <input type="hidden" name="actie" value="opslaan">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
+                <input type="hidden" name="id" value="<?= (int) $werk['id'] ?>">
+            </form>
+        <?php endforeach; ?>
+        <form id="werk-form-nieuw" method="post">
+            <input type="hidden" name="actie" value="opslaan">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
+        </form>
         <table class="w3-table w3-bordered w3-striped w3-small">
             <tr>
                 <th>Titel</th>
@@ -261,59 +273,51 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
                 <th class="actie-kolom"></th>
             </tr>
             <?php foreach ($werken as $werk): ?>
-                <form method="post">
-                    <input type="hidden" name="actie" value="opslaan">
-                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
-                    <input type="hidden" name="id" value="<?= (int) $werk['id'] ?>">
-                    <tr class="werk-rij" data-soort="<?= htmlspecialchars($werk['soort'], ENT_QUOTES, 'UTF-8') ?>">
-                        <td><input class="w3-input<?= !empty($werk['uitgevoerd_op']) ? ' uitgevoerd-titel' : '' ?>" type="text" name="titel" value="<?= htmlspecialchars($werk['titel']) ?>" style="min-width:20em;" maxlength="255" required></td>
-                        <td><input class="w3-input veld-kv" type="number" name="kv_nummer" value="<?= htmlspecialchars($werk['kv_nummer']) ?>" min="1" max="9999" required></td>
-                        <td><input class="w3-input" type="text" name="kv_toevoeging" value="<?= htmlspecialchars($werk['kv_toevoeging'] ?? '') ?>" style="width:4em;" maxlength="10"></td>
-                        <td><input class="w3-input veld-duur" type="number" name="duur_minuten" value="<?= htmlspecialchars($werk['duur_minuten'] ?? '') ?>" min="1" max="999"></td>
-                        <td><input class="w3-input veld-jaar" type="number" name="jaar" value="<?= htmlspecialchars($werk['jaar']) ?>" min="1700" max="2100" required></td>
-                        <td>
-                            <select class="w3-select veld-soort" name="soort">
-                                <?php foreach ($soorten as $soort): ?>
-                                    <option value="<?= $soort ?>" <?= $werk['soort'] === $soort ? 'selected' : '' ?>><?= $soort ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </td>
-                        <td><input class="w3-input" type="text" name="bezetting" value="<?= htmlspecialchars($werk['bezetting']) ?>" maxlength="255"></td>
-                        <td><input class="w3-input veld-solo" type="text" name="solo" value="<?= htmlspecialchars($werk['solo'] ?? '') ?>" maxlength="255"></td>
-                        <td><input class="w3-input" type="date" name="uitgevoerd_op" value="<?= htmlspecialchars($werk['uitgevoerd_op'] ?? '') ?>"></td>
-                        <td><input class="w3-input" type="text" name="met_solist" value="<?= htmlspecialchars($werk['met_solist'] ?? '') ?>" maxlength="100" style="width:14em;"></td>
-                        <td class="actie-kolom">
-                            <button class="w3-button w3-blue actie-knop" type="submit" title="Werk opslaan" aria-label="Werk opslaan">&#10003;</button>
-                        </td>
-                    </tr>
-                </form>
-            <?php endforeach; ?>
-
-            <form method="post">
-                <input type="hidden" name="actie" value="opslaan">
-                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
-                <tr>
-                    <td><input class="w3-input" type="text" name="titel" placeholder="Nieuw werk" style="min-width:20em;" maxlength="255" required></td>
-                    <td><input class="w3-input veld-kv" type="number" name="kv_nummer" min="1" max="9999" required></td>
-                    <td><input class="w3-input" type="text" name="kv_toevoeging" style="width:4em;" maxlength="10"></td>
-                    <td><input class="w3-input veld-duur" type="number" name="duur_minuten" min="1" max="999"></td>
-                    <td><input class="w3-input veld-jaar" type="number" name="jaar" min="1700" max="2100" required></td>
+                <?php $werkFormId = 'werk-form-' . (int) $werk['id']; ?>
+                <tr class="werk-rij" data-soort="<?= htmlspecialchars($werk['soort'], ENT_QUOTES, 'UTF-8') ?>">
+                    <td><input class="w3-input<?= !empty($werk['uitgevoerd_op']) ? ' uitgevoerd-titel' : '' ?>" type="text" name="titel" form="<?= $werkFormId ?>" value="<?= htmlspecialchars($werk['titel']) ?>" style="min-width:20em;" maxlength="255" required></td>
+                    <td><input class="w3-input veld-kv" type="number" name="kv_nummer" form="<?= $werkFormId ?>" value="<?= htmlspecialchars($werk['kv_nummer']) ?>" min="1" max="9999" required></td>
+                    <td><input class="w3-input" type="text" name="kv_toevoeging" form="<?= $werkFormId ?>" value="<?= htmlspecialchars($werk['kv_toevoeging'] ?? '') ?>" style="width:4em;" maxlength="10"></td>
+                    <td><input class="w3-input veld-duur" type="number" name="duur_minuten" form="<?= $werkFormId ?>" value="<?= htmlspecialchars($werk['duur_minuten'] ?? '') ?>" min="1" max="999"></td>
+                    <td><input class="w3-input veld-jaar" type="number" name="jaar" form="<?= $werkFormId ?>" value="<?= htmlspecialchars($werk['jaar']) ?>" min="1700" max="2100" required></td>
                     <td>
-                        <select class="w3-select veld-soort" name="soort">
+                        <select class="w3-select veld-soort" name="soort" form="<?= $werkFormId ?>">
                             <?php foreach ($soorten as $soort): ?>
-                                <option value="<?= $soort ?>"><?= $soort ?></option>
+                                <option value="<?= $soort ?>" <?= $werk['soort'] === $soort ? 'selected' : '' ?>><?= $soort ?></option>
                             <?php endforeach; ?>
                         </select>
                     </td>
-                    <td><input class="w3-input" type="text" name="bezetting" maxlength="255"></td>
-                    <td><input class="w3-input veld-solo" type="text" name="solo" maxlength="255"></td>
-                    <td><input class="w3-input" type="date" name="uitgevoerd_op"></td>
-                    <td><input class="w3-input" type="text" name="met_solist" maxlength="100" style="width:14em;"></td>
+                    <td><input class="w3-input" type="text" name="bezetting" form="<?= $werkFormId ?>" value="<?= htmlspecialchars($werk['bezetting']) ?>" maxlength="255"></td>
+                    <td><input class="w3-input veld-solo" type="text" name="solo" form="<?= $werkFormId ?>" value="<?= htmlspecialchars($werk['solo'] ?? '') ?>" maxlength="255"></td>
+                    <td><input class="w3-input" type="date" name="uitgevoerd_op" form="<?= $werkFormId ?>" value="<?= htmlspecialchars($werk['uitgevoerd_op'] ?? '') ?>"></td>
+                    <td><input class="w3-input" type="text" name="met_solist" form="<?= $werkFormId ?>" value="<?= htmlspecialchars($werk['met_solist'] ?? '') ?>" maxlength="100" style="width:14em;"></td>
                     <td class="actie-kolom">
-                        <button class="w3-button w3-green w3-small" type="submit">Toevoegen</button>
+                        <button class="w3-button w3-blue actie-knop" type="submit" form="<?= $werkFormId ?>" title="Werk opslaan" aria-label="Werk opslaan">&#10003;</button>
                     </td>
                 </tr>
-            </form>
+            <?php endforeach; ?>
+
+            <tr>
+                <td><input class="w3-input" type="text" name="titel" form="werk-form-nieuw" placeholder="Nieuw werk" style="min-width:20em;" maxlength="255" required></td>
+                <td><input class="w3-input veld-kv" type="number" name="kv_nummer" form="werk-form-nieuw" min="1" max="9999" required></td>
+                <td><input class="w3-input" type="text" name="kv_toevoeging" form="werk-form-nieuw" style="width:4em;" maxlength="10"></td>
+                <td><input class="w3-input veld-duur" type="number" name="duur_minuten" form="werk-form-nieuw" min="1" max="999"></td>
+                <td><input class="w3-input veld-jaar" type="number" name="jaar" form="werk-form-nieuw" min="1700" max="2100" required></td>
+                <td>
+                    <select class="w3-select veld-soort" name="soort" form="werk-form-nieuw">
+                        <?php foreach ($soorten as $soort): ?>
+                            <option value="<?= $soort ?>"><?= $soort ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </td>
+                <td><input class="w3-input" type="text" name="bezetting" form="werk-form-nieuw" maxlength="255"></td>
+                <td><input class="w3-input veld-solo" type="text" name="solo" form="werk-form-nieuw" maxlength="255"></td>
+                <td><input class="w3-input" type="date" name="uitgevoerd_op" form="werk-form-nieuw"></td>
+                <td><input class="w3-input" type="text" name="met_solist" form="werk-form-nieuw" maxlength="100" style="width:14em;"></td>
+                <td class="actie-kolom">
+                    <button class="w3-button w3-green w3-small" type="submit" form="werk-form-nieuw">Toevoegen</button>
+                </td>
+            </tr>
         </table>
         </div>
     </div>
