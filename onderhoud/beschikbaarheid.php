@@ -93,6 +93,10 @@ $mailteksten = [
 ];
 $mailtekstenMap = __DIR__ . '/../JSON';
 $mailtekstenBestanden = glob($mailtekstenMap . '/mailteksten*.json') ?: [];
+$mailtekstenBestanden = array_values(array_filter(
+    $mailtekstenBestanden,
+    static fn (string $bestand): bool => !str_starts_with(basename($bestand), 'mailteksten-backup-')
+));
 usort($mailtekstenBestanden, static function (string $eerste, string $tweede): int {
     return (filemtime($tweede) ?: 0) <=> (filemtime($eerste) ?: 0);
 });
@@ -239,8 +243,9 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
                 $mailOnderwerp = $ingevuldOnderwerp ?: $standaardOnderwerpVoorType;
                 $plaats = $speler['plaats'] === 'Marnixzaal' ? 'Marnixzaal aan het Domplein' : $speler['plaats'];
                 $aanmeldlink = 'https://mozartopzaterdag.nl/deelnemers_aanmelden.php?email=' . rawurlencode($speler['email']);
-                $invoegcodes = ['{{voornaam}}', '{{achternaam}}', '{{datum}}', '{{plaats}}', '{{instrument}}', '{{partij_tekst}}', '{{omschrijving}}', '{{aanmeldlink}}', '{voornaam}', '{achternaam}', '{datum}', '{plaats}', '{instrument}', '{partij}'];
-                $invoegwaarden = [$naam, htmlspecialchars($speler['achternaam'], ENT_QUOTES, 'UTF-8'), $datum, htmlspecialchars($plaats, ENT_QUOTES, 'UTF-8'), htmlspecialchars($speler['instrument'] ?? '', ENT_QUOTES, 'UTF-8'), $partijTekst, htmlspecialchars($speler['omschrijving'] ?? '', ENT_QUOTES, 'UTF-8'), $aanmeldlink, $naam, htmlspecialchars($speler['achternaam'], ENT_QUOTES, 'UTF-8'), $datum, htmlspecialchars($plaats, ENT_QUOTES, 'UTF-8'), htmlspecialchars($speler['instrument'] ?? '', ENT_QUOTES, 'UTF-8'), $partij];
+                $activiteitUrl = 'https://mozartopzaterdag.nl/' . date('Y-m-d', strtotime($speler['datum'])) . '/';
+                $invoegcodes = ['{{voornaam}}', '{{achternaam}}', '{{datum}}', '{{plaats}}', '{{instrument}}', '{{partij_tekst}}', '{{omschrijving}}', '{{aanmeldlink}}', '{{activiteit_url}}', '{voornaam}', '{achternaam}', '{datum}', '{plaats}', '{instrument}', '{partij}'];
+                $invoegwaarden = [$naam, htmlspecialchars($speler['achternaam'], ENT_QUOTES, 'UTF-8'), $datum, htmlspecialchars($plaats, ENT_QUOTES, 'UTF-8'), htmlspecialchars($speler['instrument'] ?? '', ENT_QUOTES, 'UTF-8'), $partijTekst, htmlspecialchars($speler['omschrijving'] ?? '', ENT_QUOTES, 'UTF-8'), $aanmeldlink, $activiteitUrl, $naam, htmlspecialchars($speler['achternaam'], ENT_QUOTES, 'UTF-8'), $datum, htmlspecialchars($plaats, ENT_QUOTES, 'UTF-8'), htmlspecialchars($speler['instrument'] ?? '', ENT_QUOTES, 'UTF-8'), $partij];
                 $mailTekst = str_replace($invoegcodes, $invoegwaarden, $mailTekst);
                 $mailOnderwerp = str_replace($invoegcodes, $invoegwaarden, $mailOnderwerp);
                 $mailer->Subject = ($testModus ? '[TEST] ' : '') . html_entity_decode(strip_tags($mailOnderwerp), ENT_QUOTES, 'UTF-8');
@@ -304,10 +309,11 @@ $vulMailTemplate = static function (string $template, array $speler, array $acti
     $partijVolzin = $partij !== '' ? ' Je speelt partij ' . htmlspecialchars($partij, ENT_QUOTES, 'UTF-8') . '.' : '';
     $omschrijving = htmlspecialchars($activiteit['omschrijving'] ?? '', ENT_QUOTES, 'UTF-8');
     $aanmeldlink = 'https://mozartopzaterdag.nl/deelnemers_aanmelden.php?email=' . rawurlencode($speler['email'] ?? '');
+    $activiteitUrl = 'https://mozartopzaterdag.nl/' . date('Y-m-d', strtotime($activiteit['datum'])) . '/';
 
     return str_replace(
-        ['{{voornaam}}', '{{achternaam}}', '{{datum}}', '{{plaats}}', '{{instrument}}', '{{partij_tekst}}', '{{omschrijving}}', '{{aanmeldlink}}', '{{partij}}', '{voornaam}', '{achternaam}', '{datum}', '{plaats}', '{instrument}', '{partij}'],
-        [$voornaam, $achternaam, $datum, $plaats, $instrument, $partijTekst, $omschrijving, $aanmeldlink, $partijVolzin, $voornaam, $achternaam, $datum, $plaats, $instrument, $partijVolzin],
+        ['{{voornaam}}', '{{achternaam}}', '{{datum}}', '{{plaats}}', '{{instrument}}', '{{partij_tekst}}', '{{omschrijving}}', '{{aanmeldlink}}', '{{activiteit_url}}', '{{partij}}', '{voornaam}', '{achternaam}', '{datum}', '{plaats}', '{instrument}', '{partij}'],
+        [$voornaam, $achternaam, $datum, $plaats, $instrument, $partijTekst, $omschrijving, $aanmeldlink, $activiteitUrl, $partijVolzin, $voornaam, $achternaam, $datum, $plaats, $instrument, $partijVolzin],
         $template
     );
 };
@@ -521,7 +527,7 @@ document.addEventListener('keydown', function (event) {
 <form id="mailteksten-formulier" class="mailteksten-formulier" method="post">
 <input type="hidden" name="actie" value="mailteksten_opslaan">
 <p class="mailtekst-hulp">Geladen bestand: <strong>JSON/<?= htmlspecialchars($mailtekstenBestandsnaam, ENT_QUOTES, 'UTF-8') ?></strong></p>
-<p class="mailtekst-hulp">In onderwerp en mailtekst beschikbare invoegcodes: {{voornaam}}, {{achternaam}}, {{datum}}, {{plaats}}, {{instrument}}, {{partij_tekst}}, {{omschrijving}} en {{aanmeldlink}}.</p>
+<p class="mailtekst-hulp">In onderwerp en mailtekst beschikbare invoegcodes: {{voornaam}}, {{achternaam}}, {{datum}}, {{plaats}}, {{instrument}}, {{partij_tekst}}, {{omschrijving}}, {{activiteit_url}} en {{aanmeldlink}}.</p>
 <?php foreach (['toelaten' => 'Toelaten', 'uitnodigen' => 'Uitnodigen', 'afwijzen' => 'Afwijzen'] as $mailtype => $mailtypeLabel): ?>
 <section class="mailtekst-sectie">
 <h4><?= $mailtypeLabel ?></h4>
