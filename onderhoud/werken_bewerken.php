@@ -2,6 +2,32 @@
 require_once __DIR__ . '/../includes/inloggen.php';
 require_once __DIR__ . '/../connections/MozartopZaterdag.php';
 
+// Beheerpagina; niet cachen of insluiten en geen technische foutdetails tonen aan de browser.
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: SAMEORIGIN');
+header('Referrer-Policy: same-origin');
+
+// Accepteer wijzigingen alleen vanuit een formulier uit deze beheersessie.
+if (!isset($_SESSION['csrf_token']) || !is_string($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+$csrfToken = $_SESSION['csrf_token'];
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
+    $ontvangenCsrfToken = $_POST['csrf_token'] ?? null;
+    if (!is_string($ontvangenCsrfToken) || !hash_equals($csrfToken, $ontvangenCsrfToken)) {
+        http_response_code(403);
+        exit('Ongeldige of verlopen formulieraanvraag. Vernieuw de pagina en probeer opnieuw.');
+    }
+    if (($_POST['actie'] ?? '') !== 'opslaan') {
+        http_response_code(400);
+        exit('Onbekende actie.');
+    }
+}
+
 function zorgVoorUitvoeringskolommen(PDO $pdo): void
 {
     if ($pdo->query("SHOW COLUMNS FROM werken LIKE 'uitgevoerd_op'")->fetch() === false) {
@@ -13,6 +39,9 @@ function zorgVoorUitvoeringskolommen(PDO $pdo): void
     } elseif (preg_match('/^varchar\((\d+)\)$/i', $metSolistKolom['Type'], $delen) && (int) $delen[1] < 100) {
         $pdo->exec('ALTER TABLE werken MODIFY COLUMN met_solist VARCHAR(100) NULL');
     }
+    if ($pdo->query("SHOW COLUMNS FROM werken LIKE 'duur_minuten'")->fetch() === false) {
+        $pdo->exec('ALTER TABLE werken ADD COLUMN duur_minuten SMALLINT UNSIGNED NULL');
+    }
 }
 
 zorgVoorUitvoeringskolommen($pdo);
@@ -20,37 +49,64 @@ zorgVoorUitvoeringskolommen($pdo);
 $soorten = ['symfonie', 'concert', 'ander'];
 $melding = '';
 
-// Toevoegen of bewerken
+// Toevoegen of bewerken van een werk.
 if (isset($_POST['actie']) && $_POST['actie'] === 'opslaan') {
-    $titel = trim($_POST['titel'] ?? '');
-    $kv_nummer = $_POST['kv_nummer'] ?? '';
-    $kv_toevoeging = trim($_POST['kv_toevoeging'] ?? '');
-    $jaar = $_POST['jaar'] ?? '';
+    $titel = trim((string) ($_POST['titel'] ?? ''));
+    $kv_nummer = trim((string) ($_POST['kv_nummer'] ?? ''));
+    $kv_toevoeging = trim((string) ($_POST['kv_toevoeging'] ?? ''));
+    $jaar = trim((string) ($_POST['jaar'] ?? ''));
     $soort = in_array($_POST['soort'] ?? '', $soorten, true) ? $_POST['soort'] : 'ander';
-    $bezetting = trim($_POST['bezetting'] ?? '');
-    $solo = trim($_POST['solo'] ?? '');
+    $bezetting = trim((string) ($_POST['bezetting'] ?? ''));
+    $solo = trim((string) ($_POST['solo'] ?? ''));
     $solo = $solo === '' ? null : $solo;
-    $uitgevoerd_op = trim($_POST['uitgevoerd_op'] ?? '');
+    $uitgevoerd_op = trim((string) ($_POST['uitgevoerd_op'] ?? ''));
     $uitgevoerd_op = $uitgevoerd_op === '' ? null : $uitgevoerd_op;
-    $met_solist = trim($_POST['met_solist'] ?? '');
+    $met_solist = trim((string) ($_POST['met_solist'] ?? ''));
     $met_solist = $met_solist === '' ? null : $met_solist;
-    $id = $_POST['id'] ?? '';
+    $duur_minuten = trim((string) ($_POST['duur_minuten'] ?? ''));
+    $duur_minuten = $duur_minuten === '' ? null : $duur_minuten;
+    $id = trim((string) ($_POST['id'] ?? ''));
 
     if ($titel === '' || $kv_nummer === '' || $jaar === '') {
         $melding = 'Titel, KV-nummer en jaar zijn verplicht.';
+    } elseif (mb_strlen($titel) > 255) {
+        $melding = 'Titel mag maximaal 255 tekens bevatten.';
+    } elseif (!ctype_digit($kv_nummer) || (int) $kv_nummer < 1 || (int) $kv_nummer > 9999) {
+        $melding = 'KV-nummer moet een geheel getal zijn tussen 1 en 9999.';
+    } elseif (mb_strlen($kv_toevoeging) > 10) {
+        $melding = 'KV-toevoeging mag maximaal 10 tekens bevatten.';
+    } elseif (!ctype_digit($jaar) || (int) $jaar < 1700 || (int) $jaar > 2100) {
+        $melding = 'Jaar moet een geheel getal zijn tussen 1700 en 2100.';
+    } elseif (mb_strlen($bezetting) > 255) {
+        $melding = 'Bezetting mag maximaal 255 tekens bevatten.';
+    } elseif ($solo !== null && mb_strlen($solo) > 255) {
+        $melding = 'Solo mag maximaal 255 tekens bevatten.';
+    } elseif ($uitgevoerd_op !== null && !preg_match('/^\d{4}-\d{2}-\d{2}$/', $uitgevoerd_op)) {
+        $melding = 'Uitgevoerd op moet een geldige datum zijn.';
     } elseif ($met_solist !== null && mb_strlen($met_solist) > 100) {
         $melding = 'Met solist mag maximaal 100 tekens bevatten.';
+    } elseif ($duur_minuten !== null && (!ctype_digit($duur_minuten) || (int) $duur_minuten < 1 || (int) $duur_minuten > 999)) {
+        $melding = 'Duur moet een geheel aantal minuten zijn tussen 1 en 999.';
+    } elseif ($id !== '' && !ctype_digit($id)) {
+        $melding = 'Ongeldig werk-id.';
     } elseif ($id !== '') {
-        $stmt = $pdo->prepare(
-            'UPDATE werken SET titel = ?, kv_nummer = ?, kv_toevoeging = ?, jaar = ?, soort = ?, bezetting = ?, solo = ?, uitgevoerd_op = ?, met_solist = ? WHERE id = ?'
-        );
-        $stmt->execute([$titel, $kv_nummer, $kv_toevoeging, $jaar, $soort, $bezetting, $solo, $uitgevoerd_op, $met_solist, $id]);
-        $melding = 'Werk bijgewerkt.';
+        // Werk moet echt bestaan; voorkomt dat een gemanipuleerd id een update in het niets doet.
+        $bestaatStmt = $pdo->prepare('SELECT 1 FROM werken WHERE id = ?');
+        $bestaatStmt->execute([$id]);
+        if (!$bestaatStmt->fetchColumn()) {
+            $melding = 'Dit werk bestaat niet meer.';
+        } else {
+            $stmt = $pdo->prepare(
+                'UPDATE werken SET titel = ?, kv_nummer = ?, kv_toevoeging = ?, jaar = ?, soort = ?, bezetting = ?, solo = ?, uitgevoerd_op = ?, met_solist = ?, duur_minuten = ? WHERE id = ?'
+            );
+            $stmt->execute([$titel, $kv_nummer, $kv_toevoeging, $jaar, $soort, $bezetting, $solo, $uitgevoerd_op, $met_solist, $duur_minuten, $id]);
+            $melding = 'Werk bijgewerkt.';
+        }
     } else {
         $stmt = $pdo->prepare(
-            'INSERT INTO werken (titel, kv_nummer, kv_toevoeging, jaar, soort, bezetting, solo, uitgevoerd_op, met_solist) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+            'INSERT INTO werken (titel, kv_nummer, kv_toevoeging, jaar, soort, bezetting, solo, uitgevoerd_op, met_solist, duur_minuten) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
         );
-        $stmt->execute([$titel, $kv_nummer, $kv_toevoeging, $jaar, $soort, $bezetting, $solo, $uitgevoerd_op, $met_solist]);
+        $stmt->execute([$titel, $kv_nummer, $kv_toevoeging, $jaar, $soort, $bezetting, $solo, $uitgevoerd_op, $met_solist, $duur_minuten]);
         $melding = 'Werk toegevoegd.';
     }
 }
@@ -163,6 +219,10 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
             min-width: 12em;
         }
 
+        .veld-duur {
+            width: 5em;
+        }
+
         .uitgevoerd-titel {
             color: #c00;
             font-weight: bold;
@@ -191,6 +251,7 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
                 <th>Titel</th>
                 <th>KV</th>
                 <th>Toev.</th>
+                <th>Duur (min.)</th>
                 <th>Jaar</th>
                 <th>Soort</th>
                 <th>Bezetting</th>
@@ -202,12 +263,14 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
             <?php foreach ($werken as $werk): ?>
                 <form method="post">
                     <input type="hidden" name="actie" value="opslaan">
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
                     <input type="hidden" name="id" value="<?= (int) $werk['id'] ?>">
                     <tr class="werk-rij" data-soort="<?= htmlspecialchars($werk['soort'], ENT_QUOTES, 'UTF-8') ?>">
-                        <td><input class="w3-input<?= !empty($werk['uitgevoerd_op']) ? ' uitgevoerd-titel' : '' ?>" type="text" name="titel" value="<?= htmlspecialchars($werk['titel']) ?>" style="min-width:20em;" required></td>
-                        <td><input class="w3-input veld-kv" type="number" name="kv_nummer" value="<?= htmlspecialchars($werk['kv_nummer']) ?>" required></td>
-                        <td><input class="w3-input" type="text" name="kv_toevoeging" value="<?= htmlspecialchars($werk['kv_toevoeging'] ?? '') ?>" style="width:4em;"></td>
-                        <td><input class="w3-input veld-jaar" type="number" name="jaar" value="<?= htmlspecialchars($werk['jaar']) ?>" required></td>
+                        <td><input class="w3-input<?= !empty($werk['uitgevoerd_op']) ? ' uitgevoerd-titel' : '' ?>" type="text" name="titel" value="<?= htmlspecialchars($werk['titel']) ?>" style="min-width:20em;" maxlength="255" required></td>
+                        <td><input class="w3-input veld-kv" type="number" name="kv_nummer" value="<?= htmlspecialchars($werk['kv_nummer']) ?>" min="1" max="9999" required></td>
+                        <td><input class="w3-input" type="text" name="kv_toevoeging" value="<?= htmlspecialchars($werk['kv_toevoeging'] ?? '') ?>" style="width:4em;" maxlength="10"></td>
+                        <td><input class="w3-input veld-duur" type="number" name="duur_minuten" value="<?= htmlspecialchars($werk['duur_minuten'] ?? '') ?>" min="1" max="999"></td>
+                        <td><input class="w3-input veld-jaar" type="number" name="jaar" value="<?= htmlspecialchars($werk['jaar']) ?>" min="1700" max="2100" required></td>
                         <td>
                             <select class="w3-select veld-soort" name="soort">
                                 <?php foreach ($soorten as $soort): ?>
@@ -215,8 +278,8 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
                                 <?php endforeach; ?>
                             </select>
                         </td>
-                        <td><input class="w3-input" type="text" name="bezetting" value="<?= htmlspecialchars($werk['bezetting']) ?>"></td>
-                        <td><input class="w3-input veld-solo" type="text" name="solo" value="<?= htmlspecialchars($werk['solo'] ?? '') ?>"></td>
+                        <td><input class="w3-input" type="text" name="bezetting" value="<?= htmlspecialchars($werk['bezetting']) ?>" maxlength="255"></td>
+                        <td><input class="w3-input veld-solo" type="text" name="solo" value="<?= htmlspecialchars($werk['solo'] ?? '') ?>" maxlength="255"></td>
                         <td><input class="w3-input" type="date" name="uitgevoerd_op" value="<?= htmlspecialchars($werk['uitgevoerd_op'] ?? '') ?>"></td>
                         <td><input class="w3-input" type="text" name="met_solist" value="<?= htmlspecialchars($werk['met_solist'] ?? '') ?>" maxlength="100" style="width:14em;"></td>
                         <td class="actie-kolom">
@@ -228,11 +291,13 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
 
             <form method="post">
                 <input type="hidden" name="actie" value="opslaan">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
                 <tr>
-                    <td><input class="w3-input" type="text" name="titel" placeholder="Nieuw werk" style="min-width:20em;" required></td>
-                    <td><input class="w3-input veld-kv" type="number" name="kv_nummer" required></td>
-                    <td><input class="w3-input" type="text" name="kv_toevoeging" style="width:4em;"></td>
-                    <td><input class="w3-input veld-jaar" type="number" name="jaar" required></td>
+                    <td><input class="w3-input" type="text" name="titel" placeholder="Nieuw werk" style="min-width:20em;" maxlength="255" required></td>
+                    <td><input class="w3-input veld-kv" type="number" name="kv_nummer" min="1" max="9999" required></td>
+                    <td><input class="w3-input" type="text" name="kv_toevoeging" style="width:4em;" maxlength="10"></td>
+                    <td><input class="w3-input veld-duur" type="number" name="duur_minuten" min="1" max="999"></td>
+                    <td><input class="w3-input veld-jaar" type="number" name="jaar" min="1700" max="2100" required></td>
                     <td>
                         <select class="w3-select veld-soort" name="soort">
                             <?php foreach ($soorten as $soort): ?>
@@ -240,8 +305,8 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
                             <?php endforeach; ?>
                         </select>
                     </td>
-                    <td><input class="w3-input" type="text" name="bezetting"></td>
-                    <td><input class="w3-input veld-solo" type="text" name="solo"></td>
+                    <td><input class="w3-input" type="text" name="bezetting" maxlength="255"></td>
+                    <td><input class="w3-input veld-solo" type="text" name="solo" maxlength="255"></td>
                     <td><input class="w3-input" type="date" name="uitgevoerd_op"></td>
                     <td><input class="w3-input" type="text" name="met_solist" maxlength="100" style="width:14em;"></td>
                     <td class="actie-kolom">
