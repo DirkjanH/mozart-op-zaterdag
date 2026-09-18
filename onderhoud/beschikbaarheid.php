@@ -108,6 +108,8 @@ $mailtekstenMap = __DIR__ . '/../JSON';
 // Eén vast bestand voor laden én opslaan; een losse "nieuwste van meerdere bestanden"-selectie kan per ongeluk een stray kopie kiezen.
 $mailtekstenBestand = $mailtekstenMap . '/mailteksten.json';
 $mailtekstenBestandsnaam = basename($mailtekstenBestand);
+// Toon het herleide serverpad, zodat verifieerbaar is dat dit de JSON-map op de server zelf is (niet een lokale kopie).
+$mailtekstenVolledigPad = realpath($mailtekstenBestand) ?: $mailtekstenBestand;
 // PHP-FPM-workers bewaren stat-/realpath-cache tussen requests; wis die zodat we altijd de actuele bestandsinformatie van de server lezen.
 clearstatcache(true, $mailtekstenBestand);
 $mailtekstenGewijzigdOp = is_file($mailtekstenBestand)
@@ -115,7 +117,7 @@ $mailtekstenGewijzigdOp = is_file($mailtekstenBestand)
     : 'nog niet opgeslagen';
 try {
     if (!is_readable($mailtekstenBestand)) {
-        throw new RuntimeException('Bestand niet gevonden: JSON/' . $mailtekstenBestandsnaam . '.');
+        throw new RuntimeException('Bestand niet gevonden op de server: ' . $mailtekstenBestand . '.');
     }
     // Lees de inhoud rechtstreeks van schijf; nooit een eerder in dit proces gebufferde versie gebruiken.
     clearstatcache(true, $mailtekstenBestand);
@@ -701,7 +703,7 @@ document.addEventListener('keydown', function (event) {
 });
 </script>
  </head><body><div class="w3-content w3-mobile w3-white w3-panel" style="max-width:1400px"><h3>Beschikbaarheid</h3>
-<p class="mailtekst-hulp">Mailteksten <?= $mailtekstenZojuistOpgeslagen ? 'opgeslagen' : 'geladen' ?>: <strong>JSON/<?= htmlspecialchars($mailtekstenBestandsnaam, ENT_QUOTES, 'UTF-8') ?></strong> (versie <?= htmlspecialchars($mailtekstenGewijzigdOp, ENT_QUOTES, 'UTF-8') ?>)</p>
+<p class="mailtekst-hulp">Mailteksten <?= $mailtekstenZojuistOpgeslagen ? 'opgeslagen' : 'geladen' ?>: <strong><?= htmlspecialchars($mailtekstenVolledigPad, ENT_QUOTES, 'UTF-8') ?></strong> (versie <?= htmlspecialchars($mailtekstenGewijzigdOp, ENT_QUOTES, 'UTF-8') ?>)</p>
 <?php $mailtekstenPaneelOpen = str_starts_with($melding, 'JSON geladen'); ?>
 <details id="mailteksten-beheer" class="mailteksten-beheer"<?= $mailtekstenPaneelOpen ? ' open' : '' ?>>
 <summary>Mailteksten bewerken</summary>
