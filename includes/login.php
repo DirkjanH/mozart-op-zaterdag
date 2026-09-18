@@ -3,10 +3,13 @@
 ini_set('display_errors', '0');
 ini_set('log_errors', '1');
 ini_set('session.use_strict_mode', '1');
+// Voorkom dat de serversessie (en dus het CSRF-token) al na ~24 minuten inactiviteit verloopt.
+ini_set('session.gc_maxlifetime', '14400');
 session_set_cookie_params([
     'httponly' => true,
     'secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
     'samesite' => 'Lax',
+    'lifetime' => 14400,
 ]);
 session_start();
 

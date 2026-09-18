@@ -6,11 +6,14 @@ error_reporting(E_ALL);
 
 // Beperk misbruik van de beheersessie via scripts en externe websites.
 ini_set('session.use_strict_mode', '1');
+// Voorkom dat de serversessie (en dus het CSRF-token) tijdens het bewerken al na ~24 minuten inactiviteit verloopt.
+ini_set('session.gc_maxlifetime', '14400');
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_set_cookie_params([
         'httponly' => true,
         'secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
         'samesite' => 'Lax',
+        'lifetime' => 14400,
     ]);
     session_start();
 }
