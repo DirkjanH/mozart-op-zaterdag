@@ -9,6 +9,25 @@ $activiteiten = $pdo->query(
     'SELECT id, datum, plaats, omschrijving FROM activiteiten ORDER BY datum'
 )->fetchAll(PDO::FETCH_ASSOC);
 $instrumenten = $pdo->query("SELECT id, naam FROM instrumenten ORDER BY CASE WHEN LOWER(TRIM(naam)) = 'pauken' THEN COALESCE((SELECT MIN(i2.id) FROM instrumenten i2 WHERE LOWER(TRIM(i2.naam)) LIKE 'trompet%'), id) ELSE id END, CASE WHEN LOWER(TRIM(naam)) = 'pauken' THEN 1 ELSE 0 END, id")->fetchAll(PDO::FETCH_ASSOC);
+$hoorns = array_values(array_filter($instrumenten, static fn (array $instrument): bool => strtolower(trim($instrument['naam'])) === 'hoorn'));
+$instrumenten = array_values(array_filter($instrumenten, static fn (array $instrument): bool => strtolower(trim($instrument['naam'])) !== 'hoorn'));
+if ($hoorns !== []) {
+    $invoegPositie = null;
+    foreach ($instrumenten as $index => $instrument) {
+        if (strtolower(trim($instrument['naam'])) === 'fagot') {
+            $invoegPositie = $index + 1;
+        }
+    }
+    if ($invoegPositie === null) {
+        foreach ($instrumenten as $index => $instrument) {
+            if (str_starts_with(strtolower(trim($instrument['naam'])), 'trompet')) {
+                $invoegPositie = $index;
+                break;
+            }
+        }
+    }
+    array_splice($instrumenten, $invoegPositie ?? count($instrumenten), 0, $hoorns);
+}
 
 $activiteitId = (int) ($_POST['activiteit_id'] ?? $_GET['activiteit_id'] ?? 0);
 $betekendeBestanden = array_map('basename', $_POST['betekend'] ?? []);
