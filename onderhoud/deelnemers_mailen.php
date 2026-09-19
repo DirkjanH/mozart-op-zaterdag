@@ -40,6 +40,7 @@ if ($actie === 'json_laden') {
                 throw new RuntimeException('Onbekend of onvolledig mailconcept.');
             }
             $_POST['activiteit_id'] = (int) ($concept['activiteit_id'] ?? 0);
+            $_POST['doelgroep'] = $concept['doelgroep'] ?? 'toegelaten';
             $_POST['onderwerp'] = $concept['onderwerp'];
             $_POST['bericht'] = $concept['bericht'];
             $melding = $geladenUitDatummap
@@ -143,7 +144,7 @@ HTML;
 $onderwerp = trim($_POST['onderwerp'] ?? $standaardOnderwerp);
 $bericht = trim($_POST['bericht'] ?? $standaardBericht);
 
-if ($actie === 'json_downloaden') {
+if ($actie === 'json_opslaan') {
     if ($gekozenActiviteit === null) {
         $melding = 'Kies eerst een geldige activiteit.';
     } else {
@@ -151,17 +152,21 @@ if ($actie === 'json_downloaden') {
             $inhoud = json_encode([
                 'versie' => 1,
                 'activiteit_id' => $activiteitId,
+                'doelgroep' => $doelgroep,
                 'onderwerp' => $onderwerp,
                 'bericht' => $bericht,
             ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
-
-            header('Content-Type: application/json; charset=UTF-8');
-            header('Content-Disposition: attachment; filename="mozart-mailconcept.json"');
-            header('Content-Length: ' . strlen($inhoud . PHP_EOL));
-            echo $inhoud . PHP_EOL;
-            exit;
+            $bestandsOnderwerp = preg_replace('/[^a-z0-9]+/i', '-', iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $onderwerp) ?: 'zonder-onderwerp');
+            $bestandsOnderwerp = trim($bestandsOnderwerp, '-');
+            $bestandsOnderwerp = substr($bestandsOnderwerp !== '' ? $bestandsOnderwerp : 'zonder-onderwerp', 0, 80);
+            $bestandsnaam = 'mozart-mailconcept-' . $bestandsOnderwerp . '-' . date('Ymd-His') . '.json';
+            $conceptBestand = dirname(__DIR__) . '/JSON/' . $bestandsnaam;
+            if (file_put_contents($conceptBestand, $inhoud . PHP_EOL, LOCK_EX) === false) {
+                throw new RuntimeException('Het concept kon niet op de server worden opgeslagen.');
+            }
+            $melding = 'Mailconcept opgeslagen in JSON/' . $bestandsnaam . '.';
         } catch (Throwable $e) {
-            $melding = 'Mailconcept niet gedownload: ' . $e->getMessage();
+            $melding = 'Mailconcept niet opgeslagen: ' . $e->getMessage();
         }
     }
 }
@@ -184,6 +189,7 @@ function vulMailTemplate(string $template, array $deelnemer, array $activiteit):
         '{{datum}}' => date('d-m-Y', strtotime($activiteit['datum'])),
         '{{plaats}}' => $plaats,
         '{{omschrijving}}' => $activiteit['omschrijving'] ?? '',
+        '{{aanmeldlink}}' => 'https://mozartopzaterdag.nl/deelnemers_aanmelden.php?email=' . rawurlencode((string) ($deelnemer['email'] ?? '')),
     ];
 
     return str_replace(
@@ -637,14 +643,14 @@ if (is_array($wachtrij)) {
 
                 <p class="w3-small">
                     Invoegcodes: <code>{{voornaam}}</code>, <code>{{achternaam}}</code>, <code>{{instrument_partij}}</code>,
-                    <code>{{instrument}}</code>, <code>{{partij}}</code>, <code>{{datum}}</code>, <code>{{plaats}}</code> en <code>{{omschrijving}}</code>.
+                    <code>{{instrument}}</code>, <code>{{partij}}</code>, <code>{{datum}}</code>, <code>{{plaats}}</code>, <code>{{omschrijving}}</code> en <code>{{aanmeldlink}}</code>.
                 </p>
                 <label for="bericht"><strong>Bericht</strong></label>
                 <textarea id="bericht" name="bericht" required><?= htmlspecialchars($bericht) ?></textarea>
 
                 <button class="w3-button w3-green w3-margin-top" type="submit" name="actie" value="test" data-selectie-vereist <?= $geselecteerdeDeelnemers === [] ? 'disabled' : '' ?>>Testmail naar Dirkjan</button>
                 <button class="w3-button w3-blue w3-margin-top" type="submit" name="actie" value="versturen" data-selectie-vereist <?= $geselecteerdeDeelnemers === [] ? 'disabled' : '' ?>>Verzending in plukjes starten</button>
-                <button class="w3-button w3-light-grey w3-margin-top" type="submit" name="actie" value="json_downloaden">Concept als JSON downloaden</button>
+                <button class="w3-button w3-light-grey w3-margin-top" type="submit" name="actie" value="json_opslaan">Concept in JSON opslaan</button>
             </form>
         <?php endif; ?>
 
@@ -667,7 +673,7 @@ if (is_array($wachtrij)) {
             if (event.submitter && event.submitter.value === 'test') {
                 return confirm('Testmail naar dirkjan@pellegrina.net versturen met de gegevens van de eerste geselecteerde deelnemer?');
             }
-            if (event.submitter && event.submitter.value === 'json_downloaden') {
+            if (event.submitter && event.submitter.value === 'json_opslaan') {
                 return true;
             }
             return confirm(`Een nieuwe wachtrij voor ${aantalGeselecteerd} geselecteerde deelnemers starten en de eerste pluk van maximaal 20 nu versturen?`);
