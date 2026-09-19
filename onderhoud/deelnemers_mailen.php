@@ -11,22 +11,16 @@ $resultaten = [];
 $actie = $_POST['actie'] ?? '';
 
 if ($actie === 'json_laden') {
-    $conceptBestand = null;
     $gevraagdeActiviteitId = (int) ($_POST['activiteit_id'] ?? 0);
     $gevraagdeDoelgroep = $_POST['doelgroep'] ?? 'toegelaten';
-    $gekozenBestand = basename((string) ($_POST['server_concept'] ?? ''));
-    if ($gevraagdeDoelgroep === 'toegelaten' && $gevraagdeActiviteitId > 0) {
-        $stmt = $pdo->prepare('SELECT datum FROM activiteiten WHERE id = ?');
-        $stmt->execute([$gevraagdeActiviteitId]);
-        $activiteitDatum = $stmt->fetchColumn();
-        if (is_string($activiteitDatum)) {
-            $conceptBestand = dirname(__DIR__) . '/' . $activiteitDatum . '/' . $gekozenBestand;
-        }
-    } elseif ($gevraagdeDoelgroep !== 'toegelaten') {
-        $conceptBestand = dirname(__DIR__) . '/JSON/' . $gekozenBestand;
-    }
+    $stmt = $pdo->prepare('SELECT id, datum FROM activiteiten WHERE id = ?');
+    $stmt->execute([$gevraagdeActiviteitId]);
+    $gevraagdeActiviteit = $stmt->fetch(PDO::FETCH_ASSOC);
+    $conceptBestand = is_array($gevraagdeActiviteit)
+        ? serverConceptBestand($gevraagdeActiviteit, $gevraagdeDoelgroep, (string) ($_POST['server_concept'] ?? ''))
+        : null;
 
-    if (!preg_match('/^mozart-mailconcept(?:-.*)?\.json$/', $gekozenBestand) || $conceptBestand === null || !is_file($conceptBestand)) {
+    if ($conceptBestand === null || !is_file($conceptBestand)) {
         $melding = 'Kies een geldig serverconcept om te laden.';
     } else {
         try {
@@ -144,12 +138,27 @@ function conceptMapVoorDoelgroep(array $activiteit, string $doelgroep): string
         : dirname(__DIR__) . '/JSON';
 }
 
+function serverConceptBestand(array $activiteit, string $doelgroep, string $keuze): ?string
+{
+    [$bron, $bestandsnaam] = array_pad(explode(':', $keuze, 2), 2, '');
+    if (!in_array($bron, ['json', 'activiteit'], true) || !preg_match('/^mozart-mailconcept(?:-.*)?\.json$/', $bestandsnaam)) {
+        return null;
+    }
+    if ($doelgroep === 'toegelaten' && $bron !== 'activiteit') {
+        return null;
+    }
+
+    $map = $bron === 'activiteit'
+        ? dirname(__DIR__) . '/' . $activiteit['datum']
+        : dirname(__DIR__) . '/JSON';
+
+    return $map . '/' . $bestandsnaam;
+}
+
 if ($actie === 'json_downloaden') {
     try {
-        $conceptMap = conceptMapVoorDoelgroep($gekozenActiviteit, $doelgroep);
-        $gekozenBestand = basename((string) ($_POST['server_concept'] ?? ''));
-        $conceptBestand = $conceptMap . '/' . $gekozenBestand;
-        if (!preg_match('/^mozart-mailconcept(?:-.*)?\.json$/', $gekozenBestand) || !is_file($conceptBestand)) {
+        $conceptBestand = serverConceptBestand($gekozenActiviteit, $doelgroep, (string) ($_POST['server_concept'] ?? ''));
+        if ($conceptBestand === null || !is_file($conceptBestand)) {
             throw new RuntimeException('Kies een geldig serverconcept om te downloaden.');
         }
         $inhoud = file_get_contents($conceptBestand);
@@ -157,7 +166,7 @@ if ($actie === 'json_downloaden') {
             throw new RuntimeException('Het serverconcept kon niet worden gelezen.');
         }
         header('Content-Type: application/json; charset=UTF-8');
-        header('Content-Disposition: attachment; filename="' . $gekozenBestand . '"');
+        header('Content-Disposition: attachment; filename="' . basename($conceptBestand) . '"');
         header('Content-Length: ' . strlen($inhoud));
         echo $inhoud;
         exit;
@@ -167,13 +176,21 @@ if ($actie === 'json_downloaden') {
 }
 
 if ($actie === 'json_opslaan') {
-    if ($gekozenActiviteit === null) {
+    $conceptActiviteitId = (int) ($_POST['concept_activiteit_id'] ?? $activiteitId);
+    $conceptActiviteit = null;
+    foreach ($activiteiten as $activiteit) {
+        if ((int) $activiteit['id'] === $conceptActiviteitId) {
+            $conceptActiviteit = $activiteit;
+            break;
+        }
+    }
+    if ($conceptActiviteit === null) {
         $melding = 'Kies eerst een geldige activiteit.';
     } else {
         try {
             $inhoud = json_encode([
                 'versie' => 1,
-                'activiteit_id' => $activiteitId,
+                'activiteit_id' => $conceptActiviteitId,
                 'doelgroep' => $doelgroep,
                 'onderwerp' => $onderwerp,
                 'bericht' => $bericht,
@@ -182,7 +199,7 @@ if ($actie === 'json_opslaan') {
             $bestandsOnderwerp = trim($bestandsOnderwerp, '-');
             $bestandsOnderwerp = substr($bestandsOnderwerp !== '' ? $bestandsOnderwerp : 'zonder-onderwerp', 0, 80);
             $bestandsnaam = 'mozart-mailconcept-' . $bestandsOnderwerp . '-' . date('Ymd-His') . '.json';
-            $conceptMap = conceptMapVoorDoelgroep($gekozenActiviteit, $doelgroep);
+            $conceptMap = conceptMapVoorDoelgroep($conceptActiviteit, $doelgroep);
             if (!is_dir($conceptMap) && !mkdir($conceptMap, 0775, true) && !is_dir($conceptMap)) {
                 throw new RuntimeException('De conceptmap kon niet worden aangemaakt.');
             }
@@ -190,7 +207,7 @@ if ($actie === 'json_opslaan') {
             if (file_put_contents($conceptBestand, $inhoud . PHP_EOL, LOCK_EX) === false) {
                 throw new RuntimeException('Het concept kon niet op de server worden opgeslagen.');
             }
-            $relatiefPad = $doelgroep === 'toegelaten' ? $gekozenActiviteit['datum'] . '/' . $bestandsnaam : 'JSON/' . $bestandsnaam;
+            $relatiefPad = $doelgroep === 'toegelaten' ? $conceptActiviteit['datum'] . '/' . $bestandsnaam : 'JSON/' . $bestandsnaam;
             $melding = 'Mailconcept opgeslagen in ' . $relatiefPad . '.';
         } catch (Throwable $e) {
             $melding = 'Mailconcept niet opgeslagen: ' . $e->getMessage();
@@ -567,11 +584,11 @@ if (is_array($wachtrij)) {
         <form method="post" enctype="multipart/form-data" class="w3-margin-bottom">
             <input type="hidden" name="activiteit_id" value="<?= $activiteitId ?>">
             <input type="hidden" name="doelgroep" value="<?= htmlspecialchars($doelgroep, ENT_QUOTES, 'UTF-8') ?>">
-            <?php $conceptMap = conceptMapVoorDoelgroep($gekozenActiviteit, $doelgroep); $serverConcepten = array_merge(glob($conceptMap . '/mozart-mailconcept.json') ?: [], glob($conceptMap . '/mozart-mailconcept-*.json') ?: []); usort($serverConcepten, static fn (string $eerste, string $tweede): int => strnatcmp(basename($tweede), basename($eerste))); ?>
+            <?php $conceptMap = conceptMapVoorDoelgroep($gekozenActiviteit, $doelgroep); $serverConcepten = []; foreach (array_merge(glob($conceptMap . '/mozart-mailconcept.json') ?: [], glob($conceptMap . '/mozart-mailconcept-*.json') ?: []) as $concept) $serverConcepten['json:' . basename($concept)] = $concept; if ($doelgroep === 'toegelaten') { $serverConcepten = []; foreach (array_merge(glob(dirname(__DIR__) . '/' . $gekozenActiviteit['datum'] . '/mozart-mailconcept.json') ?: [], glob(dirname(__DIR__) . '/' . $gekozenActiviteit['datum'] . '/mozart-mailconcept-*.json') ?: []) as $concept) $serverConcepten['activiteit:' . basename($concept)] = $concept; } else { foreach (array_merge(glob(dirname(__DIR__) . '/' . $gekozenActiviteit['datum'] . '/mozart-mailconcept.json') ?: [], glob(dirname(__DIR__) . '/' . $gekozenActiviteit['datum'] . '/mozart-mailconcept-*.json') ?: []) as $concept) $serverConcepten['activiteit:' . basename($concept)] = $concept; } uksort($serverConcepten, static fn (string $eerste, string $tweede): int => strnatcmp($tweede, $eerste)); ?>
             <label for="server_concept"><strong>Serverconcept kiezen</strong></label>
             <select class="w3-select w3-border" id="server_concept" name="server_concept" <?= $serverConcepten === [] ? 'disabled' : '' ?>>
                 <?php if ($serverConcepten === []): ?><option>Geen serverconcepten gevonden</option><?php endif; ?>
-                <?php foreach ($serverConcepten as $serverConcept): ?><option value="<?= htmlspecialchars(basename($serverConcept), ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars(basename($serverConcept), ENT_QUOTES, 'UTF-8') ?></option><?php endforeach; ?>
+                <?php foreach ($serverConcepten as $serverConceptSleutel => $serverConcept): ?><option value="<?= htmlspecialchars($serverConceptSleutel, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars(($serverConceptSleutel === 'json:' . basename($serverConcept) ? 'JSON' : $gekozenActiviteit['datum']) . ': ' . basename($serverConcept), ENT_QUOTES, 'UTF-8') ?></option><?php endforeach; ?>
             </select>
             <button class="w3-button w3-light-grey w3-margin-top" type="submit" name="actie" value="json_laden" <?= $serverConcepten === [] ? 'disabled' : '' ?>>Serverconcept laden</button>
             <button class="w3-button w3-light-grey w3-margin-top" type="submit" name="actie" value="json_downloaden" <?= $serverConcepten === [] ? 'disabled' : '' ?>>Serverconcept downloaden</button>
@@ -679,6 +696,13 @@ if (is_array($wachtrij)) {
                 </p>
                 <label for="bericht"><strong>Bericht</strong></label>
                 <textarea id="bericht" name="bericht" required><?= htmlspecialchars($bericht) ?></textarea>
+
+                <label class="w3-margin-top" for="concept_activiteit_id"><strong>Concept opslaan voor activiteit</strong></label>
+                <select class="w3-select w3-border" id="concept_activiteit_id" name="concept_activiteit_id">
+                    <?php foreach ($activiteiten as $activiteit): ?>
+                        <option value="<?= (int) $activiteit['id'] ?>" <?= (int) $activiteit['id'] === $activiteitId ? 'selected' : '' ?>><?= htmlspecialchars(date('d-m-Y', strtotime($activiteit['datum'])) . ' - ' . $activiteit['plaats']) ?></option>
+                    <?php endforeach; ?>
+                </select>
 
                 <button class="w3-button w3-green w3-margin-top" type="submit" name="actie" value="test" data-selectie-vereist <?= $geselecteerdeDeelnemers === [] ? 'disabled' : '' ?>>Testmail naar Dirkjan</button>
                 <button class="w3-button w3-blue w3-margin-top" type="submit" name="actie" value="versturen" data-selectie-vereist <?= $geselecteerdeDeelnemers === [] ? 'disabled' : '' ?>>Verzending in plukjes starten</button>
