@@ -67,8 +67,21 @@ foreach ($activiteiten as $activiteit) {
     }
 }
 
+$doelgroep = $_GET['doelgroep'] ?? $_POST['doelgroep'] ?? 'toegelaten';
+$doelgroepen = [
+    'toegelaten' => 'Toegelaten deelnemers voor deze activiteit',
+    'alle_deelnemers' => 'Alle deelnemers',
+    'strijkers' => 'Strijkers',
+    'houtblazers' => 'Houtblazers',
+    'koperblazers' => 'Koperblazers',
+    'overig' => 'Overig',
+];
+if (!array_key_exists($doelgroep, $doelgroepen)) {
+    $doelgroep = 'toegelaten';
+}
+
 $deelnemers = [];
-if ($gekozenActiviteit !== null) {
+if ($doelgroep === 'toegelaten' && $gekozenActiviteit !== null) {
     $stmt = $pdo->prepare(
         "SELECT d.id, d.voornaam, d.achternaam, d.email, i.naam AS instrument, ad.partij
          FROM activiteit_deelnemers ad
@@ -80,6 +93,35 @@ if ($gekozenActiviteit !== null) {
                   i.id, d.achternaam, d.voornaam"
     );
     $stmt->execute([$activiteitId]);
+    $deelnemers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} elseif ($doelgroep !== 'toegelaten') {
+    $familieInstrumenten = [
+        'strijkers' => ['viool', 'altviool', 'cello', 'contrabas'],
+        'houtblazers' => ['dwarsfluit', 'piccolo', 'hobo', 'engelse hoorn', 'klarinet', 'basklarinet', 'fagot', 'contrafagot'],
+        'koperblazers' => ['trompet', 'hoorn', 'trombone', 'tuba'],
+    ];
+    $alleFamilieInstrumenten = array_merge(...array_values($familieInstrumenten));
+    $sql = "SELECT d.id, d.voornaam, d.achternaam, d.email,
+                   GROUP_CONCAT(DISTINCT i.naam ORDER BY i.naam SEPARATOR ', ') AS instrument,
+                   NULL AS partij
+            FROM deelnemers d
+            LEFT JOIN deelnemer_instrumenten di ON di.deelnemer_id = d.id
+            LEFT JOIN instrumenten i ON i.id = di.instrument_id";
+    $parameters = [];
+    if ($doelgroep === 'alle_deelnemers') {
+        $sql .= ' WHERE 1 = 1';
+    } elseif ($doelgroep === 'overig') {
+        $plaatshouders = implode(',', array_fill(0, count($alleFamilieInstrumenten), '?'));
+        $sql .= " WHERE NOT EXISTS (SELECT 1 FROM deelnemer_instrumenten di2 JOIN instrumenten i2 ON i2.id = di2.instrument_id WHERE di2.deelnemer_id = d.id AND LOWER(TRIM(i2.naam)) IN ($plaatshouders))";
+        $parameters = $alleFamilieInstrumenten;
+    } else {
+        $plaatshouders = implode(',', array_fill(0, count($familieInstrumenten[$doelgroep]), '?'));
+        $sql .= " WHERE EXISTS (SELECT 1 FROM deelnemer_instrumenten di2 JOIN instrumenten i2 ON i2.id = di2.instrument_id WHERE di2.deelnemer_id = d.id AND LOWER(TRIM(i2.naam)) IN ($plaatshouders))";
+        $parameters = $familieInstrumenten[$doelgroep];
+    }
+    $sql .= ' GROUP BY d.id, d.voornaam, d.achternaam, d.email ORDER BY d.achternaam, d.voornaam';
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($parameters);
     $deelnemers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
@@ -481,10 +523,17 @@ if (is_array($wachtrij)) {
                     </option>
                 <?php endforeach; ?>
             </select>
+            <label class="w3-margin-top" for="doelgroep"><strong>Doelgroep</strong></label>
+            <select class="w3-select w3-border" id="doelgroep" name="doelgroep" onchange="this.form.submit()">
+                <?php foreach ($doelgroepen as $waarde => $label): ?>
+                    <option value="<?= htmlspecialchars($waarde, ENT_QUOTES, 'UTF-8') ?>" <?= $doelgroep === $waarde ? 'selected' : '' ?>><?= htmlspecialchars($label, ENT_QUOTES, 'UTF-8') ?></option>
+                <?php endforeach; ?>
+            </select>
         </form>
 
         <form method="post" enctype="multipart/form-data" class="w3-margin-bottom">
             <input type="hidden" name="activiteit_id" value="<?= $activiteitId ?>">
+            <input type="hidden" name="doelgroep" value="<?= htmlspecialchars($doelgroep, ENT_QUOTES, 'UTF-8') ?>">
             <label for="mailconcept"><strong>Mailconcept laden</strong></label>
             <input class="w3-input w3-border" id="mailconcept" name="mailconcept" type="file" accept="application/json,.json">
             <button class="w3-button w3-light-grey w3-margin-top" type="submit" name="actie" value="json_laden">JSON laden</button>
@@ -544,7 +593,7 @@ if (is_array($wachtrij)) {
 
         <?php if ($gekozenActiviteit !== null): ?>
             <p>
-                <strong><?= count($deelnemers) ?> toegelaten deelnemers</strong><br>
+            <strong><?= count($deelnemers) ?> deelnemers: <?= htmlspecialchars($doelgroepen[$doelgroep], ENT_QUOTES, 'UTF-8') ?></strong><br>
                 <span id="selectie-aantal"><?= count($geselecteerdeDeelnemers) ?> geselecteerd</span>
             </p>
             <?php if ($deelnemers !== []): ?>
@@ -580,6 +629,7 @@ if (is_array($wachtrij)) {
 
             <form method="post" id="mail-formulier" onsubmit="return bevestigVerzending(event);">
                 <input type="hidden" name="activiteit_id" value="<?= $activiteitId ?>">
+                <input type="hidden" name="doelgroep" value="<?= htmlspecialchars($doelgroep, ENT_QUOTES, 'UTF-8') ?>">
                 <input type="hidden" name="selectie_ingediend" value="1">
 
                 <label for="onderwerp"><strong>Onderwerp</strong></label>
