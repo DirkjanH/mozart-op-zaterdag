@@ -28,6 +28,26 @@ function vulAanmeldbevestigingTemplate(string $template, array $waarden): string
     );
 }
 
+function nederlandseDatum(DateTimeInterface $datum): string
+{
+    $maanden = [
+        1 => 'januari',
+        2 => 'februari',
+        3 => 'maart',
+        4 => 'april',
+        5 => 'mei',
+        6 => 'juni',
+        7 => 'juli',
+        8 => 'augustus',
+        9 => 'september',
+        10 => 'oktober',
+        11 => 'november',
+        12 => 'december',
+    ];
+
+    return $datum->format('j') . ' ' . $maanden[(int) $datum->format('n')] . ' ' . $datum->format('Y');
+}
+
 function leesAanmeldMailInstellingen(): array
 {
     $gebruikersnaam = getenv('MOZART_GMAIL_USERNAME') ?: 'info@mozartopzaterdag.nl';
@@ -207,7 +227,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $beschikbaarheid = [];
         foreach ($activiteiten as $activiteit) {
             $status = trim($_POST['status_' . (int) $activiteit['id']] ?? 'nee');
-            $datum = (new DateTimeImmutable($activiteit['datum']))->format('j F Y');
+            $datum = nederlandseDatum(new DateTimeImmutable($activiteit['datum']));
             $beschikbaarheid[] = '<li>' . $datum . ' - ' . htmlspecialchars($activiteit['omschrijving'] ?? '', ENT_QUOTES, 'UTF-8') . ': ' . htmlspecialchars($status, ENT_QUOTES, 'UTF-8') . '</li>';
         }
         $templateWaarden = [
@@ -238,6 +258,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mailer->CharSet = 'UTF-8';
             $mailer->setFrom($gmailGebruikersnaam, 'Mozart op Zaterdag');
             $mailer->addReplyTo($gmailGebruikersnaam, 'Mozart op Zaterdag');
+            // Alleen de aanmelder ontvangt de mail; Dirkjan ontvangt uitsluitend een kopie.
             $mailer->addAddress($email, trim($voornaam . ' ' . $achternaam));
             if (strcasecmp($email, 'dirkjan@pellegrina.net') !== 0) {
                 $mailer->addCC('dirkjan@pellegrina.net', 'Dirkjan Horringa');
