@@ -141,7 +141,7 @@ function conceptMapVoorDoelgroep(array $activiteit, string $doelgroep): string
 function serverConceptBestand(array $activiteit, string $doelgroep, string $keuze): ?string
 {
     [$bron, $bestandsnaam] = array_pad(explode(':', $keuze, 2), 2, '');
-    if (!in_array($bron, ['json', 'activiteit'], true) || !preg_match('/^mozart-mailconcept(?:-.*)?\.json$/', $bestandsnaam)) {
+    if (!in_array($bron, ['json', 'activiteit'], true) || !preg_match('/^mozart-mailconcept(?:[ -].*)?\.json$/', $bestandsnaam)) {
         return null;
     }
     if ($doelgroep === 'toegelaten' && $bron !== 'activiteit') {
@@ -584,7 +584,7 @@ if (is_array($wachtrij)) {
         <form method="post" enctype="multipart/form-data" class="w3-margin-bottom">
             <input type="hidden" name="activiteit_id" value="<?= $activiteitId ?>">
             <input type="hidden" name="doelgroep" value="<?= htmlspecialchars($doelgroep, ENT_QUOTES, 'UTF-8') ?>">
-            <?php $conceptMap = conceptMapVoorDoelgroep($gekozenActiviteit, $doelgroep); $serverConcepten = []; foreach (array_merge(glob($conceptMap . '/mozart-mailconcept.json') ?: [], glob($conceptMap . '/mozart-mailconcept-*.json') ?: []) as $concept) $serverConcepten['json:' . basename($concept)] = $concept; if ($doelgroep === 'toegelaten') { $serverConcepten = []; foreach (array_merge(glob(dirname(__DIR__) . '/' . $gekozenActiviteit['datum'] . '/mozart-mailconcept.json') ?: [], glob(dirname(__DIR__) . '/' . $gekozenActiviteit['datum'] . '/mozart-mailconcept-*.json') ?: []) as $concept) $serverConcepten['activiteit:' . basename($concept)] = $concept; } else { foreach (array_merge(glob(dirname(__DIR__) . '/' . $gekozenActiviteit['datum'] . '/mozart-mailconcept.json') ?: [], glob(dirname(__DIR__) . '/' . $gekozenActiviteit['datum'] . '/mozart-mailconcept-*.json') ?: []) as $concept) $serverConcepten['activiteit:' . basename($concept)] = $concept; } uksort($serverConcepten, static fn (string $eerste, string $tweede): int => strnatcmp($tweede, $eerste)); ?>
+            <?php $conceptMap = conceptMapVoorDoelgroep($gekozenActiviteit, $doelgroep); $serverConcepten = []; foreach (glob($conceptMap . '/mozart-mailconcept*.json') ?: [] as $concept) $serverConcepten['json:' . basename($concept)] = $concept; if ($doelgroep === 'toegelaten') { $serverConcepten = []; foreach (glob(dirname(__DIR__) . '/' . $gekozenActiviteit['datum'] . '/mozart-mailconcept*.json') ?: [] as $concept) $serverConcepten['activiteit:' . basename($concept)] = $concept; } else { foreach (glob(dirname(__DIR__) . '/' . $gekozenActiviteit['datum'] . '/mozart-mailconcept*.json') ?: [] as $concept) $serverConcepten['activiteit:' . basename($concept)] = $concept; } uksort($serverConcepten, static fn (string $eerste, string $tweede): int => strnatcmp($tweede, $eerste)); ?>
             <label for="server_concept"><strong>Serverconcept kiezen</strong></label>
             <select class="w3-select w3-border" id="server_concept" name="server_concept" <?= $serverConcepten === [] ? 'disabled' : '' ?>>
                 <?php if ($serverConcepten === []): ?><option>Geen serverconcepten gevonden</option><?php endif; ?>
