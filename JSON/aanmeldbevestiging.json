@@ -1,0 +1,4 @@
+{
+    "onderwerp": "Bevestiging aanmelding Mozart op Zaterdag",
+    "tekst": "<p>Beste {{voornaam}},</p>\r\n\r\n<p>Dank voor je aanmelding bij Mozart op Zaterdag. We hebben je gegevens goed ontvangen.</p>\r\n\r\n<p>Instrument(en): {{instrumenten}}<br>Beschikbaarheid:<br>{{beschikbaarheid}}</p>\r\n\r\n<p>Hartelijke groet,<br>Dirkjan Horringa</p>"
+}

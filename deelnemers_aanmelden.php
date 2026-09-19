@@ -2,8 +2,72 @@
 require_once __DIR__ . '/connections/MozartopZaterdag.php';
 require_once __DIR__ . '/vendor/autoload.php';
 
+function laadAanmeldbevestigingMail(string $bestand): array
+{
+    $mailtekst = json_decode((string) file_get_contents($bestand), true, 8, JSON_THROW_ON_ERROR);
+    if (!is_array($mailtekst) || !is_string($mailtekst['onderwerp'] ?? null) || !is_string($mailtekst['tekst'] ?? null)) {
+        throw new RuntimeException('De bevestigingsmail heeft een ongeldig formaat.');
+    }
+
+    return $mailtekst;
+}
+
+function vulAanmeldbevestigingTemplate(string $template, array $waarden): string
+{
+    return str_replace(
+        array_keys($waarden),
+        array_map(static fn (string $waarde): string => htmlspecialchars($waarde, ENT_QUOTES, 'UTF-8'), array_values($waarden)),
+        $template
+    );
+}
+
+function leesAanmeldMailInstellingen(): array
+{
+    $gebruikersnaam = getenv('MOZART_GMAIL_USERNAME') ?: 'info@mozartopzaterdag.nl';
+    $wachtwoord = getenv('MOZART_GMAIL_APP_PASSWORD') ?: '';
+    $bestand = __DIR__ . '/includes/_tst/MOZART_GMAIL_USERNAME.txt';
+    if ($wachtwoord !== '' || !is_readable($bestand)) {
+        return [$gebruikersnaam, preg_replace('/\s+/', '', $wachtwoord)];
+    }
+
+    $ongelabeldeRegels = [];
+    foreach (preg_split('/\r\n|\r|\n/', trim((string) file_get_contents($bestand))) as $regel) {
+        $regel = trim($regel);
+        if ($regel === '' || str_starts_with($regel, '#')) {
+            continue;
+        }
+        if (preg_match('/^([^:=]+)\s*[:=]\s*(.*)$/', $regel, $delen)) {
+            $naam = strtolower(trim($delen[1]));
+            $waarde = trim($delen[2]);
+            if (in_array($naam, ['username', 'gebruikersnaam', 'gmail_username', 'mozart_gmail_username'], true)) {
+                $gebruikersnaam = $waarde;
+            } elseif (in_array($naam, ['password', 'wachtwoord', 'app_password', 'gmail_app_password', 'mozart_gmail_app_password'], true)) {
+                $wachtwoord = preg_replace('/\s+/', '', $waarde);
+            }
+        } else {
+            $ongelabeldeRegels[] = $regel;
+        }
+    }
+    if ($wachtwoord === '' && isset($ongelabeldeRegels[1])) {
+        $gebruikersnaam = $ongelabeldeRegels[0];
+        $wachtwoord = preg_replace('/\s+/', '', $ongelabeldeRegels[1]);
+    }
+
+    return [$gebruikersnaam, $wachtwoord];
+}
+
 $melding = '';
 $foutmelding = '';
+$aanmeldbevestigingBestand = __DIR__ . '/JSON/aanmeldbevestiging.json';
+try {
+    $aanmeldbevestigingMail = laadAanmeldbevestigingMail($aanmeldbevestigingBestand);
+} catch (Throwable $e) {
+    error_log('Aanmelding: bevestigingsmail kon niet worden geladen: ' . $e->getMessage());
+    $aanmeldbevestigingMail = [
+        'onderwerp' => 'Bevestiging aanmelding Mozart op Zaterdag',
+        'tekst' => '<p>Beste {{voornaam}},</p><p>Dank voor je aanmelding bij Mozart op Zaterdag.</p><p>Hartelijke groet,<br>Dirkjan Horringa</p>',
+    ];
+}
 
 // Haal instrumenten op in de volgorde van de instrumententabel, zonder zangstemmen.
 $uitgeslotenInstrumenten = ['sopraan', 'alt', 'tenor', 'bas', 'countertenor', 'mezzosopraan', 'bariton', 'basklarinet', 'tuba', 'contrafagot', 'piano', 'clavecimbel', 'slagwerk', 'orgel', 'piccolo', 'engelse hoorn'];
@@ -122,7 +186,59 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        $melding = 'Gegevens succesvol opgeslagen!';
+        $instrumentNamen = [];
+        foreach ($instrumenten as $instrument) {
+            if (in_array((string) $instrument['id'], $instrumenten_gekozen, true)) {
+                $instrumentNamen[] = $instrument['naam'];
+            }
+        }
+        $beschikbaarheid = [];
+        foreach ($activiteiten as $activiteit) {
+            $status = trim($_POST['status_' . (int) $activiteit['id']] ?? 'nee');
+            $beschikbaarheid[] = date('d-m-Y', strtotime($activiteit['datum'])) . ': ' . $status;
+        }
+        $templateWaarden = [
+            '{{voornaam}}' => $voornaam,
+            '{{achternaam}}' => $achternaam,
+            '{{naam}}' => trim($voornaam . ' ' . $achternaam),
+            '{{email}}' => $email,
+            '{{telefoon}}' => $telefoon,
+            '{{postcode}}' => $postcode,
+            '{{plaats}}' => $plaats,
+            '{{instrumenten}}' => $instrumentNamen !== [] ? implode(', ', $instrumentNamen) : 'geen instrument opgegeven',
+            '{{beschikbaarheid}}' => $beschikbaarheid !== [] ? implode('<br>', $beschikbaarheid) : 'geen toekomstige activiteiten',
+        ];
+        try {
+            [$gmailGebruikersnaam, $gmailAppWachtwoord] = leesAanmeldMailInstellingen();
+            if ($gmailAppWachtwoord === '') {
+                throw new RuntimeException('Gmail-app-wachtwoord ontbreekt in de configuratie.');
+            }
+            $mailer = new PHPMailer\PHPMailer\PHPMailer(true);
+            $mailer->isSMTP();
+            $mailer->Host = 'send.one.com';
+            $mailer->SMTPAuth = true;
+            $mailer->Username = $gmailGebruikersnaam;
+            $mailer->Password = $gmailAppWachtwoord;
+            $mailer->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
+            $mailer->Port = 465;
+            $mailer->Timeout = 5;
+            $mailer->CharSet = 'UTF-8';
+            $mailer->setFrom($gmailGebruikersnaam, 'Mozart op Zaterdag');
+            $mailer->addReplyTo($gmailGebruikersnaam, 'Mozart op Zaterdag');
+            $mailer->addAddress($email, trim($voornaam . ' ' . $achternaam));
+            if (strcasecmp($email, 'dirkjan@pellegrina.net') !== 0) {
+                $mailer->addCC('dirkjan@pellegrina.net', 'Dirkjan Horringa');
+            }
+            $mailer->isHTML(true);
+            $mailer->Subject = str_replace(["\r", "\n"], '', html_entity_decode(strip_tags(vulAanmeldbevestigingTemplate($aanmeldbevestigingMail['onderwerp'], $templateWaarden)), ENT_QUOTES, 'UTF-8'));
+            $mailer->Body = vulAanmeldbevestigingTemplate($aanmeldbevestigingMail['tekst'], $templateWaarden);
+            $mailer->AltBody = trim(html_entity_decode(strip_tags(str_replace(['</p>', '<br>', '<br/>', '<br />'], "\n", $mailer->Body)), ENT_QUOTES, 'UTF-8'));
+            $mailer->send();
+            $melding = 'Gegevens succesvol opgeslagen. Er is een bevestiging per e-mail verstuurd.';
+        } catch (Throwable $e) {
+            error_log('Aanmelding: bevestigingsmail niet verstuurd: ' . $e->getMessage());
+            $melding = 'Gegevens succesvol opgeslagen, maar de bevestigingsmail kon niet worden verstuurd.';
+        }
 
     } catch (Exception $e) {
         $foutmelding = 'Fout: ' . $e->getMessage();

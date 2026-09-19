@@ -22,6 +22,7 @@ require_once __DIR__ . '/../includes/inloggen.php';
             <a href="werken_bewerken.php" target="_blank" class="w3-bar-item w3-button w3-blue w3-margin-bottom">Werken bewerken</a>
             <a href="activiteiten_bewerken.php" target="_blank" class="w3-bar-item w3-button w3-blue w3-margin-bottom">Activiteiten bewerken</a>
             <a href="beschikbaarheid.php" target="_blank" class="w3-bar-item w3-button w3-blue w3-margin-bottom">Beschikbaarheid overzicht</a>
+            <a href="aanmeldbevestiging_bewerken.php" target="_blank" class="w3-bar-item w3-button w3-blue w3-margin-bottom">Aanmeldbevestiging bewerken</a>
             <a href="deelnemers_mailen.php" target="_blank" class="w3-bar-item w3-button w3-blue w3-margin-bottom">Deelnemers mailen</a>
             <a href="genereer_webpaginas.php" target="_blank" class="w3-bar-item w3-button w3-blue w3-margin-bottom">Genereer webpagina's</a>
             <a href="/deelnemers_aanmelden.php" target="_blank" class="w3-bar-item w3-button w3-green w3-margin-bottom" style="margin-top:24px;">Aanmeldingsformulier</a>
