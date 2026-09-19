@@ -19,7 +19,6 @@ require_once __DIR__ . '/../includes/inloggen.php';
         </header>
         <div class="w3-bar-block">
             <a href="deelnemers_bewerken.php" target="_blank" class="w3-bar-item w3-button w3-blue w3-margin-bottom">Deelnemers bewerken</a>
-            <a href="import_moz_csv.php" target="_blank" class="w3-bar-item w3-button w3-blue w3-margin-bottom">MoZ-contacten importeren</a>
             <a href="werken_bewerken.php" target="_blank" class="w3-bar-item w3-button w3-blue w3-margin-bottom">Werken bewerken</a>
             <a href="activiteiten_bewerken.php" target="_blank" class="w3-bar-item w3-button w3-blue w3-margin-bottom">Activiteiten bewerken</a>
             <a href="beschikbaarheid.php" target="_blank" class="w3-bar-item w3-button w3-blue w3-margin-bottom">Beschikbaarheid overzicht</a>
