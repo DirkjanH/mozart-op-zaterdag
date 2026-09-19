@@ -228,7 +228,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         foreach ($activiteiten as $activiteit) {
             $status = trim($_POST['status_' . (int) $activiteit['id']] ?? 'nee');
             $datum = nederlandseDatum(new DateTimeImmutable($activiteit['datum']));
-            $beschikbaarheid[] = '<li>' . $datum . ' - ' . htmlspecialchars($activiteit['omschrijving'] ?? '', ENT_QUOTES, 'UTF-8') . ': ' . htmlspecialchars($status, ENT_QUOTES, 'UTF-8') . '</li>';
+            $beschikbaarheid[] = '<li>' . $datum . ' - ' . htmlspecialchars($activiteit['omschrijving'] ?? '', ENT_QUOTES, 'UTF-8') . ': <strong style="color:#198754">' . htmlspecialchars($status, ENT_QUOTES, 'UTF-8') . '</strong></li>';
         }
         $templateWaarden = [
             '{{voornaam}}' => $voornaam,
