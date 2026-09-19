@@ -14,10 +14,17 @@ function laadAanmeldbevestigingMail(string $bestand): array
 
 function vulAanmeldbevestigingTemplate(string $template, array $waarden): string
 {
+    $beschikbaarheid = $waarden['{{beschikbaarheid}}'] ?? '';
+    unset($waarden['{{beschikbaarheid}}']);
+
     return str_replace(
-        array_keys($waarden),
-        array_map(static fn (string $waarde): string => htmlspecialchars($waarde, ENT_QUOTES, 'UTF-8'), array_values($waarden)),
-        $template
+        '{{beschikbaarheid}}',
+        $beschikbaarheid,
+        str_replace(
+            array_keys($waarden),
+            array_map(static fn (string $waarde): string => htmlspecialchars($waarde, ENT_QUOTES, 'UTF-8'), array_values($waarden)),
+            $template
+        )
     );
 }
 
@@ -200,7 +207,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $beschikbaarheid = [];
         foreach ($activiteiten as $activiteit) {
             $status = trim($_POST['status_' . (int) $activiteit['id']] ?? 'nee');
-            $beschikbaarheid[] = date('d-m-Y', strtotime($activiteit['datum'])) . ': ' . $status;
+            $datum = (new DateTimeImmutable($activiteit['datum']))->format('j F Y');
+            $beschikbaarheid[] = '<li>' . $datum . ' - ' . htmlspecialchars($activiteit['omschrijving'] ?? '', ENT_QUOTES, 'UTF-8') . ': ' . htmlspecialchars($status, ENT_QUOTES, 'UTF-8') . '</li>';
         }
         $templateWaarden = [
             '{{voornaam}}' => $voornaam,
@@ -211,7 +219,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             '{{postcode}}' => $postcode,
             '{{plaats}}' => $plaats,
             '{{instrumenten}}' => $instrumentNamen !== [] ? implode(', ', $instrumentNamen) : 'geen instrument opgegeven',
-            '{{beschikbaarheid}}' => $beschikbaarheid !== [] ? implode('<br>', $beschikbaarheid) : 'geen toekomstige activiteiten',
+            '{{beschikbaarheid}}' => $beschikbaarheid !== [] ? '<ul>' . implode('', $beschikbaarheid) . '</ul>' : 'geen toekomstige activiteiten',
         ];
         try {
             [$gmailGebruikersnaam, $gmailAppWachtwoord] = leesAanmeldMailInstellingen();
