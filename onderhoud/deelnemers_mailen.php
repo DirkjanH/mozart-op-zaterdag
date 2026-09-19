@@ -14,34 +14,22 @@ if ($actie === 'json_laden') {
     $conceptBestand = null;
     $gevraagdeActiviteitId = (int) ($_POST['activiteit_id'] ?? 0);
     $gevraagdeDoelgroep = $_POST['doelgroep'] ?? 'toegelaten';
+    $gekozenBestand = basename((string) ($_POST['server_concept'] ?? ''));
     if ($gevraagdeDoelgroep === 'toegelaten' && $gevraagdeActiviteitId > 0) {
         $stmt = $pdo->prepare('SELECT datum FROM activiteiten WHERE id = ?');
         $stmt->execute([$gevraagdeActiviteitId]);
         $activiteitDatum = $stmt->fetchColumn();
         if (is_string($activiteitDatum)) {
-            $conceptBestanden = glob(dirname(__DIR__) . '/' . $activiteitDatum . '/mozart-mailconcept-*.json') ?: [];
-            if ($conceptBestanden !== []) {
-                usort($conceptBestanden, static fn (string $eerste, string $tweede): int => strnatcmp(basename($tweede), basename($eerste)));
-                $conceptBestand = $conceptBestanden[0];
-            }
+            $conceptBestand = dirname(__DIR__) . '/' . $activiteitDatum . '/' . $gekozenBestand;
         }
     } elseif ($gevraagdeDoelgroep !== 'toegelaten') {
-        $conceptBestanden = glob(dirname(__DIR__) . '/JSON/mozart-mailconcept-*.json') ?: [];
-        if ($conceptBestanden !== []) {
-            usort($conceptBestanden, static fn (string $eerste, string $tweede): int => strnatcmp(basename($tweede), basename($eerste)));
-            $conceptBestand = $conceptBestanden[0];
-        }
+        $conceptBestand = dirname(__DIR__) . '/JSON/' . $gekozenBestand;
     }
 
-    $geladenVanServer = $conceptBestand !== null;
-    $upload = $_FILES['mailconcept'] ?? null;
-    if ($conceptBestand === null && (!is_array($upload) || ($upload['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK)) {
-        $melding = 'Er is geen opgeslagen mailconcept gevonden en er is geen JSON-bestand gekozen.';
-    } elseif ($conceptBestand === null && ($upload['size'] ?? 0) > 2 * 1024 * 1024) {
-        $melding = 'Het JSON-bestand mag maximaal 2 MB groot zijn.';
+    if (!preg_match('/^mozart-mailconcept-.*\.json$/', $gekozenBestand) || $conceptBestand === null || !is_file($conceptBestand)) {
+        $melding = 'Kies een geldig serverconcept om te laden.';
     } else {
         try {
-            $conceptBestand ??= $upload['tmp_name'];
             $concept = json_decode((string) file_get_contents($conceptBestand), true, 8, JSON_THROW_ON_ERROR);
             if (!is_array($concept) || ($concept['versie'] ?? null) !== 1 || !is_string($concept['onderwerp'] ?? null) || !is_string($concept['bericht'] ?? null)) {
                 throw new RuntimeException('Onbekend of onvolledig mailconcept.');
@@ -50,9 +38,7 @@ if ($actie === 'json_laden') {
             $_POST['doelgroep'] = $concept['doelgroep'] ?? 'toegelaten';
             $_POST['onderwerp'] = $concept['onderwerp'];
             $_POST['bericht'] = $concept['bericht'];
-            $melding = $geladenVanServer
-                ? 'Het meest recente serverconcept is geladen.'
-                : 'Het mailconcept is geladen.';
+            $melding = 'Het geselecteerde serverconcept is geladen.';
         } catch (Throwable $e) {
             $melding = 'Mailconcept niet geladen: ' . $e->getMessage();
         }
@@ -151,6 +137,35 @@ HTML;
 $onderwerp = trim($_POST['onderwerp'] ?? $standaardOnderwerp);
 $bericht = trim($_POST['bericht'] ?? $standaardBericht);
 
+function conceptMapVoorDoelgroep(array $activiteit, string $doelgroep): string
+{
+    return $doelgroep === 'toegelaten'
+        ? dirname(__DIR__) . '/' . $activiteit['datum']
+        : dirname(__DIR__) . '/JSON';
+}
+
+if ($actie === 'json_downloaden') {
+    try {
+        $conceptMap = conceptMapVoorDoelgroep($gekozenActiviteit, $doelgroep);
+        $gekozenBestand = basename((string) ($_POST['server_concept'] ?? ''));
+        $conceptBestand = $conceptMap . '/' . $gekozenBestand;
+        if (!preg_match('/^mozart-mailconcept-.*\.json$/', $gekozenBestand) || !is_file($conceptBestand)) {
+            throw new RuntimeException('Kies een geldig serverconcept om te downloaden.');
+        }
+        $inhoud = file_get_contents($conceptBestand);
+        if ($inhoud === false) {
+            throw new RuntimeException('Het serverconcept kon niet worden gelezen.');
+        }
+        header('Content-Type: application/json; charset=UTF-8');
+        header('Content-Disposition: attachment; filename="' . $gekozenBestand . '"');
+        header('Content-Length: ' . strlen($inhoud));
+        echo $inhoud;
+        exit;
+    } catch (Throwable $e) {
+        $melding = 'Serverconcept niet gedownload: ' . $e->getMessage();
+    }
+}
+
 if ($actie === 'json_opslaan') {
     if ($gekozenActiviteit === null) {
         $melding = 'Kies eerst een geldige activiteit.';
@@ -167,10 +182,7 @@ if ($actie === 'json_opslaan') {
             $bestandsOnderwerp = trim($bestandsOnderwerp, '-');
             $bestandsOnderwerp = substr($bestandsOnderwerp !== '' ? $bestandsOnderwerp : 'zonder-onderwerp', 0, 80);
             $bestandsnaam = 'mozart-mailconcept-' . $bestandsOnderwerp . '-' . date('Ymd-His') . '.json';
-            $conceptMap = dirname(__DIR__) . '/JSON';
-            if ($doelgroep === 'toegelaten') {
-                $conceptMap = dirname(__DIR__) . '/' . $gekozenActiviteit['datum'];
-            }
+            $conceptMap = conceptMapVoorDoelgroep($gekozenActiviteit, $doelgroep);
             if (!is_dir($conceptMap) && !mkdir($conceptMap, 0775, true) && !is_dir($conceptMap)) {
                 throw new RuntimeException('De conceptmap kon niet worden aangemaakt.');
             }
@@ -555,9 +567,14 @@ if (is_array($wachtrij)) {
         <form method="post" enctype="multipart/form-data" class="w3-margin-bottom">
             <input type="hidden" name="activiteit_id" value="<?= $activiteitId ?>">
             <input type="hidden" name="doelgroep" value="<?= htmlspecialchars($doelgroep, ENT_QUOTES, 'UTF-8') ?>">
-            <label for="mailconcept"><strong>Mailconcept laden</strong></label>
-            <input class="w3-input w3-border" id="mailconcept" name="mailconcept" type="file" accept="application/json,.json">
-            <button class="w3-button w3-light-grey w3-margin-top" type="submit" name="actie" value="json_laden">JSON laden</button>
+            <?php $serverConcepten = glob(conceptMapVoorDoelgroep($gekozenActiviteit, $doelgroep) . '/mozart-mailconcept-*.json') ?: []; usort($serverConcepten, static fn (string $eerste, string $tweede): int => strnatcmp(basename($tweede), basename($eerste))); ?>
+            <label for="server_concept"><strong>Serverconcept kiezen</strong></label>
+            <select class="w3-select w3-border" id="server_concept" name="server_concept" <?= $serverConcepten === [] ? 'disabled' : '' ?>>
+                <?php if ($serverConcepten === []): ?><option>Geen serverconcepten gevonden</option><?php endif; ?>
+                <?php foreach ($serverConcepten as $serverConcept): ?><option value="<?= htmlspecialchars(basename($serverConcept), ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars(basename($serverConcept), ENT_QUOTES, 'UTF-8') ?></option><?php endforeach; ?>
+            </select>
+            <button class="w3-button w3-light-grey w3-margin-top" type="submit" name="actie" value="json_laden" <?= $serverConcepten === [] ? 'disabled' : '' ?>>Serverconcept laden</button>
+            <button class="w3-button w3-light-grey w3-margin-top" type="submit" name="actie" value="json_downloaden" <?= $serverConcepten === [] ? 'disabled' : '' ?>>Serverconcept downloaden</button>
         </form>
 
         <?php if (is_array($wachtrij)): ?>
@@ -666,6 +683,7 @@ if (is_array($wachtrij)) {
                 <button class="w3-button w3-green w3-margin-top" type="submit" name="actie" value="test" data-selectie-vereist <?= $geselecteerdeDeelnemers === [] ? 'disabled' : '' ?>>Testmail naar Dirkjan</button>
                 <button class="w3-button w3-blue w3-margin-top" type="submit" name="actie" value="versturen" data-selectie-vereist <?= $geselecteerdeDeelnemers === [] ? 'disabled' : '' ?>>Verzending in plukjes starten</button>
                 <button class="w3-button w3-light-grey w3-margin-top" type="submit" name="actie" value="json_opslaan">Concept in JSON opslaan</button>
+                <input type="hidden" name="server_concept" value="">
             </form>
         <?php endif; ?>
 
