@@ -2,6 +2,8 @@
 require_once __DIR__ . '/connections/MozartopZaterdag.php';
 require_once __DIR__ . '/vendor/autoload.php';
 
+$pdo->exec('CREATE TABLE IF NOT EXISTS deelnemer_wijzigingen (deelnemer_id INT NOT NULL PRIMARY KEY, gemarkeerd_op DATETIME NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
+
 function laadAanmeldbevestigingMail(string $bestand): array
 {
     $mailtekst = json_decode((string) file_get_contents($bestand), true, 8, JSON_THROW_ON_ERROR);
@@ -174,14 +176,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($bestaande) {
             $deelnemerId = (int) $bestaande['id'];
             // Update bestaande deelnemer
-            $stmt = $pdo->prepare('UPDATE deelnemers SET voornaam = ?, achternaam = ?, telefoon = ?, postcode = ?, plaats = ?, muzikale_ervaring = ?, op_de_hoogte_houden = ?, nieuw_of_gewijzigd = 1 WHERE id = ?');
+            $stmt = $pdo->prepare('UPDATE deelnemers SET voornaam = ?, achternaam = ?, telefoon = ?, postcode = ?, plaats = ?, muzikale_ervaring = ?, op_de_hoogte_houden = ? WHERE id = ?');
             $stmt->execute([$voornaam, $achternaam, $telefoon, $postcode, $plaats, $muzikaleErvaring, (int) $opDeHoogteHouden, $deelnemerId]);
         } else {
             // Maak nieuwe deelnemer
-            $stmt = $pdo->prepare('INSERT INTO deelnemers (voornaam, achternaam, email, telefoon, postcode, plaats, muzikale_ervaring, op_de_hoogte_houden, nieuw_of_gewijzigd) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)');
+            $stmt = $pdo->prepare('INSERT INTO deelnemers (voornaam, achternaam, email, telefoon, postcode, plaats, muzikale_ervaring, op_de_hoogte_houden) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
             $stmt->execute([$voornaam, $achternaam, $email, $telefoon, $postcode, $plaats, $muzikaleErvaring, (int) $opDeHoogteHouden]);
             $deelnemerId = (int) $pdo->lastInsertId();
         }
+        $stmt = $pdo->prepare('INSERT INTO deelnemer_wijzigingen (deelnemer_id, gemarkeerd_op) VALUES (?, NOW()) ON DUPLICATE KEY UPDATE gemarkeerd_op = VALUES(gemarkeerd_op)');
+        $stmt->execute([$deelnemerId]);
 
         // Verwijder oude instrumenten voor deze deelnemer
         $stmt = $pdo->prepare('DELETE FROM deelnemer_instrumenten WHERE deelnemer_id = ?');

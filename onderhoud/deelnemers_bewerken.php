@@ -2,6 +2,8 @@
 require_once __DIR__ . '/../includes/inloggen.php';
 require_once __DIR__ . '/../connections/MozartopZaterdag.php';
 
+$pdo->exec('CREATE TABLE IF NOT EXISTS deelnemer_wijzigingen (deelnemer_id INT NOT NULL PRIMARY KEY, gemarkeerd_op DATETIME NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
+
 $statussen = ['' => '(onbekend)', 'ja' => 'ja', 'nee' => 'nee', 'misschien' => 'misschien'];
 $melding = '';
 
@@ -20,6 +22,7 @@ if (isset($_POST['actie']) && $_POST['actie'] === 'verwijderen') {
             $pdo->prepare('DELETE FROM mail_tracking WHERE deelnemer_id = ?')->execute([$id]);
             $pdo->prepare('DELETE FROM activiteit_deelnemers WHERE deelnemer_id = ?')->execute([$id]);
             $pdo->prepare('DELETE FROM deelnemer_instrumenten WHERE deelnemer_id = ?')->execute([$id]);
+            $pdo->prepare('DELETE FROM deelnemer_wijzigingen WHERE deelnemer_id = ?')->execute([$id]);
             $pdo->prepare('DELETE FROM deelnemers WHERE id = ?')->execute([$id]);
             $pdo->commit();
             $melding = 'Deelnemer volledig verwijderd.';
@@ -55,7 +58,7 @@ if (isset($_POST['actie']) && $_POST['actie'] === 'opslaan') {
     } else {
         if ($id > 0) {
             $stmt = $pdo->prepare(
-                'UPDATE deelnemers SET voornaam = ?, achternaam = ?, email = ?, telefoon = ?, plaats = ?, nieuw_of_gewijzigd = 0 WHERE id = ?'
+                'UPDATE deelnemers SET voornaam = ?, achternaam = ?, email = ?, telefoon = ?, plaats = ? WHERE id = ?'
             );
             $stmt->execute([$voornaam, $achternaam, $email, $telefoon, $plaats, $id]);
         } else {
@@ -65,6 +68,7 @@ if (isset($_POST['actie']) && $_POST['actie'] === 'opslaan') {
             $stmt->execute([$voornaam, $achternaam, $email, $telefoon, $plaats]);
             $id = $pdo->lastInsertId();
         }
+        $pdo->prepare('DELETE FROM deelnemer_wijzigingen WHERE deelnemer_id = ?')->execute([$id]);
 
         // Instrumenten: bestaande koppelingen vervangen door de nu aangevinkte selectie.
         // Dezelfde voorkeurstekst geldt voor alle aangevinkte instrumenten van deze deelnemer.
@@ -96,6 +100,7 @@ if (isset($_POST['actie']) && $_POST['actie'] === 'opslaan') {
 }
 
 $deelnemers = $pdo->query('SELECT * FROM deelnemers ORDER BY achternaam, voornaam')->fetchAll(PDO::FETCH_ASSOC);
+$gemarkeerdeDeelnemerIds = array_map('intval', $pdo->query('SELECT deelnemer_id FROM deelnemer_wijzigingen')->fetchAll(PDO::FETCH_COLUMN));
 
 // Per deelnemer de gekoppelde instrumenten, voorkeurstekst en beschikbaarheid alvast opzoeken.
 $instrumentenPerDeelnemer = [];
@@ -280,7 +285,7 @@ foreach ($deelnemers as $deelnemer) {
                                 <div class="naam-velden">
                                     <input class="w3-input" type="text" name="voornaam" value="<?= htmlspecialchars($deelnemer['voornaam']) ?>" placeholder="Voornaam" required>
                                     <input class="w3-input" type="text" name="achternaam" value="<?= htmlspecialchars($deelnemer['achternaam']) ?>" placeholder="Achternaam" required>
-                                    <?php if ((int) ($deelnemer['nieuw_of_gewijzigd'] ?? 0) === 1): ?><span class="nieuwe-deelnemer-markering" title="Nieuwe of gewijzigde aanmelding; verdwijnt na opslaan" aria-label="Nieuwe of gewijzigde aanmelding">&#9752;</span><?php endif; ?>
+                                    <?php if (in_array((int) $deelnemer['id'], $gemarkeerdeDeelnemerIds, true)): ?><span class="nieuwe-deelnemer-markering" title="Nieuwe of gewijzigde aanmelding; verdwijnt na opslaan" aria-label="Nieuwe of gewijzigde aanmelding" style="color:#198754;font-size:1.3em;line-height:1">&#9752;</span><?php endif; ?>
                                 </div>
                             </td>
                             <td class="kolom-details" hidden><input class="w3-input" type="email" name="email" value="<?= htmlspecialchars($deelnemer['email']) ?>" style="min-width:14em;" required></td>
