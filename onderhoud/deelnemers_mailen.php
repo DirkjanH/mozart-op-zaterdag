@@ -26,7 +26,7 @@ if ($actie === 'json_laden') {
         $conceptBestand = dirname(__DIR__) . '/JSON/' . $gekozenBestand;
     }
 
-    if (!preg_match('/^mozart-mailconcept-.*\.json$/', $gekozenBestand) || $conceptBestand === null || !is_file($conceptBestand)) {
+    if (!preg_match('/^mozart-mailconcept(?:-.*)?\.json$/', $gekozenBestand) || $conceptBestand === null || !is_file($conceptBestand)) {
         $melding = 'Kies een geldig serverconcept om te laden.';
     } else {
         try {
@@ -149,7 +149,7 @@ if ($actie === 'json_downloaden') {
         $conceptMap = conceptMapVoorDoelgroep($gekozenActiviteit, $doelgroep);
         $gekozenBestand = basename((string) ($_POST['server_concept'] ?? ''));
         $conceptBestand = $conceptMap . '/' . $gekozenBestand;
-        if (!preg_match('/^mozart-mailconcept-.*\.json$/', $gekozenBestand) || !is_file($conceptBestand)) {
+        if (!preg_match('/^mozart-mailconcept(?:-.*)?\.json$/', $gekozenBestand) || !is_file($conceptBestand)) {
             throw new RuntimeException('Kies een geldig serverconcept om te downloaden.');
         }
         $inhoud = file_get_contents($conceptBestand);
@@ -567,7 +567,7 @@ if (is_array($wachtrij)) {
         <form method="post" enctype="multipart/form-data" class="w3-margin-bottom">
             <input type="hidden" name="activiteit_id" value="<?= $activiteitId ?>">
             <input type="hidden" name="doelgroep" value="<?= htmlspecialchars($doelgroep, ENT_QUOTES, 'UTF-8') ?>">
-            <?php $serverConcepten = glob(conceptMapVoorDoelgroep($gekozenActiviteit, $doelgroep) . '/mozart-mailconcept-*.json') ?: []; usort($serverConcepten, static fn (string $eerste, string $tweede): int => strnatcmp(basename($tweede), basename($eerste))); ?>
+            <?php $conceptMap = conceptMapVoorDoelgroep($gekozenActiviteit, $doelgroep); $serverConcepten = array_merge(glob($conceptMap . '/mozart-mailconcept.json') ?: [], glob($conceptMap . '/mozart-mailconcept-*.json') ?: []); usort($serverConcepten, static fn (string $eerste, string $tweede): int => strnatcmp(basename($tweede), basename($eerste))); ?>
             <label for="server_concept"><strong>Serverconcept kiezen</strong></label>
             <select class="w3-select w3-border" id="server_concept" name="server_concept" <?= $serverConcepten === [] ? 'disabled' : '' ?>>
                 <?php if ($serverConcepten === []): ?><option>Geen serverconcepten gevonden</option><?php endif; ?>
