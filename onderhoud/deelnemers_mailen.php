@@ -12,24 +12,31 @@ $actie = $_POST['actie'] ?? '';
 
 if ($actie === 'json_laden') {
     $conceptBestand = null;
-    $geladenUitDatummap = false;
     $gevraagdeActiviteitId = (int) ($_POST['activiteit_id'] ?? 0);
-    if ($gevraagdeActiviteitId > 0) {
+    $gevraagdeDoelgroep = $_POST['doelgroep'] ?? 'toegelaten';
+    if ($gevraagdeDoelgroep === 'toegelaten' && $gevraagdeActiviteitId > 0) {
         $stmt = $pdo->prepare('SELECT datum FROM activiteiten WHERE id = ?');
         $stmt->execute([$gevraagdeActiviteitId]);
         $activiteitDatum = $stmt->fetchColumn();
         if (is_string($activiteitDatum)) {
-            $opgeslagenConcept = dirname(__DIR__) . '/' . $activiteitDatum . '/mozart-mailconcept.json';
-            if (is_readable($opgeslagenConcept)) {
-                $conceptBestand = $opgeslagenConcept;
-                $geladenUitDatummap = true;
+            $conceptBestanden = glob(dirname(__DIR__) . '/' . $activiteitDatum . '/mozart-mailconcept-*.json') ?: [];
+            if ($conceptBestanden !== []) {
+                usort($conceptBestanden, static fn (string $eerste, string $tweede): int => strnatcmp(basename($tweede), basename($eerste)));
+                $conceptBestand = $conceptBestanden[0];
             }
+        }
+    } elseif ($gevraagdeDoelgroep !== 'toegelaten') {
+        $conceptBestanden = glob(dirname(__DIR__) . '/JSON/mozart-mailconcept-*.json') ?: [];
+        if ($conceptBestanden !== []) {
+            usort($conceptBestanden, static fn (string $eerste, string $tweede): int => strnatcmp(basename($tweede), basename($eerste)));
+            $conceptBestand = $conceptBestanden[0];
         }
     }
 
+    $geladenVanServer = $conceptBestand !== null;
     $upload = $_FILES['mailconcept'] ?? null;
     if ($conceptBestand === null && (!is_array($upload) || ($upload['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK)) {
-        $melding = 'Kies een geldig JSON-bestand om te laden.';
+        $melding = 'Er is geen opgeslagen mailconcept gevonden en er is geen JSON-bestand gekozen.';
     } elseif ($conceptBestand === null && ($upload['size'] ?? 0) > 2 * 1024 * 1024) {
         $melding = 'Het JSON-bestand mag maximaal 2 MB groot zijn.';
     } else {
@@ -43,8 +50,8 @@ if ($actie === 'json_laden') {
             $_POST['doelgroep'] = $concept['doelgroep'] ?? 'toegelaten';
             $_POST['onderwerp'] = $concept['onderwerp'];
             $_POST['bericht'] = $concept['bericht'];
-            $melding = $geladenUitDatummap
-                ? 'Het mailconcept uit de datummap is geladen.'
+            $melding = $geladenVanServer
+                ? 'Het meest recente serverconcept is geladen.'
                 : 'Het mailconcept is geladen.';
         } catch (Throwable $e) {
             $melding = 'Mailconcept niet geladen: ' . $e->getMessage();
@@ -160,11 +167,19 @@ if ($actie === 'json_opslaan') {
             $bestandsOnderwerp = trim($bestandsOnderwerp, '-');
             $bestandsOnderwerp = substr($bestandsOnderwerp !== '' ? $bestandsOnderwerp : 'zonder-onderwerp', 0, 80);
             $bestandsnaam = 'mozart-mailconcept-' . $bestandsOnderwerp . '-' . date('Ymd-His') . '.json';
-            $conceptBestand = dirname(__DIR__) . '/JSON/' . $bestandsnaam;
+            $conceptMap = dirname(__DIR__) . '/JSON';
+            if ($doelgroep === 'toegelaten') {
+                $conceptMap = dirname(__DIR__) . '/' . $gekozenActiviteit['datum'];
+            }
+            if (!is_dir($conceptMap) && !mkdir($conceptMap, 0775, true) && !is_dir($conceptMap)) {
+                throw new RuntimeException('De conceptmap kon niet worden aangemaakt.');
+            }
+            $conceptBestand = $conceptMap . '/' . $bestandsnaam;
             if (file_put_contents($conceptBestand, $inhoud . PHP_EOL, LOCK_EX) === false) {
                 throw new RuntimeException('Het concept kon niet op de server worden opgeslagen.');
             }
-            $melding = 'Mailconcept opgeslagen in JSON/' . $bestandsnaam . '.';
+            $relatiefPad = $doelgroep === 'toegelaten' ? $gekozenActiviteit['datum'] . '/' . $bestandsnaam : 'JSON/' . $bestandsnaam;
+            $melding = 'Mailconcept opgeslagen in ' . $relatiefPad . '.';
         } catch (Throwable $e) {
             $melding = 'Mailconcept niet opgeslagen: ' . $e->getMessage();
         }
