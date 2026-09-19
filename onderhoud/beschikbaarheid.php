@@ -240,6 +240,13 @@ if (($_POST['actie'] ?? '') === 'mailteksten_opslaan') {
         if (file_put_contents($mailtekstenBestand, $json . PHP_EOL, LOCK_EX) === false) {
             throw new RuntimeException('JSON/' . $mailtekstenBestandsnaam . ' kon niet worden geschreven.');
         }
+        $backupBestanden = glob($mailtekstenMap . '/mailteksten-backup-*.json') ?: [];
+        usort($backupBestanden, static fn (string $eersteBestand, string $tweedeBestand): int => strnatcmp(basename($tweedeBestand), basename($eersteBestand)));
+        foreach (array_slice($backupBestanden, 3) as $oudBackupBestand) {
+            if (!unlink($oudBackupBestand)) {
+                throw new RuntimeException('Oude backup ' . basename($oudBackupBestand) . ' kon niet worden verwijderd.');
+            }
+        }
         $mailtekstenOpslaanGelukt = true;
         clearstatcache(true, $mailtekstenBestand);
         $mailtekstenGewijzigdOp = (new DateTimeImmutable('@' . filemtime($mailtekstenBestand)))->setTimezone(new DateTimeZone('Europe/Amsterdam'))->format('d-m-Y H:i:s');
