@@ -311,8 +311,13 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
     }
 
     if ($actie === 'status_opslaan') {
-        $stmt = $pdo->prepare('UPDATE activiteit_deelnemers SET instrument_id = ?, partij = ?, status = ? WHERE activiteit_id = ? AND deelnemer_id = ?');
-        $stmt->execute([$instrumentId, $partij, $status, $activiteitId, $deelnemerId]);
+        if ($status === 'nee') {
+            $stmt = $pdo->prepare('UPDATE activiteit_deelnemers SET instrument_id = ?, partij = ?, status = ?, toegelaten = 0 WHERE activiteit_id = ? AND deelnemer_id = ?');
+            $stmt->execute([$instrumentId, $partij, $status, $activiteitId, $deelnemerId]);
+        } else {
+            $stmt = $pdo->prepare('UPDATE activiteit_deelnemers SET instrument_id = ?, partij = ?, status = ? WHERE activiteit_id = ? AND deelnemer_id = ?');
+            $stmt->execute([$instrumentId, $partij, $status, $activiteitId, $deelnemerId]);
+        }
         $melding = 'Status van deelnemer opgeslagen.';
     } elseif ($actie === 'toelating_intrekken') {
         $stmt = $pdo->prepare('UPDATE activiteit_deelnemers SET instrument_id = ?, partij = ?, status = ?, toegelaten = NULL WHERE activiteit_id = ? AND deelnemer_id = ?');
