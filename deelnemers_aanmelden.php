@@ -119,6 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $telefoon = trim($_POST['telefoon'] ?? '');
         $postcode = trim($_POST['postcode'] ?? '');
         $plaats = trim($_POST['plaats'] ?? '');
+        $muzikaleErvaring = trim($_POST['muzikale_ervaring'] ?? '');
         $opDeHoogteHouden = $_POST['op_de_hoogte_houden'] ?? '';
         $instrumenten_gekozen = array_filter($_POST['instrumenten'] ?? []);
 
@@ -134,6 +135,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception('Geef aan of je op de hoogte gehouden wilt worden.');
         }
 
+        if (mb_strlen($muzikaleErvaring) > 500) {
+            throw new Exception('Muzikale ervaring mag maximaal 500 tekens bevatten.');
+        }
+
         // Zoek bestaande deelnemer
         $stmt = $pdo->prepare('SELECT id FROM deelnemers WHERE email = ?');
         $stmt->execute([$email]);
@@ -142,12 +147,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($bestaande) {
             $deelnemerId = (int) $bestaande['id'];
             // Update bestaande deelnemer
-            $stmt = $pdo->prepare('UPDATE deelnemers SET voornaam = ?, achternaam = ?, telefoon = ?, postcode = ?, plaats = ?, op_de_hoogte_houden = ? WHERE id = ?');
-            $stmt->execute([$voornaam, $achternaam, $telefoon, $postcode, $plaats, (int) $opDeHoogteHouden, $deelnemerId]);
+            $stmt = $pdo->prepare('UPDATE deelnemers SET voornaam = ?, achternaam = ?, telefoon = ?, postcode = ?, plaats = ?, muzikale_ervaring = ?, op_de_hoogte_houden = ? WHERE id = ?');
+            $stmt->execute([$voornaam, $achternaam, $telefoon, $postcode, $plaats, $muzikaleErvaring, (int) $opDeHoogteHouden, $deelnemerId]);
         } else {
             // Maak nieuwe deelnemer
-            $stmt = $pdo->prepare('INSERT INTO deelnemers (voornaam, achternaam, email, telefoon, postcode, plaats, op_de_hoogte_houden) VALUES (?, ?, ?, ?, ?, ?, ?)');
-            $stmt->execute([$voornaam, $achternaam, $email, $telefoon, $postcode, $plaats, (int) $opDeHoogteHouden]);
+            $stmt = $pdo->prepare('INSERT INTO deelnemers (voornaam, achternaam, email, telefoon, postcode, plaats, muzikale_ervaring, op_de_hoogte_houden) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
+            $stmt->execute([$voornaam, $achternaam, $email, $telefoon, $postcode, $plaats, $muzikaleErvaring, (int) $opDeHoogteHouden]);
             $deelnemerId = (int) $pdo->lastInsertId();
         }
 
@@ -251,7 +256,7 @@ $geselecteerde_instrumenten = [];
 $activiteit_statussen = [];
 
 if (!empty($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)) {
-    $stmt = $pdo->prepare('SELECT id, voornaam, achternaam, email, telefoon, postcode, plaats, op_de_hoogte_houden FROM deelnemers WHERE email = ?');
+    $stmt = $pdo->prepare('SELECT id, voornaam, achternaam, email, telefoon, postcode, plaats, muzikale_ervaring, op_de_hoogte_houden FROM deelnemers WHERE email = ?');
     $stmt->execute([$_GET['email']]);
     $gegevens = $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
 
@@ -393,6 +398,11 @@ if (!empty($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL))
                             <label for="instr_<?= (int) $instrument['id'] ?>" style="margin: 0; font-weight: normal;"><?= htmlspecialchars($instrument['naam']) ?></label>
                         </div>
                     <?php endforeach; ?>
+                </div>
+                <div class="form-group" style="margin-top:1.5em">
+                    <label for="muzikale_ervaring">Muzikale ervaring</label>
+                    <p style="margin:0 0 0.5em 0; font-size:0.9em; color:#666">Omschrijf je niveau: in welk orkest speel je, heb je les, met welke stukken ben je bezig? <em>*NB. alleen nodig voor mensen die niet eerder met La Pellegrina cursussen of orkestprojecten van Dirkjan Horringa hebben meegedaan</em></p>
+                    <textarea id="muzikale_ervaring" name="muzikale_ervaring" maxlength="500" rows="5"><?= htmlspecialchars($gegevens['muzikale_ervaring'] ?? '') ?></textarea>
                 </div>
             </div>
 
