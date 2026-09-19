@@ -111,6 +111,31 @@ $statusPerDeelnemer = [];
 foreach ($pdo->query('SELECT activiteit_id, deelnemer_id, status FROM activiteit_deelnemers') as $rij) {
     $statusPerDeelnemer[$rij['deelnemer_id']][$rij['activiteit_id']] = $rij['status'];
 }
+$instrumentNaamPerId = array_column($instrumenten, 'naam', 'id');
+$instrumentFamilies = [
+    'strijkers' => ['viool', 'altviool', 'cello', 'contrabas'],
+    'houtblazers' => ['dwarsfluit', 'piccolo', 'hobo', 'engelse hoorn', 'klarinet', 'basklarinet', 'fagot', 'contrafagot'],
+    'koperblazers' => ['trompet', 'hoorn', 'trombone', 'tuba'],
+];
+$deelnemerTellingen = ['strijkers' => 0, 'houtblazers' => 0, 'koperblazers' => 0, 'overig' => 0];
+foreach ($deelnemers as $deelnemer) {
+    $familiesVanDeelnemer = [];
+    foreach ($instrumentenPerDeelnemer[$deelnemer['id']] ?? [] as $instrumentId) {
+        $instrumentNaam = strtolower(trim($instrumentNaamPerId[$instrumentId] ?? ''));
+        foreach ($instrumentFamilies as $familie => $instrumentNamen) {
+            if (in_array($instrumentNaam, $instrumentNamen, true)) {
+                $familiesVanDeelnemer[$familie] = true;
+            }
+        }
+    }
+    if ($familiesVanDeelnemer === []) {
+        $deelnemerTellingen['overig']++;
+    } else {
+        foreach (array_keys($familiesVanDeelnemer) as $familie) {
+            $deelnemerTellingen[$familie]++;
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="nl">
@@ -226,6 +251,8 @@ foreach ($pdo->query('SELECT activiteit_id, deelnemer_id, status FROM activiteit
         <?php if ($melding !== ''): ?>
             <p class="w3-panel w3-pale-green w3-leftbar w3-border-green"><?= htmlspecialchars($melding) ?></p>
         <?php endif; ?>
+
+        <p><strong><?= count($deelnemers) ?> deelnemers</strong> | Strijkers: <?= $deelnemerTellingen['strijkers'] ?> | Houtblazers: <?= $deelnemerTellingen['houtblazers'] ?> | Koperblazers: <?= $deelnemerTellingen['koperblazers'] ?> | Overig: <?= $deelnemerTellingen['overig'] ?></p>
 
         <button id="details-knop" type="button" class="w3-button w3-blue w3-margin-bottom" onclick="toggleDetails()">E-mail / telefoon / plaats / voorkeur tonen</button>
 
