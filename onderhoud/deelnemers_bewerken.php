@@ -55,7 +55,7 @@ if (isset($_POST['actie']) && $_POST['actie'] === 'opslaan') {
     } else {
         if ($id > 0) {
             $stmt = $pdo->prepare(
-                'UPDATE deelnemers SET voornaam = ?, achternaam = ?, email = ?, telefoon = ?, plaats = ? WHERE id = ?'
+                'UPDATE deelnemers SET voornaam = ?, achternaam = ?, email = ?, telefoon = ?, plaats = ?, nieuw_of_gewijzigd = 0 WHERE id = ?'
             );
             $stmt->execute([$voornaam, $achternaam, $email, $telefoon, $plaats, $id]);
         } else {
@@ -280,6 +280,7 @@ foreach ($deelnemers as $deelnemer) {
                                 <div class="naam-velden">
                                     <input class="w3-input" type="text" name="voornaam" value="<?= htmlspecialchars($deelnemer['voornaam']) ?>" placeholder="Voornaam" required>
                                     <input class="w3-input" type="text" name="achternaam" value="<?= htmlspecialchars($deelnemer['achternaam']) ?>" placeholder="Achternaam" required>
+                                    <?php if ((int) ($deelnemer['nieuw_of_gewijzigd'] ?? 0) === 1): ?><span class="nieuwe-deelnemer-markering" title="Nieuwe of gewijzigde aanmelding; verdwijnt na opslaan" aria-label="Nieuwe of gewijzigde aanmelding">&#9752;</span><?php endif; ?>
                                 </div>
                             </td>
                             <td class="kolom-details" hidden><input class="w3-input" type="email" name="email" value="<?= htmlspecialchars($deelnemer['email']) ?>" style="min-width:14em;" required></td>

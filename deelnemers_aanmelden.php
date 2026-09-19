@@ -174,11 +174,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($bestaande) {
             $deelnemerId = (int) $bestaande['id'];
             // Update bestaande deelnemer
-            $stmt = $pdo->prepare('UPDATE deelnemers SET voornaam = ?, achternaam = ?, telefoon = ?, postcode = ?, plaats = ?, muzikale_ervaring = ?, op_de_hoogte_houden = ? WHERE id = ?');
+            $stmt = $pdo->prepare('UPDATE deelnemers SET voornaam = ?, achternaam = ?, telefoon = ?, postcode = ?, plaats = ?, muzikale_ervaring = ?, op_de_hoogte_houden = ?, nieuw_of_gewijzigd = 1 WHERE id = ?');
             $stmt->execute([$voornaam, $achternaam, $telefoon, $postcode, $plaats, $muzikaleErvaring, (int) $opDeHoogteHouden, $deelnemerId]);
         } else {
             // Maak nieuwe deelnemer
-            $stmt = $pdo->prepare('INSERT INTO deelnemers (voornaam, achternaam, email, telefoon, postcode, plaats, muzikale_ervaring, op_de_hoogte_houden) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
+            $stmt = $pdo->prepare('INSERT INTO deelnemers (voornaam, achternaam, email, telefoon, postcode, plaats, muzikale_ervaring, op_de_hoogte_houden, nieuw_of_gewijzigd) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)');
             $stmt->execute([$voornaam, $achternaam, $email, $telefoon, $postcode, $plaats, $muzikaleErvaring, (int) $opDeHoogteHouden]);
             $deelnemerId = (int) $pdo->lastInsertId();
         }
