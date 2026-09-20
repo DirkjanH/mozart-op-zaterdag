@@ -198,6 +198,38 @@ foreach ($deelnemers as $deelnemer) {
         .kolom-details[hidden] {
             display: none !important;
         }
+
+        @media (max-width: 600px) {
+            .tabel-scroll {
+                overflow-x: auto;
+            }
+
+            .tabel-scroll table {
+                min-width: max-content;
+            }
+
+            .tabel-scroll td:first-child,
+            .tabel-scroll th:first-child {
+                min-width: 10em !important;
+                width: 10em;
+            }
+
+            .tabel-scroll .datum-kolom {
+                min-width: calc(100vw - 15.2em);
+                width: calc(100vw - 15.2em);
+            }
+
+            .tabel-scroll .actie-kolom {
+                position: sticky;
+                right: 0;
+                z-index: 2;
+                background: white;
+            }
+
+            .tabel-scroll th.actie-kolom {
+                z-index: 3;
+            }
+        }
     </style>
     <script>
         function toggleDetails() {
@@ -271,7 +303,7 @@ foreach ($deelnemers as $deelnemer) {
                     <th>Instrumenten</th>
                     <th class="kolom-details" hidden>Voorkeur</th>
                     <?php foreach ($activiteiten as $activiteit): ?>
-                        <th><?= htmlspecialchars(date('d-m-Y', strtotime($activiteit['datum']))) ?></th>
+                        <th class="datum-kolom"><?= htmlspecialchars(date('d-m-Y', strtotime($activiteit['datum']))) ?></th>
                     <?php endforeach; ?>
                         <th class="actie-kolom"></th>
                 </tr>
@@ -302,7 +334,7 @@ foreach ($deelnemers as $deelnemer) {
                             </td>
                             <td class="kolom-details" hidden><input class="w3-input" type="text" name="voorkeuren" value="<?= htmlspecialchars($voorkeurenPerDeelnemer[$deelnemer['id']] ?? '') ?>" style="min-width:12em;"></td>
                             <?php foreach ($activiteiten as $activiteit): ?>
-                                <td>
+                                <td class="datum-kolom">
                                     <select class="w3-select" name="status_<?= (int) $activiteit['id'] ?>">
                                         <?php foreach ($statussen as $waarde => $label): ?>
                                             <option value="<?= $waarde ?>" <?= ($statusPerDeelnemer[$deelnemer['id']][$activiteit['id']] ?? '') === $waarde ? 'selected' : '' ?>>
@@ -341,7 +373,7 @@ foreach ($deelnemers as $deelnemer) {
                         </td>
                         <td class="kolom-details" hidden><input class="w3-input" type="text" name="voorkeuren" style="min-width:12em;"></td>
                         <?php foreach ($activiteiten as $activiteit): ?>
-                            <td>
+                            <td class="datum-kolom">
                                 <select class="w3-select" name="status_<?= (int) $activiteit['id'] ?>">
                                     <?php foreach ($statussen as $waarde => $label): ?>
                                         <option value="<?= $waarde ?>"><?= htmlspecialchars($label) ?></option>
