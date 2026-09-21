@@ -29,6 +29,14 @@ if (isset($_POST['actie']) && $_POST['actie'] === 'verwijderen' && isset($_POST[
     $melding = 'Activiteit verwijderd.';
 }
 
+// Activiteit blijft bestaan; alleen de gekoppelde werken (en de daaruit opgebouwde omschrijving) vervallen.
+if (isset($_POST['actie']) && $_POST['actie'] === 'wissen_werken' && isset($_POST['id'])) {
+    $id = (int) $_POST['id'];
+    $pdo->prepare('DELETE FROM activiteit_werken WHERE activiteit_id = ?')->execute([$id]);
+    $pdo->prepare('UPDATE activiteiten SET omschrijving = NULL WHERE id = ?')->execute([$id]);
+    $melding = 'Gekozen werken gewist.';
+}
+
 // Toevoegen of bewerken
 if (isset($_POST['actie']) && $_POST['actie'] === 'opslaan') {
     $datum = trim($_POST['datum'] ?? '');
@@ -182,7 +190,7 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
         }
 
         .actie-kolom {
-            min-width: 7em;
+            min-width: 10.5em;
             white-space: nowrap;
         }
     </style>
@@ -226,7 +234,8 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
                             <td><input class="w3-input" type="text" name="gewenste_bezetting" value="<?= htmlspecialchars($activiteit['gewenste_bezetting'] ?? '') ?>" placeholder="0201-2000-timp-66442" maxlength="100" style="min-width:18em;"></td>
                             <td class="actie-kolom">
                                 <button class="w3-button w3-blue actie-knop" type="submit" title="Activiteit opslaan" aria-label="Activiteit opslaan">&#10003;</button>
-                                <button class="w3-button w3-red actie-knop" type="submit" name="actie" value="verwijderen" formnovalidate title="Activiteit wissen" aria-label="Activiteit wissen" onclick="return confirm('Deze activiteit echt verwijderen?');">&#10005;</button>
+                                <button class="w3-button w3-orange actie-knop" type="submit" name="actie" value="wissen_werken" formnovalidate title="Gekozen werken wissen" aria-label="Gekozen werken wissen" onclick="return confirm('De gekozen werken van deze activiteit wissen? De activiteit zelf blijft bestaan.');">&#8635;</button>
+                                <button class="w3-button w3-red actie-knop" type="submit" name="actie" value="verwijderen" formnovalidate title="Activiteit verwijderen" aria-label="Activiteit verwijderen" onclick="return confirm('Deze activiteit echt verwijderen?');">&#10005;</button>
                             </td>
                         </tr>
                     </form>
