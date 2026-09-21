@@ -199,35 +199,54 @@ foreach ($deelnemers as $deelnemer) {
             display: none !important;
         }
 
+        .mobiel-lijst {
+            display: none;
+        }
+
+        .deelnemer-kaart {
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-bottom: 0.5em;
+            padding: 0.5em 0.75em;
+            background: white;
+        }
+
+        .deelnemer-kaart summary {
+            font-weight: bold;
+            cursor: pointer;
+            padding: 0.4em 0;
+        }
+
+        .deelnemer-kaart form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6em;
+            margin-top: 0.5em;
+        }
+
+        .deelnemer-kaart label {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2em;
+            font-size: 0.85em;
+        }
+
+        .kaart-knoppen {
+            display: flex;
+            gap: 0.5em;
+        }
+
         @media (max-width: 600px) {
             .tabel-scroll {
-                overflow-x: auto;
+                display: none;
             }
 
-            .tabel-scroll table {
-                min-width: max-content;
+            .mobiel-lijst {
+                display: block;
             }
 
-            .tabel-scroll td:first-child,
-            .tabel-scroll th:first-child {
-                min-width: 10em !important;
-                width: 10em;
-            }
-
-            .tabel-scroll .datum-kolom {
-                min-width: calc(100vw - 15.2em);
-                width: calc(100vw - 15.2em);
-            }
-
-            .tabel-scroll .actie-kolom {
-                position: sticky;
-                right: 0;
-                z-index: 2;
-                background: white;
-            }
-
-            .tabel-scroll th.actie-kolom {
-                z-index: 3;
+            #details-knop {
+                display: none;
             }
         }
     </style>
@@ -303,7 +322,7 @@ foreach ($deelnemers as $deelnemer) {
                     <th>Instrumenten</th>
                     <th class="kolom-details" hidden>Voorkeur</th>
                     <?php foreach ($activiteiten as $activiteit): ?>
-                        <th class="datum-kolom"><?= htmlspecialchars(date('d-m-Y', strtotime($activiteit['datum']))) ?></th>
+                        <th><?= htmlspecialchars(date('d-m-Y', strtotime($activiteit['datum']))) ?></th>
                     <?php endforeach; ?>
                         <th class="actie-kolom"></th>
                 </tr>
@@ -334,7 +353,7 @@ foreach ($deelnemers as $deelnemer) {
                             </td>
                             <td class="kolom-details" hidden><input class="w3-input" type="text" name="voorkeuren" value="<?= htmlspecialchars($voorkeurenPerDeelnemer[$deelnemer['id']] ?? '') ?>" style="min-width:12em;"></td>
                             <?php foreach ($activiteiten as $activiteit): ?>
-                                <td class="datum-kolom">
+                                <td>
                                     <select class="w3-select" name="status_<?= (int) $activiteit['id'] ?>">
                                         <?php foreach ($statussen as $waarde => $label): ?>
                                             <option value="<?= $waarde ?>" <?= ($statusPerDeelnemer[$deelnemer['id']][$activiteit['id']] ?? '') === $waarde ? 'selected' : '' ?>>
@@ -373,7 +392,7 @@ foreach ($deelnemers as $deelnemer) {
                         </td>
                         <td class="kolom-details" hidden><input class="w3-input" type="text" name="voorkeuren" style="min-width:12em;"></td>
                         <?php foreach ($activiteiten as $activiteit): ?>
-                            <td class="datum-kolom">
+                            <td>
                                 <select class="w3-select" name="status_<?= (int) $activiteit['id'] ?>">
                                     <?php foreach ($statussen as $waarde => $label): ?>
                                         <option value="<?= $waarde ?>"><?= htmlspecialchars($label) ?></option>
@@ -385,6 +404,82 @@ foreach ($deelnemers as $deelnemer) {
                     </tr>
                 </form>
             </table>
+        </div>
+
+        <div class="mobiel-lijst">
+            <?php foreach ($deelnemers as $deelnemer): ?>
+                <?php $gekozenInstrumenten = $instrumentenPerDeelnemer[$deelnemer['id']] ?? []; ?>
+                <details class="deelnemer-kaart">
+                    <summary>
+                        <?= htmlspecialchars($deelnemer['voornaam'] . ' ' . $deelnemer['achternaam']) ?>
+                        <?php if (in_array((int) $deelnemer['id'], $gemarkeerdeDeelnemerIds, true)): ?><span class="nieuwe-deelnemer-markering" title="Nieuwe of gewijzigde aanmelding; verdwijnt na opslaan" aria-label="Nieuwe of gewijzigde aanmelding" style="color:#198754;">&#9752;</span><?php endif; ?>
+                    </summary>
+                    <form method="post" onsubmit="return bevestigVerwijderen(event);">
+                        <input type="hidden" name="actie" value="opslaan">
+                        <input type="hidden" name="id" value="<?= (int) $deelnemer['id'] ?>">
+                        <label>Voornaam <input class="w3-input" type="text" name="voornaam" value="<?= htmlspecialchars($deelnemer['voornaam']) ?>" required></label>
+                        <label>Achternaam <input class="w3-input" type="text" name="achternaam" value="<?= htmlspecialchars($deelnemer['achternaam']) ?>" required></label>
+                        <label>E-mail <input class="w3-input" type="email" name="email" value="<?= htmlspecialchars($deelnemer['email']) ?>" required></label>
+                        <label>Telefoon <input class="w3-input" type="text" name="telefoon" value="<?= htmlspecialchars($deelnemer['telefoon'] ?? '') ?>"></label>
+                        <label>Plaats <input class="w3-input" type="text" name="plaats" value="<?= htmlspecialchars($deelnemer['plaats'] ?? '') ?>"></label>
+                        <label>Instrumenten
+                            <select class="w3-select" name="instrumenten[]" multiple size="6">
+                                <?php foreach ($instrumenten as $instrument): ?>
+                                    <option value="<?= (int) $instrument['id'] ?>" <?= in_array((int) $instrument['id'], $gekozenInstrumenten, true) ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($instrument['naam']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </label>
+                        <label>Voorkeur <input class="w3-input" type="text" name="voorkeuren" value="<?= htmlspecialchars($voorkeurenPerDeelnemer[$deelnemer['id']] ?? '') ?>"></label>
+                        <?php foreach ($activiteiten as $activiteit): ?>
+                            <label><?= htmlspecialchars(date('d-m-Y', strtotime($activiteit['datum']))) ?>
+                                <select class="w3-select" name="status_<?= (int) $activiteit['id'] ?>">
+                                    <?php foreach ($statussen as $waarde => $label): ?>
+                                        <option value="<?= $waarde ?>" <?= ($statusPerDeelnemer[$deelnemer['id']][$activiteit['id']] ?? '') === $waarde ? 'selected' : '' ?>>
+                                            <?= htmlspecialchars($label) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </label>
+                        <?php endforeach; ?>
+                        <div class="kaart-knoppen">
+                            <button class="w3-button w3-blue" type="submit" title="Deelnemer opslaan">Opslaan</button>
+                            <button class="w3-button w3-red" type="submit" name="actie" value="verwijderen" formnovalidate title="Deelnemer verwijderen">Verwijderen</button>
+                        </div>
+                    </form>
+                </details>
+            <?php endforeach; ?>
+
+            <details class="deelnemer-kaart">
+                <summary>Nieuwe deelnemer toevoegen</summary>
+                <form method="post">
+                    <input type="hidden" name="actie" value="opslaan">
+                    <label>Voornaam <input class="w3-input" type="text" name="voornaam" required></label>
+                    <label>Achternaam <input class="w3-input" type="text" name="achternaam" required></label>
+                    <label>E-mail <input class="w3-input" type="email" name="email" required></label>
+                    <label>Telefoon <input class="w3-input" type="text" name="telefoon"></label>
+                    <label>Plaats <input class="w3-input" type="text" name="plaats"></label>
+                    <label>Instrumenten
+                        <select class="w3-select" name="instrumenten[]" multiple size="6">
+                            <?php foreach ($instrumenten as $instrument): ?>
+                                <option value="<?= (int) $instrument['id'] ?>"><?= htmlspecialchars($instrument['naam']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </label>
+                    <label>Voorkeur <input class="w3-input" type="text" name="voorkeuren"></label>
+                    <?php foreach ($activiteiten as $activiteit): ?>
+                        <label><?= htmlspecialchars(date('d-m-Y', strtotime($activiteit['datum']))) ?>
+                            <select class="w3-select" name="status_<?= (int) $activiteit['id'] ?>">
+                                <?php foreach ($statussen as $waarde => $label): ?>
+                                    <option value="<?= $waarde ?>"><?= htmlspecialchars($label) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </label>
+                    <?php endforeach; ?>
+                    <button class="w3-button w3-blue" type="submit">Toevoegen</button>
+                </form>
+            </details>
         </div>
     </div>
 </body>
