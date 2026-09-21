@@ -123,6 +123,7 @@ $instrumentFamilies = [
     'koperblazers' => ['trompet', 'hoorn', 'trombone', 'tuba'],
 ];
 $deelnemerTellingen = ['strijkers' => 0, 'houtblazers' => 0, 'koperblazers' => 0, 'overig' => 0];
+$familiesPerDeelnemer = [];
 foreach ($deelnemers as $deelnemer) {
     $familiesVanDeelnemer = [];
     foreach ($instrumentenPerDeelnemer[$deelnemer['id']] ?? [] as $instrumentId) {
@@ -135,10 +136,12 @@ foreach ($deelnemers as $deelnemer) {
     }
     if ($familiesVanDeelnemer === []) {
         $deelnemerTellingen['overig']++;
+        $familiesPerDeelnemer[$deelnemer['id']] = ['overig'];
     } else {
         foreach (array_keys($familiesVanDeelnemer) as $familie) {
             $deelnemerTellingen[$familie]++;
         }
+        $familiesPerDeelnemer[$deelnemer['id']] = array_keys($familiesVanDeelnemer);
     }
 }
 ?>
@@ -270,6 +273,18 @@ foreach ($deelnemers as $deelnemer) {
             return true;
         }
 
+        function filterDeelnemers() {
+            var keuze = document.querySelector('#familie-filter').value;
+            document.querySelectorAll('[data-families]').forEach(function (element) {
+                if (keuze === 'alles') {
+                    element.style.display = '';
+                    return;
+                }
+                var families = element.getAttribute('data-families').split(' ');
+                element.style.display = families.indexOf(keuze) !== -1 ? '' : 'none';
+            });
+        }
+
         // Onthoud de scrollpositie zodat je na opslaan/verwijderen terugkomt waar je bezig was.
         (function () {
             var scrollSleutel = 'onderhoud-scroll-' + window.location.pathname;
@@ -310,6 +325,17 @@ foreach ($deelnemers as $deelnemer) {
 
         <p><strong><?= count($deelnemers) ?> deelnemers</strong> | Strijkers: <?= $deelnemerTellingen['strijkers'] ?> | Houtblazers: <?= $deelnemerTellingen['houtblazers'] ?> | Koperblazers: <?= $deelnemerTellingen['koperblazers'] ?> | Overig: <?= $deelnemerTellingen['overig'] ?></p>
 
+        <p>
+            <label for="familie-filter"><strong>Tonen:</strong></label>
+            <select id="familie-filter" class="w3-select" style="width:auto;display:inline-block;" onchange="filterDeelnemers()">
+                <option value="alles">Alles</option>
+                <option value="strijkers">Strijkers</option>
+                <option value="houtblazers">Hout</option>
+                <option value="koperblazers">Koper</option>
+                <option value="overig">Overig</option>
+            </select>
+        </p>
+
         <button id="details-knop" type="button" class="w3-button w3-blue w3-margin-bottom" onclick="toggleDetails()">E-mail / telefoon / plaats / voorkeur tonen</button>
 
         <div class="tabel-scroll">
@@ -331,7 +357,7 @@ foreach ($deelnemers as $deelnemer) {
                     <form method="post" onsubmit="return bevestigVerwijderen(event);">
                         <input type="hidden" name="actie" value="opslaan">
                         <input type="hidden" name="id" value="<?= (int) $deelnemer['id'] ?>">
-                        <tr>
+                        <tr data-families="<?= htmlspecialchars(implode(' ', $familiesPerDeelnemer[$deelnemer['id']])) ?>">
                             <td style="min-width:20em;">
                                 <div class="naam-velden">
                                     <input class="w3-input" type="text" name="voornaam" value="<?= htmlspecialchars($deelnemer['voornaam']) ?>" placeholder="Voornaam" required>
@@ -409,7 +435,7 @@ foreach ($deelnemers as $deelnemer) {
         <div class="mobiel-lijst">
             <?php foreach ($deelnemers as $deelnemer): ?>
                 <?php $gekozenInstrumenten = $instrumentenPerDeelnemer[$deelnemer['id']] ?? []; ?>
-                <details class="deelnemer-kaart">
+                <details class="deelnemer-kaart" data-families="<?= htmlspecialchars(implode(' ', $familiesPerDeelnemer[$deelnemer['id']])) ?>">
                     <summary>
                         <?= htmlspecialchars($deelnemer['voornaam'] . ' ' . $deelnemer['achternaam']) ?>
                         <?php if (in_array((int) $deelnemer['id'], $gemarkeerdeDeelnemerIds, true)): ?><span class="nieuwe-deelnemer-markering" title="Nieuwe of gewijzigde aanmelding; verdwijnt na opslaan" aria-label="Nieuwe of gewijzigde aanmelding" style="color:#198754;">&#9752;</span><?php endif; ?>
