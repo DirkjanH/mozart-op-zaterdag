@@ -382,9 +382,6 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
                 } else {
                     $ontvangerEmail = $speler['email'];
                     $mailer->addAddress($ontvangerEmail, trim($speler['voornaam'] . ' ' . $speler['achternaam']));
-                    if (strcasecmp($speler['email'], 'dirkjan@pellegrina.net') !== 0) {
-                        $mailer->addCC('dirkjan@pellegrina.net', 'Dirkjan Horringa');
-                    }
                 }
                 $mailer->isHTML(true);
                 $onderwerpWaarde = $_POST['mail_' . $mailtype . '_onderwerp'] ?? '';
@@ -411,6 +408,8 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
                 };
                 $mailTekst = $ingevuldeMail ?: $standaardTekstVoorType;
                 $mailOnderwerp = $ingevuldOnderwerp ?: $standaardOnderwerpVoorType;
+                $mailTekstRuw = $mailTekst;
+                $mailOnderwerpRuw = $mailOnderwerp;
                 $plaats = match ($speler['plaats']) {
                     'Marnixzaal' => 'de Marnixzaal aan het Domplein',
                     'Stadsklooster' => 'het Stadsklooster',
@@ -420,6 +419,13 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
                 $activiteitUrl = 'https://mozartopzaterdag.nl/' . date('Y-m-d', strtotime($speler['datum'])) . '/';
                 $invoegcodes = ['{{voornaam}}', '{{achternaam}}', '{{datum}}', '{{plaats}}', '{{instrument}}', '{{partij_tekst}}', '{{omschrijving}}', '{{aanmeldlink}}', '{{activiteit_url}}', '{voornaam}', '{achternaam}', '{datum}', '{plaats}', '{instrument}', '{partij}'];
                 $invoegwaarden = [$naam, htmlspecialchars($speler['achternaam'], ENT_QUOTES, 'UTF-8'), $datum, htmlspecialchars($plaats, ENT_QUOTES, 'UTF-8'), htmlspecialchars($speler['instrument'] ?? '', ENT_QUOTES, 'UTF-8'), $partijTekst, htmlspecialchars($speler['omschrijving'] ?? '', ENT_QUOTES, 'UTF-8'), $aanmeldlink, $activiteitUrl, $naam, htmlspecialchars($speler['achternaam'], ENT_QUOTES, 'UTF-8'), $datum, htmlspecialchars($plaats, ENT_QUOTES, 'UTF-8'), htmlspecialchars($speler['instrument'] ?? '', ENT_QUOTES, 'UTF-8'), $partij];
+                // Kopie voor Dirkjan: alleen de aanhef ingevuld ('Beste ...'), overige velden blanco.
+                $invoegwaardenGeneriek = array_map(
+                    static fn (string $code): string => in_array($code, ['{{voornaam}}', '{voornaam}'], true) ? '...' : '',
+                    $invoegcodes
+                );
+                $mailTekstGeneriek = str_replace($invoegcodes, $invoegwaardenGeneriek, $mailTekstRuw);
+                $mailOnderwerpGeneriek = str_replace($invoegcodes, $invoegwaardenGeneriek, $mailOnderwerpRuw);
                 $mailTekst = str_replace($invoegcodes, $invoegwaarden, $mailTekst);
                 $mailOnderwerp = str_replace($invoegcodes, $invoegwaarden, $mailOnderwerp);
                 $mailer->Subject = ($testModus ? '[TEST] ' : '') . html_entity_decode(strip_tags($mailOnderwerp), ENT_QUOTES, 'UTF-8');
@@ -431,6 +437,15 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
                     throw new RuntimeException('Aan ' . $ontvangerEmail . ' is in de afgelopen vijf minuten al een mail verzonden.');
                 }
                 $mailer->send();
+                if (!$testModus && strcasecmp($speler['email'], 'dirkjan@pellegrina.net') !== 0) {
+                    $mailer->clearAddresses();
+                    $mailer->clearAttachments();
+                    $mailer->addAddress('dirkjan@pellegrina.net', 'Dirkjan Horringa');
+                    $mailer->Subject = html_entity_decode(strip_tags($mailOnderwerpGeneriek), ENT_QUOTES, 'UTF-8');
+                    $mailer->Body = $mailTekstGeneriek;
+                    $mailer->AltBody = trim(html_entity_decode(strip_tags($mailTekstGeneriek), ENT_QUOTES, 'UTF-8'));
+                    $mailer->send();
+                }
                 if ($actie === 'afwijzen_met_mail') {
                     $stmt = $pdo->prepare('UPDATE activiteit_deelnemers SET toegelaten = 0 WHERE activiteit_id = ? AND deelnemer_id = ?');
                     $stmt->execute([$activiteitId, $deelnemerId]);
@@ -444,13 +459,13 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
                 if ($testModus) {
                     $melding = 'Testmail alleen naar dirkjan@pellegrina.net verstuurd.';
                 } elseif ($actie === 'toelaten_met_mail') {
-                    $melding = 'Bevestigingsmail verstuurd met CC aan Dirkjan; deelnemer is toegelaten.';
+                    $melding = 'Bevestigingsmail verstuurd met kopie naar Dirkjan; deelnemer is toegelaten.';
                 } elseif ($actie === 'uitnodigen') {
-                    $melding = 'Uitnodiging verstuurd met CC aan Dirkjan; toelating blijft onbeoordeeld.';
+                    $melding = 'Uitnodiging verstuurd met kopie naar Dirkjan; toelating blijft onbeoordeeld.';
                 } elseif ($actie === 'instrument_niet_nodig_met_mail') {
-                    $melding = 'Mail over niet benodigd instrument verstuurd met CC aan Dirkjan; toelating blijft ongewijzigd.';
+                    $melding = 'Mail over niet benodigd instrument verstuurd met kopie naar Dirkjan; toelating blijft ongewijzigd.';
                 } else {
-                    $melding = 'Afwijzingsmail verstuurd met CC aan Dirkjan; deelnemer is afgewezen.';
+                    $melding = 'Afwijzingsmail verstuurd met kopie naar Dirkjan; deelnemer is afgewezen.';
                 }
             } catch (PHPMailer\PHPMailer\Exception $e) {
                 $smtpFout = $mailer instanceof PHPMailer\PHPMailer\PHPMailer ? $mailer->ErrorInfo : implode(' | ', $smtpDebug);
