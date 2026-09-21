@@ -143,6 +143,9 @@ foreach ($deelnemers as $deelnemer) {
         }
         $familiesPerDeelnemer[$deelnemer['id']] = array_keys($familiesVanDeelnemer);
     }
+    if (in_array((int) $deelnemer['id'], $gemarkeerdeDeelnemerIds, true)) {
+        $familiesPerDeelnemer[$deelnemer['id']][] = 'nieuw_gewijzigd';
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -333,6 +336,7 @@ foreach ($deelnemers as $deelnemer) {
                 <option value="houtblazers">Hout</option>
                 <option value="koperblazers">Koper</option>
                 <option value="overig">Overig</option>
+                <option value="nieuw_gewijzigd">&#9752; Nieuw/gewijzigd</option>
             </select>
         </p>
 
