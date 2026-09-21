@@ -26,9 +26,9 @@
             2 hoorns en strijkers. De partijen vind je hieronder. We doen alle
             herhalingen. De tempi worden:</p>
         <ol>
-            <li>Allegro: kwart = 126</li>
+            <li>Allegro: kwart = 120</li>
             <li>Andantino: kwart = ca. 56</li>
-            <li>Rondo Allegro: halve noot = 96</li>
+            <li>Rondo Allegro: halve noot = 88</li>
         </ol>
         <h2>De solisten</h2>
         <h4>Elisa Bartolomé Gómez (fluit)</h4>
