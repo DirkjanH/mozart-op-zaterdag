@@ -433,7 +433,7 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
                 $plainMailTekst = preg_replace('/<a\s+[^>]*href=["\']([^"\']+)["\'][^>]*>(.*?)<\/a>/is', '$2 ($1)', $mailTekst);
                 $mailer->AltBody = trim(html_entity_decode(strip_tags($plainMailTekst), ENT_QUOTES, 'UTF-8'));
                 $trackingToken = bin2hex(random_bytes(32));
-                if (!reserveerMailVerzending($pdo, $trackingToken, $activiteitId, $deelnemerId, $ontvangerEmail)) {
+                if (!$testModus && !reserveerMailVerzending($pdo, $trackingToken, $activiteitId, $deelnemerId, $ontvangerEmail)) {
                     throw new RuntimeException('Aan ' . $ontvangerEmail . ' is in de afgelopen vijf minuten al een mail verzonden.');
                 }
                 $mailer->send();

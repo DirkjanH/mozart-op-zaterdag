@@ -528,10 +528,7 @@ if ($actie === 'test') {
                         $mailer->Subject = '[TEST] ' . $ingevuldOnderwerp;
                         $mailer->Body = sluitLokaleAfbeeldingenIn(vulMailTemplate($bericht, $deelnemer, $gekozenActiviteit), $mailer);
                         $mailer->AltBody = trim(html_entity_decode(strip_tags(str_replace(['</p>', '<br>', '<br/>', '<br />'], "\n", $mailer->Body)), ENT_QUOTES, 'UTF-8'));
-                        $trackingToken = bin2hex(random_bytes(32));
-                        if (!reserveerMailVerzending($pdo, $trackingToken, (int) $gekozenActiviteit['id'], (int) $deelnemer['id'], $ontvangerEmail)) {
-                            throw new RuntimeException('Binnen vijf minuten is al een testmail naar dit adres verzonden.');
-                        }
+                        // Testmails vallen niet onder de vijf-minuten dubbele-verzending-check.
                         $mailer->send();
                         $resultaten[] = ['gelukt' => true, 'naam' => $naam, 'bericht' => $ontvangerEmail];
                     } catch (Throwable $e) {
