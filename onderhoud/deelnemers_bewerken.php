@@ -5,7 +5,7 @@ require_once __DIR__ . '/../connections/MozartopZaterdag.php';
 $pdo->exec('CREATE TABLE IF NOT EXISTS deelnemer_wijzigingen (deelnemer_id INT NOT NULL PRIMARY KEY, gemarkeerd_op DATETIME NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
 
 $statussen = ['' => '(onbekend)', 'ja' => 'ja', 'nee' => 'nee', 'misschien' => 'misschien'];
-$melding = '';
+$melding = isset($_GET['melding']) ? (string) $_GET['melding'] : '';
 
 $activiteiten = $pdo->query(
     'SELECT id, datum, plaats FROM activiteiten WHERE datum >= CURDATE() ORDER BY datum'
@@ -364,6 +364,7 @@ foreach ($deelnemers as $deelnemer) {
                         <tr data-families="<?= htmlspecialchars(implode(' ', $familiesPerDeelnemer[$deelnemer['id']])) ?>">
                             <td style="min-width:20em;">
                                 <div class="naam-velden">
+                                    <a href="deelnemer_bewerken.php?id=<?= (int) $deelnemer['id'] ?>" title="Alle gegevens van deze deelnemer bekijken en bewerken" style="align-self:center;">&#128100;</a>
                                     <input class="w3-input" type="text" name="voornaam" value="<?= htmlspecialchars($deelnemer['voornaam']) ?>" placeholder="Voornaam" required>
                                     <input class="w3-input" type="text" name="achternaam" value="<?= htmlspecialchars($deelnemer['achternaam']) ?>" placeholder="Achternaam" required>
                                     <?php if (in_array((int) $deelnemer['id'], $gemarkeerdeDeelnemerIds, true)): ?><span class="nieuwe-deelnemer-markering" title="Nieuwe of gewijzigde aanmelding; verdwijnt na opslaan" aria-label="Nieuwe of gewijzigde aanmelding" style="color:#198754;font-size:1.3em;line-height:1">&#9752;</span><?php endif; ?>
@@ -443,6 +444,7 @@ foreach ($deelnemers as $deelnemer) {
                     <summary>
                         <?= htmlspecialchars($deelnemer['voornaam'] . ' ' . $deelnemer['achternaam']) ?>
                         <?php if (in_array((int) $deelnemer['id'], $gemarkeerdeDeelnemerIds, true)): ?><span class="nieuwe-deelnemer-markering" title="Nieuwe of gewijzigde aanmelding; verdwijnt na opslaan" aria-label="Nieuwe of gewijzigde aanmelding" style="color:#198754;">&#9752;</span><?php endif; ?>
+                        <a href="deelnemer_bewerken.php?id=<?= (int) $deelnemer['id'] ?>" title="Alle gegevens bekijken en bewerken">&#128100;</a>
                     </summary>
                     <form method="post" onsubmit="return bevestigVerwijderen(event);">
                         <input type="hidden" name="actie" value="opslaan">
