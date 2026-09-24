@@ -18,6 +18,17 @@ function nederlandseDatumLang(string $datum, array $maandNamen): string
     $tijdstip = new DateTimeImmutable($datum);
     return $tijdstip->format('j') . ' ' . $maandNamen[(int) $tijdstip->format('n')] . ' ' . $tijdstip->format('Y');
 }
+
+// Schrijft een eventueel in de omschrijving opgenomen ruwe bezettingsnotatie (bijv. "0202-2200-timp-str") direct in woorden uit.
+function omschrijvingInWoorden(?string $omschrijving): string
+{
+    $omschrijving = (string) $omschrijving;
+    return preg_replace_callback(
+        '/\d{4}-\d{4}(?:-timp)?-(?:str|\d{5})/i',
+        static fn (array $overeenkomst): string => bezettingInWoorden($overeenkomst[0]),
+        $omschrijving
+    );
+}
 ?>
 <!DOCTYPE html>
 <html lang="nl">
@@ -38,8 +49,7 @@ function nederlandseDatumLang(string $datum, array $maandNamen): string
                 <?php foreach ($activiteiten as $activiteit): ?>
                     <li>
                         <strong><?= htmlspecialchars(nederlandseDatumLang($activiteit['datum'], $maandNamen)) ?>
-                            (<?= htmlspecialchars($activiteit['plaats']) ?>)</strong><?= $activiteit['omschrijving'] ? ': ' . htmlspecialchars($activiteit['omschrijving']) : '' ?>.
-                        Bezetting: <?= htmlspecialchars(bezettingInWoorden($activiteit['gewenste_bezetting'])) ?>.
+                            (<?= htmlspecialchars($activiteit['plaats']) ?>)</strong><?= $activiteit['omschrijving'] ? ': ' . htmlspecialchars(omschrijvingInWoorden($activiteit['omschrijving'])) : '' ?>.
                     </li>
                 <?php endforeach; ?>
             </ul>
