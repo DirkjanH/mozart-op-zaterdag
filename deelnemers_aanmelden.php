@@ -94,7 +94,7 @@ try {
     error_log('Aanmelding: bevestigingsmail kon niet worden geladen: ' . $e->getMessage());
     $aanmeldbevestigingMail = [
         'onderwerp' => 'Bevestiging aanmelding Mozart op Zaterdag',
-        'tekst' => '<p>Beste {{voornaam}},</p><p>Dank voor je aanmelding bij Mozart op Zaterdag.</p><p>Hartelijke groet,<br>Dirkjan Horringa</p>',
+        'tekst' => '<p>Beste {{voornaam}},</p><p>Dank voor je aanmelding bij Mozart op Zaterdag.</p><p>Hartelijke groet,<br>Dirkjan Horringa</p><p>P.S. Als je je gegevens of je beschikbaarheid wilt wijzigen, <a href="{{aanmeldlink}}">vul dan even dit formulier in</a>. Je bestaande gegevens staan daar alvast ingevuld.</p>',
     ];
 }
 
@@ -249,6 +249,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             '{{plaats}}' => $plaats,
             '{{instrumenten}}' => $instrumentNamen !== [] ? implode(', ', $instrumentNamen) : 'geen instrument opgegeven',
             '{{beschikbaarheid}}' => $beschikbaarheid !== [] ? '<ul>' . implode('', $beschikbaarheid) . '</ul>' : 'geen toekomstige activiteiten',
+            '{{aanmeldlink}}' => 'https://mozartopzaterdag.nl/deelnemers_aanmelden.php?email=' . rawurlencode($email),
         ];
         try {
             [$gmailGebruikersnaam, $gmailAppWachtwoord] = leesAanmeldMailInstellingen();

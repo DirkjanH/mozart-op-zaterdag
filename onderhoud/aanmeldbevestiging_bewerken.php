@@ -9,7 +9,7 @@ $map = dirname($bestand);
 $melding = '';
 $standaardMailtekst = [
     'onderwerp' => 'Bevestiging aanmelding Mozart op Zaterdag',
-    'tekst' => '<p>Beste {{voornaam}},</p><p>Dank voor je aanmelding bij Mozart op Zaterdag. We hebben je gegevens goed ontvangen.</p><p>Instrument(en): {{instrumenten}}<br>Beschikbaarheid:<br>{{beschikbaarheid}}</p><p>Hartelijke groet,<br>Dirkjan Horringa</p>',
+    'tekst' => '<p>Beste {{voornaam}},</p><p>Dank voor je aanmelding bij Mozart op Zaterdag. We hebben je gegevens goed ontvangen.</p><p>Instrument(en): {{instrumenten}}<br>Beschikbaarheid:<br>{{beschikbaarheid}}</p><p>Hartelijke groet,<br>Dirkjan Horringa</p><p>P.S. Als je je gegevens of je beschikbaarheid wilt wijzigen, <a href="{{aanmeldlink}}">vul dan even dit formulier in</a>. Je bestaande gegevens staan daar alvast ingevuld.</p>',
 ];
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
@@ -86,7 +86,7 @@ try {
             <input class="w3-input w3-border w3-margin-bottom" id="onderwerp" name="onderwerp" value="<?= htmlspecialchars($mailtekst['onderwerp'], ENT_QUOTES, 'UTF-8') ?>" maxlength="255" required>
             <label for="tekst"><strong>Mailtekst</strong></label>
             <textarea id="tekst" name="tekst" required><?= htmlspecialchars($mailtekst['tekst'], ENT_QUOTES, 'UTF-8') ?></textarea>
-            <p class="w3-small">Beschikbare velden: {{voornaam}}, {{achternaam}}, {{naam}}, {{email}}, {{telefoon}}, {{postcode}}, {{plaats}}, {{instrumenten}} en {{beschikbaarheid}}.</p>
+            <p class="w3-small">Beschikbare velden: {{voornaam}}, {{achternaam}}, {{naam}}, {{email}}, {{telefoon}}, {{postcode}}, {{plaats}}, {{instrumenten}}, {{beschikbaarheid}} en {{aanmeldlink}}.</p>
             <button class="w3-button w3-blue w3-margin-bottom" type="submit">Opslaan in JSON</button>
         </form>
     </main>
