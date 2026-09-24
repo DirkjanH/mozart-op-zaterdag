@@ -421,6 +421,7 @@ if (!empty($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL))
                             <label for="op_de_hoogte_nee" style="margin:0;font-weight:normal">Nee</label>
                         </div>
                     </div>
+                    <p><small>N.B. Als je nee aangeeft verwijderen we je gegevens uit ons bestand en ontvang je geen verdere aankondigingen.</small></p>
                 </div>
             </div>
 
