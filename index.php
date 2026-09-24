@@ -1,3 +1,42 @@
+<?php
+require_once __DIR__ . '/connections/MozartopZaterdag.php';
+require_once __DIR__ . '/includes/bezetting.inc.php';
+
+function activiteitIsVerleden(string $datum): bool
+{
+    return strtotime($datum) < strtotime('today');
+}
+
+// Linkt naar de gegenereerde pagina in de datummap, of toont anders een 'binnenkort'-tekst.
+function activiteitInfoZin(string $datumMap): string
+{
+    if (is_file(__DIR__ . '/' . $datumMap . '/index.php')) {
+        return '<a href="/' . htmlspecialchars($datumMap, ENT_QUOTES, 'UTF-8') . '/index.php" target="_blank">Meer info &amp; partijen vind je hier</a>.';
+    }
+
+    return 'Meer info &amp; partijen vind je binnenkort hier.';
+}
+
+// Zet een eventueel in de omschrijving opgenomen ruwe bezettingsnotatie (bijv. "0202-2200-timp-str") om in woorden.
+function omschrijvingInWoorden(?string $omschrijving): string
+{
+    $omschrijving = (string) $omschrijving;
+    return preg_replace_callback(
+        '/\d{4}-\d{4}(?:-timp)?-(?:str|\d{5})/i',
+        static fn (array $overeenkomst): string => bezettingInWoorden($overeenkomst[0]),
+        $omschrijving
+    );
+}
+
+$maandNamen = [1 => 'januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+
+// Deze data staan al met een handgeschreven toelichting hieronder; overige toekomstige activiteiten uit de database worden er automatisch aan toegevoegd.
+$reedsBeschrevenData = ['2026-01-24', '2026-02-28', '2026-03-28', '2026-04-25', '2026-05-23', '2026-09-26', '2026-10-24', '2026-11-21'];
+$stmt = $pdo->query('SELECT datum, omschrijving FROM activiteiten WHERE datum >= CURDATE() ORDER BY datum');
+$aanvullendeActiviteiten = array_values(array_filter($stmt->fetchAll(PDO::FETCH_ASSOC), static function (array $activiteit) use ($reedsBeschrevenData): bool {
+    return !in_array(date('Y-m-d', strtotime($activiteit['datum'])), $reedsBeschrevenData, true);
+}));
+?>
 <!DOCTYPE html>
 <html lang="nl">
 
@@ -33,35 +72,43 @@
         </p>
         <h4 class="clear">Voor de komende afleveringen, die allemaal plaatsvinden in de <a href="/marnixzaal.php" target="_blank">Marnixzaal</a>, staan deze stukken op het programma:</h4>
         <ul class="programma">
-            <li class="onzichtbaar">
+            <li<?= activiteitIsVerleden('2026-01-24') ? ' class="onzichtbaar"' : '' ?>>
                 <b>24 januari:</b> Pianoconcert nr. 23 in A KV 488 voor 1 fluit,
                 2 klarinetten, 2 fagotten, 2 hoorns en strijkers. De solisten Annette Middelbeek, Brit van Manen en Yumi
-                Toyama spelen ieder een deel. Er is nog plaats voor een altviool. <a href="/2026-01-24/Moz_2026-01-24.php" target="_blank">Meer info & partijen vind je hier</a>.
+                Toyama spelen ieder een deel. Er is nog plaats voor een altviool. <?= activiteitInfoZin('2026-01-24') ?>
             </li>
-            <li class="onzichtbaar">
+            <li<?= activiteitIsVerleden('2026-02-28') ? ' class="onzichtbaar"' : '' ?>>
                 <b>28 februari:</b> Symfonie nr. 40 in g klein KV 550 voor 1 fluit,
-                2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns en strijkers. Er is nog plaats voor een tweede viool. <a href="/2026-02-28/Moz_2026-02-28.php" target="_blank">Meer info & partijen vind je hier</a>.
+                2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns en strijkers. Er is nog plaats voor een tweede viool. <?= activiteitInfoZin('2026-02-28') ?>
             </li>
-            <li class="onzichtbaar">
-                <b>28 maart:</b> Symfonie nr. 13 in F KV 112 & Hoornconcert nr. 2 in Es KV 417 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. Hoornist Maarten Theulen treedt op als solist. <a <a href="/2026-03-28/Moz_2026-03-28.php" target="_blank">Meer info & partijen vind je hier</a>.
+            <li<?= activiteitIsVerleden('2026-03-28') ? ' class="onzichtbaar"' : '' ?>>
+                <b>28 maart:</b> Symfonie nr. 13 in F KV 112 & Hoornconcert nr. 2 in Es KV 417 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. Hoornist Maarten Theulen treedt op als solist. <?= activiteitInfoZin('2026-03-28') ?>
             </li>
-            <li class="onzichtbaar">
-                <b>25 april:</b> Symfonie nr. 29 in A KV 201 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. <a href="/2026-04-25/kv201.php" target="_blank">Meer info & partijen vind je hier</a>.
+            <li<?= activiteitIsVerleden('2026-04-25') ? ' class="onzichtbaar"' : '' ?>>
+                <b>25 april:</b> Symfonie nr. 29 in A KV 201 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. <?= activiteitInfoZin('2026-04-25') ?>
             </li>
-            <li class="onzichtbaar">
+            <li<?= activiteitIsVerleden('2026-05-23') ? ' class="onzichtbaar"' : '' ?>>
                 <b>23 mei:</b> Pianoconcert nr. 24 in c klein KV 491 voor 1 fluit,
-                2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns, 2 trompetten, pauken en strijkers. Solist is de pianist Hans-Erik Dijkstra. Er is nog plaats voor een of twee 1e violen en <b>twee trompetten</b>. <a href="/2026-05-23/kv491.php" target="_blank">Meer info & partijen vind je hier</a>.
+                2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns, 2 trompetten, pauken en strijkers. Solist is de pianist Hans-Erik Dijkstra. Er is nog plaats voor een of twee 1e violen en <b>twee trompetten</b>. <?= activiteitInfoZin('2026-05-23') ?>
             </li>
-            <li>
-                <b>26 september:</b> Concert voor fluit en harp in C KV 299 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. Solisten zijn: Elisa Bartolomé Gómez, dwarsfluit, en Maria Palma, harp. <a href="/2026-09-26/index.php" target="_blank">Meer info & partijen vind je hier</a>. Er zijn nu 27 deelnemers. De bezetting is compleet.
+            <li<?= activiteitIsVerleden('2026-09-26') ? ' class="onzichtbaar"' : '' ?>>
+                <b>26 september:</b> Concert voor fluit en harp in C KV 299 voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. Solisten zijn: Elisa Bartolomé Gómez, dwarsfluit, en Maria Palma, harp. <?= activiteitInfoZin('2026-09-26') ?> Er zijn nu 27 deelnemers. De bezetting is compleet.
             </li>
-            <li>
+            <li<?= activiteitIsVerleden('2026-10-24') ? ' class="onzichtbaar"' : '' ?>>
                 <b>24 oktober:</b> “Parijse” Ouverture in Bes KV 311a & “Parijse” Symfonie nr. 31 in D KV 297 voor 2 fluiten,
-                2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns, 2 trompetten, pauken en strijkers. <a href="/2026-10-24/index.php" target="_blank">Meer info & partijen vind je hier</a>.
+                2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns, 2 trompetten, pauken en strijkers. <?= activiteitInfoZin('2026-10-24') ?>
             </li>
-            <li>
-                <b>21 november:</b> concertaria’s voor sopraan, bas en orkest en het duet <i>Per queste tue manine</i> KV 540b voor 2 fluiten, 2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns en strijkers. De solisten zijn: Ingrid Nugteren (sopraan) en Mitchell Sandler (bas). <a xxxx="/2026-11-21/Moz_2026-11-21.php" target="_blank">Meer info & partijen vind je binnenkort hier</a>.
+            <li<?= activiteitIsVerleden('2026-11-21') ? ' class="onzichtbaar"' : '' ?>>
+                <b>21 november:</b> concertaria’s voor sopraan, bas en orkest en het duet <i>Per queste tue manine</i> KV 540b voor 2 fluiten, 2 hobo's, 2 klarinetten, 2 fagotten, 2 hoorns en strijkers. De solisten zijn: Ingrid Nugteren (sopraan) en Mitchell Sandler (bas). <?= activiteitInfoZin('2026-11-21') ?>
             </li>
+            <?php foreach ($aanvullendeActiviteiten as $activiteit): ?>
+                <?php $tijdstip = strtotime($activiteit['datum']); ?>
+                <li<?= activiteitIsVerleden($activiteit['datum']) ? ' class="onzichtbaar"' : '' ?>>
+                    <b><?= (int) date('j', $tijdstip) ?> <?= $maandNamen[(int) date('n', $tijdstip)] ?>:</b>
+                    <?php if ($activiteit['omschrijving']): ?><?= htmlspecialchars(omschrijvingInWoorden($activiteit['omschrijving']), ENT_QUOTES, 'UTF-8') ?>. <?php endif; ?>
+                    <?= activiteitInfoZin(date('Y-m-d', $tijdstip)) ?>
+                </li>
+            <?php endforeach; ?>
         </ul>
         <h4>Meespelen?</h4>
         <p>Heb je belangstelling om eens mee te doen met Mozart op Zaterdag? Het is mogelijk je op te geven voor de
