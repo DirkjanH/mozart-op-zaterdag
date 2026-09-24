@@ -448,15 +448,6 @@ if ($actie === 'verwerk_pluk' && is_array($wachtrij)) {
                             $resultaten[] = ['gelukt' => false, 'naam' => $naam, 'bericht' => $ontvanger['fout']];
                         } else {
                             $mailer->send();
-                            if (strcasecmp($ontvanger['email'], 'dirkjan@pellegrina.net') !== 0) {
-                                $mailer->clearAddresses();
-                                $mailer->clearAttachments();
-                                $mailer->addAddress('dirkjan@pellegrina.net', 'Dirkjan Horringa');
-                                $mailer->Subject = str_replace(["\r", "\n"], '', html_entity_decode(vulMailTemplateGeneriek($wachtrij['onderwerp']), ENT_QUOTES, 'UTF-8'));
-                                $mailer->Body = sluitLokaleAfbeeldingenIn(vulMailTemplateGeneriek($wachtrij['bericht']), $mailer);
-                                $mailer->AltBody = trim(html_entity_decode(strip_tags(str_replace(['</p>', '<br>', '<br/>', '<br />'], "\n", $mailer->Body)), ENT_QUOTES, 'UTF-8'));
-                                $mailer->send();
-                            }
                             $ontvanger['status'] = 'verzonden';
                             $ontvanger['verzonden_op'] = date(DATE_ATOM);
                             $resultaten[] = ['gelukt' => true, 'naam' => $naam, 'bericht' => $ontvanger['email']];
