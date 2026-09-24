@@ -3,6 +3,8 @@ require_once __DIR__ . '/connections/MozartopZaterdag.php';
 require_once __DIR__ . '/vendor/autoload.php';
 
 $pdo->exec('CREATE TABLE IF NOT EXISTS deelnemer_wijzigingen (deelnemer_id INT NOT NULL PRIMARY KEY, gemarkeerd_op DATETIME NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
+// Bewaart per formulierweergave een uniek token, zodat een pagina-refresh na versturen niet nogmaals een bevestigingsmail oplevert.
+$pdo->exec('CREATE TABLE IF NOT EXISTS aanmeldbevestiging_verzonden (token CHAR(32) NOT NULL PRIMARY KEY, verzonden_op DATETIME NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
 
 function laadAanmeldbevestigingMail(string $bestand): array
 {
@@ -251,6 +253,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             '{{beschikbaarheid}}' => $beschikbaarheid !== [] ? '<ul>' . implode('', $beschikbaarheid) . '</ul>' : 'geen toekomstige activiteiten',
             '{{aanmeldlink}}' => 'https://mozartopzaterdag.nl/deelnemers_aanmelden.php?email=' . rawurlencode($email),
         ];
+        // Voorkom een dubbele bevestigingsmail als de gebruiker de pagina na versturen ververst (opnieuw dezelfde POST).
+        $aanmeldToken = (string) ($_POST['aanmeld_token'] ?? '');
+        $mailAlEerderVerstuurd = false;
+        if (preg_match('/^[a-f0-9]{32}$/', $aanmeldToken)) {
+            try {
+                $stmt = $pdo->prepare('INSERT INTO aanmeldbevestiging_verzonden (token, verzonden_op) VALUES (?, NOW())');
+                $stmt->execute([$aanmeldToken]);
+            } catch (PDOException $e) {
+                $mailAlEerderVerstuurd = true;
+            }
+        }
+
+        if ($mailAlEerderVerstuurd) {
+            $melding = 'Gegevens succesvol opgeslagen. De bevestigingsmail was al eerder verstuurd.';
+        } else {
         try {
             [$gmailGebruikersnaam, $gmailAppWachtwoord] = leesAanmeldMailInstellingen();
             if ($gmailAppWachtwoord === '') {
@@ -282,6 +299,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch (Throwable $e) {
             error_log('Aanmelding: bevestigingsmail niet verstuurd: ' . $e->getMessage());
             $melding = 'Gegevens succesvol opgeslagen, maar de bevestigingsmail kon niet worden verstuurd.';
+        }
         }
 
     } catch (Exception $e) {
@@ -372,6 +390,7 @@ if (!empty($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL))
         <?php endif; ?>
 
         <form method="POST" action="">
+            <input type="hidden" name="aanmeld_token" value="<?= bin2hex(random_bytes(16)) ?>">
             <!-- Persoonlijke gegevens -->
             <div class="form-section">
                 <h3>Persoonlijke gegevens</h3>
