@@ -49,7 +49,7 @@ function omschrijvingInWoorden(?string $omschrijving): string
                 <?php foreach ($activiteiten as $activiteit): ?>
                     <li>
                         <strong><?= htmlspecialchars(nederlandseDatumLang($activiteit['datum'], $maandNamen)) ?>
-                            (<?= htmlspecialchars($activiteit['plaats']) ?>)</strong><?= $activiteit['omschrijving'] ? ': ' . htmlspecialchars(omschrijvingInWoorden($activiteit['omschrijving'])) : '' ?>.
+                            (<?= htmlspecialchars($activiteit['plaats']) ?>)</strong><?= $activiteit['omschrijving'] ? ': ' . htmlspecialchars(rtrim(omschrijvingInWoorden($activiteit['omschrijving']), '.')) : '' ?>
                     </li>
                 <?php endforeach; ?>
             </ul>
