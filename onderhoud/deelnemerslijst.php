@@ -59,6 +59,17 @@ if ($gekozenActiviteit !== null) {
     <style>
         .keuze-formulier select { width: min(100%, 32em); }
         .deelnemerslijst { width: 100%; }
+        @media print {
+            body,
+            .pagina {
+                background: #fff !important;
+            }
+
+            .keuze-formulier,
+            .pagina > p:first-child {
+                display: none;
+            }
+        }
         @media (max-width: 600px) {
             body { margin: 0; font-size: 16px; }
             .pagina { width: 100%; max-width: none !important; margin: 0; box-sizing: border-box; }
