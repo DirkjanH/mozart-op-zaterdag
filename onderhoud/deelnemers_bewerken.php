@@ -101,6 +101,7 @@ if (isset($_POST['actie']) && $_POST['actie'] === 'opslaan') {
 
 $deelnemers = $pdo->query('SELECT * FROM deelnemers ORDER BY achternaam, voornaam')->fetchAll(PDO::FETCH_ASSOC);
 $gemarkeerdeDeelnemerIds = array_map('intval', $pdo->query('SELECT deelnemer_id FROM deelnemer_wijzigingen')->fetchAll(PDO::FETCH_COLUMN));
+$aantalNieuweGewijzigdeDeelnemers = count($gemarkeerdeDeelnemerIds);
 
 // Per deelnemer de gekoppelde instrumenten, voorkeurstekst en beschikbaarheid alvast opzoeken.
 $instrumentenPerDeelnemer = [];
@@ -154,6 +155,7 @@ foreach ($deelnemers as $deelnemer) {
 <head>
     <meta charset="UTF-8">
     <title>Deelnemers bewerken</title>
+    <meta http-equiv="refresh" content="60">
     <link href="/css/moz.css" rel="stylesheet" type="text/css">
     <style>
         .tabel-scroll {
@@ -326,7 +328,7 @@ foreach ($deelnemers as $deelnemer) {
             <p class="w3-panel w3-pale-green w3-leftbar w3-border-green"><?= htmlspecialchars($melding) ?></p>
         <?php endif; ?>
 
-        <p><strong><?= count($deelnemers) ?> deelnemers</strong> | Strijkers: <?= $deelnemerTellingen['strijkers'] ?> | Houtblazers: <?= $deelnemerTellingen['houtblazers'] ?> | Koperblazers: <?= $deelnemerTellingen['koperblazers'] ?> | Overig: <?= $deelnemerTellingen['overig'] ?></p>
+        <p><strong><?= count($deelnemers) ?> deelnemers</strong> | Nieuw/gewijzigd: <?= $aantalNieuweGewijzigdeDeelnemers ?> | Strijkers: <?= $deelnemerTellingen['strijkers'] ?> | Houtblazers: <?= $deelnemerTellingen['houtblazers'] ?> | Koperblazers: <?= $deelnemerTellingen['koperblazers'] ?> | Overig: <?= $deelnemerTellingen['overig'] ?></p>
 
         <p>
             <label for="familie-filter"><strong>Tonen:</strong></label>
