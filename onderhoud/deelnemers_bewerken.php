@@ -154,6 +154,7 @@ foreach ($deelnemers as $deelnemer) {
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Deelnemers bewerken</title>
     <meta http-equiv="refresh" content="60">
     <link href="/css/moz.css" rel="stylesheet" type="text/css">

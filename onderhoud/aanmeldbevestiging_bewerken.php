@@ -70,6 +70,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Aanmeldbevestiging bewerken</title>
     <link href="/css/moz.css" rel="stylesheet" type="text/css">
     <script src="https://cdn.ckeditor.com/4.22.1/full-all/ckeditor.js"></script>

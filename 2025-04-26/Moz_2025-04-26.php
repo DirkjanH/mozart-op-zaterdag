@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mozart op Zaterdag op 26 april 2025</title>
     <link href="/css/moz.css" rel="stylesheet" type="text/css">

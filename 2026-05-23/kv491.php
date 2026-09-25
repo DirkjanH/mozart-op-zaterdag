@@ -5,6 +5,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pianoconcert nr. 24 in c klein KV 491</title>
     <link href="/css/moz.css" rel="stylesheet" type="text/css">

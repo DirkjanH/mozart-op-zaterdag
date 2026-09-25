@@ -493,7 +493,7 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
             $gegenereerd = '<?php require_once \'../includes/inloggen.php\'; ?>' . "\n";
             $gegenereerd .= '<!DOCTYPE html>' . "\n<html lang=\"nl\">\n<head>\n";
             $gegenereerd .= '    <meta charset="UTF-8">' . "\n";
-            $gegenereerd .= '    <meta name="viewport" content="width=device-width, initial-scale=1.0">' . "\n";
+            $gegenereerd .= '    <meta name="viewport" content="width=device-width, initial-scale=1">' . "\n";
             $gegenereerd .= '    <title>' . html($titel) . "</title>\n    <link href=\"/css/moz.css\" rel=\"stylesheet\" type=\"text/css\">\n</head>\n<body>\n";
             $gegenereerd .= "    <div class=\"w3-content w3-white w3-panel\" style=\"padding-bottom: 3em;\">\n";
             $gegenereerd .= "        <?php require_once '../navigatie.htm'; ?>\n";

@@ -120,6 +120,7 @@ $werken = $pdo->query('SELECT * FROM werken ORDER BY kv_nummer, kv_toevoeging')-
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Werken bewerken</title>
     <link href="/css/moz.css" rel="stylesheet" type="text/css">
     <style>

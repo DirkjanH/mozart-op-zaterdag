@@ -6,6 +6,7 @@ require_once __DIR__ . '/../includes/inloggen.php';
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MoZ dashboard</title>
     <link href="/css/moz.css" rel="stylesheet" type="text/css">

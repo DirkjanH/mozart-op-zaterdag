@@ -126,6 +126,7 @@ $statusPerActiviteit = array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'status',
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Deelnemer bewerken</title>
     <link href="/css/moz.css" rel="stylesheet" type="text/css">
     <style>
