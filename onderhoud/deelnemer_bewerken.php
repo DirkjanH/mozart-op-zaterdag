@@ -135,17 +135,42 @@ $statusPerActiviteit = array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'status',
         @media (max-width: 600px) {
             body {
                 margin: 0;
+                font-size: 16px;
+                line-height: 1.45;
             }
 
             .w3-content.w3-panel {
                 width: 100%;
                 max-width: none !important;
                 margin: 0;
+                padding: 0 10px 16px;
                 box-sizing: border-box;
+            }
+
+            .w3-content > .w3-panel {
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+            h3 {
+                font-size: 1.35rem;
+            }
+
+            h4 {
+                font-size: 1.1rem;
+                margin-top: 1.5em;
             }
 
             .form-row {
                 grid-template-columns: 1fr;
+            }
+
+            .form-group {
+                margin-bottom: 1.4em;
+            }
+
+            .form-group label {
+                margin-bottom: 0.45em;
             }
 
             .form-group input,
@@ -153,6 +178,18 @@ $statusPerActiviteit = array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'status',
             .form-group textarea {
                 box-sizing: border-box;
                 width: 100%;
+                font-size: 16px;
+                line-height: 1.4;
+            }
+
+            .knoppen {
+                flex-direction: column;
+                gap: 0.75em;
+            }
+
+            .knoppen .w3-button {
+                min-height: 44px;
+                font-size: 1rem;
             }
         }
         .knoppen { display: flex; gap: 1em; margin-top: 1.5em; }

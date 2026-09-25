@@ -244,6 +244,17 @@ foreach ($deelnemers as $deelnemer) {
             gap: 0.5em;
         }
 
+        .categorie-knoppen {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5em;
+        }
+
+        .categorie-knop[aria-pressed="true"] {
+            font-weight: bold;
+            box-shadow: inset 0 -3px 0 currentColor;
+        }
+
         @media (max-width: 600px) {
             body {
                 margin: 0;
@@ -307,15 +318,17 @@ foreach ($deelnemers as $deelnemer) {
             return true;
         }
 
-        function filterDeelnemers() {
-            var keuze = document.querySelector('#familie-filter').value;
+        function filterDeelnemers(keuze, knop) {
             document.querySelectorAll('[data-families]').forEach(function (element) {
                 if (keuze === 'alles') {
                     element.style.display = '';
-                    return;
+                } else {
+                    var families = element.getAttribute('data-families').split(' ');
+                    element.style.display = families.indexOf(keuze) !== -1 ? '' : 'none';
                 }
-                var families = element.getAttribute('data-families').split(' ');
-                element.style.display = families.indexOf(keuze) !== -1 ? '' : 'none';
+            });
+            document.querySelectorAll('.categorie-knop').forEach(function (element) {
+                element.setAttribute('aria-pressed', element === knop ? 'true' : 'false');
             });
         }
 
@@ -357,18 +370,13 @@ foreach ($deelnemers as $deelnemer) {
             <p class="w3-panel w3-pale-green w3-leftbar w3-border-green"><?= htmlspecialchars($melding) ?></p>
         <?php endif; ?>
 
-        <p><strong><?= count($deelnemers) ?> deelnemers</strong> | Nieuw/gewijzigd: <?= $aantalNieuweGewijzigdeDeelnemers ?> | Strijkers: <?= $deelnemerTellingen['strijkers'] ?> | Houtblazers: <?= $deelnemerTellingen['houtblazers'] ?> | Koperblazers: <?= $deelnemerTellingen['koperblazers'] ?> | Overig: <?= $deelnemerTellingen['overig'] ?></p>
-
-        <p>
-            <label for="familie-filter"><strong>Tonen:</strong></label>
-            <select id="familie-filter" class="w3-select" style="width:auto;display:inline-block;" onchange="filterDeelnemers()">
-                <option value="alles">Alles</option>
-                <option value="strijkers">Strijkers</option>
-                <option value="houtblazers">Hout</option>
-                <option value="koperblazers">Koper</option>
-                <option value="overig">Overig</option>
-                <option value="nieuw_gewijzigd">&#9752; Nieuw/gewijzigd</option>
-            </select>
+        <p class="categorie-knoppen" aria-label="Deelnemers filteren">
+            <button class="w3-button w3-border categorie-knop" type="button" aria-pressed="true" onclick="filterDeelnemers('alles', this)"><strong><?= count($deelnemers) ?> deelnemers</strong></button>
+            <button class="w3-button w3-border categorie-knop" type="button" aria-pressed="false" onclick="filterDeelnemers('nieuw_gewijzigd', this)">&#9752; Nieuw/gewijzigd: <?= $aantalNieuweGewijzigdeDeelnemers ?></button>
+            <button class="w3-button w3-border categorie-knop" type="button" aria-pressed="false" onclick="filterDeelnemers('strijkers', this)">Strijkers: <?= $deelnemerTellingen['strijkers'] ?></button>
+            <button class="w3-button w3-border categorie-knop" type="button" aria-pressed="false" onclick="filterDeelnemers('houtblazers', this)">Houtblazers: <?= $deelnemerTellingen['houtblazers'] ?></button>
+            <button class="w3-button w3-border categorie-knop" type="button" aria-pressed="false" onclick="filterDeelnemers('koperblazers', this)">Koperblazers: <?= $deelnemerTellingen['koperblazers'] ?></button>
+            <button class="w3-button w3-border categorie-knop" type="button" aria-pressed="false" onclick="filterDeelnemers('overig', this)">Overig: <?= $deelnemerTellingen['overig'] ?></button>
         </p>
 
         <button id="details-knop" type="button" class="w3-button w3-blue w3-margin-bottom" onclick="toggleDetails()">E-mail / telefoon / plaats / voorkeur tonen</button>
