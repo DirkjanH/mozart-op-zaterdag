@@ -11,10 +11,10 @@ function activiteitIsVerleden(string $datum): bool
 function activiteitInfoZin(string $datumMap): string
 {
     if (is_file(__DIR__ . '/' . $datumMap . '/index.php')) {
-        return '<a href="/' . htmlspecialchars($datumMap, ENT_QUOTES, 'UTF-8') . '/index.php" target="_blank">Meer info &amp; partijen vind je hier</a>.';
+        return '<a href="/' . htmlspecialchars($datumMap, ENT_QUOTES, 'UTF-8') . '/index.php" target="_blank">Meer info &amp; partijen vind je hier</a>';
     }
 
-    return 'Meer info &amp; partijen vind je binnenkort hier.';
+    return 'Meer info &amp; partijen vind je binnenkort hier';
 }
 
 // Zet een eventueel in de omschrijving opgenomen ruwe bezettingsnotatie (bijv. "0202-2200-timp-str") om in woorden.
