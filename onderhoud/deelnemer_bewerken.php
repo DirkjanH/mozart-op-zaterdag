@@ -132,7 +132,29 @@ $statusPerActiviteit = array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'status',
         .form-group { margin-bottom: 1.2em; }
         .form-group label { display: block; margin-bottom: 0.3em; font-weight: bold; }
         .form-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1em; }
-        @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+        @media (max-width: 600px) {
+            body {
+                margin: 0;
+            }
+
+            .w3-content.w3-panel {
+                width: 100%;
+                max-width: none !important;
+                margin: 0;
+                box-sizing: border-box;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                box-sizing: border-box;
+                width: 100%;
+            }
+        }
         .knoppen { display: flex; gap: 1em; margin-top: 1.5em; }
     </style>
     <script>
