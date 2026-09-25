@@ -17,6 +17,10 @@ require_once __DIR__ . '/../includes/inloggen.php';
             margin-bottom: 20px;
         }
 
+        .dashboard {
+            max-width: 700px;
+        }
+
         .dashboard-logo {
             width: 180px;
             max-width: 35%;
@@ -30,12 +34,19 @@ require_once __DIR__ . '/../includes/inloggen.php';
         .dashboard-links .w3-bar-item {
             box-sizing: border-box;
             width: 100%;
+            white-space: normal;
+        }
+
+        .dashboard-registration {
+            margin-top: 24px;
         }
 
         @media (max-width: 600px) {
             body {
                 margin: 0;
                 font-size: 16px;
+                line-height: 1.45;
+                -webkit-text-size-adjust: 100%;
             }
 
             .dashboard {
@@ -65,14 +76,19 @@ require_once __DIR__ . '/../includes/inloggen.php';
             .dashboard-links .w3-bar-item {
                 min-height: 48px;
                 padding: 14px 12px;
-                font-size: 1rem;
+                font-size: 1.05rem;
+                line-height: 1.3;
+            }
+
+            .dashboard-registration {
+                margin-top: 12px;
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="dashboard w3-content w3-mobile w3-white w3-panel" style="max-width:700px;">
+    <div class="dashboard w3-content w3-mobile w3-white w3-panel">
         <header class="dashboard-header">
             <img src="/images/Mozart.jpg" alt="Mozart op Zaterdag" class="dashboard-logo geenlijn">
             <h3 class="dashboard-title">Mozart op Zaterdag - Dashboard</h3>
@@ -85,7 +101,7 @@ require_once __DIR__ . '/../includes/inloggen.php';
             <a href="aanmeldbevestiging_bewerken.php" target="_blank" class="w3-bar-item w3-button w3-blue w3-margin-bottom">Aanmeldbevestiging bewerken</a>
             <a href="deelnemers_mailen.php" target="_blank" class="w3-bar-item w3-button w3-blue w3-margin-bottom">Deelnemers mailen</a>
             <a href="genereer_webpaginas.php" target="_blank" class="w3-bar-item w3-button w3-blue w3-margin-bottom">Genereer webpagina's</a>
-            <a href="/deelnemers_aanmelden.php" target="_blank" class="w3-bar-item w3-button w3-green w3-margin-bottom" style="margin-top:24px;">Aanmeldingsformulier</a>
+            <a href="/deelnemers_aanmelden.php" target="_blank" class="dashboard-registration w3-bar-item w3-button w3-green w3-margin-bottom">Aanmeldingsformulier</a>
         </div>
     </div>
 </body>

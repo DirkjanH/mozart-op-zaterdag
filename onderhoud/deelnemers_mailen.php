@@ -567,6 +567,64 @@ if (is_array($wachtrij)) {
     <title>Deelnemers mailen</title>
     <link href="/css/moz.css" rel="stylesheet" type="text/css">
     <script src="https://cdn.ckeditor.com/4.22.1/full-all/ckeditor.js"></script>
+    <style>
+        @media (max-width: 600px) {
+            body {
+                margin: 0;
+                font-size: 16px;
+                line-height: 1.45;
+                -webkit-text-size-adjust: 100%;
+            }
+
+            main.w3-content.w3-panel {
+                width: 100%;
+                max-width: none !important;
+                margin: 0;
+                padding: 0 10px 16px;
+                box-sizing: border-box;
+            }
+
+            main h3 {
+                font-size: 1.35rem;
+            }
+
+            main h4 {
+                font-size: 1.1rem;
+            }
+
+            main input,
+            main select,
+            main textarea,
+            main button {
+                box-sizing: border-box;
+                font-size: 16px;
+            }
+
+            main input,
+            main select,
+            main textarea {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            main button {
+                width: 100%;
+                min-height: 44px;
+            }
+
+            main form {
+                display: block !important;
+            }
+
+            main .w3-small {
+                font-size: 1rem !important;
+            }
+
+            main .w3-responsive {
+                overflow-x: auto;
+            }
+        }
+    </style>
 </head>
 
 <body>
