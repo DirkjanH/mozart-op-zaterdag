@@ -3,6 +3,10 @@ require_once __DIR__ . '/../includes/inloggen.php';
 require_once __DIR__ . '/../connections/MozartopZaterdag.php';
 
 $pdo->exec('CREATE TABLE IF NOT EXISTS deelnemer_wijzigingen (deelnemer_id INT NOT NULL PRIMARY KEY, gemarkeerd_op DATETIME NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
+$opmerkingenKolom = $pdo->query("SHOW COLUMNS FROM deelnemers LIKE 'opmerkingen'")->fetch();
+if ($opmerkingenKolom === false) {
+    $pdo->exec('ALTER TABLE deelnemers ADD COLUMN opmerkingen TEXT NULL');
+}
 
 $statussen = ['' => '(onbekend)', 'ja' => 'ja', 'nee' => 'nee', 'misschien' => 'misschien'];
 $melding = '';
@@ -49,6 +53,8 @@ if (isset($_POST['actie']) && $_POST['actie'] === 'opslaan') {
     $plaats = $plaats === '' ? null : $plaats;
     $muzikaleErvaring = trim($_POST['muzikale_ervaring'] ?? '');
     $muzikaleErvaring = $muzikaleErvaring === '' ? null : $muzikaleErvaring;
+    $opmerkingen = trim($_POST['opmerkingen'] ?? '');
+    $opmerkingen = $opmerkingen === '' ? null : $opmerkingen;
     $opDeHoogteHouden = $_POST['op_de_hoogte_houden'] ?? '';
     $opDeHoogteHouden = in_array($opDeHoogteHouden, ['0', '1'], true) ? (int) $opDeHoogteHouden : null;
     $instrument_ids = array_map('intval', $_POST['instrumenten'] ?? []);
@@ -65,9 +71,9 @@ if (isset($_POST['actie']) && $_POST['actie'] === 'opslaan') {
         $foutmelding = 'Dit e-mailadres is al in gebruik bij een andere deelnemer.';
     } else {
         $stmt = $pdo->prepare(
-            'UPDATE deelnemers SET voornaam = ?, achternaam = ?, email = ?, telefoon = ?, postcode = ?, plaats = ?, muzikale_ervaring = ?, op_de_hoogte_houden = ? WHERE id = ?'
+            'UPDATE deelnemers SET voornaam = ?, achternaam = ?, email = ?, telefoon = ?, postcode = ?, plaats = ?, muzikale_ervaring = ?, opmerkingen = ?, op_de_hoogte_houden = ? WHERE id = ?'
         );
-        $stmt->execute([$voornaam, $achternaam, $email, $telefoon, $postcode, $plaats, $muzikaleErvaring, $opDeHoogteHouden, $id]);
+        $stmt->execute([$voornaam, $achternaam, $email, $telefoon, $postcode, $plaats, $muzikaleErvaring, $opmerkingen, $opDeHoogteHouden, $id]);
         $pdo->prepare('DELETE FROM deelnemer_wijzigingen WHERE deelnemer_id = ?')->execute([$id]);
 
         // Instrumenten: bestaande koppelingen vervangen door de nu aangevinkte selectie.
@@ -261,6 +267,10 @@ $statusPerActiviteit = array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'status',
             <div class="form-group">
                 <label for="muzikale_ervaring">Muzikale ervaring</label>
                 <textarea class="w3-input" id="muzikale_ervaring" name="muzikale_ervaring" maxlength="500" rows="4"><?= htmlspecialchars($deelnemer['muzikale_ervaring'] ?? '') ?></textarea>
+            </div>
+            <div class="form-group">
+                <label for="opmerkingen">Opmerkingen</label>
+                <textarea class="w3-input" id="opmerkingen" name="opmerkingen" maxlength="1000" rows="4"><?= htmlspecialchars($deelnemer['opmerkingen'] ?? '') ?></textarea>
             </div>
 
             <h4>Instrumenten</h4>

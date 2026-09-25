@@ -3,6 +3,10 @@ require_once __DIR__ . '/connections/MozartopZaterdag.php';
 require_once __DIR__ . '/vendor/autoload.php';
 
 $pdo->exec('CREATE TABLE IF NOT EXISTS deelnemer_wijzigingen (deelnemer_id INT NOT NULL PRIMARY KEY, gemarkeerd_op DATETIME NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
+$opmerkingenKolom = $pdo->query("SHOW COLUMNS FROM deelnemers LIKE 'opmerkingen'")->fetch();
+if ($opmerkingenKolom === false) {
+    $pdo->exec('ALTER TABLE deelnemers ADD COLUMN opmerkingen TEXT NULL');
+}
 // Bewaart per formulierweergave een uniek token, zodat een pagina-refresh na versturen niet nogmaals een bevestigingsmail oplevert.
 $pdo->exec('CREATE TABLE IF NOT EXISTS aanmeldbevestiging_verzonden (token CHAR(32) NOT NULL PRIMARY KEY, verzonden_op DATETIME NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
 
@@ -151,6 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $postcode = trim($_POST['postcode'] ?? '');
         $plaats = trim($_POST['plaats'] ?? '');
         $muzikaleErvaring = trim($_POST['muzikale_ervaring'] ?? '');
+        $opmerkingen = trim($_POST['opmerkingen'] ?? '');
         $opDeHoogteHouden = $_POST['op_de_hoogte_houden'] ?? '';
         $instrumenten_gekozen = array_filter($_POST['instrumenten'] ?? []);
 
@@ -170,6 +175,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception('Muzikale ervaring mag maximaal 500 tekens bevatten.');
         }
 
+        if (mb_strlen($opmerkingen) > 1000) {
+            throw new Exception('Opmerkingen mogen maximaal 1000 tekens bevatten.');
+        }
+
         // Zoek bestaande deelnemer
         $stmt = $pdo->prepare('SELECT id FROM deelnemers WHERE email = ?');
         $stmt->execute([$email]);
@@ -178,12 +187,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($bestaande) {
             $deelnemerId = (int) $bestaande['id'];
             // Update bestaande deelnemer
-            $stmt = $pdo->prepare('UPDATE deelnemers SET voornaam = ?, achternaam = ?, telefoon = ?, postcode = ?, plaats = ?, muzikale_ervaring = ?, op_de_hoogte_houden = ? WHERE id = ?');
-            $stmt->execute([$voornaam, $achternaam, $telefoon, $postcode, $plaats, $muzikaleErvaring, (int) $opDeHoogteHouden, $deelnemerId]);
+            $stmt = $pdo->prepare('UPDATE deelnemers SET voornaam = ?, achternaam = ?, telefoon = ?, postcode = ?, plaats = ?, muzikale_ervaring = ?, opmerkingen = ?, op_de_hoogte_houden = ? WHERE id = ?');
+            $stmt->execute([$voornaam, $achternaam, $telefoon, $postcode, $plaats, $muzikaleErvaring, $opmerkingen, (int) $opDeHoogteHouden, $deelnemerId]);
         } else {
             // Maak nieuwe deelnemer
-            $stmt = $pdo->prepare('INSERT INTO deelnemers (voornaam, achternaam, email, telefoon, postcode, plaats, muzikale_ervaring, op_de_hoogte_houden) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
-            $stmt->execute([$voornaam, $achternaam, $email, $telefoon, $postcode, $plaats, $muzikaleErvaring, (int) $opDeHoogteHouden]);
+            $stmt = $pdo->prepare('INSERT INTO deelnemers (voornaam, achternaam, email, telefoon, postcode, plaats, muzikale_ervaring, opmerkingen, op_de_hoogte_houden) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
+            $stmt->execute([$voornaam, $achternaam, $email, $telefoon, $postcode, $plaats, $muzikaleErvaring, $opmerkingen, (int) $opDeHoogteHouden]);
             $deelnemerId = (int) $pdo->lastInsertId();
         }
         $stmt = $pdo->prepare('INSERT INTO deelnemer_wijzigingen (deelnemer_id, gemarkeerd_op) VALUES (?, NOW()) ON DUPLICATE KEY UPDATE gemarkeerd_op = VALUES(gemarkeerd_op)');
@@ -313,7 +322,7 @@ $geselecteerde_instrumenten = [];
 $activiteit_statussen = [];
 
 if (!empty($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)) {
-    $stmt = $pdo->prepare('SELECT id, voornaam, achternaam, email, telefoon, postcode, plaats, muzikale_ervaring, op_de_hoogte_houden FROM deelnemers WHERE email = ?');
+    $stmt = $pdo->prepare('SELECT id, voornaam, achternaam, email, telefoon, postcode, plaats, muzikale_ervaring, opmerkingen, op_de_hoogte_houden FROM deelnemers WHERE email = ?');
     $stmt->execute([$_GET['email']]);
     $gegevens = $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
 
@@ -462,6 +471,10 @@ if (!empty($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL))
                     <label for="muzikale_ervaring">Muzikale ervaring</label>
                     <p style="margin:0 0 0.5em 0; font-size:0.9em; color:#666">Omschrijf je niveau: in welk orkest speel je, heb je les, met welke stukken ben je bezig? <em>*NB. alleen nodig voor mensen die niet eerder met La Pellegrina cursussen of orkestprojecten van Dirkjan Horringa hebben meegedaan</em></p>
                     <textarea id="muzikale_ervaring" name="muzikale_ervaring" maxlength="500" rows="5"><?= htmlspecialchars($gegevens['muzikale_ervaring'] ?? '') ?></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="opmerkingen">Opmerkingen</label>
+                    <textarea id="opmerkingen" name="opmerkingen" maxlength="1000" rows="4"><?= htmlspecialchars($gegevens['opmerkingen'] ?? '') ?></textarea>
                 </div>
             </div>
 

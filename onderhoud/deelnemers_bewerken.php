@@ -188,6 +188,11 @@ foreach ($deelnemers as $deelnemer) {
             gap: 0.25em;
         }
 
+        .naam-niet-op-hoogte,
+        .naam-niet-op-hoogte input {
+            color: #d00;
+        }
+
             .actie-knop {
                 border-radius: 50%;
                 width: 2.2em;
@@ -403,7 +408,7 @@ foreach ($deelnemers as $deelnemer) {
                         <input type="hidden" name="id" value="<?= (int) $deelnemer['id'] ?>">
                         <tr data-families="<?= htmlspecialchars(implode(' ', $familiesPerDeelnemer[$deelnemer['id']])) ?>">
                             <td style="min-width:20em;">
-                                <div class="naam-velden">
+                                <div class="naam-velden<?= (int) ($deelnemer['op_de_hoogte_houden'] ?? 1) === 0 ? ' naam-niet-op-hoogte' : '' ?>">
                                     <a href="deelnemer_bewerken.php?id=<?= (int) $deelnemer['id'] ?>" title="Alle gegevens van deze deelnemer bekijken en bewerken" style="align-self:center;">&#128100;</a>
                                     <input class="w3-input" type="text" name="voornaam" value="<?= htmlspecialchars($deelnemer['voornaam']) ?>" placeholder="Voornaam" required>
                                     <input class="w3-input" type="text" name="achternaam" value="<?= htmlspecialchars($deelnemer['achternaam']) ?>" placeholder="Achternaam" required>
@@ -482,7 +487,7 @@ foreach ($deelnemers as $deelnemer) {
                 <?php $gekozenInstrumenten = $instrumentenPerDeelnemer[$deelnemer['id']] ?? []; ?>
                 <details class="deelnemer-kaart" data-families="<?= htmlspecialchars(implode(' ', $familiesPerDeelnemer[$deelnemer['id']])) ?>">
                     <summary>
-                        <?= htmlspecialchars($deelnemer['voornaam'] . ' ' . $deelnemer['achternaam']) ?>
+                        <span class="<?= (int) ($deelnemer['op_de_hoogte_houden'] ?? 1) === 0 ? 'naam-niet-op-hoogte' : '' ?>"><?= htmlspecialchars($deelnemer['voornaam'] . ' ' . $deelnemer['achternaam']) ?></span>
                         <?php if (in_array((int) $deelnemer['id'], $gemarkeerdeDeelnemerIds, true)): ?><span class="nieuwe-deelnemer-markering" title="Nieuwe of gewijzigde aanmelding; verdwijnt na opslaan" aria-label="Nieuwe of gewijzigde aanmelding" style="color:#198754;">&#9752;</span><?php endif; ?>
                         <a href="deelnemer_bewerken.php?id=<?= (int) $deelnemer['id'] ?>" title="Alle gegevens bekijken en bewerken">&#128100;</a>
                     </summary>
