@@ -245,12 +245,41 @@ foreach ($deelnemers as $deelnemer) {
         }
 
         @media (max-width: 600px) {
+            body {
+                margin: 0;
+            }
+
+            .w3-content.w3-panel {
+                width: 100%;
+                max-width: none !important;
+                margin: 0;
+                box-sizing: border-box;
+            }
+
             .tabel-scroll {
                 display: none;
             }
 
             .mobiel-lijst {
                 display: block;
+            }
+
+            .deelnemer-kaart {
+                margin-left: 0;
+                margin-right: 0;
+                border-left: 0;
+                border-right: 0;
+                border-radius: 0;
+            }
+
+            .deelnemer-kaart form {
+                align-items: stretch;
+            }
+
+            .deelnemer-kaart input,
+            .deelnemer-kaart select {
+                box-sizing: border-box;
+                width: 100%;
             }
 
             #details-knop {
