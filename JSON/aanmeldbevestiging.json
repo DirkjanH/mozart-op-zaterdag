@@ -1,4 +1,4 @@
 {
     "onderwerp": "Bevestiging aanmelding Mozart op Zaterdag",
-    "tekst": "<p>Beste {{voornaam}},</p>\r\n\r\n<p>Dank voor je aanmelding bij Mozart op Zaterdag. We hebben je gegevens goed ontvangen.</p>\r\n\r\n<p>Instrument(en): {{instrumenten}}<br>Beschikbaarheid:<br>{{beschikbaarheid}}</p>\r\n\r\n<p>Hartelijke groet,<br>Dirkjan Horringa</p>\r\n\r\n<p>P.S. Als je je gegevens of je beschikbaarheid wilt wijzigen, <a href=\"{{aanmeldlink}}\">vul dan even dit formulier in</a>. Je bestaande gegevens staan daar alvast ingevuld.</p>"
+    "tekst": "<p>Beste {{voornaam}},</p>\r\n\r\n<p>Dank voor je aanmelding bij Mozart op Zaterdag. We hebben je gegevens goed ontvangen.</p>\r\n\r\n<p>Naam: {{naam}}<br>Instrument(en): {{instrumenten}}<br>Beschikbaarheid:<br>{{beschikbaarheid}}</p>\r\n\r\n<p>Hartelijke groet,<br>Dirkjan Horringa</p>\r\n\r\n<p>P.S. Als je je gegevens of je beschikbaarheid wilt wijzigen, <a href=\"{{aanmeldlink}}\">vul dan even dit formulier in</a>. Je bestaande gegevens staan daar alvast ingevuld.</p>"
 }

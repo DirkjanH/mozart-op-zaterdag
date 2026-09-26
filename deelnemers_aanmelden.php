@@ -100,7 +100,7 @@ try {
     error_log('Aanmelding: bevestigingsmail kon niet worden geladen: ' . $e->getMessage());
     $aanmeldbevestigingMail = [
         'onderwerp' => 'Bevestiging aanmelding Mozart op Zaterdag',
-        'tekst' => '<p>Beste {{voornaam}},</p><p>Dank voor je aanmelding bij Mozart op Zaterdag.</p><p>Hartelijke groet,<br>Dirkjan Horringa</p><p>P.S. Als je je gegevens of je beschikbaarheid wilt wijzigen, <a href="{{aanmeldlink}}">vul dan even dit formulier in</a>. Je bestaande gegevens staan daar alvast ingevuld.</p>',
+        'tekst' => '<p>Beste {{voornaam}},</p><p>Dank voor je aanmelding bij Mozart op Zaterdag.</p><p>Naam: {{naam}}</p><p>Hartelijke groet,<br>Dirkjan Horringa</p><p>P.S. Als je je gegevens of je beschikbaarheid wilt wijzigen, <a href="{{aanmeldlink}}">vul dan even dit formulier in</a>. Je bestaande gegevens staan daar alvast ingevuld.</p>',
     ];
 }
 

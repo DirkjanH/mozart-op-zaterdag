@@ -9,7 +9,7 @@ $map = dirname($bestand);
 $melding = '';
 $standaardMailtekst = [
     'onderwerp' => 'Bevestiging aanmelding Mozart op Zaterdag',
-    'tekst' => '<p>Beste {{voornaam}},</p><p>Dank voor je aanmelding bij Mozart op Zaterdag. We hebben je gegevens goed ontvangen.</p><p>Instrument(en): {{instrumenten}}<br>Beschikbaarheid:<br>{{beschikbaarheid}}</p><p>Hartelijke groet,<br>Dirkjan Horringa</p><p>P.S. Als je je gegevens of je beschikbaarheid wilt wijzigen, <a href="{{aanmeldlink}}">vul dan even dit formulier in</a>. Je bestaande gegevens staan daar alvast ingevuld.</p>',
+    'tekst' => '<p>Beste {{voornaam}},</p><p>Dank voor je aanmelding bij Mozart op Zaterdag. We hebben je gegevens goed ontvangen.</p><p>Naam: {{naam}}<br>Instrument(en): {{instrumenten}}<br>Beschikbaarheid:<br>{{beschikbaarheid}}</p><p>Hartelijke groet,<br>Dirkjan Horringa</p><p>P.S. Als je je gegevens of je beschikbaarheid wilt wijzigen, <a href="{{aanmeldlink}}">vul dan even dit formulier in</a>. Je bestaande gegevens staan daar alvast ingevuld.</p>',
 ];
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
