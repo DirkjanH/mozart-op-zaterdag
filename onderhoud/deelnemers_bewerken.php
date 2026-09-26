@@ -324,6 +324,8 @@ foreach ($deelnemers as $deelnemer) {
             return true;
         }
 
+        var filterSleutel = 'onderhoud-filter-' + window.location.pathname;
+
         function filterDeelnemers(keuze, knop) {
             document.querySelectorAll('[data-families]').forEach(function (element) {
                 if (keuze === 'alles') {
@@ -336,6 +338,7 @@ foreach ($deelnemers as $deelnemer) {
             document.querySelectorAll('.categorie-knop').forEach(function (element) {
                 element.setAttribute('aria-pressed', element === knop ? 'true' : 'false');
             });
+            localStorage.setItem(filterSleutel, keuze);
         }
 
         // Onthoud de scrollpositie zodat je na opslaan/verwijderen terugkomt waar je bezig was.
@@ -366,6 +369,18 @@ foreach ($deelnemers as $deelnemer) {
                 form.addEventListener('submit', bewaarScrollPositie);
             });
         })();
+
+        // Herstel de laatst gekozen filterknop, ook na een pagina-herlaad.
+        (function () {
+            var opgeslagenKeuze = localStorage.getItem(filterSleutel);
+            if (!opgeslagenKeuze) {
+                return;
+            }
+            var knop = document.querySelector('.categorie-knop[data-keuze="' + opgeslagenKeuze + '"]');
+            if (knop) {
+                filterDeelnemers(opgeslagenKeuze, knop);
+            }
+        })();
     </script>
 </head>
 
@@ -377,12 +392,12 @@ foreach ($deelnemers as $deelnemer) {
         <?php endif; ?>
 
         <p class="categorie-knoppen" aria-label="Deelnemers filteren">
-            <button class="w3-button w3-border categorie-knop" type="button" aria-pressed="true" onclick="filterDeelnemers('alles', this)"><strong><?= count($deelnemers) ?> deelnemers</strong></button>
-            <button class="w3-button w3-border categorie-knop" type="button" aria-pressed="false" onclick="filterDeelnemers('nieuw_gewijzigd', this)">&#9752; Nieuw/gewijzigd: <?= $aantalNieuweGewijzigdeDeelnemers ?></button>
-            <button class="w3-button w3-border categorie-knop" type="button" aria-pressed="false" onclick="filterDeelnemers('strijkers', this)">Strijkers: <?= $deelnemerTellingen['strijkers'] ?></button>
-            <button class="w3-button w3-border categorie-knop" type="button" aria-pressed="false" onclick="filterDeelnemers('houtblazers', this)">Houtblazers: <?= $deelnemerTellingen['houtblazers'] ?></button>
-            <button class="w3-button w3-border categorie-knop" type="button" aria-pressed="false" onclick="filterDeelnemers('koperblazers', this)">Koperblazers: <?= $deelnemerTellingen['koperblazers'] ?></button>
-            <button class="w3-button w3-border categorie-knop" type="button" aria-pressed="false" onclick="filterDeelnemers('overig', this)">Overig: <?= $deelnemerTellingen['overig'] ?></button>
+            <button class="w3-button w3-border categorie-knop" type="button" data-keuze="alles" aria-pressed="true" onclick="filterDeelnemers('alles', this)"><strong><?= count($deelnemers) ?> deelnemers</strong></button>
+            <button class="w3-button w3-border categorie-knop" type="button" data-keuze="nieuw_gewijzigd" aria-pressed="false" onclick="filterDeelnemers('nieuw_gewijzigd', this)">&#9752; Nieuw/gewijzigd: <?= $aantalNieuweGewijzigdeDeelnemers ?></button>
+            <button class="w3-button w3-border categorie-knop" type="button" data-keuze="strijkers" aria-pressed="false" onclick="filterDeelnemers('strijkers', this)">Strijkers: <?= $deelnemerTellingen['strijkers'] ?></button>
+            <button class="w3-button w3-border categorie-knop" type="button" data-keuze="houtblazers" aria-pressed="false" onclick="filterDeelnemers('houtblazers', this)">Houtblazers: <?= $deelnemerTellingen['houtblazers'] ?></button>
+            <button class="w3-button w3-border categorie-knop" type="button" data-keuze="koperblazers" aria-pressed="false" onclick="filterDeelnemers('koperblazers', this)">Koperblazers: <?= $deelnemerTellingen['koperblazers'] ?></button>
+            <button class="w3-button w3-border categorie-knop" type="button" data-keuze="overig" aria-pressed="false" onclick="filterDeelnemers('overig', this)">Overig: <?= $deelnemerTellingen['overig'] ?></button>
         </p>
 
         <button id="details-knop" type="button" class="w3-button w3-blue w3-margin-bottom" onclick="toggleDetails()">E-mail / telefoon / plaats / voorkeur tonen</button>
