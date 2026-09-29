@@ -481,6 +481,7 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
             }
 
             $titel = $activiteit['omschrijving'] ?: 'Mozart op Zaterdag';
+            $gegenereerdOp = (new DateTimeImmutable('now', new DateTimeZone('Europe/Amsterdam')))->format('d-m-Y H:i');
             $omschrijvingHtml = $toelichting === '' ? '' : "        <div>\n" . $toelichting . "\n        </div>\n";
             $solistenHtml = $solisten === '' ? '' : "        <h2>De solisten</h2>\n        <div>\n" . $solisten . "\n        </div>\n";
             $bezettingHtml = "        <h2>Bezetting</h2>\n";
@@ -499,7 +500,7 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
             $gegenereerd .= "        <?php require_once '../navigatie.htm'; ?>\n";
             $gegenereerd .= '        <h3>Mozart op Zaterdag op ' . date('d F Y', strtotime($datum)) . ":</h3>\n";
             $gegenereerd .= '        <h1>' . html($titel) . "</h1>\n";
-            $gegenereerd .= '        <p><small>Versie ' . $versie . ', gegenereerd op ' . date('d-m-Y H:i') . "</small></p>\n";
+            $gegenereerd .= '        <p><small>Versie ' . $versie . ', gegenereerd op ' . $gegenereerdOp . "</small></p>\n";
             $gegenereerd .= $omschrijvingHtml;
             $gegenereerd .= $solistenHtml;
             $gegenereerd .= "        <h3>Partijen</h3>\n" . $partijenHtml;
