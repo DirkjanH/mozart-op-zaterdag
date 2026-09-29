@@ -864,6 +864,7 @@ if (is_array($wachtrij)) {
                 versionCheck: false,
                 height: 360,
                 language: 'nl',
+                allowedContent: true,
                 versionCheck: false,
                 extraPlugins: 'autogrow,autolink,codesnippet,emoji,placeholder,tableresize,uicolor',
                 removePlugins: 'a11ychecker,ckfinder,cloudservices,easyimage,exportpdf',
