@@ -382,16 +382,26 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
         } else {
             $partijen = leesPartijen($map, $instrumenten);
             $verwijderd = 0;
+            $verwijderdePartijen = array_values(array_unique(array_map('basename', $paginaConfiguratie['verwijderde_partijen'] ?? [])));
+            if ($herbouwPartijen) {
+                $verwijderdePartijen = [];
+            }
             if ($verwijderPartijen) {
                 $beschikbareBestanden = array_flip(array_column($partijen, 'bestand'));
                 foreach (array_map('basename', $_POST['verwijder'] ?? []) as $bestand) {
                     $pad = $map . DIRECTORY_SEPARATOR . $bestand;
                     if (isset($beschikbareBestanden[$bestand]) && is_file($pad) && unlink($pad)) {
                         $verwijderd++;
+                        $verwijderdePartijen[] = $bestand;
                     }
                 }
+                $verwijderdePartijen = array_values(array_unique($verwijderdePartijen));
                 $partijen = leesPartijen($map, $instrumenten);
             }
+            $partijen = array_values(array_filter(
+                $partijen,
+                static fn (array $partij): bool => !in_array($partij['bestand'], $verwijderdePartijen, true)
+            ));
             $partijConfiguratie = $paginaConfiguratie['partijen'] ?? [];
             $beschikbareBestanden = array_flip(array_column($partijen, 'bestand'));
             foreach ($_POST['partijen'] ?? [] as $partij) {
@@ -414,6 +424,7 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
                 'solisten' => $solisten,
                 'toon_deelnemers' => $toonDeelnemers,
                 'partijen' => $partijConfiguratie,
+                'verwijderde_partijen' => $verwijderdePartijen,
             ];
             if (!bewaarPaginaConfiguratie($map, $paginaConfiguratie)) {
                 $melding = 'De pagina-inhoud kon niet worden opgeslagen.';
@@ -551,6 +562,10 @@ if (isset($_POST['actie']) && $_POST['actie'] === 'laad_json') {
 
 if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
     $voorbeeldPartijen = leesPartijen(dirname(__DIR__) . '/' . $gekozenActiviteit['datum'], $instrumenten);
+    $voorbeeldPartijen = array_values(array_filter(
+        $voorbeeldPartijen,
+        static fn (array $partij): bool => !in_array($partij['bestand'], $paginaConfiguratie['verwijderde_partijen'] ?? [], true)
+    ));
     $voorbeeldPartijen = sorteerPartijenVolgensConfiguratie($voorbeeldPartijen, $paginaConfiguratie['partijen'] ?? []);
 }
 ?>
