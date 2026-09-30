@@ -8,7 +8,13 @@ $stmt = $pdo->prepare("SELECT d.voornaam, d.achternaam, ad.partij, i.naam AS ins
     JOIN activiteiten a ON a.id = ad.activiteit_id
     LEFT JOIN instrumenten i ON i.id = ad.instrument_id
     WHERE a.datum = ? AND ad.status <> 'nee' AND ad.toegelaten = 1
-    ORDER BY COALESCE(i.id, 999999), ad.partij, d.achternaam, d.voornaam");
+    ORDER BY CASE WHEN i.id IS NULL THEN 1 ELSE 0 END,
+        CASE WHEN LOWER(TRIM(i.naam)) = 'pauken' THEN COALESCE((SELECT MIN(i2.id) FROM instrumenten i2 WHERE LOWER(TRIM(i2.naam)) LIKE 'trompet%'), i.id) ELSE i.id END,
+        CASE WHEN LOWER(TRIM(i.naam)) = 'pauken' THEN 1 ELSE 0 END,
+        CASE WHEN LOWER(TRIM(i.naam)) = 'viool' AND LOWER(COALESCE(ad.partij, '')) REGEXP '2' THEN 2 WHEN LOWER(TRIM(i.naam)) = 'viool' THEN 1 ELSE 0 END,
+        CASE WHEN LOWER(COALESCE(ad.partij, '')) REGEXP 'concertmeester|aanvoerder' THEN 0 ELSE 1 END,
+        CASE WHEN TRIM(COALESCE(ad.partij, '')) = '' THEN 1 ELSE 0 END,
+        ad.partij, d.achternaam, d.voornaam");
 $stmt->execute(['2026-09-26']);
 $deelnemers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
