@@ -1,4 +1,17 @@
-<?php require_once '../includes/inloggen.php'; ?>
+<?php
+require_once '../includes/inloggen.php';
+require_once '../connections/MozartopZaterdag.php';
+
+$stmt = $pdo->prepare("SELECT d.voornaam, d.achternaam, ad.partij, i.naam AS instrument
+    FROM activiteit_deelnemers ad
+    JOIN deelnemers d ON d.id = ad.deelnemer_id
+    JOIN activiteiten a ON a.id = ad.activiteit_id
+    LEFT JOIN instrumenten i ON i.id = ad.instrument_id
+    WHERE a.datum = ? AND ad.status <> 'nee' AND ad.toegelaten = 1
+    ORDER BY COALESCE(i.id, 999999), ad.partij, d.achternaam, d.voornaam");
+$stmt->execute(['2026-09-26']);
+$deelnemers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -108,7 +121,7 @@
             deelnemers.</p>
         <div class="">
             <h2>Bezetting</h2>
-            <p>Er zijn nu 25 deelnemers. De bezetting is compleet.</p>
+            <p>Er zijn <?= count($deelnemers) ?> toegelaten deelnemers.</p>
             <table class="w3-table w3-striped w3-bordered" id="deelnemers">
                 <thead>
                     <tr>
@@ -118,131 +131,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Erik</td>
-                        <td>van Kassel</td>
-                        <td>hobo 1</td>
-                    </tr>
-                    <tr>
-                        <td>Liesbeth</td>
-                        <td>Feikema</td>
-                        <td>hobo 2</td>
-                    </tr>
-                    <tr>
-                        <td>Ietsje</td>
-                        <td>Bontekoe</td>
-                        <td>hoorn 1</td>
-                    </tr>
-                    <tr>
-                        <td>Wim</td>
-                        <td>Kuppen</td>
-                        <td>hoorn 2</td>
-                    </tr>
-                    <tr>
-                        <td>Frits </td>
-                        <td>Muusse </td>
-                        <td>viool 1</td>
-                    </tr>
-                    <tr>
-                        <td>Carla</td>
-                        <td>Van Kassel-Westhof</td>
-                        <td>viool 1 (concertmeester)</td>
-                    </tr>
-                    <tr>
-                        <td>Ruben</td>
-                        <td>Faas</td>
-                        <td>viool 1</td>
-                    </tr>
-                    <tr>
-                        <td>Sophie</td>
-                        <td>Vermond</td>
-                        <td>viool 1</td>
-                    </tr>
-                    <tr>
-                        <td>Corinne</td>
-                        <td>Britzel</td>
-                        <td>viool 1</td>
-                    </tr>
-                    <tr>
-                        <td>Janne</td>
-                        <td>den Blaauwen</td>
-                        <td>viool 1</td>
-                    </tr>
-                    <tr>
-                        <td>Daniela</td>
-                        <td>Roeland</td>
-                        <td>viool 2</td>
-                    </tr>
-                    <tr>
-                        <td>Edith</td>
-                        <td>Mathot</td>
-                        <td>viool 2</td>
-                    </tr>
-                    <tr>
-                        <td>Erika</td>
-                        <td>Mathot</td>
-                        <td>viool 2</td>
-                    </tr>
-                    <tr>
-                        <td>Jan</td>
-                        <td>Prins</td>
-                        <td>viool 2</td>
-                    </tr>
-                    <tr>
-                        <td>Peter</td>
-                        <td>Klusener</td>
-                        <td>viool 2</td>
-                    </tr>
-                    <tr>
-                        <td>Marijke</td>
-                        <td>Huijgen</td>
-                        <td>viool 2 (aanvoerder)</td>
-                    </tr>
-                    <tr>
-                        <td>Maaike</td>
-                        <td>Gerlsma</td>
-                        <td>altviool</td>
-                    </tr>
-                    <tr>
-                        <td>Lotte</td>
-                        <td>Pull ter Gunne</td>
-                        <td>altviool</td>
-                    </tr>
-                    <tr>
-                        <td>Sytse</td>
-                        <td>Dotinga</td>
-                        <td>altviool</td>
-                    </tr>
-                    <tr>
-                        <td>Berpke</td>
-                        <td>van Oers</td>
-                        <td>altviool</td>
-                    </tr>
-                    <tr>
-                        <td>Robin</td>
-                        <td>Gerretsen</td>
-                        <td>cello</td>
-                    </tr>
-                    <tr>
-                        <td>Anke</td>
-                        <td>Meester</td>
-                        <td>cello</td>
-                    </tr>
-                    <tr>
-                        <td>Friso</td>
-                        <td>van der Veen</td>
-                        <td>cello</td>
-                    </tr>
-                    <tr>
-                        <td>Meike</td>
-                        <td>Jongejan </td>
-                        <td>cello (aanvoerder)</td>
-                    </tr>
-                    <tr>
-                        <td>Anke</td>
-                        <td>Muusse</td>
-                        <td>contrabas</td>
-                    </tr>
+                    <?php if ($deelnemers === []): ?>
+                        <tr><td colspan="3">Er zijn nog geen deelnemers toegelaten.</td></tr>
+                    <?php else: ?>
+                        <?php foreach ($deelnemers as $deelnemer): ?>
+                            <tr>
+                                <td><?= htmlspecialchars((string) $deelnemer['voornaam'], ENT_QUOTES, 'UTF-8') ?></td>
+                                <td><?= htmlspecialchars((string) $deelnemer['achternaam'], ENT_QUOTES, 'UTF-8') ?></td>
+                                <td><?= htmlspecialchars(trim(($deelnemer['instrument'] ?? '') . ' ' . ($deelnemer['partij'] ?? '')), ENT_QUOTES, 'UTF-8') ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
             </table>
         </div>
     </div>

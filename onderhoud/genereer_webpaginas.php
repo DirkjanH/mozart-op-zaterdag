@@ -437,17 +437,6 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
             } elseif (!$genereerPagina) {
                 $melding = 'Pagina-inhoud opgeslagen.';
             } else {
-            $stmt = $pdo->prepare(
-                'SELECT d.voornaam, d.achternaam, ad.partij, i.naam AS instrument
-                 FROM activiteit_deelnemers ad
-                 JOIN deelnemers d ON d.id = ad.deelnemer_id
-                 LEFT JOIN instrumenten i ON i.id = ad.instrument_id
-                 WHERE ad.activiteit_id = ? AND ad.toegelaten = 1
-                 ORDER BY COALESCE(i.id, 999999), ad.partij, d.achternaam, d.voornaam'
-            );
-            $stmt->execute([$activiteitId]);
-            $deelnemers = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
             $partijenHtml = '';
             foreach (partijenPerWerk($partijen) as $kvNummer => $werkPartijen) {
                 $partiturenHtml = '';
@@ -475,30 +464,43 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
                 $partijenHtml = "        <p>Er zijn nog geen PDF-partijen in deze map.</p>\n";
             }
 
-            $deelnemersHtml = '';
-            foreach (maakBezettingsRijen($deelnemers, $instrumenten, $gewensteBezetting ?? []) as $bezettingsRij) {
-                if ($bezettingsRij['vacature']) {
-                    $deelnemersHtml .= '                <tr><td></td><td><i>vacature</i></td><td>' . html($bezettingsRij['stemgroep']) . "</td></tr>\n";
-                    continue;
-                }
-                $deelnemer = $bezettingsRij['speler'];
-                $instrument = $deelnemer['instrument'] ?? 'onbekend instrument';
-                $partij = trim($deelnemer['partij'] ?? '');
-                $instrumentWeergave = $partij === '' ? $instrument : $instrument . ' ' . $partij;
-                $deelnemersHtml .= '                <tr><td>' . html($deelnemer['voornaam']) . '</td><td>' . html($deelnemer['achternaam']) . '</td><td>' . html($instrumentWeergave) . "</td></tr>\n";
-            }
-            if ($deelnemersHtml === '') {
-                $deelnemersHtml = "                <tr><td colspan=\"3\">Er zijn nog geen deelnemers toegelaten.</td></tr>\n";
-            }
-
             $titel = $activiteit['omschrijving'] ?: 'Mozart op Zaterdag';
             $gegenereerdOp = (new DateTimeImmutable('now', new DateTimeZone('Europe/Amsterdam')))->format('d-m-Y H:i');
             $omschrijvingHtml = $toelichting === '' ? '' : "        <div>\n" . $toelichting . "\n        </div>\n";
             $solistenHtml = $solisten === '' ? '' : "        <h2>De solisten</h2>\n        <div>\n" . $solisten . "\n        </div>\n";
             $bezettingHtml = "        <h2>Bezetting</h2>\n";
             if ($toonDeelnemers) {
-                $bezettingHtml .= '        <p>Er zijn ' . count($deelnemers) . " toegelaten deelnemers.</p>\n";
-                $bezettingHtml .= "        <table class=\"w3-table w3-striped w3-bordered\" id=\"deelnemers\">\n            <thead><tr><th>voornaam</th><th>achternaam</th><th>instrument</th></tr></thead>\n            <tbody>\n" . $deelnemersHtml . "            </tbody>\n        </table>\n";
+                $bezettingHtml .= str_replace('__ACTIVITEIT_ID__', (string) $activiteitId, <<<'PHP'
+        <?php
+        require_once '../connections/MozartopZaterdag.php';
+        $stmt = $pdo->prepare("SELECT d.voornaam, d.achternaam, ad.partij, i.naam AS instrument
+             FROM activiteit_deelnemers ad
+             JOIN deelnemers d ON d.id = ad.deelnemer_id
+             LEFT JOIN instrumenten i ON i.id = ad.instrument_id
+             WHERE ad.activiteit_id = ? AND ad.status <> 'nee' AND ad.toegelaten = 1
+             ORDER BY COALESCE(i.id, 999999), ad.partij, d.achternaam, d.voornaam");
+        $stmt->execute([__ACTIVITEIT_ID__]);
+        $deelnemers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        ?>
+        <p>Er zijn <?= count($deelnemers) ?> toegelaten deelnemers.</p>
+        <table class="w3-table w3-striped w3-bordered" id="deelnemers">
+            <thead><tr><th>voornaam</th><th>achternaam</th><th>instrument</th></tr></thead>
+            <tbody>
+                <?php if ($deelnemers === []): ?>
+                    <tr><td colspan="3">Er zijn nog geen deelnemers toegelaten.</td></tr>
+                <?php else: ?>
+                    <?php foreach ($deelnemers as $deelnemer): ?>
+                        <tr>
+                            <td><?= htmlspecialchars((string) $deelnemer['voornaam'], ENT_QUOTES, 'UTF-8') ?></td>
+                            <td><?= htmlspecialchars((string) $deelnemer['achternaam'], ENT_QUOTES, 'UTF-8') ?></td>
+                            <td><?= htmlspecialchars(trim(($deelnemer['instrument'] ?? '') . ' ' . ($deelnemer['partij'] ?? '')), ENT_QUOTES, 'UTF-8') ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+PHP
+                );
             } else {
                 $bezettingHtml .= "        <p>Hier wordt binnenkort de bezetting getoond</p>\n";
             }
