@@ -6,6 +6,9 @@ require_once __DIR__ . '/../includes/bezetting.inc.php';
 if ($pdo->query("SHOW COLUMNS FROM activiteiten LIKE 'gewenste_bezetting'")->fetch() === false) {
     $pdo->exec('ALTER TABLE activiteiten ADD COLUMN gewenste_bezetting VARCHAR(100) NULL');
 }
+if ($pdo->query("SHOW COLUMNS FROM activiteiten LIKE 'opmerkingen'")->fetch() === false) {
+    $pdo->exec('ALTER TABLE activiteiten ADD COLUMN opmerkingen TEXT NULL');
+}
 
 $melding = '';
 
@@ -45,6 +48,8 @@ if (isset($_POST['actie']) && $_POST['actie'] === 'opslaan') {
     $plaats = trim($_POST['plaats'] ?? '');
     $gewenste_bezetting = trim($_POST['gewenste_bezetting'] ?? '');
     $gewenste_bezetting = $gewenste_bezetting === '' ? null : $gewenste_bezetting;
+    $opmerkingen = trim($_POST['opmerkingen'] ?? '');
+    $opmerkingen = $opmerkingen === '' ? null : $opmerkingen;
     $werk_ids = array_map('intval', $_POST['werken'] ?? []);
     $id = $_POST['id'] ?? '';
 
@@ -62,12 +67,12 @@ if (isset($_POST['actie']) && $_POST['actie'] === 'opslaan') {
         $omschrijving = $omschrijving === '' ? null : $omschrijving;
 
         if ($id !== '') {
-            $stmt = $pdo->prepare('UPDATE activiteiten SET datum = ?, plaats = ?, gewenste_bezetting = ?, omschrijving = ? WHERE id = ?');
-            $stmt->execute([$datum, $plaats, $gewenste_bezetting, $omschrijving, $id]);
+            $stmt = $pdo->prepare('UPDATE activiteiten SET datum = ?, plaats = ?, gewenste_bezetting = ?, omschrijving = ?, opmerkingen = ? WHERE id = ?');
+            $stmt->execute([$datum, $plaats, $gewenste_bezetting, $omschrijving, $opmerkingen, $id]);
             $melding = 'Activiteit bijgewerkt.';
         } else {
-            $stmt = $pdo->prepare('INSERT INTO activiteiten (datum, plaats, gewenste_bezetting, omschrijving) VALUES (?, ?, ?, ?)');
-            $stmt->execute([$datum, $plaats, $gewenste_bezetting, $omschrijving]);
+            $stmt = $pdo->prepare('INSERT INTO activiteiten (datum, plaats, gewenste_bezetting, omschrijving, opmerkingen) VALUES (?, ?, ?, ?, ?)');
+            $stmt->execute([$datum, $plaats, $gewenste_bezetting, $omschrijving, $opmerkingen]);
             $id = $pdo->lastInsertId();
             $melding = 'Activiteit toegevoegd.';
         }
@@ -205,6 +210,7 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
         <?php if ($melding !== ''): ?>
             <p class="w3-panel w3-pale-green w3-leftbar w3-border-green"><?= htmlspecialchars($melding) ?></p>
         <?php endif; ?>
+        <button id="opmerkingen-knop" type="button" class="w3-button w3-blue w3-margin-bottom" onclick="toggleOpmerkingen()">Opmerkingen tonen</button>
 
         <div class="tabel-scroll">
             <table class="w3-table w3-bordered w3-striped w3-small">
@@ -214,6 +220,7 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
                     <th>Werken</th>
                     <th>Omschrijving</th>
                     <th>Gewenste bezetting</th>
+                    <th class="kolom-opmerkingen" hidden>Opmerkingen</th>
                     <th class="actie-kolom"></th>
                 </tr>
                 <?php foreach ($activiteiten as $activiteit): ?>
@@ -235,6 +242,7 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
                             </td>
                             <td><input class="w3-input" type="text" name="omschrijving" value="<?= htmlspecialchars($activiteit['omschrijving'] ?? '') ?>" style="min-width:24em;"></td>
                             <td><input class="w3-input" type="text" name="gewenste_bezetting" value="<?= htmlspecialchars($activiteit['gewenste_bezetting'] ?? '') ?>" placeholder="0201-2000-timp-66442" maxlength="100" style="min-width:18em;"></td>
+                            <td class="kolom-opmerkingen" hidden><textarea class="w3-input" name="opmerkingen" rows="2" style="min-width:20em;"><?= htmlspecialchars($activiteit['opmerkingen'] ?? '') ?></textarea></td>
                             <td class="actie-kolom">
                                 <button class="w3-button w3-blue actie-knop" type="submit" title="Activiteit opslaan" aria-label="Activiteit opslaan">&#10003;</button>
                                 <button class="w3-button w3-orange actie-knop" type="submit" name="actie" value="wissen_werken" formnovalidate title="Gekozen werken wissen" aria-label="Gekozen werken wissen" onclick="return confirm('De gekozen werken van deze activiteit wissen? De activiteit zelf blijft bestaan.');">&#8635;</button>
@@ -258,6 +266,7 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
                         </td>
                         <td><input class="w3-input" type="text" name="omschrijving" placeholder="Nieuwe activiteit, of kies werken hiernaast" style="min-width:24em;"></td>
                         <td><input class="w3-input" type="text" name="gewenste_bezetting" placeholder="0201-0200-timp-66442" maxlength="100" style="min-width:18em;"></td>
+                        <td class="kolom-opmerkingen" hidden><textarea class="w3-input" name="opmerkingen" rows="2" style="min-width:20em;"></textarea></td>
                         <td><button class="w3-button w3-blue actie-knop" type="submit" title="Activiteit toevoegen" aria-label="Activiteit toevoegen">&#10003;</button></td>
                     </tr>
                 </form>
@@ -265,6 +274,17 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
         </div>
     </div>
     <script>
+        function toggleOpmerkingen() {
+            var kolommen = document.querySelectorAll('.kolom-opmerkingen');
+            var tonen = kolommen.length > 0 && kolommen[0].hidden;
+            kolommen.forEach(function (kolom) {
+                kolom.hidden = !tonen;
+            });
+            document.querySelector('#opmerkingen-knop').textContent = tonen
+                ? 'Opmerkingen verbergen'
+                : 'Opmerkingen tonen';
+        }
+
         // Onthoud de scrollpositie zodat je na opslaan/verwijderen terugkomt waar je bezig was.
         (function () {
             var scrollSleutel = 'onderhoud-scroll-' + window.location.pathname;
