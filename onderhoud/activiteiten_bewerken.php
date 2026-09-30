@@ -219,7 +219,7 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
     <div class="pagina w3-mobile w3-white w3-panel">
         <div class="pagina-kop">
             <h3>Activiteiten bewerken</h3>
-            <button id="opmerkingen-knop" type="button" class="w3-button w3-blue" onclick="toggleOpmerkingen()" aria-expanded="false">Locatie en opmerkingen tonen</button>
+            <button id="opmerkingen-knop" type="button" class="w3-button w3-blue" aria-expanded="false">Locatie en opmerkingen tonen</button>
         </div>
         <?php if ($melding !== ''): ?>
             <p class="w3-panel w3-pale-green w3-leftbar w3-border-green"><?= htmlspecialchars($melding) ?></p>
@@ -229,11 +229,11 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
             <table class="w3-table w3-bordered w3-striped w3-small">
                 <tr>
                     <th>Datum</th>
-                    <th class="kolom-locatie" hidden>Plaats</th>
+                    <th class="kolom-details" hidden>Plaats</th>
                     <th>Werken</th>
                     <th>Omschrijving</th>
                     <th>Gewenste bezetting</th>
-                    <th class="kolom-opmerkingen" hidden>Opmerkingen</th>
+                    <th class="kolom-details" hidden>Opmerkingen</th>
                     <th class="actie-kolom"></th>
                 </tr>
                 <?php foreach ($activiteiten as $activiteit): ?>
@@ -243,7 +243,7 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
                         <input type="hidden" name="id" value="<?= (int) $activiteit['id'] ?>">
                         <tr>
                             <td><input class="w3-input" type="date" name="datum" value="<?= htmlspecialchars($activiteit['datum']) ?>" required></td>
-                            <td class="kolom-locatie" hidden><input class="w3-input" type="text" name="plaats" value="<?= htmlspecialchars($activiteit['plaats']) ?>" style="width:12em;" required></td>
+                            <td class="kolom-details" hidden><input class="w3-input" type="text" name="plaats" value="<?= htmlspecialchars($activiteit['plaats']) ?>" style="width:12em;" required></td>
                             <td>
                                 <select class="w3-select" name="werken[]" multiple size="1" style="min-width:16em;">
                                     <?php foreach ($werken as $werk): ?>
@@ -255,7 +255,7 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
                             </td>
                             <td><input class="w3-input" type="text" name="omschrijving" value="<?= htmlspecialchars($activiteit['omschrijving'] ?? '') ?>" style="min-width:24em;"></td>
                             <td><input class="w3-input" type="text" name="gewenste_bezetting" value="<?= htmlspecialchars($activiteit['gewenste_bezetting'] ?? '') ?>" placeholder="0201-2000-timp-66442" maxlength="100" style="min-width:18em;"></td>
-                            <td class="kolom-opmerkingen" hidden><textarea class="w3-input" name="opmerkingen" rows="2" style="min-width:20em;"><?= htmlspecialchars($activiteit['opmerkingen'] ?? '') ?></textarea></td>
+                            <td class="kolom-details" hidden><textarea class="w3-input" name="opmerkingen" rows="2" style="min-width:20em;"><?= htmlspecialchars($activiteit['opmerkingen'] ?? '') ?></textarea></td>
                             <td class="actie-kolom">
                                 <button class="w3-button w3-blue actie-knop" type="submit" title="Activiteit opslaan" aria-label="Activiteit opslaan">&#10003;</button>
                                 <button class="w3-button w3-orange actie-knop" type="submit" name="actie" value="wissen_werken" formnovalidate title="Gekozen werken wissen" aria-label="Gekozen werken wissen" onclick="return confirm('De gekozen werken van deze activiteit wissen? De activiteit zelf blijft bestaan.');">&#8635;</button>
@@ -269,7 +269,7 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
                     <input type="hidden" name="actie" value="opslaan">
                     <tr>
                         <td><input class="w3-input" type="date" name="datum" value="<?= htmlspecialchars($voorgesteldeDatum) ?>" required></td>
-                        <td class="kolom-locatie" hidden><input class="w3-input" type="text" name="plaats" value="Marnixzaal" style="width:12em;" required></td>
+                        <td class="kolom-details" hidden><input class="w3-input" type="text" name="plaats" value="Marnixzaal" style="width:12em;" required></td>
                         <td>
                             <select class="w3-select" name="werken[]" multiple size="1" style="min-width:16em;">
                                 <?php foreach ($werken as $werk): ?>
@@ -279,7 +279,7 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
                         </td>
                         <td><input class="w3-input" type="text" name="omschrijving" placeholder="Nieuwe activiteit, of kies werken hiernaast" style="min-width:24em;"></td>
                         <td><input class="w3-input" type="text" name="gewenste_bezetting" placeholder="0201-0200-timp-66442" maxlength="100" style="min-width:18em;"></td>
-                        <td class="kolom-opmerkingen" hidden><textarea class="w3-input" name="opmerkingen" rows="2" style="min-width:20em;"></textarea></td>
+                        <td class="kolom-details" hidden><textarea class="w3-input" name="opmerkingen" rows="2" style="min-width:20em;"></textarea></td>
                         <td><button class="w3-button w3-blue actie-knop" type="submit" title="Activiteit toevoegen" aria-label="Activiteit toevoegen">&#10003;</button></td>
                     </tr>
                 </form>
@@ -287,16 +287,16 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
         </div>
     </div>
     <script>
-        function toggleOpmerkingen() {
-            var kolommen = document.querySelectorAll('.kolom-locatie, .kolom-opmerkingen');
-            var tonen = kolommen.length > 0 && kolommen[0].hidden;
+        document.querySelector('#opmerkingen-knop').addEventListener('click', function () {
+            var knop = this;
+            var kolommen = document.querySelectorAll('.kolom-details');
+            var tonen = knop.getAttribute('aria-expanded') !== 'true';
             kolommen.forEach(function (kolom) {
                 kolom.hidden = !tonen;
             });
-            var knop = document.querySelector('#opmerkingen-knop');
             knop.textContent = tonen ? 'Locatie en opmerkingen verbergen' : 'Locatie en opmerkingen tonen';
             knop.setAttribute('aria-expanded', tonen ? 'true' : 'false');
-        }
+        });
 
         // Onthoud de scrollpositie zodat je na opslaan/verwijderen terugkomt waar je bezig was.
         (function () {
