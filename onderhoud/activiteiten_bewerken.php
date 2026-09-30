@@ -156,6 +156,17 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
             margin: 8px 0;
         }
 
+        .pagina-kop {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1em;
+        }
+
+        .pagina-kop button {
+            flex: 0 0 auto;
+        }
+
         .tabel-scroll {
             flex: 1 1 auto;
             min-height: 0;
@@ -206,17 +217,19 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
 
 <body>
     <div class="pagina w3-mobile w3-white w3-panel">
-        <h3>Activiteiten bewerken</h3>
+        <div class="pagina-kop">
+            <h3>Activiteiten bewerken</h3>
+            <button id="opmerkingen-knop" type="button" class="w3-button w3-blue" onclick="toggleOpmerkingen()" aria-expanded="false">Locatie en opmerkingen tonen</button>
+        </div>
         <?php if ($melding !== ''): ?>
             <p class="w3-panel w3-pale-green w3-leftbar w3-border-green"><?= htmlspecialchars($melding) ?></p>
         <?php endif; ?>
-        <button id="opmerkingen-knop" type="button" class="w3-button w3-blue w3-margin-bottom" onclick="toggleOpmerkingen()">Opmerkingen tonen</button>
 
         <div class="tabel-scroll">
             <table class="w3-table w3-bordered w3-striped w3-small">
                 <tr>
                     <th>Datum</th>
-                    <th>Plaats</th>
+                    <th class="kolom-locatie" hidden>Plaats</th>
                     <th>Werken</th>
                     <th>Omschrijving</th>
                     <th>Gewenste bezetting</th>
@@ -230,7 +243,7 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
                         <input type="hidden" name="id" value="<?= (int) $activiteit['id'] ?>">
                         <tr>
                             <td><input class="w3-input" type="date" name="datum" value="<?= htmlspecialchars($activiteit['datum']) ?>" required></td>
-                            <td><input class="w3-input" type="text" name="plaats" value="<?= htmlspecialchars($activiteit['plaats']) ?>" style="width:12em;" required></td>
+                            <td class="kolom-locatie" hidden><input class="w3-input" type="text" name="plaats" value="<?= htmlspecialchars($activiteit['plaats']) ?>" style="width:12em;" required></td>
                             <td>
                                 <select class="w3-select" name="werken[]" multiple size="1" style="min-width:16em;">
                                     <?php foreach ($werken as $werk): ?>
@@ -256,7 +269,7 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
                     <input type="hidden" name="actie" value="opslaan">
                     <tr>
                         <td><input class="w3-input" type="date" name="datum" value="<?= htmlspecialchars($voorgesteldeDatum) ?>" required></td>
-                        <td><input class="w3-input" type="text" name="plaats" value="Marnixzaal" style="width:12em;" required></td>
+                        <td class="kolom-locatie" hidden><input class="w3-input" type="text" name="plaats" value="Marnixzaal" style="width:12em;" required></td>
                         <td>
                             <select class="w3-select" name="werken[]" multiple size="1" style="min-width:16em;">
                                 <?php foreach ($werken as $werk): ?>
@@ -275,14 +288,14 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
     </div>
     <script>
         function toggleOpmerkingen() {
-            var kolommen = document.querySelectorAll('.kolom-opmerkingen');
+            var kolommen = document.querySelectorAll('.kolom-locatie, .kolom-opmerkingen');
             var tonen = kolommen.length > 0 && kolommen[0].hidden;
             kolommen.forEach(function (kolom) {
                 kolom.hidden = !tonen;
             });
-            document.querySelector('#opmerkingen-knop').textContent = tonen
-                ? 'Opmerkingen verbergen'
-                : 'Opmerkingen tonen';
+            var knop = document.querySelector('#opmerkingen-knop');
+            knop.textContent = tonen ? 'Locatie en opmerkingen verbergen' : 'Locatie en opmerkingen tonen';
+            knop.setAttribute('aria-expanded', tonen ? 'true' : 'false');
         }
 
         // Onthoud de scrollpositie zodat je na opslaan/verwijderen terugkomt waar je bezig was.
