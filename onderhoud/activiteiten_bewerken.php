@@ -181,7 +181,7 @@ $voorgesteldeDatum = vierdeZaterdag($jaar, $maand);
             outline-offset: 2px;
         }
 
-        .kolom-details {
+        .tabel-scroll .kolom-details {
             display: none;
         }
 
