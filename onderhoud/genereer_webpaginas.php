@@ -376,7 +376,7 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
                     <?php foreach ($deelnemersRijen as $rij): ?>
                         <tr>
                             <?php if ($rij['vacature']): ?>
-                                <td>Vacature</td>
+                                <td><em class="w3-text-red">Vacature</em></td>
                                 <td></td>
                                 <td><?= htmlspecialchars($rij['stemgroep'], ENT_QUOTES, 'UTF-8') ?></td>
                             <?php else: ?>
