@@ -363,7 +363,7 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
         $blazers = ['fluit', 'hobo', 'klarinet', 'fagot', 'hoorn', 'trompet', 'trombone', 'tuba'];
         $deelnemersRijen = array_values(array_filter(
             $bezettingsRijen,
-            static fn (array $rij): bool => !$rij['vacature'] || in_array($rij['stemgroep'], $blazers, true)
+            static fn (array $rij): bool => !$rij['vacature'] || in_array(bepaalStemgroep($rij['stemgroep'], ''), $blazers, true)
         ));
         ?>
         <p>Er zijn <?= count($deelnemers) ?> toegelaten deelnemers.</p>
