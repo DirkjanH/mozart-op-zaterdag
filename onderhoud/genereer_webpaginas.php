@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../includes/inloggen.php';
 require_once __DIR__ . '/../connections/MozartopZaterdag.php';
+require_once __DIR__ . '/../includes/bezetting.inc.php';
 
 $melding = '';
 $voorbeeldPartijen = [];
@@ -194,140 +195,6 @@ function html(string $waarde): string
     return htmlspecialchars($waarde, ENT_QUOTES, 'UTF-8');
 }
 
-function ontleedGewensteBezetting(string $notatie): ?array
-{
-    $notatie = trim($notatie);
-    if ($notatie === '') {
-        return [];
-    }
-    if (!preg_match('/^(\d{4})-(\d{4})(-timp)?-(\d{5})$/i', $notatie, $delen)) {
-        return null;
-    }
-
-    $hout = array_map('intval', str_split($delen[1]));
-    $koper = array_map('intval', str_split($delen[2]));
-    $strijkers = array_map('intval', str_split($delen[4]));
-    return array_combine(
-        ['fluit', 'hobo', 'klarinet', 'fagot', 'hoorn', 'trompet', 'pauken', 'trombone', 'tuba', 'viool 1', 'viool 2', 'altviool', 'cello', 'contrabas'],
-        [...$hout, $koper[0], $koper[1], $delen[3] === '' ? 0 : 1, $koper[2], $koper[3], ...$strijkers]
-    );
-}
-
-function bepaalStemgroep(string $instrument, string $partij): string
-{
-    $instrument = strtolower(trim($instrument));
-    $partij = strtolower(trim($partij));
-    if (str_contains($instrument, 'altviool')) {
-        return 'altviool';
-    }
-    if (str_contains($instrument, 'viool')) {
-        return preg_match('/\b2\b/', $partij) ? 'viool 2' : 'viool 1';
-    }
-    foreach (['contrabas', 'cello', 'fluit', 'hobo', 'klarinet', 'fagot', 'hoorn', 'trompet', 'pauken', 'trombone', 'tuba'] as $stemgroep) {
-        if (str_contains($instrument, $stemgroep)) {
-            return $stemgroep;
-        }
-    }
-    return $instrument;
-}
-
-function vergelijkSpelersBinnenStemgroep(array $eerste, array $tweede): int
-{
-    $stemgroep = bepaalStemgroep((string) ($eerste['instrument'] ?? ''), (string) ($eerste['partij'] ?? ''));
-    if (in_array($stemgroep, ['viool 1', 'viool 2', 'altviool', 'cello', 'contrabas'], true)) {
-        $eersteIsAanvoerder = preg_match('/concertmeester|aanvoerder/i', (string) ($eerste['partij'] ?? '')) ? 0 : 1;
-        $tweedeIsAanvoerder = preg_match('/concertmeester|aanvoerder/i', (string) ($tweede['partij'] ?? '')) ? 0 : 1;
-        return [$eersteIsAanvoerder, strtolower(trim((string) $eerste['achternaam'])), strtolower(trim((string) $eerste['voornaam']))]
-            <=> [$tweedeIsAanvoerder, strtolower(trim((string) $tweede['achternaam'])), strtolower(trim((string) $tweede['voornaam']))];
-    }
-
-    $partijVergelijking = strnatcasecmp((string) ($eerste['partij'] ?? ''), (string) ($tweede['partij'] ?? ''));
-    if ($partijVergelijking !== 0) {
-        return $partijVergelijking;
-    }
-    return [strtolower(trim((string) $eerste['achternaam'])), strtolower(trim((string) $eerste['voornaam']))]
-        <=> [strtolower(trim((string) $tweede['achternaam'])), strtolower(trim((string) $tweede['voornaam']))];
-}
-
-function maakBezettingsRijen(array $deelnemers, array $instrumenten, array $gewensteBezetting): array
-{
-    $groepen = [];
-    foreach ($deelnemers as $deelnemer) {
-        $stemgroep = bepaalStemgroep((string) ($deelnemer['instrument'] ?? ''), (string) ($deelnemer['partij'] ?? ''));
-        $groepen[$stemgroep][] = $deelnemer;
-    }
-
-    $volgorde = [];
-    foreach ($instrumenten as $instrument) {
-        $instrumentNaam = strtolower(trim((string) $instrument['naam']));
-        $stemgroepen = str_contains($instrumentNaam, 'viool') && !str_contains($instrumentNaam, 'altviool')
-            ? ['viool 1', 'viool 2']
-            : [bepaalStemgroep($instrumentNaam, '')];
-        foreach ($stemgroepen as $stemgroep) {
-            if ($stemgroep !== '' && !in_array($stemgroep, $volgorde, true)) {
-                $volgorde[] = $stemgroep;
-            }
-        }
-    }
-    foreach (array_keys($gewensteBezetting + $groepen) as $stemgroep) {
-        if (!in_array($stemgroep, $volgorde, true)) {
-            $volgorde[] = $stemgroep;
-        }
-    }
-
-    $rijen = [];
-    $strijkers = ['viool 1', 'viool 2', 'altviool', 'cello', 'contrabas'];
-    foreach ($volgorde as $stemgroep) {
-        $spelers = $groepen[$stemgroep] ?? [];
-        usort($spelers, 'vergelijkSpelersBinnenStemgroep');
-        $groepRijen = [];
-        foreach ($spelers as $speler) {
-            $groepRijen[] = ['speler' => $speler, 'stemgroep' => $stemgroep, 'vacature' => false];
-        }
-
-        $gewenstAantal = (int) ($gewensteBezetting[$stemgroep] ?? 0);
-        $aantalVacatures = max(0, $gewenstAantal - count($spelers));
-        if ($aantalVacatures === 0) {
-            array_push($rijen, ...$groepRijen);
-            continue;
-        }
-
-        $vacatureLabels = array_fill(0, $aantalVacatures, $stemgroep);
-        if (!in_array($stemgroep, $strijkers, true) && $stemgroep !== 'pauken' && $gewenstAantal > 1) {
-            $bezetteNummers = [];
-            $spelersZonderNummer = 0;
-            foreach ($spelers as $speler) {
-                if (preg_match('/\b(\d+)\b/', (string) ($speler['partij'] ?? ''), $nummer)) {
-                    $bezetteNummers[(int) $nummer[1]] = true;
-                } else {
-                    $spelersZonderNummer++;
-                }
-            }
-            $ontbrekendeNummers = array_values(array_filter(
-                range(1, $gewenstAantal),
-                static fn (int $nummer): bool => !isset($bezetteNummers[$nummer])
-            ));
-            $ontbrekendeNummers = array_slice($ontbrekendeNummers, min($spelersZonderNummer, count($ontbrekendeNummers)));
-            $vacatureLabels = array_map(static fn (int $nummer): string => $stemgroep . ' ' . $nummer, array_slice($ontbrekendeNummers, 0, $aantalVacatures));
-        }
-        foreach ($vacatureLabels as $label) {
-            $groepRijen[] = ['speler' => null, 'stemgroep' => $label, 'vacature' => true];
-        }
-        if (!in_array($stemgroep, $strijkers, true) && $stemgroep !== 'pauken' && $gewenstAantal > 1) {
-            usort($groepRijen, static function (array $eerste, array $tweede): int {
-                $eerstePartij = $eerste['vacature'] ? $eerste['stemgroep'] : (string) ($eerste['speler']['partij'] ?? '');
-                $tweedePartij = $tweede['vacature'] ? $tweede['stemgroep'] : (string) ($tweede['speler']['partij'] ?? '');
-                preg_match('/\b(\d+)\b/', $eerstePartij, $eersteNummer);
-                preg_match('/\b(\d+)\b/', $tweedePartij, $tweedeNummer);
-                return ((int) ($eersteNummer[1] ?? PHP_INT_MAX)) <=> ((int) ($tweedeNummer[1] ?? PHP_INT_MAX));
-            });
-        }
-        array_push($rijen, ...$groepRijen);
-    }
-
-    return $rijen;
-}
-
 function leesPaginaConfiguratie(string $map): array
 {
     $bestand = $map . '/.mozart-webpagina.json';
@@ -470,9 +337,13 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
             $solistenHtml = $solisten === '' ? '' : "        <h2>De solisten</h2>\n        <div>\n" . $solisten . "\n        </div>\n";
             $bezettingHtml = "        <h2>Bezetting</h2>\n";
             if ($toonDeelnemers) {
-                $bezettingHtml .= str_replace('__ACTIVITEIT_ID__', (string) $activiteitId, <<<'PHP'
+                $bezettingHtml .= str_replace(
+                    ['__ACTIVITEIT_ID__', '__GEWENSTE_BEZETTING__'],
+                    [(string) $activiteitId, var_export($gewensteBezetting ?? [], true)],
+                    <<<'PHP'
         <?php
         require_once '../connections/MozartopZaterdag.php';
+            require_once '../includes/bezetting.inc.php';
         $stmt = $pdo->prepare("SELECT d.voornaam, d.achternaam, ad.partij, i.naam AS instrument
              FROM activiteit_deelnemers ad
              JOIN deelnemers d ON d.id = ad.deelnemer_id
@@ -487,19 +358,33 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
                  ad.partij, d.achternaam, d.voornaam");
         $stmt->execute([__ACTIVITEIT_ID__]);
         $deelnemers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $gewensteBezetting = __GEWENSTE_BEZETTING__;
+        $bezettingsRijen = maakBezettingsRijen($deelnemers, [], $gewensteBezetting);
+        $blazers = ['fluit', 'hobo', 'klarinet', 'fagot', 'hoorn', 'trompet', 'trombone', 'tuba'];
+        $deelnemersRijen = array_values(array_filter(
+            $bezettingsRijen,
+            static fn (array $rij): bool => !$rij['vacature'] || in_array($rij['stemgroep'], $blazers, true)
+        ));
         ?>
         <p>Er zijn <?= count($deelnemers) ?> toegelaten deelnemers.</p>
         <table class="w3-table w3-striped w3-bordered" id="deelnemers">
             <thead><tr><th>voornaam</th><th>achternaam</th><th>instrument</th></tr></thead>
             <tbody>
-                <?php if ($deelnemers === []): ?>
+                <?php if ($deelnemersRijen === []): ?>
                     <tr><td colspan="3">Er zijn nog geen deelnemers toegelaten.</td></tr>
                 <?php else: ?>
-                    <?php foreach ($deelnemers as $deelnemer): ?>
+                    <?php foreach ($deelnemersRijen as $rij): ?>
                         <tr>
-                            <td><?= htmlspecialchars((string) $deelnemer['voornaam'], ENT_QUOTES, 'UTF-8') ?></td>
-                            <td><?= htmlspecialchars((string) $deelnemer['achternaam'], ENT_QUOTES, 'UTF-8') ?></td>
-                            <td><?= htmlspecialchars(trim(($deelnemer['instrument'] ?? '') . ' ' . ($deelnemer['partij'] ?? '')), ENT_QUOTES, 'UTF-8') ?></td>
+                            <?php if ($rij['vacature']): ?>
+                                <td>Vacature</td>
+                                <td></td>
+                                <td><?= htmlspecialchars($rij['stemgroep'], ENT_QUOTES, 'UTF-8') ?></td>
+                            <?php else: ?>
+                                <?php $deelnemer = $rij['speler']; ?>
+                                <td><?= htmlspecialchars((string) $deelnemer['voornaam'], ENT_QUOTES, 'UTF-8') ?></td>
+                                <td><?= htmlspecialchars((string) $deelnemer['achternaam'], ENT_QUOTES, 'UTF-8') ?></td>
+                                <td><?= htmlspecialchars(trim(($deelnemer['instrument'] ?? '') . ' ' . ($deelnemer['partij'] ?? '')), ENT_QUOTES, 'UTF-8') ?></td>
+                            <?php endif; ?>
                         </tr>
                     <?php endforeach; ?>
                 <?php endif; ?>
