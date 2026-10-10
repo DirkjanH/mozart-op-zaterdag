@@ -81,13 +81,13 @@ function ontleedGewensteBezetting(string $notatie): ?array
     if ($notatie === '') {
         return [];
     }
-    if (!preg_match('/^(\d{4})-(\d{4})(-timp)?-(\d{5})$/i', $notatie, $delen)) {
+    if (!preg_match('/^(\d{4})-(\d{4})(-timp)?-(str|\d{5})$/i', $notatie, $delen)) {
         return null;
     }
 
     $hout = array_map('intval', str_split($delen[1]));
     $koper = array_map('intval', str_split($delen[2]));
-    $strijkers = array_map('intval', str_split($delen[4]));
+    $strijkers = strcasecmp($delen[4], 'str') === 0 ? [0, 0, 0, 0, 0] : array_map('intval', str_split($delen[4]));
     return array_combine(
         ['fluit', 'hobo', 'klarinet', 'fagot', 'hoorn', 'trompet', 'pauken', 'trombone', 'tuba', 'viool 1', 'viool 2', 'altviool', 'cello', 'contrabas'],
         [...$hout, $koper[0], $koper[1], $delen[3] === '' ? 0 : 1, $koper[2], $koper[3], ...$strijkers]
