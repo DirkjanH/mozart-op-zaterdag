@@ -172,6 +172,54 @@ function serverConceptBestand(array $activiteit, string $doelgroep, string $keuz
     return $map . '/' . $bestandsnaam;
 }
 
+function verwijderOudeMailconcepten(string $webroot, string $onderwerp, string $nieuwBestand): int
+{
+    $mappen = array_merge(
+        [$webroot . '/JSON'],
+        glob($webroot . '/20??-??-??', GLOB_ONLYDIR) ?: []
+    );
+    $concepten = [];
+    $nieuwBestand = realpath($nieuwBestand) ?: $nieuwBestand;
+
+    foreach ($mappen as $map) {
+        foreach (glob($map . '/mozart-mailconcept*.json') ?: [] as $bestand) {
+            $inhoud = file_get_contents($bestand);
+            if ($inhoud === false) {
+                continue;
+            }
+            try {
+                $concept = json_decode($inhoud, true, 8, JSON_THROW_ON_ERROR);
+            } catch (JsonException) {
+                continue;
+            }
+            if (!is_array($concept) || ($concept['onderwerp'] ?? null) !== $onderwerp) {
+                continue;
+            }
+
+            $pad = realpath($bestand) ?: $bestand;
+            $concepten[] = [
+                'pad' => $pad,
+                'gewijzigd' => filemtime($pad) ?: 0,
+                'nieuw' => $pad === $nieuwBestand,
+            ];
+        }
+    }
+
+    usort($concepten, static fn (array $eerste, array $tweede): int =>
+        [$tweede['nieuw'], $tweede['gewijzigd'], $tweede['pad']]
+        <=> [$eerste['nieuw'], $eerste['gewijzigd'], $eerste['pad']]
+    );
+
+    $verwijderd = 0;
+    foreach (array_slice($concepten, 3) as $concept) {
+        if (unlink($concept['pad'])) {
+            $verwijderd++;
+        }
+    }
+
+    return $verwijderd;
+}
+
 if ($actie === 'json_downloaden') {
     try {
         $conceptBestand = serverConceptBestand($gekozenActiviteit, $doelgroep, (string) ($_POST['server_concept'] ?? ''));
@@ -226,8 +274,12 @@ if ($actie === 'json_opslaan') {
             if (file_put_contents($conceptBestand, $inhoud . PHP_EOL, LOCK_EX) === false) {
                 throw new RuntimeException('Het concept kon niet op de server worden opgeslagen.');
             }
+            $aantalVerwijderd = verwijderOudeMailconcepten(dirname(__DIR__), $onderwerp, $conceptBestand);
             $relatiefPad = $doelgroep === 'toegelaten' ? $conceptActiviteit['datum'] . '/' . $bestandsnaam : 'JSON/' . $bestandsnaam;
             $melding = 'Mailconcept opgeslagen in ' . $relatiefPad . '.';
+            if ($aantalVerwijderd > 0) {
+                $melding .= ' ' . $aantalVerwijderd . ' oudere versie(s) verwijderd.';
+            }
         } catch (Throwable $e) {
             $melding = 'Mailconcept niet opgeslagen: ' . $e->getMessage();
         }
