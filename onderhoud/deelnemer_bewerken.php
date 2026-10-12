@@ -140,6 +140,7 @@ $statusPerActiviteit = array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'status',
         .form-group { margin-bottom: 1.2em; }
         .form-group label { display: block; margin-bottom: 0.3em; font-weight: bold; }
         .form-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1em; }
+        .naam-niet-op-hoogte { color: #d00; }
         @media (max-width: 600px) {
             body {
                 margin: 0;
@@ -216,7 +217,9 @@ $statusPerActiviteit = array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'status',
 <body>
     <div class="w3-content w3-mobile w3-white w3-panel" style="max-width:800px;">
         <p><a href="deelnemers_bewerken.php">&larr; Terug naar overzicht</a></p>
-        <h3>Deelnemer bewerken: <?= htmlspecialchars(trim($deelnemer['voornaam'] . ' ' . $deelnemer['achternaam'])) ?></h3>
+        <h3>Deelnemer bewerken:
+            <span class="<?= (int) ($deelnemer['op_de_hoogte_houden'] ?? 1) === 0 ? 'naam-niet-op-hoogte' : '' ?>"><?= htmlspecialchars(trim($deelnemer['voornaam'] . ' ' . $deelnemer['achternaam'])) ?></span>
+        </h3>
         <p>Laatste wijziging:
             <?= $deelnemer['laatst_gewijzigd_op'] !== null
                 ? htmlspecialchars(date('d-m-Y H:i', strtotime($deelnemer['laatst_gewijzigd_op'])))
