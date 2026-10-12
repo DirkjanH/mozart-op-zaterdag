@@ -279,6 +279,12 @@ foreach ($deelnemers as $deelnemer) {
             gap: 0.5em;
         }
 
+        .markeer-gezien-form {
+            display: flex;
+            align-items: center;
+            margin: 0;
+        }
+
         .categorie-knop[aria-pressed="true"] {
             font-weight: bold;
             box-shadow: inset 0 -3px 0 currentColor;
@@ -414,21 +420,21 @@ foreach ($deelnemers as $deelnemer) {
             <p class="w3-panel w3-pale-green w3-leftbar w3-border-green"><?= htmlspecialchars($melding) ?></p>
         <?php endif; ?>
 
-        <p class="categorie-knoppen" aria-label="Deelnemers filteren">
+        <div class="categorie-knoppen" aria-label="Deelnemers filteren">
             <button class="w3-button w3-border categorie-knop" type="button" data-keuze="alles" aria-pressed="true" onclick="filterDeelnemers('alles', this)"><strong><?= count($deelnemers) ?> deelnemers</strong></button>
             <button class="w3-button w3-border categorie-knop" type="button" data-keuze="nieuw_gewijzigd" aria-pressed="false" onclick="filterDeelnemers('nieuw_gewijzigd', this)">&#9752; Nieuw/gewijzigd: <?= $aantalNieuweGewijzigdeDeelnemers ?></button>
+            <?php if ($aantalNieuweGewijzigdeDeelnemers > 0): ?>
+                <form method="post" class="markeer-gezien-form" onsubmit="return confirm('Alle <?= $aantalNieuweGewijzigdeDeelnemers ?> nieuwe of gewijzigde aanmelding(en) als gezien markeren? De klavertjes en de filter Nieuw/gewijzigd worden hiermee leeggemaakt.')">
+                    <input type="hidden" name="actie" value="markeer_alle_als_gezien">
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
+                    <button class="w3-button w3-orange w3-small" type="submit">Markeer als gezien (<?= $aantalNieuweGewijzigdeDeelnemers ?>)</button>
+                </form>
+            <?php endif; ?>
             <button class="w3-button w3-border categorie-knop" type="button" data-keuze="strijkers" aria-pressed="false" onclick="filterDeelnemers('strijkers', this)">Strijkers: <?= $deelnemerTellingen['strijkers'] ?></button>
             <button class="w3-button w3-border categorie-knop" type="button" data-keuze="houtblazers" aria-pressed="false" onclick="filterDeelnemers('houtblazers', this)">Houtblazers: <?= $deelnemerTellingen['houtblazers'] ?></button>
             <button class="w3-button w3-border categorie-knop" type="button" data-keuze="koperblazers" aria-pressed="false" onclick="filterDeelnemers('koperblazers', this)">Koperblazers: <?= $deelnemerTellingen['koperblazers'] ?></button>
             <button class="w3-button w3-border categorie-knop" type="button" data-keuze="overig" aria-pressed="false" onclick="filterDeelnemers('overig', this)">Overig: <?= $deelnemerTellingen['overig'] ?></button>
-        </p>
-        <?php if ($aantalNieuweGewijzigdeDeelnemers > 0): ?>
-            <form method="post" class="w3-margin-bottom" onsubmit="return confirm('Alle <?= $aantalNieuweGewijzigdeDeelnemers ?> nieuwe of gewijzigde aanmelding(en) als gezien markeren? De klavertjes en de filter Nieuw/gewijzigd worden hiermee leeggemaakt.')">
-                <input type="hidden" name="actie" value="markeer_alle_als_gezien">
-                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
-                <button class="w3-button w3-light-grey" type="submit">Alle nieuwe aanmeldingen als gezien markeren (<?= $aantalNieuweGewijzigdeDeelnemers ?>)</button>
-            </form>
-        <?php endif; ?>
+        </div>
 
         <button id="details-knop" type="button" class="w3-button w3-blue w3-margin-bottom" onclick="toggleDetails()">E-mail / telefoon / plaats / voorkeur tonen</button>
 
