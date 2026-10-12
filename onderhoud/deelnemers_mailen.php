@@ -869,6 +869,27 @@ if (is_array($wachtrij)) {
         const alleenGeselecteerdenTonen = document.getElementById('alleen-geselecteerden-tonen');
         const alleenGeselecteerdenInvoer = document.getElementById('alleen-geselecteerden-invoer');
         const deelnemerRijen = Array.from(document.querySelectorAll('[data-deelnemer-rij]'));
+        const selectieOpslagSleutel = 'mozart-deelnemers-mail:' + <?= json_encode($activiteitId . ':' . $doelgroep, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) ?>;
+        const opgeslagenInstrument = sessionStorage.getItem(`${selectieOpslagSleutel}:instrument`);
+
+        if (instrumentKeuze && opgeslagenInstrument && Array.from(instrumentKeuze.options).some((optie) => optie.value === opgeslagenInstrument)) {
+            instrumentKeuze.value = opgeslagenInstrument;
+        }
+
+        const opgeslagenSelectie = sessionStorage.getItem(`${selectieOpslagSleutel}:deelnemers`);
+        if (opgeslagenSelectie !== null) {
+            try {
+                const opgeslagenIds = JSON.parse(opgeslagenSelectie);
+                if (Array.isArray(opgeslagenIds)) {
+                    const geselecteerdeIds = new Set(opgeslagenIds.map(String));
+                    deelnemerSelecties.forEach((checkbox) => {
+                        checkbox.checked = geselecteerdeIds.has(checkbox.value);
+                    });
+                }
+            } catch {
+                sessionStorage.removeItem(`${selectieOpslagSleutel}:deelnemers`);
+            }
+        }
 
         function werkSelectieBij() {
             // Houd teller, selecteer-alles-status en verzendknoppen gelijk aan de actuele checkboxstatus.
@@ -887,6 +908,10 @@ if (is_array($wachtrij)) {
                 const checkbox = rij.querySelector('.deelnemer-selectie');
                 rij.hidden = Boolean(alleenGeselecteerdenTonen?.checked && checkbox && !checkbox.checked);
             });
+            sessionStorage.setItem(
+                `${selectieOpslagSleutel}:deelnemers`,
+                JSON.stringify(deelnemerSelecties.filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value))
+            );
         }
 
         selecteerAlles?.addEventListener('change', () => {
@@ -899,6 +924,7 @@ if (is_array($wachtrij)) {
             if (selecteerInstrument) {
                 selecteerInstrument.disabled = instrumentKeuze.value === '';
             }
+            sessionStorage.setItem(`${selectieOpslagSleutel}:instrument`, instrumentKeuze.value);
         });
         alleenGeselecteerdenTonen?.addEventListener('change', () => {
             if (alleenGeselecteerdenInvoer) {
@@ -911,13 +937,12 @@ if (is_array($wachtrij)) {
             if (!gekozenInstrument) {
                 return;
             }
-            // Voeg de gekozen instrumentgroep toe in plaats van andere al aangevinkte groepen te wissen.
+            // Een nieuwe instrumentkeuze vervangt de vorige groep; werkSelectieBij bewaart deze set voor herladen.
             deelnemerSelecties.forEach((checkbox) => {
                 const instrumenten = JSON.parse(checkbox.dataset.instrumenten || '[]');
-                if (instrumenten.some((instrument) => instrument.trim().toLowerCase() === gekozenInstrument)) {
-                    checkbox.checked = true;
-                }
+                checkbox.checked = instrumenten.some((instrument) => instrument.trim().toLowerCase() === gekozenInstrument);
             });
+            sessionStorage.setItem(`${selectieOpslagSleutel}:instrument`, instrumentKeuze.value);
             werkSelectieBij();
         });
         deelnemerSelecties.forEach((checkbox) => checkbox.addEventListener('change', werkSelectieBij));
