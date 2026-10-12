@@ -23,17 +23,17 @@ function laadAanmeldbevestigingMail(string $bestand): array
 
 function vulAanmeldbevestigingTemplate(string $template, array $waarden): string
 {
-    $beschikbaarheid = $waarden['{{beschikbaarheid}}'] ?? '';
-    unset($waarden['{{beschikbaarheid}}']);
+    $htmlWaarden = [];
+    foreach (['{{beschikbaarheid}}', '{{beschikbaarheid_blok}}', '{{op_de_hoogte_gehouden_antwoord}}'] as $placeholder) {
+        $htmlWaarden[$placeholder] = $waarden[$placeholder] ?? '';
+        unset($waarden[$placeholder]);
+    }
 
+    $template = str_replace(array_keys($htmlWaarden), array_values($htmlWaarden), $template);
     return str_replace(
-        '{{beschikbaarheid}}',
-        $beschikbaarheid,
-        str_replace(
-            array_keys($waarden),
-            array_map(static fn (string $waarde): string => htmlspecialchars($waarde, ENT_QUOTES, 'UTF-8'), array_values($waarden)),
-            $template
-        )
+        array_keys($waarden),
+        array_map(static fn (string $waarde): string => htmlspecialchars($waarde, ENT_QUOTES, 'UTF-8'), array_values($waarden)),
+        $template
     );
 }
 
@@ -101,7 +101,7 @@ try {
     error_log('Aanmelding: bevestigingsmail kon niet worden geladen: ' . $e->getMessage());
     $aanmeldbevestigingMail = [
         'onderwerp' => 'Bevestiging aanmelding Mozart op Zaterdag',
-        'tekst' => '<p>Beste {{voornaam}},</p><p>Dank voor je aanmelding bij Mozart op Zaterdag.</p><p>Naam: {{naam}}</p><p>Hartelijke groet,<br>Dirkjan Horringa</p><p>P.S. Als je je gegevens of je beschikbaarheid wilt wijzigen, <a href="{{aanmeldlink}}">vul dan even dit formulier in</a>. Je bestaande gegevens staan daar alvast ingevuld.</p>',
+        'tekst' => '<p>Beste {{voornaam}},</p><p>Dank voor je aanmelding bij Mozart op Zaterdag.</p><p>Naam: {{naam}}</p><p>Wil je op de hoogte gehouden worden? {{op_de_hoogte_gehouden_antwoord}}</p>{{beschikbaarheid_blok}}<p>Hartelijke groet,<br>Dirkjan Horringa</p><p>P.S. Als je je gegevens of je beschikbaarheid wilt wijzigen, <a href="{{aanmeldlink}}">vul dan even dit formulier in</a>. Je bestaande gegevens staan daar alvast ingevuld.</p>',
     ];
 }
 
@@ -251,6 +251,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             };
             $beschikbaarheid[] = '<li>' . $datum . ' - ' . htmlspecialchars($activiteit['omschrijving'] ?? '', ENT_QUOTES, 'UTF-8') . ': <strong style="color:' . $statusKleur . '">' . htmlspecialchars(ucfirst($status), ENT_QUOTES, 'UTF-8') . '</strong></li>';
         }
+        $wilOpDeHoogteGehoudenWorden = (int) $opDeHoogteHouden === 1;
+        $opDeHoogteGehoudenAntwoord = $wilOpDeHoogteGehoudenWorden
+            ? 'Ja'
+            : '<strong style="color:#d00">Nee. We zullen je gegevens uit ons bestand verwijderen.</strong>';
+        $beschikbaarheidInhoud = $beschikbaarheid !== [] ? '<ul>' . implode('', $beschikbaarheid) . '</ul>' : 'geen toekomstige activiteiten';
         $templateWaarden = [
             '{{voornaam}}' => $voornaam,
             '{{achternaam}}' => $achternaam,
@@ -260,7 +265,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             '{{postcode}}' => $postcode,
             '{{plaats}}' => $plaats,
             '{{instrumenten}}' => $instrumentNamen !== [] ? implode(', ', $instrumentNamen) : 'geen instrument opgegeven',
-            '{{beschikbaarheid}}' => $beschikbaarheid !== [] ? '<ul>' . implode('', $beschikbaarheid) . '</ul>' : 'geen toekomstige activiteiten',
+            '{{beschikbaarheid}}' => $beschikbaarheidInhoud,
+            '{{beschikbaarheid_blok}}' => $wilOpDeHoogteGehoudenWorden ? '<p>Beschikbaarheid:<br>' . $beschikbaarheidInhoud . '</p>' : '',
+            '{{op_de_hoogte_gehouden_antwoord}}' => $opDeHoogteGehoudenAntwoord,
             '{{aanmeldlink}}' => 'https://mozartopzaterdag.nl/deelnemers_aanmelden.php?email=' . rawurlencode($email),
         ];
         // Voorkom een dubbele bevestigingsmail als de gebruiker de pagina na versturen ververst (opnieuw dezelfde POST).
