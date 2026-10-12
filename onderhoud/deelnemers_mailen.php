@@ -129,6 +129,7 @@ uksort($instrumentKeuzes, 'strnatcasecmp');
 
 // Bij eerste weergave staat iedereen geselecteerd; na formulierinvoer is de meegestuurde selectie leidend.
 $selectieIngediend = isset($_POST['selectie_ingediend']);
+$alleenGeselecteerdenTonen = ($_POST['alleen_geselecteerden_tonen'] ?? '0') === '1';
 $geselecteerdeDeelnemerIds = $selectieIngediend && is_array($_POST['deelnemer_ids'] ?? null)
     ? array_values(array_unique(array_filter(array_map('intval', $_POST['deelnemer_ids']), static fn (int $id): bool => $id > 0)))
     : array_map(static fn (array $deelnemer): int => (int) $deelnemer['id'], $deelnemers);
@@ -755,6 +756,10 @@ if (is_array($wachtrij)) {
             <strong><?= count($deelnemers) ?> deelnemers: <?= htmlspecialchars($doelgroepen[$doelgroep], ENT_QUOTES, 'UTF-8') ?></strong><br>
                 <span id="selectie-aantal"><?= count($geselecteerdeDeelnemers) ?> geselecteerd</span>
             </p>
+            <label class="w3-margin-bottom">
+                <input class="w3-check" id="alleen-geselecteerden-tonen" type="checkbox" <?= $alleenGeselecteerdenTonen ? 'checked' : '' ?>>
+                Alleen geselecteerde deelnemers tonen
+            </label>
             <?php if ($instrumentKeuzes !== []): ?>
                 <!-- De groepskeuze voegt ontvangers toe aan de huidige selectie; handmatige keuzes blijven behouden. -->
                 <div class="w3-margin-bottom">
@@ -779,7 +784,7 @@ if (is_array($wachtrij)) {
                         </tr>
                         <?php foreach ($deelnemers as $deelnemer): ?>
                             <?php $instrumentenVanDeelnemer = preg_split('/\s*,\s*/', trim((string) ($deelnemer['instrument'] ?? '')), -1, PREG_SPLIT_NO_EMPTY) ?: []; ?>
-                            <tr>
+                            <tr data-deelnemer-rij>
                                 <td>
                                     <input
                                         class="deelnemer-selectie"
@@ -805,6 +810,7 @@ if (is_array($wachtrij)) {
                 <input type="hidden" name="activiteit_id" value="<?= $activiteitId ?>">
                 <input type="hidden" name="doelgroep" value="<?= htmlspecialchars($doelgroep, ENT_QUOTES, 'UTF-8') ?>">
                 <input type="hidden" name="selectie_ingediend" value="1">
+                <input type="hidden" id="alleen-geselecteerden-invoer" name="alleen_geselecteerden_tonen" value="<?= $alleenGeselecteerdenTonen ? '1' : '0' ?>">
 
                 <label for="onderwerp"><strong>Onderwerp</strong></label>
                 <input class="w3-input w3-border w3-margin-bottom" id="onderwerp" name="onderwerp" value="<?= htmlspecialchars($onderwerp) ?>" required>
@@ -860,6 +866,9 @@ if (is_array($wachtrij)) {
         const selectieAantal = document.getElementById('selectie-aantal');
         const instrumentKeuze = document.getElementById('instrument-keuze');
         const selecteerInstrument = document.getElementById('selecteer-instrument');
+        const alleenGeselecteerdenTonen = document.getElementById('alleen-geselecteerden-tonen');
+        const alleenGeselecteerdenInvoer = document.getElementById('alleen-geselecteerden-invoer');
+        const deelnemerRijen = Array.from(document.querySelectorAll('[data-deelnemer-rij]'));
 
         function werkSelectieBij() {
             // Houd teller, selecteer-alles-status en verzendknoppen gelijk aan de actuele checkboxstatus.
@@ -874,6 +883,10 @@ if (is_array($wachtrij)) {
             document.querySelectorAll('[data-selectie-vereist]').forEach((knop) => {
                 knop.disabled = aantalGeselecteerd === 0;
             });
+            deelnemerRijen.forEach((rij) => {
+                const checkbox = rij.querySelector('.deelnemer-selectie');
+                rij.hidden = Boolean(alleenGeselecteerdenTonen?.checked && checkbox && !checkbox.checked);
+            });
         }
 
         selecteerAlles?.addEventListener('change', () => {
@@ -886,6 +899,12 @@ if (is_array($wachtrij)) {
             if (selecteerInstrument) {
                 selecteerInstrument.disabled = instrumentKeuze.value === '';
             }
+        });
+        alleenGeselecteerdenTonen?.addEventListener('change', () => {
+            if (alleenGeselecteerdenInvoer) {
+                alleenGeselecteerdenInvoer.value = alleenGeselecteerdenTonen.checked ? '1' : '0';
+            }
+            werkSelectieBij();
         });
         selecteerInstrument?.addEventListener('click', () => {
             const gekozenInstrument = instrumentKeuze?.value.trim().toLowerCase();
