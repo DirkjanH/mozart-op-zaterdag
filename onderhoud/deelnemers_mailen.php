@@ -24,6 +24,7 @@ if ($actie === 'json_laden') {
         $melding = 'Kies een geldig serverconcept om te laden.';
     } else {
         try {
+            // Controleer eerst schema en veldtypen; pas daarna mogen conceptwaarden de formulierinvoer vervangen.
             $concept = json_decode((string) file_get_contents($conceptBestand), true, 8, JSON_THROW_ON_ERROR);
             if (!is_array($concept) || ($concept['versie'] ?? null) !== 1 || !is_string($concept['onderwerp'] ?? null) || !is_string($concept['bericht'] ?? null)) {
                 throw new RuntimeException('Onbekend of onvolledig mailconcept.');
@@ -55,6 +56,7 @@ foreach ($activiteiten as $activiteit) {
     }
 }
 
+// Activiteitsgebonden mails gebruiken de actuele indeling; overige doelgroepen komen uit deelnemersvoorkeuren.
 $doelgroep = $_GET['doelgroep'] ?? $_POST['doelgroep'] ?? 'toegelaten';
 $doelgroepen = [
     'toegelaten' => 'Toegelaten deelnemers voor deze activiteit',
@@ -70,6 +72,7 @@ if (!array_key_exists($doelgroep, $doelgroepen)) {
 
 $deelnemers = [];
 if ($doelgroep === 'toegelaten' && $gekozenActiviteit !== null) {
+    // Deze query gebruikt de concrete activiteitspartij; daarmee krijgt elke deelnemer de juiste mailpersonalisatie.
     $stmt = $pdo->prepare(
         "SELECT d.id, d.voornaam, d.achternaam, d.email, i.naam AS instrument, ad.partij
          FROM activiteit_deelnemers ad
@@ -89,6 +92,7 @@ if ($doelgroep === 'toegelaten' && $gekozenActiviteit !== null) {
         'koperblazers' => ['trompet', 'hoorn', 'trombone', 'tuba'],
     ];
     $alleFamilieInstrumenten = array_merge(...array_values($familieInstrumenten));
+    // Bij algemene doelgroepen kunnen deelnemers meerdere voorkeuren hebben; GROUP_CONCAT houdt ze in één rij.
     $sql = "SELECT d.id, d.voornaam, d.achternaam, d.email,
                    GROUP_CONCAT(DISTINCT i.naam ORDER BY i.naam SEPARATOR ', ') AS instrument,
                    NULL AS partij
@@ -115,6 +119,7 @@ if ($doelgroep === 'toegelaten' && $gekozenActiviteit !== null) {
 
 $instrumentKeuzes = [];
 foreach ($deelnemers as $deelnemer) {
+    // Splits samengevoegde voorkeuren, zodat elk instrument een eigen groepskeuze krijgt.
     $instrumentenVanDeelnemer = preg_split('/\s*,\s*/', trim((string) ($deelnemer['instrument'] ?? '')), -1, PREG_SPLIT_NO_EMPTY) ?: [];
     foreach ($instrumentenVanDeelnemer as $instrument) {
         $instrumentKeuzes[$instrument] = ($instrumentKeuzes[$instrument] ?? 0) + 1;
@@ -122,6 +127,7 @@ foreach ($deelnemers as $deelnemer) {
 }
 uksort($instrumentKeuzes, 'strnatcasecmp');
 
+// Bij eerste weergave staat iedereen geselecteerd; na formulierinvoer is de meegestuurde selectie leidend.
 $selectieIngediend = isset($_POST['selectie_ingediend']);
 $geselecteerdeDeelnemerIds = $selectieIngediend && is_array($_POST['deelnemer_ids'] ?? null)
     ? array_values(array_unique(array_filter(array_map('intval', $_POST['deelnemer_ids']), static fn (int $id): bool => $id > 0)))
@@ -150,6 +156,7 @@ function conceptMapVoorDoelgroep(array $activiteit, string $doelgroep): string
 function serverConceptBestand(array $activiteit, string $doelgroep, string $keuze): ?string
 {
     [$bron, $bestandsnaam] = array_pad(explode(':', $keuze, 2), 2, '');
+    // Beperk bron en bestandsnaam voordat een pad wordt opgebouwd; een formulierwaarde mag geen willekeurig bestand kiezen.
     if (!in_array($bron, ['json', 'activiteit'], true) || !preg_match('/^mozart-mailconcept(?:[ -].*)?\.json$/', $bestandsnaam)) {
         return null;
     }
@@ -174,6 +181,7 @@ if ($actie === 'json_downloaden') {
         if ($inhoud === false) {
             throw new RuntimeException('Het serverconcept kon niet worden gelezen.');
         }
+        // Na de downloadheaders is de actie klaar; HTML-output zou het JSON-bestand onbruikbaar maken.
         header('Content-Type: application/json; charset=UTF-8');
         header('Content-Disposition: attachment; filename="' . basename($conceptBestand) . '"');
         header('Content-Length: ' . strlen($inhoud));
@@ -197,6 +205,7 @@ if ($actie === 'json_opslaan') {
         $melding = 'Kies eerst een geldige activiteit.';
     } else {
         try {
+            // Een vaste versie en verplichte velden houden opgeslagen concepten uitwisselbaar met de laadactie.
             $inhoud = json_encode([
                 'versie' => 1,
                 'activiteit_id' => $conceptActiviteitId,
@@ -245,6 +254,7 @@ function vulMailTemplate(string $template, array $deelnemer, array $activiteit):
         '{{aanmeldlink}}' => 'https://mozartopzaterdag.nl/deelnemers_aanmelden.php?email=' . rawurlencode((string) ($deelnemer['email'] ?? '')),
     ];
 
+    // Placeholders worden als tekst in HTML ingevoegd; escapen voorkomt dat persoonsgegevens markup worden.
     return str_replace(
         array_keys($waarden),
         array_map(static fn ($waarde): string => htmlspecialchars((string) $waarde, ENT_QUOTES, 'UTF-8'), $waarden),
@@ -291,6 +301,7 @@ function sluitLokaleAfbeeldingenIn(string $html, PHPMailer\PHPMailer\PHPMailer $
             $urlPad = (string) ($urlDelen['path'] ?? '');
             $lokaalPad = rawurldecode(str_replace('+', '%20', $urlPad));
             $bestand = realpath($webroot . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, ltrim($lokaalPad, '/')));
+            // Alleen bestanden onder de webroot mogen mee; realpath voorkomt dat een URL via .. daarbuiten komt.
             if ($bestand === false || !is_file($bestand) || !str_starts_with(strtolower($bestand), strtolower($webroot . DIRECTORY_SEPARATOR))) {
                 return $match[0];
             }
@@ -338,6 +349,7 @@ function leesMailInstellingen(): array
         }
     }
 
+    // Omgevingsvariabelen overschrijven het lokale bestand, zodat productie-instellingen buiten de broncode blijven.
     $gebruikersnaam = getenv('MOZART_GMAIL_USERNAME') ?: $gebruikersnaam;
     $omgevingsWachtwoord = getenv('MOZART_GMAIL_APP_PASSWORD');
     if ($omgevingsWachtwoord !== false && $omgevingsWachtwoord !== '') {
@@ -357,6 +369,7 @@ if ($actie === 'versturen') {
     } elseif ($geselecteerdeDeelnemers === []) {
         $melding = 'Selecteer ten minste één deelnemer voor verzending.';
     } else {
+        // Leg de ontvangers vast in de sessie; latere batches hangen zo niet af van gewijzigde formulierselecties.
         $wachtrij = [
             'activiteit' => $gekozenActiviteit,
             'onderwerp' => $onderwerp,
@@ -378,6 +391,7 @@ if ($actie === 'versturen') {
 }
 
 if ($actie === 'opnieuw_proberen' && is_array($wachtrij)) {
+    // Heropen alleen mislukte ontvangers; al verzonden mails blijven buiten een herstart.
     foreach ($wachtrij['ontvangers'] as &$ontvanger) {
         if ($ontvanger['status'] === 'mislukt') {
             $ontvanger['status'] = 'wachtend';
@@ -391,12 +405,14 @@ if ($actie === 'opnieuw_proberen' && is_array($wachtrij)) {
 }
 
 if ($actie === 'wachtrij_wissen') {
+    // Dit wist alleen de lopende sessiewachtrij, niet de aparte trackinghistorie in de database.
     unset($_SESSION[$wachtrijSleutel]);
     $wachtrij = null;
     $melding = 'De verzendwachtrij is gewist.';
 }
 
 if ($actie === 'verwerk_pluk' && is_array($wachtrij)) {
+    // Beperk iedere aanvraag tot één pluk, zodat verzending over meerdere requests verdeeld blijft.
     $wachtendeIndexen = [];
     foreach ($wachtrij['ontvangers'] as $index => $ontvanger) {
         if ($ontvanger['status'] === 'wachtend') {
@@ -451,6 +467,7 @@ if ($actie === 'verwerk_pluk' && is_array($wachtrij)) {
                             $ontvanger['tracking_token']
                         );
                         $mailer->AltBody = trim(html_entity_decode(strip_tags(str_replace(['</p>', '<br>', '<br/>', '<br />'], "\n", $mailer->Body)), ENT_QUOTES, 'UTF-8'));
+                        // Reserveer vóór SMTP-verzending om dubbele mails binnen het ingestelde tijdvenster te blokkeren.
                         if (!reserveerMailVerzending($pdo, $ontvanger['tracking_token'], (int) $wachtrij['activiteit']['id'], (int) $ontvanger['id'], $ontvanger['email'])) {
                             $ontvanger['status'] = 'overgeslagen';
                             $ontvanger['fout'] = 'Binnen vijf minuten is al een mail naar dit adres verzonden.';
@@ -466,6 +483,7 @@ if ($actie === 'verwerk_pluk' && is_array($wachtrij)) {
                         $ontvanger['fout'] = $e->getMessage();
                         $resultaten[] = ['gelukt' => false, 'naam' => $naam, 'bericht' => $e->getMessage()];
                     }
+                    // Bewaar na elke ontvanger de voortgang; een volgende aanvraag kan veilig verdergaan na een fout.
                     unset($ontvanger);
                     $_SESSION[$wachtrijSleutel] = $wachtrij;
                 }
@@ -494,6 +512,7 @@ if ($actie === 'test') {
         if ($wachtwoord === '') {
             $melding = 'Mail niet verstuurd: het app-wachtwoord ontbreekt in de configuratie.';
         } else {
+            // Een test gebruikt één geselecteerde ontvanger als voorbeeld, maar gaat uitsluitend naar het beheeradres.
             $teVersturenDeelnemers = [$geselecteerdeDeelnemers[0]];
             set_time_limit(0);
             $mailer = new PHPMailer\PHPMailer\PHPMailer(true);
@@ -528,7 +547,7 @@ if ($actie === 'test') {
                         $mailer->Subject = '[TEST] ' . $ingevuldOnderwerp;
                         $mailer->Body = sluitLokaleAfbeeldingenIn(vulMailTemplate($bericht, $deelnemer, $gekozenActiviteit), $mailer);
                         $mailer->AltBody = trim(html_entity_decode(strip_tags(str_replace(['</p>', '<br>', '<br/>', '<br />'], "\n", $mailer->Body)), ENT_QUOTES, 'UTF-8'));
-                        // Testmails vallen niet onder de vijf-minuten dubbele-verzending-check.
+                        // Testmails registreren geen echte verzending en blokkeren dus geen latere deelnemersmail.
                         $mailer->send();
                         $resultaten[] = ['gelukt' => true, 'naam' => $naam, 'bericht' => $ontvangerEmail];
                     } catch (Throwable $e) {
@@ -549,6 +568,7 @@ if ($actie === 'test') {
 
 $geopendPerToken = [];
 if (is_array($wachtrij)) {
+    // Eén query voor alle tokens voorkomt een databaseaanvraag per ontvanger in het wachtrijoverzicht.
     $trackingTokens = array_values(array_filter(array_column($wachtrij['ontvangers'], 'tracking_token')));
     if ($trackingTokens !== []) {
         $placeholders = implode(',', array_fill(0, count($trackingTokens), '?'));
@@ -558,9 +578,11 @@ if (is_array($wachtrij)) {
     }
 }
 
+// Houd alleen de statussen bij die in het wachtrijoverzicht zichtbaar zijn.
 $wachtrijTellingen = ['wachtend' => 0, 'verzonden' => 0, 'mislukt' => 0, 'overgeslagen' => 0];
 if (is_array($wachtrij)) {
     foreach ($wachtrij['ontvangers'] as $ontvanger) {
+        // Onbekende statussen tellen niet mee en maken geen extra categorie aan.
         if (isset($wachtrijTellingen[$ontvanger['status']])) {
             $wachtrijTellingen[$ontvanger['status']]++;
         }
@@ -734,6 +756,7 @@ if (is_array($wachtrij)) {
                 <span id="selectie-aantal"><?= count($geselecteerdeDeelnemers) ?> geselecteerd</span>
             </p>
             <?php if ($instrumentKeuzes !== []): ?>
+                <!-- De groepskeuze voegt ontvangers toe aan de huidige selectie; handmatige keuzes blijven behouden. -->
                 <div class="w3-margin-bottom">
                     <label for="instrument-keuze"><strong>Selecteer per instrument</strong></label>
                     <select class="w3-select w3-border" id="instrument-keuze">
@@ -839,6 +862,7 @@ if (is_array($wachtrij)) {
         const selecteerInstrument = document.getElementById('selecteer-instrument');
 
         function werkSelectieBij() {
+            // Houd teller, selecteer-alles-status en verzendknoppen gelijk aan de actuele checkboxstatus.
             const aantalGeselecteerd = deelnemerSelecties.filter((checkbox) => checkbox.checked).length;
             if (selectieAantal) {
                 selectieAantal.textContent = `${aantalGeselecteerd} geselecteerd`;
@@ -868,6 +892,7 @@ if (is_array($wachtrij)) {
             if (!gekozenInstrument) {
                 return;
             }
+            // Voeg de gekozen instrumentgroep toe in plaats van andere al aangevinkte groepen te wissen.
             deelnemerSelecties.forEach((checkbox) => {
                 const instrumenten = JSON.parse(checkbox.dataset.instrumenten || '[]');
                 if (instrumenten.some((instrument) => instrument.trim().toLowerCase() === gekozenInstrument)) {
@@ -894,6 +919,7 @@ if (is_array($wachtrij)) {
                     : 'De volgende pluk wordt nu verstuurd.';
                 if (resterendeSeconden === 0 && !plukWordtVerstuurd) {
                     plukWordtVerstuurd = true;
+                    // Alleen de volgende pluk wordt aangevraagd; de server blijft verantwoordelijk voor status en limieten.
                     plukFormulier.requestSubmit();
                 }
             }
