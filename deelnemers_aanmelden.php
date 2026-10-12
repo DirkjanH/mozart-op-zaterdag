@@ -1,8 +1,9 @@
 <?php
 require_once __DIR__ . '/connections/MozartopZaterdag.php';
 require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/includes/deelnemer_wijzigingsdatum.php';
 
-$pdo->exec('CREATE TABLE IF NOT EXISTS deelnemer_wijzigingen (deelnemer_id INT NOT NULL PRIMARY KEY, gemarkeerd_op DATETIME NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
+zorgVoorDeelnemerWijzigingsdatum($pdo);
 $opmerkingenKolom = $pdo->query("SHOW COLUMNS FROM deelnemers LIKE 'opmerkingen'")->fetch();
 if ($opmerkingenKolom === false) {
     $pdo->exec('ALTER TABLE deelnemers ADD COLUMN opmerkingen TEXT NULL');
@@ -187,11 +188,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($bestaande) {
             $deelnemerId = (int) $bestaande['id'];
             // Update bestaande deelnemer
-            $stmt = $pdo->prepare('UPDATE deelnemers SET voornaam = ?, achternaam = ?, telefoon = ?, postcode = ?, plaats = ?, muzikale_ervaring = ?, opmerkingen = ?, op_de_hoogte_houden = ? WHERE id = ?');
+            $stmt = $pdo->prepare('UPDATE deelnemers SET voornaam = ?, achternaam = ?, telefoon = ?, postcode = ?, plaats = ?, muzikale_ervaring = ?, opmerkingen = ?, op_de_hoogte_houden = ?, laatst_gewijzigd_op = NOW() WHERE id = ?');
             $stmt->execute([$voornaam, $achternaam, $telefoon, $postcode, $plaats, $muzikaleErvaring, $opmerkingen, (int) $opDeHoogteHouden, $deelnemerId]);
         } else {
             // Maak nieuwe deelnemer
-            $stmt = $pdo->prepare('INSERT INTO deelnemers (voornaam, achternaam, email, telefoon, postcode, plaats, muzikale_ervaring, opmerkingen, op_de_hoogte_houden) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
+            $stmt = $pdo->prepare('INSERT INTO deelnemers (voornaam, achternaam, email, telefoon, postcode, plaats, muzikale_ervaring, opmerkingen, op_de_hoogte_houden, laatst_gewijzigd_op) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())');
             $stmt->execute([$voornaam, $achternaam, $email, $telefoon, $postcode, $plaats, $muzikaleErvaring, $opmerkingen, (int) $opDeHoogteHouden]);
             $deelnemerId = (int) $pdo->lastInsertId();
         }

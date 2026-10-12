@@ -1,8 +1,9 @@
 <?php
 require_once __DIR__ . '/../includes/inloggen.php';
 require_once __DIR__ . '/../connections/MozartopZaterdag.php';
+require_once __DIR__ . '/../includes/deelnemer_wijzigingsdatum.php';
 
-$pdo->exec('CREATE TABLE IF NOT EXISTS deelnemer_wijzigingen (deelnemer_id INT NOT NULL PRIMARY KEY, gemarkeerd_op DATETIME NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
+zorgVoorDeelnemerWijzigingsdatum($pdo);
 $opmerkingenKolom = $pdo->query("SHOW COLUMNS FROM deelnemers LIKE 'opmerkingen'")->fetch();
 if ($opmerkingenKolom === false) {
     $pdo->exec('ALTER TABLE deelnemers ADD COLUMN opmerkingen TEXT NULL');
@@ -71,7 +72,7 @@ if (isset($_POST['actie']) && $_POST['actie'] === 'opslaan') {
         $foutmelding = 'Dit e-mailadres is al in gebruik bij een andere deelnemer.';
     } else {
         $stmt = $pdo->prepare(
-            'UPDATE deelnemers SET voornaam = ?, achternaam = ?, email = ?, telefoon = ?, postcode = ?, plaats = ?, muzikale_ervaring = ?, opmerkingen = ?, op_de_hoogte_houden = ? WHERE id = ?'
+            'UPDATE deelnemers SET voornaam = ?, achternaam = ?, email = ?, telefoon = ?, postcode = ?, plaats = ?, muzikale_ervaring = ?, opmerkingen = ?, op_de_hoogte_houden = ?, laatst_gewijzigd_op = NOW() WHERE id = ?'
         );
         $stmt->execute([$voornaam, $achternaam, $email, $telefoon, $postcode, $plaats, $muzikaleErvaring, $opmerkingen, $opDeHoogteHouden, $id]);
         $pdo->prepare('DELETE FROM deelnemer_wijzigingen WHERE deelnemer_id = ?')->execute([$id]);
@@ -216,6 +217,11 @@ $statusPerActiviteit = array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'status',
     <div class="w3-content w3-mobile w3-white w3-panel" style="max-width:800px;">
         <p><a href="deelnemers_bewerken.php">&larr; Terug naar overzicht</a></p>
         <h3>Deelnemer bewerken: <?= htmlspecialchars(trim($deelnemer['voornaam'] . ' ' . $deelnemer['achternaam'])) ?></h3>
+        <p>Laatste wijziging:
+            <?= $deelnemer['laatst_gewijzigd_op'] !== null
+                ? htmlspecialchars(date('d-m-Y H:i', strtotime($deelnemer['laatst_gewijzigd_op'])))
+                : 'Onbekend' ?>
+        </p>
 
         <?php if ($melding !== ''): ?>
             <p class="w3-panel w3-pale-green w3-leftbar w3-border-green"><?= htmlspecialchars($melding) ?></p>

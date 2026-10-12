@@ -1,8 +1,9 @@
 <?php
 require_once __DIR__ . '/../includes/inloggen.php';
 require_once __DIR__ . '/../connections/MozartopZaterdag.php';
+require_once __DIR__ . '/../includes/deelnemer_wijzigingsdatum.php';
 
-$pdo->exec('CREATE TABLE IF NOT EXISTS deelnemer_wijzigingen (deelnemer_id INT NOT NULL PRIMARY KEY, gemarkeerd_op DATETIME NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
+zorgVoorDeelnemerWijzigingsdatum($pdo);
 
 $statussen = ['' => '(onbekend)', 'ja' => 'ja', 'nee' => 'nee', 'misschien' => 'misschien'];
 $melding = isset($_GET['melding']) ? (string) $_GET['melding'] : '';
@@ -58,12 +59,12 @@ if (isset($_POST['actie']) && $_POST['actie'] === 'opslaan') {
     } else {
         if ($id > 0) {
             $stmt = $pdo->prepare(
-                'UPDATE deelnemers SET voornaam = ?, achternaam = ?, email = ?, telefoon = ?, plaats = ? WHERE id = ?'
+                'UPDATE deelnemers SET voornaam = ?, achternaam = ?, email = ?, telefoon = ?, plaats = ?, laatst_gewijzigd_op = NOW() WHERE id = ?'
             );
             $stmt->execute([$voornaam, $achternaam, $email, $telefoon, $plaats, $id]);
         } else {
             $stmt = $pdo->prepare(
-                'INSERT INTO deelnemers (voornaam, achternaam, email, telefoon, plaats) VALUES (?, ?, ?, ?, ?)'
+                'INSERT INTO deelnemers (voornaam, achternaam, email, telefoon, plaats, laatst_gewijzigd_op) VALUES (?, ?, ?, ?, ?, NOW())'
             );
             $stmt->execute([$voornaam, $achternaam, $email, $telefoon, $plaats]);
             $id = $pdo->lastInsertId();
