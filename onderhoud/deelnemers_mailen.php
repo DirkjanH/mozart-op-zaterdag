@@ -113,6 +113,15 @@ if ($doelgroep === 'toegelaten' && $gekozenActiviteit !== null) {
     $deelnemers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+$instrumentKeuzes = [];
+foreach ($deelnemers as $deelnemer) {
+    $instrumentenVanDeelnemer = preg_split('/\s*,\s*/', trim((string) ($deelnemer['instrument'] ?? '')), -1, PREG_SPLIT_NO_EMPTY) ?: [];
+    foreach ($instrumentenVanDeelnemer as $instrument) {
+        $instrumentKeuzes[$instrument] = ($instrumentKeuzes[$instrument] ?? 0) + 1;
+    }
+}
+uksort($instrumentKeuzes, 'strnatcasecmp');
+
 $selectieIngediend = isset($_POST['selectie_ingediend']);
 $geselecteerdeDeelnemerIds = $selectieIngediend && is_array($_POST['deelnemer_ids'] ?? null)
     ? array_values(array_unique(array_filter(array_map('intval', $_POST['deelnemer_ids']), static fn (int $id): bool => $id > 0)))
@@ -724,6 +733,18 @@ if (is_array($wachtrij)) {
             <strong><?= count($deelnemers) ?> deelnemers: <?= htmlspecialchars($doelgroepen[$doelgroep], ENT_QUOTES, 'UTF-8') ?></strong><br>
                 <span id="selectie-aantal"><?= count($geselecteerdeDeelnemers) ?> geselecteerd</span>
             </p>
+            <?php if ($instrumentKeuzes !== []): ?>
+                <div class="w3-margin-bottom">
+                    <label for="instrument-keuze"><strong>Selecteer per instrument</strong></label>
+                    <select class="w3-select w3-border" id="instrument-keuze">
+                        <option value="">Kies een instrument</option>
+                        <?php foreach ($instrumentKeuzes as $instrument => $aantal): ?>
+                            <option value="<?= htmlspecialchars($instrument, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($instrument . ' (' . $aantal . ')', ENT_QUOTES, 'UTF-8') ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <button class="w3-button w3-light-grey w3-margin-top" id="selecteer-instrument" type="button" disabled>Selecteer alle deelnemers met dit instrument</button>
+                </div>
+            <?php endif; ?>
             <?php if ($deelnemers !== []): ?>
                 <div class="w3-responsive w3-margin-bottom" style="max-height:250px; overflow:auto;">
                     <table class="w3-table w3-bordered w3-striped w3-small">
@@ -734,6 +755,7 @@ if (is_array($wachtrij)) {
                             <th>Naam</th><th>E-mail</th><th>Instrument + partij</th>
                         </tr>
                         <?php foreach ($deelnemers as $deelnemer): ?>
+                            <?php $instrumentenVanDeelnemer = preg_split('/\s*,\s*/', trim((string) ($deelnemer['instrument'] ?? '')), -1, PREG_SPLIT_NO_EMPTY) ?: []; ?>
                             <tr>
                                 <td>
                                     <input
@@ -741,6 +763,7 @@ if (is_array($wachtrij)) {
                                         type="checkbox"
                                         name="deelnemer_ids[]"
                                         value="<?= (int) $deelnemer['id'] ?>"
+                                        data-instrumenten="<?= htmlspecialchars(json_encode($instrumentenVanDeelnemer, JSON_UNESCAPED_UNICODE) ?: '[]', ENT_QUOTES, 'UTF-8') ?>"
                                         form="mail-formulier"
                                         aria-label="<?= htmlspecialchars($deelnemer['voornaam'] . ' ' . $deelnemer['achternaam']) ?> selecteren"
                                         <?= in_array((int) $deelnemer['id'], $geselecteerdeDeelnemerIds, true) ? 'checked' : '' ?>
@@ -812,6 +835,8 @@ if (is_array($wachtrij)) {
         const deelnemerSelecties = Array.from(document.querySelectorAll('.deelnemer-selectie'));
         const selecteerAlles = document.getElementById('selecteer-alles');
         const selectieAantal = document.getElementById('selectie-aantal');
+        const instrumentKeuze = document.getElementById('instrument-keuze');
+        const selecteerInstrument = document.getElementById('selecteer-instrument');
 
         function werkSelectieBij() {
             const aantalGeselecteerd = deelnemerSelecties.filter((checkbox) => checkbox.checked).length;
@@ -830,6 +855,24 @@ if (is_array($wachtrij)) {
         selecteerAlles?.addEventListener('change', () => {
             deelnemerSelecties.forEach((checkbox) => {
                 checkbox.checked = selecteerAlles.checked;
+            });
+            werkSelectieBij();
+        });
+        instrumentKeuze?.addEventListener('change', () => {
+            if (selecteerInstrument) {
+                selecteerInstrument.disabled = instrumentKeuze.value === '';
+            }
+        });
+        selecteerInstrument?.addEventListener('click', () => {
+            const gekozenInstrument = instrumentKeuze?.value.trim().toLowerCase();
+            if (!gekozenInstrument) {
+                return;
+            }
+            deelnemerSelecties.forEach((checkbox) => {
+                const instrumenten = JSON.parse(checkbox.dataset.instrumenten || '[]');
+                if (instrumenten.some((instrument) => instrument.trim().toLowerCase() === gekozenInstrument)) {
+                    checkbox.checked = true;
+                }
             });
             werkSelectieBij();
         });
