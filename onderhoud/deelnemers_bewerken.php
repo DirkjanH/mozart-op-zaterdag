@@ -2,11 +2,33 @@
 require_once __DIR__ . '/../includes/inloggen.php';
 require_once __DIR__ . '/../connections/MozartopZaterdag.php';
 require_once __DIR__ . '/../includes/deelnemer_wijzigingsdatum.php';
+require_once __DIR__ . '/../includes/csrf.php';
 
 zorgVoorDeelnemerWijzigingsdatum($pdo);
+$csrfToken = csrfTokenOphalen();
 
 $statussen = ['' => '(onbekend)', 'ja' => 'ja', 'nee' => 'nee', 'misschien' => 'misschien'];
 $melding = isset($_GET['melding']) ? (string) $_GET['melding'] : '';
+
+if (($_POST['actie'] ?? '') === 'markeer_alle_als_gezien') {
+    $ingediendToken = $_POST['csrf_token'] ?? null;
+    if (!is_string($ingediendToken) || !hash_equals($csrfToken, $ingediendToken)) {
+        http_response_code(403);
+        exit('Ongeldige formulieraanvraag. Vernieuw de pagina en probeer opnieuw.');
+    }
+
+    $gemarkeerdeIds = array_map('intval', $pdo->query('SELECT deelnemer_id FROM deelnemer_wijzigingen')->fetchAll(PDO::FETCH_COLUMN));
+    $aantalGemarkeerd = 0;
+    if ($gemarkeerdeIds !== []) {
+        $plaatsHouders = implode(',', array_fill(0, count($gemarkeerdeIds), '?'));
+        $stmt = $pdo->prepare("DELETE FROM deelnemer_wijzigingen WHERE deelnemer_id IN ($plaatsHouders)");
+        $stmt->execute($gemarkeerdeIds);
+        $aantalGemarkeerd = $stmt->rowCount();
+    }
+
+    header('Location: deelnemers_bewerken.php?melding=' . rawurlencode($aantalGemarkeerd . ' nieuwe of gewijzigde aanmelding(en) als gezien gemarkeerd.'));
+    exit;
+}
 
 $activiteiten = $pdo->query(
     'SELECT id, datum, plaats FROM activiteiten WHERE datum >= CURDATE() ORDER BY datum'
@@ -400,6 +422,13 @@ foreach ($deelnemers as $deelnemer) {
             <button class="w3-button w3-border categorie-knop" type="button" data-keuze="koperblazers" aria-pressed="false" onclick="filterDeelnemers('koperblazers', this)">Koperblazers: <?= $deelnemerTellingen['koperblazers'] ?></button>
             <button class="w3-button w3-border categorie-knop" type="button" data-keuze="overig" aria-pressed="false" onclick="filterDeelnemers('overig', this)">Overig: <?= $deelnemerTellingen['overig'] ?></button>
         </p>
+        <?php if ($aantalNieuweGewijzigdeDeelnemers > 0): ?>
+            <form method="post" class="w3-margin-bottom" onsubmit="return confirm('Alle <?= $aantalNieuweGewijzigdeDeelnemers ?> nieuwe of gewijzigde aanmelding(en) als gezien markeren? De klavertjes en de filter Nieuw/gewijzigd worden hiermee leeggemaakt.')">
+                <input type="hidden" name="actie" value="markeer_alle_als_gezien">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
+                <button class="w3-button w3-light-grey" type="submit">Alle nieuwe aanmeldingen als gezien markeren (<?= $aantalNieuweGewijzigdeDeelnemers ?>)</button>
+            </form>
+        <?php endif; ?>
 
         <button id="details-knop" type="button" class="w3-button w3-blue w3-margin-bottom" onclick="toggleDetails()">E-mail / telefoon / plaats / voorkeur tonen</button>
 
