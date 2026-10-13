@@ -240,7 +240,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $instrumentNamen[] = $instrument['naam'];
             }
         }
-        $beschikbaarheid = [];
+        $beschikbaarheidRijen = [];
         foreach ($activiteiten as $activiteit) {
             $status = trim($_POST['status_' . (int) $activiteit['id']] ?? 'nee');
             $datum = nederlandseDatum(new DateTimeImmutable($activiteit['datum']));
@@ -249,13 +249,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'misschien' => '#ff9800',
                 default => '#dc3545',
             };
-            $beschikbaarheid[] = '<li>' . $datum . ' - ' . htmlspecialchars($activiteit['omschrijving'] ?? '', ENT_QUOTES, 'UTF-8') . ': <strong style="color:' . $statusKleur . '">' . htmlspecialchars(ucfirst($status), ENT_QUOTES, 'UTF-8') . '</strong></li>';
+            $beschikbaarheidRijen[] = '<tr><td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;">' . $datum . '</td><td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;">' . htmlspecialchars($activiteit['omschrijving'] ?? '', ENT_QUOTES, 'UTF-8') . '</td><td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;text-align:right;"><strong style="color:' . $statusKleur . '">' . htmlspecialchars(ucfirst($status), ENT_QUOTES, 'UTF-8') . '</strong></td></tr>';
         }
         $wilOpDeHoogteGehoudenWorden = (int) $opDeHoogteHouden === 1;
         $opDeHoogteGehoudenAntwoord = $wilOpDeHoogteGehoudenWorden
             ? 'Ja'
             : '<strong style="color:#d00">Nee. We zullen je gegevens uit ons bestand verwijderen.</strong>';
-        $beschikbaarheidInhoud = $beschikbaarheid !== [] ? '<ul>' . implode('', $beschikbaarheid) . '</ul>' : 'geen toekomstige activiteiten';
+        $beschikbaarheidInhoud = $beschikbaarheidRijen !== []
+            ? '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;"><tr><td style="padding:8px 10px;border-bottom:2px solid #cbd5e1;font-weight:bold;">Datum</td><td style="padding:8px 10px;border-bottom:2px solid #cbd5e1;font-weight:bold;">Activiteit</td><td style="padding:8px 10px;border-bottom:2px solid #cbd5e1;font-weight:bold;text-align:right;">Status</td></tr>' . implode('', $beschikbaarheidRijen) . '</table>'
+            : '<p style="margin:0;">Geen toekomstige activiteiten opgegeven.</p>';
+        $beschikbaarheidBlok = $wilOpDeHoogteGehoudenWorden
+            ? '<tr><td style="padding:0 24px 24px;"><p style="margin:0 0 10px;font-size:16px;font-weight:bold;color:#273746;">Beschikbaarheid</p>' . $beschikbaarheidInhoud . '</td></tr>'
+            : '';
         $templateWaarden = [
             '{{voornaam}}' => $voornaam,
             '{{achternaam}}' => $achternaam,
@@ -266,7 +271,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             '{{plaats}}' => $plaats,
             '{{instrumenten}}' => $instrumentNamen !== [] ? implode(', ', $instrumentNamen) : 'geen instrument opgegeven',
             '{{beschikbaarheid}}' => $beschikbaarheidInhoud,
-            '{{beschikbaarheid_blok}}' => $wilOpDeHoogteGehoudenWorden ? '<p>Beschikbaarheid:<br>' . $beschikbaarheidInhoud . '</p>' : '',
+            '{{beschikbaarheid_blok}}' => $beschikbaarheidBlok,
             '{{op_de_hoogte_gehouden_antwoord}}' => $opDeHoogteGehoudenAntwoord,
             '{{aanmeldlink}}' => 'https://mozartopzaterdag.nl/deelnemers_aanmelden.php?email=' . rawurlencode($email),
         ];
