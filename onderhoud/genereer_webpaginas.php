@@ -616,7 +616,7 @@ if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
                             <input type="hidden" name="partijen[<?= $index ?>][volgorde]" value="<?= (int) ($instellingen['volgorde'] ?? 0) ?>">
                             <label>
                                 Tekst
-                                <input class="w3-input" type="text" name="partijen[<?= $index ?>][label]" value="<?= html(zonderPdfExtensie((string) ($instellingen['label'] ?? $partij['label']))) ?>" style="display:inline-block; width:18em;">
+                                <input class="w3-input" type="text" name="partijen[<?= $index ?>][label]" value="<?= html(zonderPdfExtensie((string) ($instellingen['label'] ?? $partij['label']))) ?>" style="display:inline-block; width:36em;">
                             </label>
                             <?php if ($partij['strijker']): ?>
                                 <label>
