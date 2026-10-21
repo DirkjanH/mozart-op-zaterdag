@@ -4,10 +4,6 @@ require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/includes/deelnemer_wijzigingsdatum.php';
 
 zorgVoorDeelnemerWijzigingsdatum($pdo);
-$opmerkingenKolom = $pdo->query("SHOW COLUMNS FROM deelnemers LIKE 'opmerkingen'")->fetch();
-if ($opmerkingenKolom === false) {
-    $pdo->exec('ALTER TABLE deelnemers ADD COLUMN opmerkingen TEXT NULL');
-}
 // Bewaart per formulierweergave een uniek token, zodat een pagina-refresh na versturen niet nogmaals een bevestigingsmail oplevert.
 $pdo->exec('CREATE TABLE IF NOT EXISTS aanmeldbevestiging_verzonden (token CHAR(32) NOT NULL PRIMARY KEY, verzonden_op DATETIME NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
 

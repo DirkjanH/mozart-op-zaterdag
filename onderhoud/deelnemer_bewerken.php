@@ -4,10 +4,6 @@ require_once __DIR__ . '/../connections/MozartopZaterdag.php';
 require_once __DIR__ . '/../includes/deelnemer_wijzigingsdatum.php';
 
 zorgVoorDeelnemerWijzigingsdatum($pdo);
-$opmerkingenKolom = $pdo->query("SHOW COLUMNS FROM deelnemers LIKE 'opmerkingen'")->fetch();
-if ($opmerkingenKolom === false) {
-    $pdo->exec('ALTER TABLE deelnemers ADD COLUMN opmerkingen TEXT NULL');
-}
 
 $statussen = ['' => '(onbekend)', 'ja' => 'ja', 'nee' => 'nee', 'misschien' => 'misschien'];
 $melding = '';

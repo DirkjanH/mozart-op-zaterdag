@@ -20,24 +20,6 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST' && ($_POST['actie'] ?? '') 
     exit('Onbekende actie.');
 }
 
-function zorgVoorUitvoeringskolommen(PDO $pdo): void
-{
-    if ($pdo->query("SHOW COLUMNS FROM werken LIKE 'uitgevoerd_op'")->fetch() === false) {
-        $pdo->exec('ALTER TABLE werken ADD COLUMN uitgevoerd_op DATE NULL');
-    }
-    $metSolistKolom = $pdo->query("SHOW COLUMNS FROM werken LIKE 'met_solist'")->fetch(PDO::FETCH_ASSOC);
-    if ($metSolistKolom === false) {
-        $pdo->exec('ALTER TABLE werken ADD COLUMN met_solist VARCHAR(100) NULL');
-    } elseif (preg_match('/^varchar\((\d+)\)$/i', $metSolistKolom['Type'], $delen) && (int) $delen[1] < 100) {
-        $pdo->exec('ALTER TABLE werken MODIFY COLUMN met_solist VARCHAR(100) NULL');
-    }
-    if ($pdo->query("SHOW COLUMNS FROM werken LIKE 'duur_minuten'")->fetch() === false) {
-        $pdo->exec('ALTER TABLE werken ADD COLUMN duur_minuten SMALLINT UNSIGNED NULL');
-    }
-}
-
-zorgVoorUitvoeringskolommen($pdo);
-
 $soorten = ['symfonie', 'concert', 'ander'];
 $melding = '';
 

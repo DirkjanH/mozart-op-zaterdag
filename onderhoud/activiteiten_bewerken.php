@@ -3,13 +3,6 @@ require_once __DIR__ . '/../includes/inloggen.php';
 require_once __DIR__ . '/../connections/MozartopZaterdag.php';
 require_once __DIR__ . '/../includes/bezetting.inc.php';
 
-if ($pdo->query("SHOW COLUMNS FROM activiteiten LIKE 'gewenste_bezetting'")->fetch() === false) {
-    $pdo->exec('ALTER TABLE activiteiten ADD COLUMN gewenste_bezetting VARCHAR(100) NULL');
-}
-if ($pdo->query("SHOW COLUMNS FROM activiteiten LIKE 'opmerkingen'")->fetch() === false) {
-    $pdo->exec('ALTER TABLE activiteiten ADD COLUMN opmerkingen TEXT NULL');
-}
-
 $melding = '';
 
 // Zet de gekozen werken om in een leesbare omschrijving, bijv.
