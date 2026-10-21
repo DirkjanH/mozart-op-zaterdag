@@ -7,7 +7,7 @@ $melding = '';
 $voorbeeldPartijen = [];
 
 $activiteiten = $pdo->query(
-    'SELECT id, datum, plaats, omschrijving FROM activiteiten ORDER BY datum'
+    'SELECT id, datum, plaats, omschrijving FROM activiteiten WHERE datum >= CURDATE() ORDER BY datum'
 )->fetchAll(PDO::FETCH_ASSOC);
 $instrumenten = $pdo->query("SELECT id, naam FROM instrumenten ORDER BY CASE WHEN LOWER(TRIM(naam)) = 'pauken' THEN COALESCE((SELECT MIN(i2.id) FROM instrumenten i2 WHERE LOWER(TRIM(i2.naam)) LIKE 'trompet%'), id) ELSE id END, CASE WHEN LOWER(TRIM(naam)) = 'pauken' THEN 1 ELSE 0 END, id")->fetchAll(PDO::FETCH_ASSOC);
 $hoorns = array_values(array_filter($instrumenten, static fn (array $instrument): bool => strtolower(trim($instrument['naam'])) === 'hoorn'));
@@ -338,12 +338,22 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
             $bezettingHtml = "        <h2>Bezetting</h2>\n";
             if ($toonDeelnemers) {
                 $bezettingHtml .= str_replace(
-                    ['__ACTIVITEIT_ID__', '__GEWENSTE_BEZETTING__'],
-                    [(string) $activiteitId, var_export($gewensteBezetting ?? [], true)],
+                    '__ACTIVITEIT_ID__',
+                    (string) $activiteitId,
                     <<<'PHP'
         <?php
         require_once '../connections/MozartopZaterdag.php';
-            require_once '../includes/bezetting.inc.php';
+        require_once '../includes/bezetting.inc.php';
+        $stmt = $pdo->prepare('SELECT gewenste_bezetting FROM activiteiten WHERE id = ?');
+        $stmt->execute([__ACTIVITEIT_ID__]);
+        $notatie = $stmt->fetchColumn();
+        if ($notatie === false) {
+            throw new RuntimeException('Activiteit niet gevonden.');
+        }
+        $gewensteBezetting = ontleedGewensteBezetting((string) $notatie);
+        if ($gewensteBezetting === null) {
+            throw new RuntimeException('De gewenste bezetting heeft niet het formaat 0201-0200[-timp]-66442.');
+        }
         $stmt = $pdo->prepare("SELECT d.voornaam, d.achternaam, ad.partij, i.naam AS instrument
              FROM activiteit_deelnemers ad
              JOIN deelnemers d ON d.id = ad.deelnemer_id
@@ -358,13 +368,7 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
                  ad.partij, d.achternaam, d.voornaam");
         $stmt->execute([__ACTIVITEIT_ID__]);
         $deelnemers = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $gewensteBezetting = __GEWENSTE_BEZETTING__;
-        $bezettingsRijen = maakBezettingsRijen($deelnemers, [], $gewensteBezetting);
-        $blazers = ['fluit', 'hobo', 'klarinet', 'fagot', 'hoorn', 'trompet', 'trombone', 'tuba'];
-        $deelnemersRijen = array_values(array_filter(
-            $bezettingsRijen,
-            static fn (array $rij): bool => !$rij['vacature'] || in_array(bepaalStemgroep($rij['stemgroep'], ''), $blazers, true)
-        ));
+        $deelnemersRijen = maakBezettingsRijen($deelnemers, [], $gewensteBezetting);
         ?>
         <p>Er zijn <?= count($deelnemers) ?> toegelaten deelnemers.</p>
         <table class="w3-table w3-striped w3-bordered" id="deelnemers">
@@ -628,7 +632,7 @@ if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
                     <?php endforeach; ?>
                 </ul>
             <?php endif; ?>
-            <p>De bezetting wordt automatisch opgebouwd uit bevestigde deelnemers, inclusief hun toegewezen partij. De volgende generatie wordt versie <?= max(0, (int) ($paginaConfiguratie['versie'] ?? 0)) + 1 ?>.</p>
+            <p>De keuzelijst toont alleen activiteiten vanaf vandaag. De bezetting wordt automatisch opgebouwd uit bevestigde deelnemers, inclusief hun toegewezen partij. Bij elk bezoek aan de gegenereerde pagina wordt de actuele gewenste bezetting uit de activiteitentabel gelezen. Ontbrekende spelers worden als rode vacature getoond. Gebruik vijf cijfers voor de gewenste aantallen strijkers (eerste viool, tweede viool, altviool, cello, contrabas); bij 'str' worden geen strijkersvacatures berekend. De volgende generatie wordt versie <?= max(0, (int) ($paginaConfiguratie['versie'] ?? 0)) + 1 ?>.</p>
             <p>
                 <label>
                     <input type="checkbox" name="toon_deelnemers" <?= !empty($paginaConfiguratie['toon_deelnemers']) ? 'checked' : '' ?>>
