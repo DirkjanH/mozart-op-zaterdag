@@ -3,6 +3,7 @@ require_once __DIR__ . '/../includes/inloggen.php';
 require_once __DIR__ . '/../connections/MozartopZaterdag.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../includes/mail_tracking.php';
+require_once __DIR__ . '/../includes/deelnemers_mail.inc.php';
 
 zorgVoorMailTrackingTabel($pdo);
 
@@ -40,7 +41,7 @@ if ($actie === 'json_laden') {
     }
 }
 
-$activiteitId = (int) ($_GET['activiteit_id'] ?? $_POST['activiteit_id'] ?? 0);
+$activiteitId = (int) ($_POST['activiteit_id'] ?? $_GET['activiteit_id'] ?? 0);
 $activiteiten = $pdo->query(
     'SELECT id, datum, plaats, omschrijving FROM activiteiten ORDER BY datum ASC'
 )->fetchAll(PDO::FETCH_ASSOC);
@@ -57,7 +58,8 @@ foreach ($activiteiten as $activiteit) {
 }
 
 // Activiteitsgebonden mails gebruiken de actuele indeling; overige doelgroepen komen uit deelnemersvoorkeuren.
-$doelgroep = $_GET['doelgroep'] ?? $_POST['doelgroep'] ?? 'toegelaten';
+$doelgroep = $_POST['doelgroep'] ?? $_GET['doelgroep'] ?? 'toegelaten';
+$halfjaren = mailHalfjaren(new DateTimeImmutable('now', new DateTimeZone('Europe/Amsterdam')));
 $doelgroepen = [
     'toegelaten' => 'Toegelaten deelnemers voor deze activiteit',
     'alle_deelnemers' => 'Alle deelnemers',
@@ -66,12 +68,26 @@ $doelgroepen = [
     'koperblazers' => 'Koperblazers',
     'overig' => 'Overig',
 ];
+foreach ($halfjaren as $sleutel => $halfjaar) {
+    $doelgroepen[$sleutel] = $halfjaar['label'];
+}
 if (!array_key_exists($doelgroep, $doelgroepen)) {
     $doelgroep = 'toegelaten';
 }
 
 $deelnemers = [];
-if ($doelgroep === 'toegelaten' && $gekozenActiviteit !== null) {
+$mailPeriode = $halfjaren[$doelgroep] ?? null;
+if ($mailPeriode !== null) {
+    $gekozenActiviteit = null;
+    foreach ($activiteiten as $activiteit) {
+        if ($activiteit['datum'] >= $mailPeriode['start'] && $activiteit['datum'] < $mailPeriode['einde']) {
+            $gekozenActiviteit = $activiteit;
+            $activiteitId = (int) $activiteit['id'];
+            break;
+        }
+    }
+    $deelnemers = laadHalfjaarMailDeelnemers($pdo, $mailPeriode);
+} elseif ($doelgroep === 'toegelaten' && $gekozenActiviteit !== null) {
     // Deze query gebruikt de concrete activiteitspartij; daarmee krijgt elke deelnemer de juiste mailpersonalisatie.
     $stmt = $pdo->prepare(
         "SELECT d.id, d.voornaam, d.achternaam, d.email, i.naam AS instrument, ad.partij
@@ -144,6 +160,11 @@ $standaardBericht = <<<'HTML'
 <p>Je bent ingedeeld als <strong>{{instrument_partij}}</strong>.</p>
 <p>Met muzikale groet,<br>Dirkjan Horringa</p>
 HTML;
+if ($mailPeriode !== null) {
+    $standaardOnderwerp .= ': ' . $mailPeriode['label'];
+    $standaardBericht = '<p>Beste {{voornaam}},</p><p>Hieronder vind je je plaatsingen voor de komende periode.</p>'
+        . '{{plaatsing}}<p>Met muzikale groet,<br>Dirkjan Horringa</p>';
+}
 $onderwerp = trim($_POST['onderwerp'] ?? $standaardOnderwerp);
 $bericht = trim($_POST['bericht'] ?? $standaardBericht);
 
@@ -286,53 +307,6 @@ if ($actie === 'json_opslaan') {
     }
 }
 
-function vulMailTemplate(string $template, array $deelnemer, array $activiteit): string
-{
-    $instrument = trim((string) ($deelnemer['instrument'] ?? ''));
-    $partij = trim((string) ($deelnemer['partij'] ?? ''));
-    $plaats = match ($activiteit['plaats'] ?? '') {
-        'Marnixzaal' => 'de Marnixzaal aan het Domplein',
-        'Stadsklooster' => 'het Stadsklooster',
-        default => $activiteit['plaats'] ?? '',
-    };
-    $waarden = [
-        '{{voornaam}}' => $deelnemer['voornaam'] ?? '',
-        '{{achternaam}}' => $deelnemer['achternaam'] ?? '',
-        '{{instrument}}' => $instrument,
-        '{{partij}}' => $partij,
-        '{{instrument_partij}}' => trim($instrument . ' ' . $partij),
-        '{{datum}}' => date('d-m-Y', strtotime($activiteit['datum'])),
-        '{{plaats}}' => $plaats,
-        '{{omschrijving}}' => $activiteit['omschrijving'] ?? '',
-        '{{aanmeldlink}}' => 'https://mozartopzaterdag.nl/deelnemers_aanmelden.php?email=' . rawurlencode((string) ($deelnemer['email'] ?? '')),
-    ];
-
-    // Placeholders worden als tekst in HTML ingevoegd; escapen voorkomt dat persoonsgegevens markup worden.
-    return str_replace(
-        array_keys($waarden),
-        array_map(static fn ($waarde): string => htmlspecialchars((string) $waarde, ENT_QUOTES, 'UTF-8'), $waarden),
-        $template
-    );
-}
-
-function vulMailTemplateGeneriek(string $template): string
-{
-    // Kopie voor Dirkjan: alleen de aanhef ingevuld ('Beste ...'), overige velden blanco.
-    $waarden = [
-        '{{voornaam}}' => '...',
-        '{{achternaam}}' => '',
-        '{{instrument}}' => '',
-        '{{partij}}' => '',
-        '{{instrument_partij}}' => '',
-        '{{datum}}' => '',
-        '{{plaats}}' => '',
-        '{{omschrijving}}' => '',
-        '{{aanmeldlink}}' => '',
-    ];
-
-    return str_replace(array_keys($waarden), array_values($waarden), $template);
-}
-
 function sluitLokaleAfbeeldingenIn(string $html, PHPMailer\PHPMailer\PHPMailer $mailer): string
 {
     $webroot = realpath(__DIR__ . '/..');
@@ -425,6 +399,7 @@ if ($actie === 'versturen') {
         // Leg de ontvangers vast in de sessie; latere batches hangen zo niet af van gewijzigde formulierselecties.
         $wachtrij = [
             'activiteit' => $gekozenActiviteit,
+            'doelgroep_label' => $mailPeriode['label'] ?? (date('d-m-Y', strtotime($gekozenActiviteit['datum'])) . ' - ' . $gekozenActiviteit['plaats']),
             'onderwerp' => $onderwerp,
             'bericht' => $bericht,
             'aangemaakt_op' => date(DATE_ATOM),
@@ -513,13 +488,13 @@ if ($actie === 'verwerk_pluk' && is_array($wachtrij)) {
                         $mailer->clearAddresses();
                         $mailer->clearAttachments();
                         $mailer->addAddress($ontvanger['email'], $naam);
-                        $mailer->Subject = str_replace(["\r", "\n"], '', html_entity_decode(vulMailTemplate($wachtrij['onderwerp'], $ontvanger, $wachtrij['activiteit']), ENT_QUOTES, 'UTF-8'));
+                        $mailer->Subject = str_replace(["\r", "\n"], '', html_entity_decode(vulMailTemplate($wachtrij['onderwerp'], $ontvanger, $wachtrij['activiteit'], false), ENT_QUOTES, 'UTF-8'));
                         $ontvanger['tracking_token'] ??= bin2hex(random_bytes(32));
                         $mailer->Body = voegTrackingPixelToe(
                             sluitLokaleAfbeeldingenIn(vulMailTemplate($wachtrij['bericht'], $ontvanger, $wachtrij['activiteit']), $mailer),
                             $ontvanger['tracking_token']
                         );
-                        $mailer->AltBody = trim(html_entity_decode(strip_tags(str_replace(['</p>', '<br>', '<br/>', '<br />'], "\n", $mailer->Body)), ENT_QUOTES, 'UTF-8'));
+                        $mailer->AltBody = mailHtmlNaarTekst($mailer->Body);
                         // Reserveer vóór SMTP-verzending om dubbele mails binnen het ingestelde tijdvenster te blokkeren.
                         if (!reserveerMailVerzending($pdo, $ontvanger['tracking_token'], (int) $wachtrij['activiteit']['id'], (int) $ontvanger['id'], $ontvanger['email'])) {
                             $ontvanger['status'] = 'overgeslagen';
@@ -596,10 +571,10 @@ if ($actie === 'test') {
                         $mailer->clearAddresses();
                         $mailer->clearAttachments();
                         $mailer->addAddress($ontvangerEmail, $ontvangerNaam);
-                        $ingevuldOnderwerp = str_replace(["\r", "\n"], '', html_entity_decode(vulMailTemplate($onderwerp, $deelnemer, $gekozenActiviteit), ENT_QUOTES, 'UTF-8'));
+                        $ingevuldOnderwerp = str_replace(["\r", "\n"], '', html_entity_decode(vulMailTemplate($onderwerp, $deelnemer, $gekozenActiviteit, false), ENT_QUOTES, 'UTF-8'));
                         $mailer->Subject = '[TEST] ' . $ingevuldOnderwerp;
                         $mailer->Body = sluitLokaleAfbeeldingenIn(vulMailTemplate($bericht, $deelnemer, $gekozenActiviteit), $mailer);
-                        $mailer->AltBody = trim(html_entity_decode(strip_tags(str_replace(['</p>', '<br>', '<br/>', '<br />'], "\n", $mailer->Body)), ENT_QUOTES, 'UTF-8'));
+                        $mailer->AltBody = mailHtmlNaarTekst($mailer->Body);
                         // Testmails registreren geen echte verzending en blokkeren dus geen latere deelnemersmail.
                         $mailer->send();
                         $resultaten[] = ['gelukt' => true, 'naam' => $naam, 'bericht' => $ontvangerEmail];
@@ -722,8 +697,19 @@ if (is_array($wachtrij)) {
         <?php endif; ?>
 
         <form method="get" class="w3-margin-bottom">
+            <input type="hidden" name="activiteit_id" value="<?= $activiteitId ?>">
+            <strong>Plaatsingen volgend jaar mailen</strong><br>
+            <?php foreach ($halfjaren as $sleutel => $halfjaar): ?>
+                <button class="w3-button <?= $doelgroep === $sleutel ? 'w3-blue' : 'w3-light-grey' ?> w3-margin-top" type="submit" name="doelgroep" value="<?= htmlspecialchars($sleutel, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($halfjaar['label'], ENT_QUOTES, 'UTF-8') ?></button>
+            <?php endforeach; ?>
+        </form>
+
+        <form method="get" class="w3-margin-bottom">
+            <?php if ($mailPeriode !== null): ?>
+                <input type="hidden" name="activiteit_id" value="<?= $activiteitId ?>">
+            <?php endif; ?>
             <label for="activiteit_id"><strong>Activiteit</strong></label>
-            <select class="w3-select w3-border" id="activiteit_id" name="activiteit_id" onchange="this.form.submit()">
+            <select class="w3-select w3-border" id="activiteit_id" name="activiteit_id" onchange="this.form.submit()" <?= $mailPeriode !== null ? 'disabled' : '' ?>>
                 <?php foreach ($activiteiten as $activiteit): ?>
                     <option value="<?= (int) $activiteit['id'] ?>" <?= (int) $activiteit['id'] === $activiteitId ? 'selected' : '' ?>>
                         <?= htmlspecialchars(date('d-m-Y', strtotime($activiteit['datum'])) . ' - ' . $activiteit['plaats']) ?>
@@ -738,6 +724,7 @@ if (is_array($wachtrij)) {
             </select>
         </form>
 
+        <?php if ($gekozenActiviteit !== null): ?>
         <form method="post" enctype="multipart/form-data" class="w3-margin-bottom">
             <input type="hidden" name="activiteit_id" value="<?= $activiteitId ?>">
             <input type="hidden" name="doelgroep" value="<?= htmlspecialchars($doelgroep, ENT_QUOTES, 'UTF-8') ?>">
@@ -750,12 +737,13 @@ if (is_array($wachtrij)) {
             <button class="w3-button w3-light-grey w3-margin-top" type="submit" name="actie" value="json_laden" <?= $serverConcepten === [] ? 'disabled' : '' ?>>Serverconcept laden</button>
             <button class="w3-button w3-light-grey w3-margin-top" type="submit" name="actie" value="json_downloaden" <?= $serverConcepten === [] ? 'disabled' : '' ?>>Serverconcept downloaden</button>
         </form>
+        <?php endif; ?>
 
         <?php if (is_array($wachtrij)): ?>
             <section class="w3-panel w3-pale-blue w3-leftbar w3-border-blue">
                 <h4>Verzendwachtrij</h4>
                 <p>
-                    <strong><?= htmlspecialchars(date('d-m-Y', strtotime($wachtrij['activiteit']['datum'])) . ' - ' . $wachtrij['activiteit']['plaats']) ?></strong><br>
+                    <strong><?= htmlspecialchars($wachtrij['doelgroep_label'] ?? (date('d-m-Y', strtotime($wachtrij['activiteit']['datum'])) . ' - ' . $wachtrij['activiteit']['plaats'])) ?></strong><br>
                     <?= $wachtrijTellingen['verzonden'] ?> verzonden,
                     <?= $wachtrijTellingen['wachtend'] ?> wachtend,
                     <?= $wachtrijTellingen['mislukt'] ?> mislukt,
@@ -801,6 +789,16 @@ if (is_array($wachtrij)) {
                     </div>
                 </details>
             </section>
+        <?php endif; ?>
+
+        <?php if ($mailPeriode !== null): ?>
+            <p class="w3-panel w3-pale-blue">
+                Deelnemers met minstens één ‘ja’ of ‘misschien’ van <?= htmlspecialchars(date('d-m-Y', strtotime($mailPeriode['start']))) ?>
+                tot en met <?= htmlspecialchars(date('d-m-Y', strtotime($mailPeriode['einde'] . ' -1 day'))) ?>.
+                <code>{{plaatsing}}</code> toont per activiteit plaatsing in groen of afwijzing in rood; ‘nee’ wordt weggelaten.
+                Controleer de indeling vóór verzending: niet toegelaten geldt als afgewezen.
+                <?php if ($gekozenActiviteit === null): ?>Er zijn nog geen activiteiten in dit halfjaar.<?php endif; ?>
+            </p>
         <?php endif; ?>
 
         <?php if ($gekozenActiviteit !== null): ?>
@@ -869,7 +867,9 @@ if (is_array($wachtrij)) {
 
                 <p class="w3-small">
                     Invoegcodes: <code>{{voornaam}}</code>, <code>{{achternaam}}</code>, <code>{{instrument_partij}}</code>,
-                    <code>{{instrument}}</code>, <code>{{partij}}</code>, <code>{{datum}}</code>, <code>{{plaats}}</code>, <code>{{omschrijving}}</code> en <code>{{aanmeldlink}}</code>.
+                    <code>{{instrument}}</code>, <code>{{partij}}</code>, <code>{{datum}}</code>, <code>{{plaats}}</code>, <code>{{omschrijving}}</code>, <code>{{aanmeldlink}}</code>
+                    en <code>{{plaatsing}}</code> (plaatsingsoverzicht bij een halfjaardoelgroep).
+                    <?php if ($mailPeriode !== null): ?>De codes voor datum, plaats en omschrijving verwijzen naar de eerste activiteit van dit halfjaar.<?php endif; ?>
                 </p>
                 <label for="bericht"><strong>Bericht</strong></label>
                 <textarea id="bericht" name="bericht" required><?= htmlspecialchars($bericht) ?></textarea>
