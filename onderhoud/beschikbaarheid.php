@@ -26,6 +26,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         'status_opslaan',
         'toelating_intrekken',
         'toelaten',
+        'afwijzen',
         'uitnodigen',
         'afwijzen_met_mail',
         'toelaten_met_mail',
@@ -320,15 +321,20 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
         }
         $melding = 'Status van deelnemer opgeslagen.';
     } elseif ($actie === 'toelating_intrekken') {
-        $stmt = $pdo->prepare('UPDATE activiteit_deelnemers SET instrument_id = ?, partij = ?, status = ?, toegelaten = NULL WHERE activiteit_id = ? AND deelnemer_id = ?');
-        $stmt->execute([$instrumentId, $partij, $status, $activiteitId, $deelnemerId]);
+        $toegelatenWaarde = $status === 'nee' ? 0 : null;
+        $stmt = $pdo->prepare('UPDATE activiteit_deelnemers SET instrument_id = ?, partij = ?, status = ?, toegelaten = ? WHERE activiteit_id = ? AND deelnemer_id = ?');
+        $stmt->execute([$instrumentId, $partij, $status, $toegelatenWaarde, $activiteitId, $deelnemerId]);
         $melding = 'Toelating van deelnemer ingetrokken; de deelnemer is weer onbeoordeeld.';
     } elseif ($actie === 'toelaten' && $status === 'ja') {
         $stmt = $pdo->prepare('UPDATE activiteit_deelnemers SET instrument_id = ?, partij = ?, status = ?, toegelaten = 1 WHERE activiteit_id = ? AND deelnemer_id = ?');
         $stmt->execute([$instrumentId, $partij, $status, $activiteitId, $deelnemerId]);
         $melding = 'Deelnemer toegelaten zonder e-mail.';
+    } elseif ($actie === 'afwijzen' && in_array($status, ['ja', 'misschien'], true)) {
+        $stmt = $pdo->prepare('UPDATE activiteit_deelnemers SET instrument_id = ?, partij = ?, status = ?, toegelaten = 0 WHERE activiteit_id = ? AND deelnemer_id = ?');
+        $stmt->execute([$instrumentId, $partij, $status, $activiteitId, $deelnemerId]);
+        $melding = 'Deelnemer afgewezen zonder e-mail.';
     } elseif ($actie === 'instrument_niet_nodig_met_mail' && in_array($status, ['ja', 'misschien'], true)) {
-        $stmt = $pdo->prepare("UPDATE activiteit_deelnemers SET instrument_id = ?, partij = ?, status = 'nee' WHERE activiteit_id = ? AND deelnemer_id = ?");
+        $stmt = $pdo->prepare("UPDATE activiteit_deelnemers SET instrument_id = ?, partij = ?, status = 'nee', toegelaten = 0 WHERE activiteit_id = ? AND deelnemer_id = ?");
         $stmt->execute([$instrumentId, $partij, $activiteitId, $deelnemerId]);
     } elseif (($actie === 'uitnodigen' && $status === 'misschien') || ($actie === 'afwijzen_met_mail' && in_array($status, ['ja', 'misschien'], true)) || ($actie === 'toelaten_met_mail' && in_array($status, ['ja', 'misschien'], true))) {
         $stmt = $pdo->prepare('UPDATE activiteit_deelnemers SET instrument_id = ?, partij = ?, status = ? WHERE activiteit_id = ? AND deelnemer_id = ?');
@@ -446,26 +452,20 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
                     $mailer->AltBody = trim(html_entity_decode(strip_tags($mailTekstGeneriek), ENT_QUOTES, 'UTF-8'));
                     $mailer->send();
                 }
-                if ($actie === 'afwijzen_met_mail') {
-                    $stmt = $pdo->prepare('UPDATE activiteit_deelnemers SET toegelaten = 0 WHERE activiteit_id = ? AND deelnemer_id = ?');
-                    $stmt->execute([$activiteitId, $deelnemerId]);
-                } elseif ($actie === 'toelaten_met_mail') {
-                    $stmt = $pdo->prepare("UPDATE activiteit_deelnemers SET status = 'ja', toegelaten = 1 WHERE activiteit_id = ? AND deelnemer_id = ?");
-                    $stmt->execute([$activiteitId, $deelnemerId]);
-                } elseif ($actie === 'uitnodigen' && !$testModus) {
+                if ($actie === 'uitnodigen' && !$testModus) {
                     $stmt = $pdo->prepare('UPDATE activiteit_deelnemers SET uitnodiging_verstuurd_op = NOW() WHERE activiteit_id = ? AND deelnemer_id = ?');
                     $stmt->execute([$activiteitId, $deelnemerId]);
                 }
                 if ($testModus) {
                     $melding = 'Testmail alleen naar dirkjan@pellegrina.net verstuurd.';
                 } elseif ($actie === 'toelaten_met_mail') {
-                    $melding = 'Bevestigingsmail verstuurd met kopie naar Dirkjan; deelnemer is toegelaten.';
+                    $melding = 'Bevestigingsmail verstuurd met kopie naar Dirkjan; toelatingsstatus blijft ongewijzigd.';
                 } elseif ($actie === 'uitnodigen') {
                     $melding = 'Uitnodiging verstuurd met kopie naar Dirkjan; toelating blijft onbeoordeeld.';
                 } elseif ($actie === 'instrument_niet_nodig_met_mail') {
                     $melding = 'Mail over niet benodigd instrument verstuurd met kopie naar Dirkjan; toelating blijft ongewijzigd.';
                 } else {
-                    $melding = 'Afwijzingsmail verstuurd met kopie naar Dirkjan; deelnemer is afgewezen.';
+                    $melding = 'Afwijzingsmail verstuurd met kopie naar Dirkjan; toelatingsstatus blijft ongewijzigd.';
                 }
             } catch (PHPMailer\PHPMailer\Exception $e) {
                 $smtpFout = $mailer instanceof PHPMailer\PHPMailer\PHPMailer ? $mailer->ErrorInfo : implode(' | ', $smtpDebug);
@@ -818,11 +818,11 @@ document.addEventListener('keydown', function (event) {
 <?php $toggleWaarde = $toonModus === 'toegelaten' ? 'ja_misschien' : 'toegelaten'; $toggleTekst = $toonModus === 'toegelaten' ? 'Toon: ja/misschien (alle) (' . $countJaMisschien . ')' : 'Toon: alleen toegelaten (' . $countToegeilaten . ')'; $toggleButtonClass = $toonModus === 'toegelaten' ? 'w3-button w3-small w3-border w3-green' : 'w3-button w3-small w3-border w3-light-grey'; ?>
 <form method="get" style="margin:0 0 12px"><input type="hidden" name="activiteit_id" value="<?= (int) $activiteitId ?>"><button class="<?= $toggleButtonClass ?>" type="submit" name="toon" value="<?= htmlspecialchars($toggleWaarde, ENT_QUOTES, 'UTF-8') ?>" title="<?= $toonModus === 'toegelaten' ? 'Klik om alle ja/misschien deelnemers te tonen' : 'Klik om alleen toegelaten deelnemers te tonen' ?>"><?= htmlspecialchars($toggleTekst) ?></button></form>
     <div class="tabel-scroll"><table class="w3-table w3-bordered w3-striped w3-small"><tr><th>Speler</th><th>Instrument</th><th>Status</th><th>Partij</th><th>Acties</th></tr>
-<?php foreach ($spelers as $speler): ?><tr><form method="post"><input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>"><input type="hidden" name="activiteit_id" value="<?= $activiteitId ?>"><input type="hidden" name="deelnemer_id" value="<?= (int) $speler['id'] ?>"><td><span class="deelnemer-id"><?= (int) $speler['id'] ?></span><?= htmlspecialchars($speler['voornaam'] . ' ' . $speler['achternaam']) ?><?php if ((int) $speler['toegelaten'] === 1): ?><span class="toegelaten-vinkje" title="Toegelaten" aria-label="Toegelaten">&#10003;</span><?php elseif (in_array($speler['toegelaten'], [0, '0'], true)): ?><span class="afgewezen-kruis" title="Afgewezen" aria-label="Afgewezen">&#10005;</span><?php endif; ?><?php if ($speler['status'] === 'misschien' && $speler['uitnodiging_verstuurd_op'] !== null): ?><span class="onbeoordeeld-vraagteken" title="Uitnodiging verstuurd" aria-label="Uitnodiging verstuurd">?</span><?php endif; ?></td><td><select class="w3-select" name="instrument_id"><option value="0">(onbekend)</option><?php foreach ($instrumenten as $instrument): ?><option value="<?= (int) $instrument['id'] ?>" <?= (int) $speler['instrument_id'] === (int) $instrument['id'] ? 'selected' : '' ?>><?= htmlspecialchars($instrument['naam']) ?></option><?php endforeach; ?></select></td><td><select class="w3-select status-selectie" name="status" data-huidige-status="<?= htmlspecialchars($speler['status'], ENT_QUOTES, 'UTF-8') ?>"><?php foreach (['ja', 'misschien', 'nee'] as $status): ?><option value="<?= $status ?>" <?= $speler['status'] === $status ? 'selected' : '' ?>><?= $status ?></option><?php endforeach; ?></select></td><td><input class="w3-input" type="text" name="partij" value="<?= htmlspecialchars($speler['partij'] ?? '') ?>" maxlength="100" placeholder="bijv. 1" style="width:8em"></td><td><button class="status-opslaan-knop" type="submit" name="actie" value="status_opslaan" hidden></button><?php if ($speler['status'] === 'ja'): ?><button class="w3-button w3-green w3-small mail-knop" type="submit" name="actie" value="toelaten" formnovalidate>Toelaten</button><?php elseif ($speler['status'] === 'misschien'): ?><button class="w3-button w3-small mail-knop mail-modal-btn" type="button" data-modal="modal-bevestiging-<?= (int) $speler['id'] ?>" data-type="bevestiging" style="background:#198754;color:white">Uitnodigen</button><?php endif; ?><?php if (in_array($speler['status'], ['ja', 'misschien'], true)): ?><button class="w3-button w3-orange w3-small mail-knop mail-modal-btn" type="button" data-modal="modal-instrument-niet-nodig-<?= (int) $speler['id'] ?>" data-type="instrument_niet_nodig">Instrument niet nodig</button><?php endif; ?><button class="w3-button w3-small mail-knop mail-modal-btn" type="button" data-modal="modal-toelating-<?= (int) $speler['id'] ?>" data-type="toelating" style="background:#198754;color:white">Toelaten met mail</button><button class="w3-button w3-small mail-knop mail-modal-btn" type="button" data-modal="modal-afwijzing-<?= (int) $speler['id'] ?>" data-type="afwijzing" style="background:#dc3545;color:white">Afwijzen</button><?php if ((int) $speler['toegelaten'] === 1): ?><button class="w3-button w3-orange w3-small mail-knop" type="submit" name="actie" value="toelating_intrekken" formnovalidate onclick="return confirm('De toelating van deze deelnemer intrekken zonder e-mail?')">Toelating intrekken</button><?php endif; ?><input type="hidden" name="mail_bevestiging_onderwerp" value="<?= htmlspecialchars($standaardOnderwerp) ?>"><textarea style="display:none" name="mail_bevestiging_tekst"><?= htmlspecialchars($standaardMail) ?></textarea><input type="hidden" name="mail_afwijzing_onderwerp" value="<?= htmlspecialchars($standaardAfwijzingsOnderwerp) ?>"><textarea style="display:none" name="mail_afwijzing_tekst"><?= htmlspecialchars($standaardAfwijzingsMail) ?></textarea></td></form></tr><?php endforeach; ?></table></div>
+<?php foreach ($spelers as $speler): ?><tr><form method="post"><input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>"><input type="hidden" name="activiteit_id" value="<?= $activiteitId ?>"><input type="hidden" name="deelnemer_id" value="<?= (int) $speler['id'] ?>"><td><span class="deelnemer-id"><?= (int) $speler['id'] ?></span><?= htmlspecialchars($speler['voornaam'] . ' ' . $speler['achternaam']) ?><?php if ((int) $speler['toegelaten'] === 1): ?><span class="toegelaten-vinkje" title="Toegelaten" aria-label="Toegelaten">&#10003;</span><?php elseif (in_array($speler['toegelaten'], [0, '0'], true)): ?><span class="afgewezen-kruis" title="Afgewezen" aria-label="Afgewezen">&#10005;</span><?php endif; ?><?php if ($speler['status'] === 'misschien' && $speler['uitnodiging_verstuurd_op'] !== null): ?><span class="onbeoordeeld-vraagteken" title="Uitnodiging verstuurd" aria-label="Uitnodiging verstuurd">?</span><?php endif; ?></td><td><select class="w3-select" name="instrument_id"><option value="0">(onbekend)</option><?php foreach ($instrumenten as $instrument): ?><option value="<?= (int) $instrument['id'] ?>" <?= (int) $speler['instrument_id'] === (int) $instrument['id'] ? 'selected' : '' ?>><?= htmlspecialchars($instrument['naam']) ?></option><?php endforeach; ?></select></td><td><select class="w3-select status-selectie" name="status" data-huidige-status="<?= htmlspecialchars($speler['status'], ENT_QUOTES, 'UTF-8') ?>"><?php foreach (['ja', 'misschien', 'nee'] as $status): ?><option value="<?= $status ?>" <?= $speler['status'] === $status ? 'selected' : '' ?>><?= $status ?></option><?php endforeach; ?></select></td><td><input class="w3-input" type="text" name="partij" value="<?= htmlspecialchars($speler['partij'] ?? '') ?>" maxlength="100" placeholder="bijv. 1" style="width:8em"></td><td><button class="status-opslaan-knop" type="submit" name="actie" value="status_opslaan" hidden></button><button class="w3-button w3-green w3-small mail-knop" type="submit" name="actie" value="toelaten" formnovalidate <?= $speler['status'] !== 'ja' ? 'disabled title="Alleen beschikbaar voor spelers met status ja"' : '' ?>>Toelaten</button><button class="w3-button w3-red w3-small mail-knop" type="submit" name="actie" value="afwijzen" formnovalidate>Afwijzen</button><button class="w3-button w3-green w3-small mail-knop mail-modal-btn" type="button" data-modal="modal-toelating-<?= (int) $speler['id'] ?>" data-type="toelating">Bevestigingsmail</button><button class="w3-button w3-red w3-small mail-knop mail-modal-btn" type="button" data-modal="modal-afwijzing-<?= (int) $speler['id'] ?>" data-type="afwijzing">Afwijzingsmail</button><?php if ($speler['status'] === 'misschien'): ?><button class="w3-button w3-small mail-knop mail-modal-btn" type="button" data-modal="modal-bevestiging-<?= (int) $speler['id'] ?>" data-type="bevestiging" style="background:#6c757d;color:white">Uitnodigingsmail</button><?php endif; ?></td></form></tr><?php endforeach; ?></table></div>
 
 <!-- Mail modals -->
 <?php foreach ($spelers as $speler): ?>
-<?php $popupToelating = $vulMailTemplate($toelatingsMail, $speler, $gekozenActiviteit); $popupBevestiging = $vulMailTemplate($standaardMail, $speler, $gekozenActiviteit); $popupAfwijzing = $vulMailTemplate($standaardAfwijzingsMail, $speler, $gekozenActiviteit); $popupInstrumentNietNodig = $vulMailTemplate($instrumentNietNodigMail, $speler, $gekozenActiviteit); ?>
+<?php $popupToelating = $vulMailTemplate($toelatingsMail, $speler, $gekozenActiviteit); $popupBevestiging = $vulMailTemplate($standaardMail, $speler, $gekozenActiviteit); $popupAfwijzing = $vulMailTemplate($standaardAfwijzingsMail, $speler, $gekozenActiviteit); ?>
 <div id="modal-toelating-<?= (int) $speler['id'] ?>" class="mail-modal">
     <div class="mail-modal-content">
         <div class="mail-modal-header">
@@ -834,7 +834,7 @@ document.addEventListener('keydown', function (event) {
             <textarea class="mail-modal-tekst" id="mail-modal-tekst-toelating-<?= (int) $speler['id'] ?>" placeholder="Mailtekst"><?= htmlspecialchars($popupToelating) ?></textarea>
         </div>
         <div class="mail-modal-footer">
-            <button class="mail-modal-submit" type="button" data-type="toelating" data-action="toelaten_met_mail">Toelaten en bevestiging versturen</button>
+            <button class="mail-modal-submit" type="button" data-type="toelating" data-action="toelaten_met_mail">Bevestigingsmail versturen</button>
             <button class="mail-cancel" type="button">Annuleren</button>
         </div>
     </div>
@@ -857,23 +857,6 @@ document.addEventListener('keydown', function (event) {
   </div>
 </div>
 
-<div id="modal-instrument-niet-nodig-<?= (int) $speler['id'] ?>" class="mail-modal">
-    <div class="mail-modal-content">
-        <div class="mail-modal-header">
-            <h3>Mail: instrument niet nodig voor <?= htmlspecialchars($speler['voornaam'] . ' ' . $speler['achternaam']) ?></h3>
-            <button class="mail-modal-close" type="button" title="Sluiten">✕</button>
-        </div>
-        <div class="mail-modal-body">
-            <input class="mail-modal-onderwerp" type="text" value="<?= htmlspecialchars($instrumentNietNodigOnderwerp) ?>" placeholder="Onderwerp">
-            <textarea class="mail-modal-tekst" id="mail-modal-tekst-instrument-niet-nodig-<?= (int) $speler['id'] ?>" placeholder="Mailtekst"><?= htmlspecialchars($popupInstrumentNietNodig) ?></textarea>
-        </div>
-        <div class="mail-modal-footer">
-            <button class="mail-modal-submit" type="button" data-type="instrument_niet_nodig" data-action="instrument_niet_nodig_met_mail">Status op nee zetten en mail versturen</button>
-            <button class="mail-cancel" type="button">Annuleren</button>
-        </div>
-    </div>
-</div>
-
 <div id="modal-afwijzing-<?= (int) $speler['id'] ?>" class="mail-modal">
   <div class="mail-modal-content">
     <div class="mail-modal-header">
@@ -885,7 +868,7 @@ document.addEventListener('keydown', function (event) {
     <textarea class="mail-modal-tekst" id="mail-modal-tekst-afwijzing-<?= (int) $speler['id'] ?>" placeholder="Mailtekst"><?= htmlspecialchars($popupAfwijzing) ?></textarea>
     </div>
     <div class="mail-modal-footer">
-            <button class="mail-modal-submit" type="button" data-type="afwijzing" data-action="afwijzen_met_mail">Afwijzing versturen</button>
+            <button class="mail-modal-submit" type="button" data-type="afwijzing" data-action="afwijzen_met_mail">Afwijzingsmail versturen</button>
       <button class="mail-cancel" type="button">Annuleren</button>
     </div>
   </div>
