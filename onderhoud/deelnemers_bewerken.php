@@ -365,6 +365,7 @@ foreach ($deelnemers as $deelnemer) {
         }
 
         var filterSleutel = 'onderhoud-filter-' + window.location.pathname;
+        var zoekSleutel = 'onderhoud-zoek-' + window.location.pathname;
         var actieveCategorie = 'alles';
         var actieveZoekterm = '';
 
@@ -389,6 +390,11 @@ foreach ($deelnemers as $deelnemer) {
 
         function zoekDeelnemers(zoekterm) {
             actieveZoekterm = zoekterm.trim().toLocaleLowerCase('nl');
+            if (actieveZoekterm === '') {
+                localStorage.removeItem(zoekSleutel);
+            } else {
+                localStorage.setItem(zoekSleutel, zoekterm.trim());
+            }
             pasFiltersToe();
         }
 
@@ -421,17 +427,23 @@ foreach ($deelnemers as $deelnemer) {
             });
         })();
 
-        // Herstel de laatst gekozen filterknop, ook na een pagina-herlaad.
-        (function () {
+        // Herstel de laatst gekozen filters, ook na een pagina-herlaad.
+        document.addEventListener('DOMContentLoaded', function () {
             var opgeslagenKeuze = localStorage.getItem(filterSleutel);
-            if (!opgeslagenKeuze) {
-                return;
+            if (opgeslagenKeuze) {
+                var knop = document.querySelector('.categorie-knop[data-keuze="' + opgeslagenKeuze + '"]');
+                if (knop) {
+                    filterDeelnemers(opgeslagenKeuze, knop);
+                }
             }
-            var knop = document.querySelector('.categorie-knop[data-keuze="' + opgeslagenKeuze + '"]');
-            if (knop) {
-                filterDeelnemers(opgeslagenKeuze, knop);
+
+            var opgeslagenZoekterm = localStorage.getItem(zoekSleutel);
+            if (opgeslagenZoekterm !== null) {
+                var zoekveld = document.querySelector('#deelnemer-zoeken');
+                zoekveld.value = opgeslagenZoekterm;
+                zoekDeelnemers(opgeslagenZoekterm);
             }
-        })();
+        });
     </script>
 </head>
 
