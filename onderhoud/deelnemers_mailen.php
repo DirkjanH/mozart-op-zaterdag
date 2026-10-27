@@ -94,7 +94,7 @@ if ($mailPeriode !== null) {
          FROM activiteit_deelnemers ad
          JOIN deelnemers d ON d.id = ad.deelnemer_id
          LEFT JOIN instrumenten i ON i.id = ad.instrument_id
-         WHERE ad.activiteit_id = ? AND ad.toegelaten = 1
+         WHERE ad.activiteit_id = ? AND ad.toegelaten = 1 AND ad.status <> 'nee'
          ORDER BY CASE WHEN LOWER(TRIM(i.naam)) = 'pauken' THEN COALESCE((SELECT MIN(i2.id) FROM instrumenten i2 WHERE LOWER(TRIM(i2.naam)) LIKE 'trompet%'), i.id) ELSE i.id END,
                   CASE WHEN LOWER(TRIM(i.naam)) = 'pauken' THEN 1 ELSE 0 END,
                   i.id, d.achternaam, d.voornaam"
