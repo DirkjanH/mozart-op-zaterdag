@@ -90,7 +90,7 @@ if ($mailPeriode !== null) {
 } elseif ($doelgroep === 'toegelaten' && $gekozenActiviteit !== null) {
     // Deze query gebruikt de concrete activiteitspartij; daarmee krijgt elke deelnemer de juiste mailpersonalisatie.
     $stmt = $pdo->prepare(
-        "SELECT d.id, d.voornaam, d.achternaam, d.email, i.naam AS instrument, ad.partij
+        "SELECT d.id, d.voornaam, d.achternaam, d.email, i.id AS sort_instrument_id, i.naam AS instrument, ad.partij
          FROM activiteit_deelnemers ad
          JOIN deelnemers d ON d.id = ad.deelnemer_id
          LEFT JOIN instrumenten i ON i.id = ad.instrument_id
@@ -101,6 +101,34 @@ if ($mailPeriode !== null) {
     );
     $stmt->execute([$activiteitId]);
     $deelnemers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $deelnemersPerInstrument = [];
+    foreach ($deelnemers as $deelnemer) {
+        $instrumentSleutel = $deelnemer['sort_instrument_id'] === null
+            ? 'geen-instrument'
+            : (string) $deelnemer['sort_instrument_id'];
+        $deelnemersPerInstrument[$instrumentSleutel][] = $deelnemer;
+    }
+    foreach ($deelnemersPerInstrument as &$instrumentDeelnemers) {
+        usort($instrumentDeelnemers, static function (array $eerste, array $tweede): int {
+            $partijVergelijking = strnatcasecmp(
+                (string) ($eerste['partij'] ?? ''),
+                (string) ($tweede['partij'] ?? '')
+            );
+            if ($partijVergelijking !== 0) {
+                return $partijVergelijking;
+            }
+            return strcasecmp($eerste['achternaam'], $tweede['achternaam'])
+                ?: strcasecmp($eerste['voornaam'], $tweede['voornaam']);
+        });
+        foreach ($instrumentDeelnemers as &$deelnemer) {
+            unset($deelnemer['sort_instrument_id']);
+        }
+        unset($deelnemer);
+    }
+    unset($instrumentDeelnemers);
+    $deelnemers = $deelnemersPerInstrument === []
+        ? []
+        : array_merge(...array_values($deelnemersPerInstrument));
 } elseif ($doelgroep !== 'toegelaten') {
     $familieInstrumenten = [
         'strijkers' => ['viool', 'altviool', 'cello', 'contrabas'],
