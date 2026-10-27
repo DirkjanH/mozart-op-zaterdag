@@ -141,6 +141,17 @@ foreach ($pdo->query('SELECT activiteit_id, deelnemer_id, status FROM activiteit
     $statusPerDeelnemer[$rij['deelnemer_id']][$rij['activiteit_id']] = $rij['status'];
 }
 $instrumentNaamPerId = array_column($instrumenten, 'naam', 'id');
+$zoekTekstPerDeelnemer = [];
+foreach ($deelnemers as $deelnemer) {
+    $instrumentNamen = [];
+    foreach ($instrumentenPerDeelnemer[$deelnemer['id']] ?? [] as $instrumentId) {
+        $instrumentNamen[] = $instrumentNaamPerId[$instrumentId] ?? '';
+    }
+    $zoekTekstPerDeelnemer[$deelnemer['id']] = implode(' ', array_merge(
+        [$deelnemer['voornaam'], $deelnemer['achternaam']],
+        $instrumentNamen
+    ));
+}
 $instrumentFamilies = [
     'strijkers' => ['viool', 'altviool', 'cello', 'contrabas'],
     'houtblazers' => ['dwarsfluit', 'piccolo', 'hobo', 'engelse hoorn', 'klarinet', 'basklarinet', 'fagot', 'contrafagot'],
@@ -354,20 +365,31 @@ foreach ($deelnemers as $deelnemer) {
         }
 
         var filterSleutel = 'onderhoud-filter-' + window.location.pathname;
+        var actieveCategorie = 'alles';
+        var actieveZoekterm = '';
+
+        function pasFiltersToe() {
+            document.querySelectorAll('[data-families]').forEach(function (element) {
+                var families = element.getAttribute('data-families').split(' ');
+                var pastBijCategorie = actieveCategorie === 'alles' || families.indexOf(actieveCategorie) !== -1;
+                var zoekTekst = element.getAttribute('data-search').toLocaleLowerCase('nl');
+                var pastBijZoekterm = zoekTekst.indexOf(actieveZoekterm) !== -1;
+                element.style.display = pastBijCategorie && pastBijZoekterm ? '' : 'none';
+            });
+        }
 
         function filterDeelnemers(keuze, knop) {
-            document.querySelectorAll('[data-families]').forEach(function (element) {
-                if (keuze === 'alles') {
-                    element.style.display = '';
-                } else {
-                    var families = element.getAttribute('data-families').split(' ');
-                    element.style.display = families.indexOf(keuze) !== -1 ? '' : 'none';
-                }
-            });
+            actieveCategorie = keuze;
             document.querySelectorAll('.categorie-knop').forEach(function (element) {
                 element.setAttribute('aria-pressed', element === knop ? 'true' : 'false');
             });
             localStorage.setItem(filterSleutel, keuze);
+            pasFiltersToe();
+        }
+
+        function zoekDeelnemers(zoekterm) {
+            actieveZoekterm = zoekterm.trim().toLocaleLowerCase('nl');
+            pasFiltersToe();
         }
 
         // Onthoud de scrollpositie zodat je na opslaan/verwijderen terugkomt waar je bezig was.
@@ -436,6 +458,11 @@ foreach ($deelnemers as $deelnemer) {
             <button class="w3-button w3-border categorie-knop" type="button" data-keuze="overig" aria-pressed="false" onclick="filterDeelnemers('overig', this)">Overig: <?= $deelnemerTellingen['overig'] ?></button>
         </div>
 
+        <div class="form-group">
+            <label for="deelnemer-zoeken">Zoek op (deel van) naam of instrument</label>
+            <input class="w3-input" type="search" id="deelnemer-zoeken" oninput="zoekDeelnemers(this.value)" placeholder="Bijvoorbeeld: Anna, viool of trompet">
+        </div>
+
         <button id="details-knop" type="button" class="w3-button w3-blue w3-margin-bottom" onclick="toggleDetails()">E-mail / telefoon / plaats / voorkeur tonen</button>
 
         <div class="tabel-scroll">
@@ -457,7 +484,7 @@ foreach ($deelnemers as $deelnemer) {
                     <form method="post" onsubmit="return bevestigVerwijderen(event);">
                         <input type="hidden" name="actie" value="opslaan">
                         <input type="hidden" name="id" value="<?= (int) $deelnemer['id'] ?>">
-                        <tr data-families="<?= htmlspecialchars(implode(' ', $familiesPerDeelnemer[$deelnemer['id']])) ?>">
+                        <tr data-families="<?= htmlspecialchars(implode(' ', $familiesPerDeelnemer[$deelnemer['id']])) ?>" data-search="<?= htmlspecialchars($zoekTekstPerDeelnemer[$deelnemer['id']], ENT_QUOTES, 'UTF-8') ?>">
                             <td style="min-width:20em;">
                                 <div class="naam-velden<?= (int) ($deelnemer['op_de_hoogte_houden'] ?? 1) === 0 ? ' naam-niet-op-hoogte' : '' ?>">
                                     <a href="deelnemer_bewerken.php?id=<?= (int) $deelnemer['id'] ?>" title="Alle gegevens van deze deelnemer bekijken en bewerken" style="align-self:center;">&#128100;</a>
@@ -536,7 +563,7 @@ foreach ($deelnemers as $deelnemer) {
         <div class="mobiel-lijst">
             <?php foreach ($deelnemers as $deelnemer): ?>
                 <?php $gekozenInstrumenten = $instrumentenPerDeelnemer[$deelnemer['id']] ?? []; ?>
-                <details class="deelnemer-kaart" data-families="<?= htmlspecialchars(implode(' ', $familiesPerDeelnemer[$deelnemer['id']])) ?>">
+                <details class="deelnemer-kaart" data-families="<?= htmlspecialchars(implode(' ', $familiesPerDeelnemer[$deelnemer['id']])) ?>" data-search="<?= htmlspecialchars($zoekTekstPerDeelnemer[$deelnemer['id']], ENT_QUOTES, 'UTF-8') ?>">
                     <summary>
                         <span class="<?= (int) ($deelnemer['op_de_hoogte_houden'] ?? 1) === 0 ? 'naam-niet-op-hoogte' : '' ?>"><?= htmlspecialchars($deelnemer['voornaam'] . ' ' . $deelnemer['achternaam']) ?></span>
                         <?php if (in_array((int) $deelnemer['id'], $gemarkeerdeDeelnemerIds, true)): ?><span class="nieuwe-deelnemer-markering" title="Nieuwe of gewijzigde aanmelding; verdwijnt na opslaan" aria-label="Nieuwe of gewijzigde aanmelding" style="color:#198754;">&#9752;</span><?php endif; ?>
