@@ -13,8 +13,18 @@
         <?php include_once 'navigatie.htm'; ?>
         <h2>Mozart op Zaterdag</h2>
         <div style="clear: both;" class="w3-panel">
+            <h4>24 oktober 2026: “Parijse” Ouverture in Bes KV 311a & “Parijse” Symfonie nr. 31 in D KV 297</h4>
+            <p>
+                De dertiende aflevering van <i>Mozart op Zaterdag</i> vond plaats op zaterdagochtend 24 oktober in de <a href="/marnixzaal.php" target="_blank">Marnixzaal</a> aan het Domplein. We werkten aan Mozarts “Parijse” Ouverture in Bes KV 311a en aan de “Parijse” Symfonie nr. 31 in D KV 297, geschreven voor het Parijse publiek. Beide werken zijn groot bezet met twee fluiten, twee hobo's, twee klarinetten, twee fagotten, twee hoorns, twee trompetten, pauken en strijkers. De “Parijse” Ouverture in Bes KV 311a, die qua auteursschap dubieus is, werd besproken en geanalyseerd voordat we ons op de uitvoering concentreerden. Alle orkestleden wren het erover eens dat het beslist geen werk van Mozart is, maar wel aantrekkelijke muziek. De “Parijse” Symfonie nr. 31 in D KV 297, een van Mozarts bekendste symfonieën, werd eveneens grondig bestudeerd en uitgevoerd, waarbij bijzondere aandacht werd besteed aan de levendige ritmes en de kleurrijke orkestratie.
+            </p>
+        </div>
+        <div style="clear: both;" class="w3-panel">
             <h4>26 september 2026: Concert voor fluit en harp in C KV 299</h4>
             <p>
+                <img src="/2026-09-26/Elisa_BG.jpg" alt="Elisa Bartolomé Gómez, fluit" width="100"
+                    class="w3-image w3-right w3-margin-left w3-margin-bottom geenlijn">
+                <img src="/2026-09-26/Maria_P.jpg" alt="Maria Palma, harp" width="100"
+                    class="w3-image w3-right w3-margin-left w3-margin-bottom geenlijn">
                 De twaalfde aflevering van <i>Mozart op Zaterdag</i> vond plaats op zaterdagochtend 26 september. We werkten aan Mozarts <strong>Concert voor fluit en harp in C KV 299</strong>, een licht, elegant en bijzonder melodieus werk waarin fluit en harp een sprankelend muzikaal gesprek voeren. Het concert duurt ca. 27 minuten en bestaat uit een Allegro, een Andantino en een Rondo Allegro. Het orkest bestond uit twee hobo's, een fagot, twee hoorns en strijkers. Solisten waren de fluitiste Elisa Bartolomé Gómez, afkomstig uit Tenerife en afgestudeerd aan het Koninklijk Conservatorium Den Haag, en de Italiaanse harpiste Maria Palma, die in Den Haag woont.
             </p>
         </div>
