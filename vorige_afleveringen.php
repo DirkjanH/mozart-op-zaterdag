@@ -21,7 +21,7 @@
         <div style="clear: both;" class="w3-panel">
             <h4>26 september 2026: Concert voor fluit en harp in C KV 299</h4>
             <p>
-                <img src="/2026-09-26/Elisa_BG.jpg" alt="Elisa Bartolomé Gómez, fluit" width="150"
+                <img src="/2026-09-26/Elisa_BG.jpg" alt="Elisa Bartolomé Gómez, fluit" width="250"
                     class="w3-image w3-right w3-margin-left w3-margin-bottom geenlijn">
                 <img src="/2026-09-26/Maria_P.jpg" alt="Maria Palma, harp" width="150"
                     class="w3-image w3-left w3-margin-right w3-margin-bottom geenlijn">
