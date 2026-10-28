@@ -21,10 +21,10 @@
         <div style="clear: both;" class="w3-panel">
             <h4>26 september 2026: Concert voor fluit en harp in C KV 299</h4>
             <p>
-                <img src="/2026-09-26/Elisa_BG.jpg" alt="Elisa Bartolomé Gómez, fluit" width="100"
+                <img src="/2026-09-26/Elisa_BG.jpg" alt="Elisa Bartolomé Gómez, fluit" width="150"
                     class="w3-image w3-right w3-margin-left w3-margin-bottom geenlijn">
-                <img src="/2026-09-26/Maria_P.jpg" alt="Maria Palma, harp" width="100"
-                    class="w3-image w3-right w3-margin-left w3-margin-bottom geenlijn">
+                <img src="/2026-09-26/Maria_P.jpg" alt="Maria Palma, harp" width="150"
+                    class="w3-image w3-left w3-margin-right w3-margin-bottom geenlijn">
                 De twaalfde aflevering van <i>Mozart op Zaterdag</i> vond plaats op zaterdagochtend 26 september. We werkten aan Mozarts <strong>Concert voor fluit en harp in C KV 299</strong>, een licht, elegant en bijzonder melodieus werk waarin fluit en harp een sprankelend muzikaal gesprek voeren. Het concert duurt ca. 27 minuten en bestaat uit een Allegro, een Andantino en een Rondo Allegro. Het orkest bestond uit twee hobo's, een fagot, twee hoorns en strijkers. Solisten waren de fluitiste Elisa Bartolomé Gómez, afkomstig uit Tenerife en afgestudeerd aan het Koninklijk Conservatorium Den Haag, en de Italiaanse harpiste Maria Palma, die in Den Haag woont.
             </p>
         </div>
