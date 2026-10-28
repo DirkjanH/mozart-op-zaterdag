@@ -26,6 +26,11 @@ $csrfToken = csrfTokenOphalen();
 
 $foutmelding = '';
 
+// De bestemming komt uit het formulier/de URL; de sessiewaarde is de terugval.
+require_once __DIR__ . '/login_redirect.php';
+$terugNaInloggen = geldigeRedirectNaInloggen($_POST['terug'] ?? $_GET['terug'] ?? null)
+    ?? geldigeRedirectNaInloggen($_SESSION['redirect_na_inloggen'] ?? null);
+
 // Bewaar alleen recente mislukte pogingen om eenvoudig geautomatiseerd raden af te remmen.
 $grensTijdstip = time() - 900;
 $loginPogingen = array_values(array_filter(
@@ -57,13 +62,8 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             unset($_SESSION['login_pogingen']);
 
             // Sta alleen redirects binnen deze website toe.
-            $redirect_url = (string) ($_SESSION['redirect_na_inloggen'] ?? '');
             unset($_SESSION['redirect_na_inloggen']);
-            if (preg_match('#^/[^\r\n]*$#', $redirect_url)) {
-                header('Location: ' . $redirect_url);
-                exit;
-            }
-            header('Location: /index.php');
+            header('Location: ' . ($terugNaInloggen ?? '/index.php'));
             exit;
         } else {
             $_SESSION['login_pogingen'][] = time();
@@ -93,6 +93,9 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
 
     <form method="POST" action="login.php">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
+        <?php if ($terugNaInloggen !== null): ?>
+            <input type="hidden" name="terug" value="<?= htmlspecialchars($terugNaInloggen, ENT_QUOTES, 'UTF-8') ?>">
+        <?php endif; ?>
         <label for="wachtwoord">Wachtwoord:</label>
         <input type="password" id="wachtwoord" name="wachtwoord" maxlength="255" autocomplete="current-password" required><br><br>
         <button type="submit">Inloggen</button>

@@ -19,10 +19,14 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 }
 
 if (!isset($_SESSION['ingelogd']) || $_SESSION['ingelogd'] !== true) {
-    $aangevraagdePagina = (string) ($_SERVER['REQUEST_URI'] ?? '/');
-    $_SESSION['redirect_na_inloggen'] = preg_match('#^/[^\r\n]*$#', $aangevraagdePagina)
-        ? $aangevraagdePagina
-        : '/';
-    header('Location: /includes/login.php');
+    require_once __DIR__ . '/login_redirect.php';
+    $aangevraagdePagina = geldigeRedirectNaInloggen($_SERVER['REQUEST_URI'] ?? '');
+    $volgendeUrl = '/includes/login.php';
+    // De bestemming gaat ook in de login-URL mee, zodat een ander verzoek de sessiewaarde niet kan overschrijven.
+    if ($aangevraagdePagina !== null) {
+        $_SESSION['redirect_na_inloggen'] = $aangevraagdePagina;
+        $volgendeUrl .= '?terug=' . rawurlencode($aangevraagdePagina);
+    }
+    header('Location: ' . $volgendeUrl);
     exit;
 }
