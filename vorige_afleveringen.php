@@ -12,85 +12,34 @@
     <div class="w3-content w3-white w3-panel">
         <?php include_once 'navigatie.htm'; ?>
         <h2>Mozart op Zaterdag</h2>
-        <h4>22 februari 2025: Symfonie nr. 25 KV 183</h4>
-        <p><img src="images/MoZ_foto_buigen_Yo.jpg" alt="Mozart"
-                class="w3-image w3-right w3-margin-left w3-margin-bottom" style="max-width: 500px;">De <a
-                href="\2025-02-22\kv183.php" target="_blank">eerste
-                keer</a> vond
-            plaats op zaterdag 22 februari in het <a href="/stadsklooster.htm">Stadsklooster</a>, met Mozarts 'kleine
-            g-moll' symfonie nr. 25 KV 183 als onderwerp en een orkest van zo'n 30 strijkers en blazers als deelnemers,
-            onder leiding van dirigent en initiatiefnemer <a href="https://www.horringa.net/index.php"
-                target="_blank">Dirkjan Horringa</a>. Een 50-tal mensen kwam luisteren en was enthousiast.</p>
         <div style="clear: both;" class="w3-panel">
-            <h4>26 april 2025: Symfonie nr. 4 in D KV 19 en het klarinetconcert in A-groot KV 622</h4>
-            <p><img src="/images/2025-04-26 Mozart op Zaterdag klarinetconcert.jpg" alt="Mozart klarinetconcert"
-                    class="w3-image w3-left w3-margin-right w3-margin-bottom" style="max-width: 500px;">Op 26 april
-                (koningsdag) vond de <a href="2025-04-26\Moz_2025-04-26.php" target="_blank"></a>tweede
-                aflevering plaats in het
-                <a href="/stadsklooster.php" target="_blank">Stadsklooster</a>. Gespeeld werd Symfonie nr. 4 in D KV 19
-                (10') en het
-                klarinetconcert in A-groot KV 622 (29') voor 2 fluiten, 2 fagotten, 2 hoorns en strijkers. Soliste was
-                <a href="\2025-04-26\marta_xavier.php" target="_blank">Marta
-                    Xavier (Portugal)</a>. Er speelden 26 mensen in het orkest. Er waren een kleine 40 bezoekers.
+            <h4>26 september 2026: Concert voor fluit en harp in C KV 299</h4>
+            <p>
+                De twaalfde aflevering van <i>Mozart op Zaterdag</i> vond plaats op zaterdagochtend 26 september. We werkten aan Mozarts <strong>Concert voor fluit en harp in C KV 299</strong>, een licht, elegant en bijzonder melodieus werk waarin fluit en harp een sprankelend muzikaal gesprek voeren. Het concert duurt ca. 27 minuten en bestaat uit een Allegro, een Andantino en een Rondo Allegro. Het orkest bestond uit twee hobo's, een fagot, twee hoorns en strijkers. Solisten waren de fluitiste Elisa Bartolomé Gómez, afkomstig uit Tenerife en afgestudeerd aan het Koninklijk Conservatorium Den Haag, en de Italiaanse harpiste Maria Palma, die in Den Haag woont.
             </p>
         </div>
         <div style="clear: both;" class="w3-panel">
-            <h4>24 mei 2025: Vioolconcert nr. 4 in D KV 218</h4>
+            <h4>23 mei 2026: Pianoconcert nr. 24 in c klein KV 491</h4>
             <p>
-                <img src="/2025-05-24/evelyn.jpg" alt="Evelyn Tjon-En-Fa" width="250"
-                    class="w3-image w3-right w3-margin-left w3-margin-bottom geenlijn">De derde aflevering van <i>Mozart op Zaterdag</i>
-                vond plaats op zaterdagochtend 24 mei. We werkten aan Mozarts vierde vioolconcert in D KV 218. Mozart
-                schreef zijn vierde vioolconcert in D groot KV 218 in 1775 in Salzburg. Soliste was Evelyn Tjon-En-Fa. Zij werkte eerder mee als concertmeester aan Mozart op Zaterdag. In 2001 studeerde Evelyn cum laude af als uitvoerend musicus aan het conservatorium in Tilburg (Fontys Hogescholen). Naast haar
-                optredens als violiste werkt Evelyn sinds 2001 als advocaat.
+                Op zaterdagochtend 23 mei bracht <i>Mozart op Zaterdag</i> het
+                <strong>24e pianoconcert in c klein KV 491</strong> ten gehore. Dit werk, dat tot
+                Mozarts meest indrukwekkende en dramatische concerten behoort en een van zijn twee pianoconcerten in een mineurtoonsoort is, werd door hem voltooid in 1786 toen hij op het toppunt van zijn creativiteit stond. De donkere toonsoort c klein geeft het concerto een intens karakter, dat door de rijke orkestratie een kleurrijk en bijna symfonisch klankbeeld krijgt. Het concerto, bestaande uit drie delen en eindigend met een reeks variaties, zorgt voor een bijzondere afwisseling van dramatiek en innerlijke spanning.
+            </p>
+            <p><img src="https://mozartopzaterdag.nl/2025-11-15/Hans-Erik_Dijkstra.jpg" alt="Hans-Erik Dijkstra, piano" class="w3-right w3-margin-left" style="width:300px;"></p>
+            <p>
+                De solopartij werd verzorgd door pianist <strong>Hans-Erik Dijkstra</strong>, die al eerder bij Mozart op Zaterdag schitterde in het 17e pianoconcert KV 453. Dijkstra bleek opnieuw een veelzijdig musicus; hij werkte na zijn studie als correpetitor aan het Koninklijk Conservatorium te Den Haag, is actief als pianodocent, vaste begeleider van koren, en treedt op in binnen- en buitenland. Ook componeerde hij onder andere twee opera’s. Zijn brede ervaring in de kamermuziek en als begeleider gaf zijn solospel merkbaar extra diepgang en een natuurlijk gevoel voor samenspel met het orkest en de dirigent. Hierdoor wist hij in dit concerto-repertoire een overtuigende balans te vinden tussen virtuositeit, muzikaal lijnenspel en de dialoog met het orkest.
             </p>
         </div>
         <div style="clear: both;" class="w3-panel">
-            <h4>27 september 2025: Sinfonia concertante in Eb KV 364</h4>
+            <h4>25 april 2026: symfonie nr. 29 in A KV 201</h4>
             <p>
-                De vierde aflevering van <i>Mozart op Zaterdag</i> vond plaats op zaterdagochtend 27 september. We werkten toen aan Mozarts Sinfonia concertante in Es KV 364 voor viool, altviool en orkest. De sinfonia bestaat uit drie delen, een Allegro maestoso, een Andante en een Presto, en duurt ongeveer 30 minuten.
-                De Sinfonia concertante is een van de meest geliefde werken van Mozart. Het orkest bestaat uit twee hobo's, twee hoorns, fagot en strijkers, met gedeelde altviolen. Het werk is een prachtig voorbeeld van muzikale interactie tussen de solisten en het orkest. De solisten waren Valentina Bernardone (viool) en Anna Smith (altviool).
-            <div style="clear: both; display: table; margin: auto;">
-                <div style="display: table-cell;" class="w3-small w3-center"><img
-                        src="/2025-09-27/valentina-bernardone-nederlands-.ed8ef09e.fill-1280x1280.jpg" width="250"
-                        alt="Valentina Bernardone" class="w3-image w3-panel w3-left geenlijn"><br>Valentina Bernardone,
-                    viool
-                </div>
-                <div style="display: table-cell;" class="w3-small w3-center"><img src="/2025-09-27/Anna-Smith-vierkant-.jpg"
-                        width="250" alt="Anna Smith" class="w3-image w3-panel w3-left geenlijn"><br>Anna Smith, altviool
-                </div>
-            </div>
-        </div>
-        <div style="clear: both;" class="w3-panel">
-            <h4>25 oktober 2025: 'Haffner' symfonie nr. 35 in D KV 385</h4>
-            <p>De vijfde aflevering van Mozart op Zaterdag vond plaats op zaterdagochtend 25 oktober. We werkten toen aan Mozarts 'Haffner' symfonie nr. 35 in D KV 385 voor uitgebreid orkest met dubbel hout, hoorns, trompetten en pauken. De symfonie dankt zijn naam aan de familie Haffner, een prominente familie uit Salzburg waar Mozart bevriend mee was. Oorspronkelijk componeerde Mozart het werk in 1782 als een serenade ter gelegenheid van de verheffing in de adelstand van Siegmund Haffner. Later bewerkte Mozart de serenade tot een symfonie door onder andere een mars en twee menuetten te verwijderen en een nieuw openingsdeel toe te voegen, waardoor het de vorm kreeg die wij nu kennen. De 'Haffner' symfonie is een prachtig voorbeeld van Mozarts meesterschap en zijn vermogen om zowel feestelijke grandeur als diepgaande emotie in zijn muziek te leggen.</p>
-            <p>
-        </div>
-
-        <div style="clear: both;" class="w3-panel">
-            <h4>15 november 2025: Pianoconcert nr. 17 in G KV 453</h4>
-            De zesde aflevering van <i>Mozart op Zaterdag</i> vond plaats op zaterdagochtend 15 november. We werkten toen aan Mozarts Pianoconcert nr. 17 in G, KV 453.
-            Het orkest bestond uit een fluit, twee hobo’s, twee fagotten, twee hoorns en strijkers. Solist was de pianist Hans-Erik Dijkstra.</p>
-            <img src="/images/2025-11-kv453.jpg" alt="Pianoconcert KV 453 met Hans-Erik Dijkstra" class="w3-image">
-            <p>Mozart schreef het concert voor zijn leerlinge Barbara Ployer, die ook de première in 1784 speelde. Het thema van het laatste deel is beroemd omdat Mozarts spreeuw dat kon zingen. Mozart was een groot vogelliefhebber. Hij had een spreeuw als huisdier en schreef dat hij de vogel dit wijsje had geleerd te zingen. Dat was waarschijnlijk geen grapje, want spreeuwen staan bekend om hun vermogen tot vocale imitatie.</p>
-            <p><img src="/2025-11-15/Hans-Erik_Dijkstra.jpg" alt="Hans-Erik Dijkstra"
-                    class="w3-image w3-left w3-margin-right w3-margin-bottom geenlijn" style="max-width: 400px;">
-                Hans-Erik Dijkstra studeerde piano en compositie aan het Twents Conservatorium (Artez). In 1991 studeerde hij Cum Laude af.
-                Vervolgens studeerde hij bij Herman Uhlhorn en Alexander Warenberg aan het Utrechts Conservatorium.
-                Na zijn studie was hij correpetitor aan het Koninklijk Conservatorium te Den Haag.
-                Hij was pianodocent, vaste begeleider van koren en uitvoerend musicus in binnen- en buitenland.
-                Hij componeerde onder andere twee opera’s.
+                Op zaterdagochtend 25 april speelde <i>Mozart op Zaterdag</i> Mozarts 29e symfonie in A KV 201. Mozart voltooide die symfonie op 6 april 1774 in Salzburg. Deze symfonie van Mozart wordt door verschillende auteurs beschouwd als een hoogtepunt in zijn symfonische werk. Dit komt door de uitwerking van de vorm, vooral van de uitgebreide sonatevorm van de eerste drie delen, die allemaal een expliciet coda hebben. Ook het contrapunt, vooral in het eerste deel, en de expressieve kracht, bijvoorbeeld in de lange doorwerking in het vierde deel, dragen hieraan bij. Deze symfonie en de kleine g-moll symfonie KV 183 zijn de vroegste symfonieën van Mozart die nog regelmatig op concertprogramma's verschijnen.
             </p>
+            <p>“Er is een nieuw besef van de noodzaak om de symfonie te verdiepen door middel van imitatieve vitalisering, om haar door middel van kamermuzikale verfijning te redden van het louter decoratieve. De instrumenten veranderen van karakter; de violen worden spiritueler, de blazers vermijden alles wat lawaaierig is, de figuraties alles wat conventioneel is. De nieuwe geest is gedocumenteerd in alle delen (...)" schreef musicoloog Albert Einstein over deze symfonie. Stanley Sadie karakteriseert hem als “een mijlpaal ... persoonlijk in toon, ja misschien wel individueler in zijn combinatie van een intieme, kamermuzikale stijl met een nog steeds vurige en impulsieve manier.”</p>
         </div>
         <div style="clear: both;" class="w3-panel">
-            <h4>24 januari 2026: Pianoconcert nr. 23 in A KV 488</h4>
-            <p>
-                De zevende aflevering van <i>Mozart op Zaterdag</i> vond plaats op zaterdagochtend 24 januari. Tijdens deze sessie werkten we aan Mozarts Pianoconcert nr. 23 in A, KV 488. Het orkest bestond uit een fluit, twee klarinetten, twee fagotten, twee hoorns en strijkers. Drie pianisten verdeelden de solopartijen als volgt:</p>
-            <ol>
-                <li>Yumi Toyama speelde het Allegro</li>
-                <li>Brit van Maanen nam het Adagio voor haar rekening</li>
-                <li>Annette Middelbeek besloot met het Allegro assai</li>
-            </ol>
-            <p>Mozarts Pianoconcert nr. 23 in A, KV 488, behoort tot zijn meest lyrische en verfijnde concertwerken. Het ontstond in 1786, in dezelfde creatieve periode als <i>Le nozze di Figaro</i>. Tijdens onze uitvoering viel vooral de kamermuzikale bezetting op, waarin de klarinetten voor een bijzonder warme en intieme kleur zorgden. Mozart voltooide het concert op 2 maart 1786, in een van zijn meest productieve Weense jaren. Ook bij deze uitvoering kwam het evenwicht tussen de virtuoze pianopartij en de bijna vocale melodiek duidelijk naar voren. De combinatie van precisie, lyriek en samenspel maakte deze aflevering tot een bijzonder muzikale zaterdagochtend.</p>
+            <h4>28 maart 2026: symfonie nr. 13 in F KV 112 & hoornconcert nr. 2 in Es KV 417</h4>
+            <p>De negende aflevering van Mozart op Zaterdag vond plaats op zaterdagochtend 28 maart. We werkten aan Mozarts vroege symfonie nr. 13 in F KV 112 en aan het tweede hoornconcert in Es KV 417, beide voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. Hoornsolist was Maarten Theulen, die ook het publiek vergaste op een inleiding over de mogelijkheden en onmogelijkheden van de natuurhoorn.</p>
         </div>
         <div style="clear: both;" class="w3-panel">
             <h4>28 februari 2026: symfonie nr. 40 in g klein KV 550</h4>
@@ -109,31 +58,86 @@
                 <li><em>Menuetto en Trio</em> – dansant maar donker getint, met scherp gearticuleerde contrasten</li>
                 <li><em>Allegro assai</em> – een virtuoos en stormachtig slot, waarin de gemoedsbewegingen tot een hoogtepunt komen</li>
             </ol>
+        </div>
+        <div style="clear: both;" class="w3-panel">
+            <h4>24 januari 2026: Pianoconcert nr. 23 in A KV 488</h4>
+            <p>
+                De zevende aflevering van <i>Mozart op Zaterdag</i> vond plaats op zaterdagochtend 24 januari. Tijdens deze sessie werkten we aan Mozarts Pianoconcert nr. 23 in A, KV 488. Het orkest bestond uit een fluit, twee klarinetten, twee fagotten, twee hoorns en strijkers. Drie pianisten verdeelden de solopartijen als volgt:</p>
+            <ol>
+                <li>Yumi Toyama speelde het Allegro</li>
+                <li>Brit van Maanen nam het Adagio voor haar rekening</li>
+                <li>Annette Middelbeek besloot met het Allegro assai</li>
+            </ol>
+            <p>Mozarts Pianoconcert nr. 23 in A, KV 488, behoort tot zijn meest lyrische en verfijnde concertwerken. Het ontstond in 1786, in dezelfde creatieve periode als <i>Le nozze di Figaro</i>. Tijdens onze uitvoering viel vooral de kamermuzikale bezetting op, waarin de klarinetten voor een bijzonder warme en intieme kleur zorgden. Mozart voltooide het concert op 2 maart 1786, in een van zijn meest productieve Weense jaren. Ook bij deze uitvoering kwam het evenwicht tussen de virtuoze pianopartij en de bijna vocale melodiek duidelijk naar voren. De combinatie van precisie, lyriek en samenspel maakte deze aflevering tot een bijzonder muzikale zaterdagochtend.</p>
+        </div>
+        <div style="clear: both;" class="w3-panel">
+            <h4>15 november 2025: Pianoconcert nr. 17 in G KV 453</h4>
+            <p>De zesde aflevering van <i>Mozart op Zaterdag</i> vond plaats op zaterdagochtend 15 november. We werkten toen aan Mozarts Pianoconcert nr. 17 in G, KV 453.
+                Het orkest bestond uit een fluit, twee hobo’s, twee fagotten, twee hoorns en strijkers. Solist was de pianist Hans-Erik Dijkstra.</p>
+            <img src="/images/2025-11-kv453.jpg" alt="Pianoconcert KV 453 met Hans-Erik Dijkstra" class="w3-image">
+            <p>Mozart schreef het concert voor zijn leerlinge Barbara Ployer, die ook de première in 1784 speelde. Het thema van het laatste deel is beroemd omdat Mozarts spreeuw dat kon zingen. Mozart was een groot vogelliefhebber. Hij had een spreeuw als huisdier en schreef dat hij de vogel dit wijsje had geleerd te zingen. Dat was waarschijnlijk geen grapje, want spreeuwen staan bekend om hun vermogen tot vocale imitatie.</p>
+            <p><img src="/2025-11-15/Hans-Erik_Dijkstra.jpg" alt="Hans-Erik Dijkstra"
+                    class="w3-image w3-left w3-margin-right w3-margin-bottom geenlijn" style="max-width: 400px;">
+                Hans-Erik Dijkstra studeerde piano en compositie aan het Twents Conservatorium (Artez). In 1991 studeerde hij Cum Laude af.
+                Vervolgens studeerde hij bij Herman Uhlhorn en Alexander Warenberg aan het Utrechts Conservatorium.
+                Na zijn studie was hij correpetitor aan het Koninklijk Conservatorium te Den Haag.
+                Hij was pianodocent, vaste begeleider van koren en uitvoerend musicus in binnen- en buitenland.
+                Hij componeerde onder andere twee opera’s.
             </p>
         </div>
         <div style="clear: both;" class="w3-panel">
-            <h4>28 maart 2026: symfonie nr. 13 in F KV 112 & hoornconcert nr. 2 in Es KV 417</h4>
-            <p>De negende aflevering van Mozart op Zaterdag vond plaats op zaterdagochtend 28 maart. We werkten aan Mozarts vroege symfonie nr. 13 in F KV 112 en aan het tweede hoornconcert in Es KV 417, beide voor 2 hobo's, 1 fagot, 2 hoorns en strijkers. Hoornsolist was Maarten Theulen, die ook het publiek vergaste op een inleiding over de mogelijkheden en onmogelijkheden van de natuurhoorn.</p>
-
+            <h4>25 oktober 2025: 'Haffner' symfonie nr. 35 in D KV 385</h4>
+            <p>De vijfde aflevering van Mozart op Zaterdag vond plaats op zaterdagochtend 25 oktober. We werkten toen aan Mozarts 'Haffner' symfonie nr. 35 in D KV 385 voor uitgebreid orkest met dubbel hout, hoorns, trompetten en pauken. De symfonie dankt zijn naam aan de familie Haffner, een prominente familie uit Salzburg waar Mozart bevriend mee was. Oorspronkelijk componeerde Mozart het werk in 1782 als een serenade ter gelegenheid van de verheffing in de adelstand van Siegmund Haffner. Later bewerkte Mozart de serenade tot een symfonie door onder andere een mars en twee menuetten te verwijderen en een nieuw openingsdeel toe te voegen, waardoor het de vorm kreeg die wij nu kennen. De 'Haffner' symfonie is een prachtig voorbeeld van Mozarts meesterschap en zijn vermogen om zowel feestelijke grandeur als diepgaande emotie in zijn muziek te leggen.</p>
         </div>
         <div style="clear: both;" class="w3-panel">
-            <h4>25 april 2026: symfonie nr. 29 in A KV 201</h4>
+            <h4>27 september 2025: Sinfonia concertante in Eb KV 364</h4>
             <p>
-                Op zaterdagochtend 25 april speelde <i>Mozart op Zaterdag</i> Mozarts 29e symfonie in A KV 201. Mozart voltooide die symfonie op 6 april 1774 in Salzburg. Deze symfonie van Mozart wordt door verschillende auteurs beschouwd als een hoogtepunt in zijn symfonische werk. Dit komt door de uitwerking van de vorm, vooral van de uitgebreide sonatevorm van de eerste drie delen, die allemaal een expliciet coda hebben. Ook het contrapunt, vooral in het eerste deel, en de expressieve kracht, bijvoorbeeld in de lange doorwerking in het vierde deel, dragen hieraan bij. Deze symfonie en de kleine g-moll symfonie KV 183 zijn de vroegste symfonieën van Mozart die nog regelmatig op concertprogramma's verschijnen.
-            </p>
-            <p>“Er is een nieuw besef van de noodzaak om de symfonie te verdiepen door middel van imitatieve vitalisering, om haar door middel van kamermuzikale verfijning te redden van het louter decoratieve. De instrumenten veranderen van karakter; de violen worden spiritueler, de blazers vermijden alles wat lawaaierig is, de figuraties alles wat conventioneel is. De nieuwe geest is gedocumenteerd in alle delen (...)" schreef musicoloog Albert Einstein over deze symfonie. Stanley Sadie karakteriseert hem als “een mijlpaal ... persoonlijk in toon, ja misschien wel individueler in zijn combinatie van een intieme, kamermuzikale stijl met een nog steeds vurige en impulsieve manier.”</p>
+                De vierde aflevering van <i>Mozart op Zaterdag</i> vond plaats op zaterdagochtend 27 september. We werkten toen aan Mozarts Sinfonia concertante in Es KV 364 voor viool, altviool en orkest. De sinfonia bestaat uit drie delen, een Allegro maestoso, een Andante en een Presto, en duurt ongeveer 30 minuten.
+                De Sinfonia concertante is een van de meest geliefde werken van Mozart. Het orkest bestaat uit twee hobo's, twee hoorns, fagot en strijkers, met gedeelde altviolen. Het werk is een prachtig voorbeeld van muzikale interactie tussen de solisten en het orkest. De solisten waren Valentina Bernardone (viool) en Anna Smith (altviool).</p>
+            <div style="clear: both; display: table; margin: auto;">
+                <div style="display: table-cell;" class="w3-small w3-center"><img
+                        src="/2025-09-27/valentina-bernardone-nederlands-.ed8ef09e.fill-1280x1280.jpg" width="250"
+                        alt="Valentina Bernardone" class="w3-image w3-panel w3-left geenlijn"><br>Valentina Bernardone,
+                    viool
+                </div>
+                <div style="display: table-cell;" class="w3-small w3-center"><img src="/2025-09-27/Anna-Smith-vierkant-.jpg"
+                        width="250" alt="Anna Smith" class="w3-image w3-panel w3-left geenlijn"><br>Anna Smith, altviool
+                </div>
+            </div>
         </div>
         <div style="clear: both;" class="w3-panel">
-            <h4>23 mei 2026: Pianoconcert nr. 24 in c klein KV 491</h4>
+            <h4>24 mei 2025: Vioolconcert nr. 4 in D KV 218</h4>
             <p>
-                Op zaterdagochtend 23 mei bracht <i>Mozart op Zaterdag</i> het
-                <strong>24e pianoconcert in c klein KV 491</strong> ten gehore. Dit werk, dat tot
-                Mozarts meest indrukwekkende en dramatische concerten behoort en een van zijn twee pianoconcerten in een mineurtoonsoort is, werd door hem voltooid in 1786 toen hij op het toppunt van zijn creativiteit stond. De donkere toonsoort c klein geeft het concerto een intens karakter, dat door de rijke orkestratie een kleurrijk en bijna symfonisch klankbeeld krijgt. Het concerto, bestaande uit drie delen en eindigend met een reeks variaties, zorgt voor een bijzondere afwisseling van dramatiek en innerlijke spanning.
+                <img src="/2025-05-24/evelyn.jpg" alt="Evelyn Tjon-En-Fa" width="250"
+                    class="w3-image w3-right w3-margin-left w3-margin-bottom geenlijn">De derde aflevering van <i>Mozart op Zaterdag</i>
+                vond plaats op zaterdagochtend 24 mei. We werkten aan Mozarts vierde vioolconcert in D KV 218. Mozart
+                schreef zijn vierde vioolconcert in D groot KV 218 in 1775 in Salzburg. Soliste was Evelyn Tjon-En-Fa. Zij werkte eerder mee als concertmeester aan Mozart op Zaterdag. In 2001 studeerde Evelyn cum laude af als uitvoerend musicus aan het conservatorium in Tilburg (Fontys Hogescholen). Naast haar
+                optredens als violiste werkt Evelyn sinds 2001 als advocaat.
             </p>
-            <p><img src="https://mozartopzaterdag.nl/2025-11-15/Hans-Erik_Dijkstra.jpg" alt="Hans-Erik Dijkstra, piano" class="w3-right w3-margin-left" style="width:300px;"></p>
-            <p>
-                De solopartij werd verzorgd door pianist <strong>Hans-Erik Dijkstra</strong>, die al eerder bij Mozart op Zaterdag schitterde in het 17e pianoconcert KV 453. Dijkstra bleek opnieuw een veelzijdig musicus; hij werkte na zijn studie als correpetitor aan het Koninklijk Conservatorium te Den Haag, is actief als pianodocent, vaste begeleider van koren, en treedt op in binnen- en buitenland. Ook componeerde hij onder andere twee opera’s. Zijn brede ervaring in de kamermuziek en als begeleider gaf zijn solospel merkbaar extra diepgang en een natuurlijk gevoel voor samenspel met het orkest en de dirigent. Hierdoor wist hij in dit concerto-repertoire een overtuigende balans te vinden tussen virtuositeit, muzikaal lijnenspel en de dialoog met het orkest.
+        </div>
+        <div style="clear: both;" class="w3-panel">
+            <h4>26 april 2025: Symfonie nr. 4 in D KV 19 en het klarinetconcert in A-groot KV 622</h4>
+            <p><img src="/images/2025-04-26 Mozart op Zaterdag klarinetconcert.jpg" alt="Mozart klarinetconcert"
+                    class="w3-image w3-left w3-margin-right w3-margin-bottom" style="max-width: 500px;">Op 26 april
+                (koningsdag) vond de <a href="2025-04-26\Moz_2025-04-26.php" target="_blank">tweede
+                aflevering</a> plaats in het
+                <a href="/stadsklooster.php" target="_blank">Stadsklooster</a>. Gespeeld werd Symfonie nr. 4 in D KV 19
+                (10') en het
+                klarinetconcert in A-groot KV 622 (29') voor 2 fluiten, 2 fagotten, 2 hoorns en strijkers. Soliste was
+                <a href="\2025-04-26\marta_xavier.php" target="_blank">Marta
+                    Xavier (Portugal)</a>. Er speelden 26 mensen in het orkest. Er waren een kleine 40 bezoekers.
             </p>
+        </div>
+        <div style="clear: both;" class="w3-panel">
+            <h4>22 februari 2025: Symfonie nr. 25 KV 183</h4>
+            <p><img src="images/MoZ_foto_buigen_Yo.jpg" alt="Mozart"
+                    class="w3-image w3-right w3-margin-left w3-margin-bottom" style="max-width: 500px;">De <a
+                    href="\2025-02-22\kv183.php" target="_blank">eerste
+                    keer</a> vond
+                plaats op zaterdag 22 februari in het <a href="/stadsklooster.htm">Stadsklooster</a>, met Mozarts 'kleine
+                g-moll' symfonie nr. 25 KV 183 als onderwerp en een orkest van zo'n 30 strijkers en blazers als deelnemers,
+                onder leiding van dirigent en initiatiefnemer <a href="https://www.horringa.net/index.php"
+                    target="_blank">Dirkjan Horringa</a>. Een 50-tal mensen kwam luisteren en was enthousiast.</p>
         </div>
     </div>
 </body>
