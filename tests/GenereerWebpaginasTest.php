@@ -25,6 +25,16 @@ final class GenereerWebpaginasTest extends TestCase
         );
     }
 
+    public function testPartijenWordenResponsiefInTweeOfEenKolomGetoond(): void
+    {
+        $bron = file_get_contents(__DIR__ . '/../onderhoud/genereer_webpaginas.php');
+        self::assertNotFalse($bron);
+        self::assertStringContainsString('<ul class=\"partijen-kolommen\">', $bron);
+        self::assertStringContainsString('.partijen-kolommen { column-count: 2; }', $bron);
+        self::assertStringContainsString('@media (max-width: 600px) { .partijen-kolommen { column-count: 1; } }', $bron);
+        self::assertStringNotContainsString('column-count: 3', $bron);
+    }
+
     public function testOntbrekendeStrijkersWordenAlsRodeVacaturesGetoond(): void
     {
         $html = $this->renderDeelnemers('0000-0000-21111', [

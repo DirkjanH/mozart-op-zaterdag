@@ -325,7 +325,7 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
                 $titel = $kvNummer === 'overig' ? 'Partituur' : 'Partituur KV ' . $kvNummer;
                 $partijenHtml .= '        <h4>' . html($titel) . "</h4>\n";
                 $partijenHtml .= $partiturenHtml === '' ? "        <p>Nog niet beschikbaar.</p>\n" : "        <ul>\n" . $partiturenHtml . "        </ul>\n";
-                $partijenHtml .= $werkPartijenHtml === '' ? "        <p>[partijen nog niet beschikbaar]</p>\n" : "        <ul style=\"column-count: 3;\">\n" . $werkPartijenHtml . "        </ul>\n";
+                $partijenHtml .= $werkPartijenHtml === '' ? "        <p>[partijen nog niet beschikbaar]</p>\n" : "        <ul class=\"partijen-kolommen\">\n" . $werkPartijenHtml . "        </ul>\n";
             }
             if ($partijenHtml === '') {
                 $partijenHtml = "        <p>Er zijn nog geen PDF-partijen in deze map.</p>\n";
@@ -403,7 +403,8 @@ PHP
             $gegenereerd .= '<!DOCTYPE html>' . "\n<html lang=\"nl\">\n<head>\n";
             $gegenereerd .= '    <meta charset="UTF-8">' . "\n";
             $gegenereerd .= '    <meta name="viewport" content="width=device-width, initial-scale=1">' . "\n";
-            $gegenereerd .= '    <title>' . html($titel) . "</title>\n    <link href=\"/css/moz.css\" rel=\"stylesheet\" type=\"text/css\">\n</head>\n<body>\n";
+            $gegenereerd .= '    <title>' . html($titel) . "</title>\n    <link href=\"/css/moz.css\" rel=\"stylesheet\" type=\"text/css\">\n";
+            $gegenereerd .= "    <style>\n        .partijen-kolommen { column-count: 2; }\n        @media (max-width: 600px) { .partijen-kolommen { column-count: 1; } }\n    </style>\n</head>\n<body>\n";
             $gegenereerd .= "    <div class=\"w3-content w3-white w3-panel\" style=\"padding-bottom: 3em;\">\n";
             $gegenereerd .= "        <?php require_once '../navigatie.htm'; ?>\n";
             $gegenereerd .= '        <h3>Mozart op Zaterdag op ' . date('d F Y', strtotime($datum)) . ":</h3>\n";
