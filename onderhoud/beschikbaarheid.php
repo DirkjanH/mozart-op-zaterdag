@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', '1');
+ini_set('log_errors', '1');
+
 require_once __DIR__ . '/../includes/inloggen.php';
 require_once __DIR__ . '/../connections/MozartopZaterdag.php';
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -8,8 +11,6 @@ require_once __DIR__ . '/../includes/csrf.php';
 zorgVoorMailTrackingTabel($pdo);
 
 // Beheerpagina's bevatten persoonsgegevens en mogen niet worden gecachet of ingesloten.
-ini_set('display_errors', '1');
-ini_set('log_errors', '1');
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 header('Pragma: no-cache');
 header('X-Content-Type-Options: nosniff');
