@@ -8,7 +8,7 @@ require_once __DIR__ . '/../includes/csrf.php';
 zorgVoorMailTrackingTabel($pdo);
 
 // Beheerpagina's bevatten persoonsgegevens en mogen niet worden gecachet of ingesloten.
-ini_set('display_errors', '0');
+ini_set('display_errors', '1');
 ini_set('log_errors', '1');
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 header('Pragma: no-cache');
@@ -321,7 +321,7 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
         exit('Deze deelnemer is niet aan de gekozen activiteit gekoppeld.');
     }
     if ($actie === 'vrijgekomen_plaats_bezet_met_mail') {
-        $stmt = $pdo->prepare("SELECT 1 FROM activiteit_deelnemers WHERE activiteit_id = ? AND deelnemer_id = ? AND status = 'misschien' AND uitnodiging_verstuurd_op IS NOT NULL");
+        $stmt = $pdo->prepare("SELECT 1 FROM activiteit_deelnemers WHERE activiteit_id = ? AND deelnemer_id = ? AND status IN ('ja', 'misschien') AND uitnodiging_verstuurd_op IS NOT NULL");
         $stmt->execute([$activiteitId, $deelnemerId]);
         if (!$stmt->fetchColumn()) {
             http_response_code(400);
@@ -476,7 +476,7 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
                 }
                 if ($actie === 'vrijgekomen_plaats_bezet_met_mail' && !$testModus) {
                     try {
-                        $stmt = $pdo->prepare("UPDATE activiteit_deelnemers SET status = 'nee', toegelaten = 0 WHERE activiteit_id = ? AND deelnemer_id = ? AND status = 'misschien' AND uitnodiging_verstuurd_op IS NOT NULL");
+                        $stmt = $pdo->prepare("UPDATE activiteit_deelnemers SET status = 'nee', toegelaten = 0 WHERE activiteit_id = ? AND deelnemer_id = ? AND status IN ('ja', 'misschien') AND uitnodiging_verstuurd_op IS NOT NULL");
                         $stmt->execute([$activiteitId, $deelnemerId]);
                         $uitnodigingAfgehandeld = $stmt->rowCount() === 1;
                     } catch (PDOException $e) {
@@ -548,7 +548,7 @@ $countToegeilaten = count(array_filter($spelers, static fn (array $speler): bool
 $countJaMisschien = count($spelers);
 $uitgenodigdeDeelnemerIds = array_values(array_map(
     'intval',
-    array_column(array_filter($spelers, static fn (array $speler): bool => $speler['status'] === 'misschien' && $speler['uitnodiging_verstuurd_op'] !== null), 'id')
+    array_column(array_filter($spelers, static fn (array $speler): bool => $speler['uitnodiging_verstuurd_op'] !== null), 'id')
 ));
 $vulMailTemplate = static function (string $template, array $speler, array $activiteit): string {
     $voornaam = htmlspecialchars($speler['voornaam'] ?? '', ENT_QUOTES, 'UTF-8');
@@ -930,7 +930,7 @@ document.addEventListener('keydown', function (event) {
     </div>
   </div>
 </div>
-<?php if ($speler['status'] === 'misschien' && $speler['uitnodiging_verstuurd_op'] !== null): ?>
+<?php if ($speler['uitnodiging_verstuurd_op'] !== null): ?>
 <div id="modal-vrijgekomen-plaats-bezet-<?= (int) $speler['id'] ?>" class="mail-modal">
   <div class="mail-modal-content">
     <div class="mail-modal-header">
