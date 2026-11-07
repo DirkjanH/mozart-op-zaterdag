@@ -64,9 +64,11 @@ final class DeelnemersMailTest extends TestCase
         $activiteit = ['datum' => '2027-01-24', 'plaats' => 'Marnixzaal', 'omschrijving' => 'Mozart & Haydn'];
         $deelnemer = ['voornaam' => 'Ada & Bob', 'instrument' => 'viool', 'partij' => '2', 'email' => 'ada+test@example.org'];
         self::assertSame(
-            'Ada &amp; Bob viool 2 24-01-2027 de Marnixzaal aan het Domplein Mozart &amp; Haydn',
+            'Ada &amp; Bob viool 2 24 januari de Marnixzaal aan het Domplein Mozart &amp; Haydn',
             vulMailTemplate('{{voornaam}} {{instrument_partij}} {{datum}} {{plaats}} {{omschrijving}}', $deelnemer, $activiteit)
         );
+        self::assertSame('1 januari', nederlandseDatumZonderJaar('2027-01-01'));
+        self::assertSame('31 december', nederlandseDatumZonderJaar('2027-12-31'));
         self::assertSame('Beste ... ', vulMailTemplateGeneriek('Beste {{voornaam}} {{plaatsing}}'));
         self::assertSame('', plaatsingMailOverzicht([]));
         self::assertSame("Een\nTwee", mailHtmlNaarTekst('<p>Een</p><p>Twee</p>'));

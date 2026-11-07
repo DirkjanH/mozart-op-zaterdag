@@ -17,6 +17,27 @@ function mailHalfjaren(DateTimeImmutable $vandaag): array
     ];
 }
 
+function nederlandseDatumZonderJaar(string $datum): string
+{
+    $datumObject = new DateTimeImmutable($datum);
+    $maanden = [
+        1 => 'januari',
+        2 => 'februari',
+        3 => 'maart',
+        4 => 'april',
+        5 => 'mei',
+        6 => 'juni',
+        7 => 'juli',
+        8 => 'augustus',
+        9 => 'september',
+        10 => 'oktober',
+        11 => 'november',
+        12 => 'december',
+    ];
+
+    return $datumObject->format('j') . ' ' . $maanden[(int) $datumObject->format('n')];
+}
+
 function laadHalfjaarMailDeelnemers(PDO $pdo, array $periode): array
 {
     $stmt = $pdo->prepare(
@@ -110,7 +131,7 @@ function vulMailTemplate(string $template, array $deelnemer, array $activiteit, 
         '{{instrument}}' => $instrument,
         '{{partij}}' => $partij,
         '{{instrument_partij}}' => trim($instrument . ' ' . $partij),
-        '{{datum}}' => date('d-m-Y', strtotime($activiteit['datum'])),
+        '{{datum}}' => nederlandseDatumZonderJaar((string) $activiteit['datum']),
         '{{plaats}}' => $plaats,
         '{{omschrijving}}' => $activiteit['omschrijving'] ?? '',
         '{{aanmeldlink}}' => 'https://mozartopzaterdag.nl/deelnemers_aanmelden.php?email=' . rawurlencode((string) ($deelnemer['email'] ?? '')),

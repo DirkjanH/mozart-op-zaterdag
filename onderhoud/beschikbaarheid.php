@@ -7,6 +7,7 @@ require_once __DIR__ . '/../includes/inloggen.php';
 require_once __DIR__ . '/../connections/MozartopZaterdag.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../includes/mail_tracking.php';
+require_once __DIR__ . '/../includes/deelnemers_mail.inc.php';
 require_once __DIR__ . '/../includes/csrf.php';
 
 zorgVoorMailTrackingTabel($pdo);
@@ -377,7 +378,7 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
                 default => 'afwijzing',
             };
             $naam = htmlspecialchars($speler['voornaam'], ENT_QUOTES, 'UTF-8');
-            $datum = date('d-m-Y', strtotime($speler['datum']));
+            $datum = nederlandseDatumZonderJaar((string) $speler['datum']);
             $partij = $speler['partij'] ? ' Je speelt partij ' . htmlspecialchars($speler['partij'], ENT_QUOTES, 'UTF-8') . '.' : '';
             $partijTekst = $speler['partij'] ? '&nbsp;' . htmlspecialchars($speler['partij'], ENT_QUOTES, 'UTF-8') : '';
             $uitnodigingAfgehandeld = true;
@@ -555,7 +556,7 @@ $uitgenodigdeDeelnemerIds = array_values(array_map(
 $vulMailTemplate = static function (string $template, array $speler, array $activiteit): string {
     $voornaam = htmlspecialchars($speler['voornaam'] ?? '', ENT_QUOTES, 'UTF-8');
     $achternaam = htmlspecialchars($speler['achternaam'] ?? '', ENT_QUOTES, 'UTF-8');
-    $datum = date('d-m-Y', strtotime($activiteit['datum']));
+    $datum = nederlandseDatumZonderJaar((string) $activiteit['datum']);
     $plaats = match ($activiteit['plaats'] ?? '') {
         'Marnixzaal' => 'de Marnixzaal aan het Domplein',
         'Stadsklooster' => 'het Stadsklooster',
