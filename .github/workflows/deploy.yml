@@ -28,14 +28,12 @@ jobs:
           printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
-          rsync -rlptDz --update --verbose \
+          rsync -rlptDz --checksum --verbose \
             --exclude='.git/' \
             --exclude='.github/' \
             --exclude='_notes/' \
             --exclude='tests/' \
             --exclude='.gitkeep' \
             --exclude='includes/_tst/' \
-            --exclude='vendor/phpunit/' \
-            --exclude='vendor/kint-php/' \
             -e 'ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=yes' \
             ./ "${SSH_USERNAME}@${SSH_HOST}:${SFTP_SERVER_DIR%/}/"
