@@ -2,6 +2,118 @@
 
 All notable changes of the PHPUnit 12.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [12.5.43] - 2026-11-02
+
+### Changed
+
+* Issues whose message refers to an anonymous class could not be ignored using a baseline on PHP 8.6 (as of PHP 8.6, such messages contain the full name of the anonymous class: a NUL byte followed by the file, line, and a counter)
+* Make PHAR build reproducible across filesystems (files are now added to the PHAR sorted by their path instead of in the order in which the filesystem lists them)
+
+### Fixed
+
+* When `method()` is called for a method of a test double that cannot be configured, for instance because it does not exist, every subsequent invocation of a method of that test double fails with `Method name is not configured`
+* When a hook method of a test, for instance `setUp()`, marks the test as incomplete, the hook method is reported as failed
+* When an "after test" method, for instance `tearDown()`, marks a successful test as incomplete or skips it, the test is reported as failed
+* When a before-first-test method, for instance `setUpBeforeClass()`, calls `markTestIncomplete()`, each test of the test class is reported as failed instead of the test class being skipped as it is when `markTestSkipped()` is called
+* When an after-last-test method, for instance `tearDownAfterClass()`, calls `markTestIncomplete()` or `markTestSkipped()` after the tests of the test class have been run, this is reported as a failure, also for each test of the test class that is run in process isolation
+* A failed PHP assertion, made using `assert()`, in a hook method is reported as an error of that method instead of as a failure, and it is counted as an error instead of as a failure when that method is a before-first-test method or an after-last-test method
+* When an assertion fails in an "after test" method, for instance `tearDown()`, of a test that already failed, errored, or was marked as incomplete, a failure is reported in addition to the outcome of the test, so the test is counted more than once and `onNotSuccessfulTest()` is called with the failure from the "after test" method instead of the test's own
+* When a test fails because of an exception of a registered failure type, an error or a failure in an "after test" method, for instance `tearDown()`, is reported in addition to the test's failure, so the test is counted more than once
+* A test that fails because of an exception of a registered failure type is considered risky when it does not perform assertions or, when `requireCoverageMetadata="true"` is configured, when it does not define a code coverage target, unlike a test that fails because an assertion failed
+* The TestDox output does not show the failure of a before-first-test method or an after-last-test method, for instance an assertion failure in `setUpBeforeClass()`
+* Control characters and ANSI escape sequences in user-supplied strings are not made visible in the output of `--debug` and in the logfiles written by `--log-events-text` and `--log-events-verbose-text`
+* Groups configured for a test directory or test file using the `groups` attribute of `<directory>` or `<file>` in the XML configuration file are not assigned to PHPT tests, so `--group` and `--exclude-group` do not select them and `--list-groups` and `--list-tests-xml` report them as being in the `default` group or not at all
+
+### Removed
+
+* The library PHAR (`phpunit-library-X.Y.Z.phar`) is no longer built, it could not be loaded since PHPUnit 9.5.8
+
+## [12.5.42] - 2026-10-27
+
+### Fixed
+
+* The static analysis cache directory that is automatically created in the operating system's path used for temporary files when no cache directory is configured is not used when the POSIX extension is not loaded
+
+## [12.5.41] - 2026-10-27
+
+### Fixed
+
+* The TeamCity logger writes `testSuiteFinished` twice for a test class when one of its before-first-test methods errors or fails
+* The TestDox output shows a less important outcome of a test that has more than one outcome, for instance the failure in `tearDown()` of a test that errored
+* When no static analysis cache directory is configured, the cache directory that is automatically created in the operating system's path used for temporary files is also used when it was created by another user or can be written to by other users
+
+## [12.5.40] - 2026-10-16
+
+### Fixed
+
+* The dependencies of a test that are listed after a dependency on a test that does not return a value, or after a dependency on a larger test, were not checked, so the test was run instead of being skipped when one of these dependencies had not passed
+* Tests could not be run in process isolation when the namespace of the test class begins with a name that the code of the child process imports, for instance `CodeCoverage` or `Facade`
+* A test that is run in process isolation aborts the test run when its data set or a value returned by a test it depends on cannot be serialized, for instance because it is a closure
+* When a before-first-test method or an after-last-test method errors or fails, the remaining methods of the same kind are still called, and each of them that does not error or fail itself is reported with the exception of the earlier method
+* When a hook method of a test, for instance a `#[Before]` method, skips the test, the remaining hook methods of the same kind are still called, so the test is reported as errored instead of skipped when one of them errors
+* An error or failure in a before-first-test method or an after-last-test method that is called again in the child process of a test that is run in process isolation is reported twice, once for the test class and once for the test
+* When a before-first-test method errors, the progress output shows one `E` for the test class instead of one for each of its tests, only one of its tests is counted as run, and the test that is run next is shown as an error
+* When a before-first-test method fails, the progress output shows nothing for the tests of the test class and only one of them is counted as run
+* The Open Test Reporting XML logfile has no start for a test that errors before it is prepared, for instance because it depends on a test that does not exist, and no end for the test that is run after a test that is skipped because a test it depends on did not pass or because one of its
+  requirements is not met
+* The Open Test Reporting XML logfile has an end without an ID for a test that is marked as incomplete before it is prepared, for instance in `setUp()`, and no end for the test that is run after it
+* The Open Test Reporting XML logfile has no end for the test that is run after a test whose preparation errors, for instance because `setUp()` raises an exception or the global state cannot be backed up
+* The Open Test Reporting XML logfile has more than one end for a test that has more than one outcome, for instance because `tearDown()` fails after the test errored
+* The Open Test Reporting XML logfile is not well-formed when a test name, a message, or the string representation of an exception contains `]]>`, bytes that are not valid UTF-8, or characters that are not allowed in XML, for instance the escape character of an ANSI escape sequence
+
+## [12.5.39] - 2026-10-12
+
+### Fixed
+
+* [#7053](https://github.com/sebastianbergmann/phpunit/issues/7053): Extensions loaded using `-d extension` or `-d zend_extension` are not loaded in child processes
+* The status of a test whose mock object raises an exception in its destructor is success although the test is reported as errored, so `tearDown()` sees the wrong status and code coverage records the test as successful
+* Named arguments passed to `with()` were matched by position instead of by name, so an expectation such as `->with(b: 7)` compared the expected value with the first parameter of the method and the parameter named `$b` was not checked
+* When code coverage is collected and no code coverage driver is available in a child process, a test that is run in process isolation errors and a PHPT test fails instead of a warning being emitted
+
+## [12.5.38] - 2026-10-05
+
+### Changed
+
+* The Software Bill of Materials (SBOM) embedded in the PHAR now uses CycloneDX 1.7 and provides the NTIA minimum elements as well as the data fields that BSI TR-03183-2 (version 2.1.0) requires for logical and identified components, including component creators, original, distribution and effective licences, source code URIs, and the PHP runtime and its extensions as external components
+
+### Fixed
+
+* `setUpBeforeClass()` and `tearDownAfterClass()` were run twice for a test class that is the only test class in a test suite of the XML configuration file that has the name of that test class
+* Tests could not be run in process isolation when the path of the bootstrap script, the test file, or the directory for temporary files contained a single quote
+* A test that is run in process isolation aborts the test run when its result cannot be unserialized, for instance because it returns an object that holds a test double
+* Issues that are listed in the baseline are not ignored for tests that are run in a separate process
+* Arguments in the `--ARGS--` section of a PHPT test that start with `-` were interpreted by PHP instead of being passed to the test when the test also has a `--STDIN--` section
+* Recording the tests that passed in a child process copied all tests that had passed so far, which made running many tests in process isolation increasingly slow
+
+## [12.5.37] - 2026-09-29
+
+### Fixed
+
+* The class name argument of `#[RequiresMethod]` is declared as `class-string`, so static analysis reports an error when it refers to a class that does not exist
+* A `#[RequiresMethod]` attribute that refers to a class which cannot be loaded, for instance because its parent class does not exist, aborts the test run instead of skipping the test
+
+## [12.5.36] - 2026-09-25
+
+### Changed
+
+* Control characters and ANSI escape sequences in user-supplied strings such as test names, data set names, and messages are now made visible as `\u{NNNN}` escape sequences instead of being passed through to the terminal
+
+## [12.5.35] - 2026-09-09
+
+### Fixed
+
+* Paths of included files are now escaped when generating the code that is executed in a separate process, so that a path containing special characters no longer produces broken code
+* Tests of a test class that is skipped as a whole are missing from the TestDox output
+* A test that is skipped or marked incomplete before it started is missing from the TestDox output
+* A test that is marked incomplete before it started is not counted in the number of tests that ran
+* No progress is printed for a test that is marked incomplete before it started
+
+## [12.5.34] - 2026-08-27
+
+### Fixed
+
+* [#6904](https://github.com/sebastianbergmann/phpunit/issues/6904): `SourceMap` is built in child process even though `identifyIssueTrigger` is disabled
+
 ## [12.5.33] - 2026-07-28
 
 ### Fixed
@@ -286,6 +398,16 @@ All notable changes of the PHPUnit 12.5 release series are documented in this fi
 * [#6380](https://github.com/sebastianbergmann/phpunit/pull/6380): Allow `Throwable` in `expectExceptionObject()`
 * A PHPUnit notice is now emitted for test methods that create a mock object but do not configure an expectation for it
 
+[12.5.43]: https://github.com/sebastianbergmann/phpunit/compare/12.5.42...12.5.43
+[12.5.42]: https://github.com/sebastianbergmann/phpunit/compare/12.5.41...12.5.42
+[12.5.41]: https://github.com/sebastianbergmann/phpunit/compare/12.5.40...12.5.41
+[12.5.40]: https://github.com/sebastianbergmann/phpunit/compare/12.5.39...12.5.40
+[12.5.39]: https://github.com/sebastianbergmann/phpunit/compare/12.5.38...12.5.39
+[12.5.38]: https://github.com/sebastianbergmann/phpunit/compare/12.5.37...12.5.38
+[12.5.37]: https://github.com/sebastianbergmann/phpunit/compare/12.5.36...12.5.37
+[12.5.36]: https://github.com/sebastianbergmann/phpunit/compare/12.5.35...12.5.36
+[12.5.35]: https://github.com/sebastianbergmann/phpunit/compare/12.5.34...12.5.35
+[12.5.34]: https://github.com/sebastianbergmann/phpunit/compare/12.5.33...12.5.34
 [12.5.33]: https://github.com/sebastianbergmann/phpunit/compare/12.5.32...12.5.33
 [12.5.32]: https://github.com/sebastianbergmann/phpunit/compare/12.5.31...12.5.32
 [12.5.31]: https://github.com/sebastianbergmann/phpunit/compare/12.5.30...12.5.31

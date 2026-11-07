@@ -268,7 +268,13 @@ final readonly class JobRunner
             }
         }
 
-        $phpSettings = array_merge($phpSettings, $this->cliIniOverrides($phpSettings));
+        $phpSettings = array_merge(
+            ExtensionSettings::forChildProcess(
+                fn (): array => $this->settingsToParameters(array_values($this->cliIniOverrides([]))),
+            ),
+            $phpSettings,
+            $this->cliIniOverrides($phpSettings),
+        );
 
         $command = array_merge($command, $this->settingsToParameters(array_values($phpSettings)));
 
@@ -286,9 +292,7 @@ final readonly class JobRunner
         }
 
         if ($job->hasArguments()) {
-            if ($file === null) {
-                $command[] = '--';
-            }
+            $command[] = '--';
 
             foreach ($job->arguments() as $argument) {
                 $command[] = trim($argument);

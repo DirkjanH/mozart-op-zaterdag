@@ -14,5 +14,9 @@
     "instrument_niet_nodig": {
         "onderwerp": "Mozart op Zaterdag: Instrument niet nodig op {{datum}}",
         "tekst": "<p>Beste {{voornaam}},</p>\r\n\r\n<p>Voor Mozart op Zaterdag op {{datum}} is {{instrument}} helaas niet nodig. Ik hoop je bij een van de volgende afleveringen of in andere projecten weer te zien.</p>\r\n\r\n<p>Hartelijke groet,</p>\r\n\r\n<p>Dirkjan Horringa</p>"
+    },
+    "vrijgekomen_plaats_bezet": {
+        "onderwerp": "Mozart op Zaterdag op {{datum}}: de plaats is alweer bezet",
+        "tekst": "<p>Beste {{voornaam}},</p>\r\n\r\n<p>Bedankt voor je reactie op mijn uitnodiging voor Mozart op Zaterdag op {{datum}}. De vrijgekomen plaats is inmiddels alweer bezet, dus je bent deze keer niet meer nodig. Sorry voor het ongemak; ik hoop je bij een volgende gelegenheid weer te zien.</p>\r\n\r\n<p>Hartelijke groet,</p>\r\n\r\n<p>Dirkjan Horringa</p>"
     }
 }

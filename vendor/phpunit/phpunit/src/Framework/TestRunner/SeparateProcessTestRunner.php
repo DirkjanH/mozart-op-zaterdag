@@ -21,6 +21,8 @@ use function sys_get_temp_dir;
 use function tempnam;
 use function unlink;
 use function var_export;
+use PHPUnit\Event\Code\TestMethodBuilder;
+use PHPUnit\Event\Code\ThrowableBuilder;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Runner\CodeCoverage;
@@ -32,6 +34,7 @@ use PHPUnit\Util\PHP\JobRunnerRegistry;
 use ReflectionClass;
 use SebastianBergmann\Template\InvalidArgumentException;
 use SebastianBergmann\Template\Template;
+use Throwable;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -52,6 +55,34 @@ final class SeparateProcessTestRunner
      */
     public function run(TestCase $test, bool $runEntireClass, bool $preserveGlobalState, bool $requiresXdebug): void
     {
+        try {
+            $serializedData = serialize($test->providedData());
+        } catch (Throwable $t) {
+            $this->testCouldNotBeRun(
+                $test,
+                sprintf(
+                    'Test could not be run in child process because its data set could not be serialized: %s',
+                    $t->getMessage(),
+                ),
+            );
+
+            return;
+        }
+
+        try {
+            $serializedDependencyInput = serialize($test->dependencyInput());
+        } catch (Throwable $t) {
+            $this->testCouldNotBeRun(
+                $test,
+                sprintf(
+                    'Test could not be run in child process because a value returned by a test it depends on could not be serialized: %s',
+                    $t->getMessage(),
+                ),
+            );
+
+            return;
+        }
+
         $class = new ReflectionClass($test);
 
         if ($runEntireClass) {
@@ -107,9 +138,9 @@ final class SeparateProcessTestRunner
             $phar = '\'\'';
         }
 
-        $data            = var_export(serialize($test->providedData()), true);
+        $data            = var_export($serializedData, true);
         $dataName        = var_export($test->dataName(), true);
-        $dependencyInput = var_export(serialize($test->dependencyInput()), true);
+        $dependencyInput = var_export($serializedDependencyInput, true);
         $includePath     = var_export(get_include_path(), true);
         // must do these fixes because TestCaseMethod.tpl has unserialize('{data}') in it, and we can't break BC
         // the lines above used to use addcslashes() rather than var_export(), which breaks null byte escape sequences
@@ -127,11 +158,14 @@ final class SeparateProcessTestRunner
 
         assert($file !== false);
 
+        // The paths are pasted into single-quoted string literals of the
+        // template; a single quote or a backslash in a path would otherwise
+        // break the code of the child process.
         $var = [
-            'bootstrap'                      => $bootstrap,
+            'bootstrap'                      => self::stringLiteralFragment($bootstrap),
             'composerAutoload'               => $composerAutoload,
             'phar'                           => $phar,
-            'filename'                       => $file,
+            'filename'                       => self::stringLiteralFragment($file),
             'className'                      => $class->getName(),
             'collectCodeCoverageInformation' => $coverage,
             'data'                           => $data,
@@ -145,10 +179,10 @@ final class SeparateProcessTestRunner
             'name'                           => $test->name(),
             'offsetSeconds'                  => (string) $offset[0],
             'offsetNanoseconds'              => (string) $offset[1],
-            'serializedConfiguration'        => $serializedConfiguration,
-            'processResultFile'              => $processResultFile,
+            'serializedConfiguration'        => self::stringLiteralFragment($serializedConfiguration),
+            'processResultFile'              => self::stringLiteralFragment($processResultFile),
             'processResultNonce'             => $processResultNonce,
-            'sourceMapFile'                  => $sourceMapFile,
+            'sourceMapFile'                  => self::stringLiteralFragment($sourceMapFile),
         ];
 
         if (!$runEntireClass) {
@@ -166,6 +200,18 @@ final class SeparateProcessTestRunner
         @unlink($serializedConfiguration);
     }
 
+    /**
+     * @throws Exception
+     * @throws NoPreviousThrowableException
+     */
+    private function testCouldNotBeRun(TestCase $test, string $message): void
+    {
+        EventFacade::emitter()->testErrored(
+            TestMethodBuilder::fromTestCase($test),
+            ThrowableBuilder::from(new AssertionFailedError($message)),
+        );
+    }
+
     private function sourceMapFileForChildProcess(): string
     {
         if (self::$sourceMapFile !== null) {
@@ -173,6 +219,15 @@ final class SeparateProcessTestRunner
         }
 
         if (!ConfigurationRegistry::get()->source()->notEmpty()) {
+            self::$sourceMapFile = '';
+
+            return self::$sourceMapFile;
+        }
+
+        // the child process only needs the source map for the identification of
+        // issue triggers and for the code coverage filter
+        if (!ConfigurationRegistry::get()->source()->identifyIssueTrigger() &&
+            !CodeCoverage::instance()->isActive()) {
             self::$sourceMapFile = '';
 
             return self::$sourceMapFile;
@@ -226,5 +281,16 @@ final class SeparateProcessTestRunner
     private function pathForCachedSourceMap(): false|string
     {
         return tempnam(sys_get_temp_dir(), 'phpunit_');
+    }
+
+    /**
+     * The given value as the contents of a single-quoted string literal of
+     * a template: the value is exported as a string literal of its own that
+     * is concatenated with the empty strings that the quotes of the template
+     * delimit, as is done for the data of the test above.
+     */
+    private static function stringLiteralFragment(string $value): string
+    {
+        return "'." . var_export($value, true) . ".'";
     }
 }

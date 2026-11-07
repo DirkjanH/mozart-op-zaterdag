@@ -1,5 +1,7 @@
 <?php declare(strict_types=1);
 use PHPUnit\Event\Facade;
+use PHPUnit\Runner\Baseline\CannotLoadBaselineException;
+use PHPUnit\Runner\Baseline\Reader;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
@@ -71,7 +73,17 @@ function __phpunit_run_isolated_test()
 
     ErrorHandler::instance()->useDeprecationTriggers($deprecationTriggers);
 
-    $test = new {className}('{methodName}');
+    if (!$configuration->hasGenerateBaseline() && $configuration->source()->useBaseline()) {
+        try {
+            ErrorHandler::instance()->useBaseline(
+                (new Reader)->read($configuration->source()->baseline()),
+            );
+        } catch (CannotLoadBaselineException) {
+            // The main process has already reported that the baseline cannot be loaded
+        }
+    }
+
+    $test = new \{className}('{methodName}');
 
     $test->setData('{dataName}', unserialize('{data}'));
     $test->setDependencyInput(unserialize('{dependencyInput}'));
@@ -102,12 +114,18 @@ function __phpunit_run_isolated_test()
         }
     }
 
+    $codeCoverage = null;
+
+    if ({collectCodeCoverageInformation} && CodeCoverage::instance()->isActive()) {
+        $codeCoverage = CodeCoverage::instance()->codeCoverage();
+    }
+
     file_put_contents(
         '{processResultFile}',
         '{processResultNonce}' . serialize(
             (object)[
                 'testResult'    => $test->result(),
-                'codeCoverage'  => {collectCodeCoverageInformation} ? CodeCoverage::instance()->codeCoverage() : null,
+                'codeCoverage'  => $codeCoverage,
                 'numAssertions' => $test->numberOfAssertionsPerformed(),
                 'output'        => $output,
                 'events'        => $dispatcher->flush(),

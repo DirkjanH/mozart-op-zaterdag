@@ -31,6 +31,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         'afwijzen_met_mail',
         'toelaten_met_mail',
         'instrument_niet_nodig_met_mail',
+        'vrijgekomen_plaats_bezet_met_mail',
     ];
     if (!in_array($_POST['actie'] ?? '', $toegestaneActies, true)) {
         http_response_code(400);
@@ -101,6 +102,8 @@ $standaardMail = '';
 $standaardAfwijzingsMail = '';
 $instrumentNietNodigOnderwerp = 'Mozart op Zaterdag: Instrument niet nodig op {{datum}}';
 $instrumentNietNodigMail = '<p>Beste {{voornaam}},</p><p>Voor Mozart op Zaterdag op {{datum}} is {{instrument}} helaas niet nodig. Ik hoop je bij een van de volgende afleveringen of in andere projecten weer te zien.</p><p>Hartelijke groet,</p><p>Dirkjan Horringa</p>';
+$vrijgekomenPlaatsBezetOnderwerp = 'Mozart op Zaterdag op {{datum}}: de plaats is alweer bezet';
+$vrijgekomenPlaatsBezetMail = '<p>Beste {{voornaam}},</p><p>Bedankt voor je reactie op mijn uitnodiging voor Mozart op Zaterdag op {{datum}}. De vrijgekomen plaats is inmiddels alweer bezet, dus je bent deze keer niet meer nodig. Sorry voor het ongemak; ik hoop je bij een volgende gelegenheid weer te zien.</p><p>Hartelijke groet,</p><p>Dirkjan Horringa</p>';
 $toelatingsOnderwerp = $standaardOnderwerp;
 $toelatingsMail = $standaardMail;
 $mailteksten = [
@@ -108,6 +111,7 @@ $mailteksten = [
     'uitnodigen' => ['onderwerp' => $standaardOnderwerp, 'tekst' => $standaardMail],
     'afwijzen' => ['onderwerp' => $standaardAfwijzingsOnderwerp, 'tekst' => $standaardAfwijzingsMail],
     'instrument_niet_nodig' => ['onderwerp' => $instrumentNietNodigOnderwerp, 'tekst' => $instrumentNietNodigMail],
+    'vrijgekomen_plaats_bezet' => ['onderwerp' => $vrijgekomenPlaatsBezetOnderwerp, 'tekst' => $vrijgekomenPlaatsBezetMail],
 ];
 $mailtekstenMap = __DIR__ . '/../JSON';
 // Eén vast bestand voor laden én opslaan; een losse "nieuwste van meerdere bestanden"-selectie kan per ongeluk een stray kopie kiezen.
@@ -127,7 +131,7 @@ try {
     // Lees de inhoud rechtstreeks van schijf; nooit een eerder in dit proces gebufferde versie gebruiken.
     clearstatcache(true, $mailtekstenBestand);
     $geladenMailteksten = json_decode((string) file_get_contents($mailtekstenBestand), true, 16, JSON_THROW_ON_ERROR);
-    foreach (['toelaten', 'uitnodigen', 'afwijzen', 'instrument_niet_nodig'] as $mailtype) {
+    foreach (['toelaten', 'uitnodigen', 'afwijzen', 'instrument_niet_nodig', 'vrijgekomen_plaats_bezet'] as $mailtype) {
         if (!is_string($geladenMailteksten[$mailtype]['onderwerp'] ?? null) || !is_string($geladenMailteksten[$mailtype]['tekst'] ?? null)) {
             throw new RuntimeException('Mailtekst ' . $mailtype . ' ontbreekt of is ongeldig.');
         }
@@ -141,6 +145,8 @@ try {
     $standaardAfwijzingsMail = $mailteksten['afwijzen']['tekst'];
     $instrumentNietNodigOnderwerp = $mailteksten['instrument_niet_nodig']['onderwerp'];
     $instrumentNietNodigMail = $mailteksten['instrument_niet_nodig']['tekst'];
+    $vrijgekomenPlaatsBezetOnderwerp = $mailteksten['vrijgekomen_plaats_bezet']['onderwerp'];
+    $vrijgekomenPlaatsBezetMail = $mailteksten['vrijgekomen_plaats_bezet']['tekst'];
 } catch (Throwable $e) {
     $melding = 'De JSON-mailteksten konden niet worden geladen; vul de mailteksten hieronder handmatig in. ' . $e->getMessage();
 }
@@ -156,6 +162,8 @@ if (is_array($_SESSION['beschikbaarheid_mailteksten_geladen'] ?? null)) {
     $standaardAfwijzingsMail = $mailteksten['afwijzen']['tekst'];
     $instrumentNietNodigOnderwerp = $mailteksten['instrument_niet_nodig']['onderwerp'];
     $instrumentNietNodigMail = $mailteksten['instrument_niet_nodig']['tekst'];
+    $vrijgekomenPlaatsBezetOnderwerp = $mailteksten['vrijgekomen_plaats_bezet']['onderwerp'];
+    $vrijgekomenPlaatsBezetMail = $mailteksten['vrijgekomen_plaats_bezet']['tekst'];
     unset($_SESSION['beschikbaarheid_mailteksten_geladen']);
 }
 
@@ -171,7 +179,7 @@ if (($_POST['actie'] ?? '') === 'mailteksten_json_laden') {
         }
         $geuploadeMailteksten = json_decode((string) file_get_contents($upload['tmp_name']), true, 16, JSON_THROW_ON_ERROR);
         $nieuweGeladenMailteksten = [];
-        foreach (['toelaten', 'uitnodigen', 'afwijzen', 'instrument_niet_nodig'] as $mailtype) {
+        foreach (['toelaten', 'uitnodigen', 'afwijzen', 'instrument_niet_nodig', 'vrijgekomen_plaats_bezet'] as $mailtype) {
             $ingeladenMailtekst = $geuploadeMailteksten[$mailtype] ?? null;
             if (!is_array($ingeladenMailtekst) || !is_string($ingeladenMailtekst['onderwerp'] ?? null) || !is_string($ingeladenMailtekst['tekst'] ?? null)) {
                 throw new RuntimeException('Mailtekst ' . $mailtype . ' ontbreekt of is ongeldig in het geüploade bestand.');
@@ -204,7 +212,7 @@ if (($_POST['actie'] ?? '') === 'mailteksten_opslaan') {
         if (!is_array($ingediendeMailteksten)) {
             throw new RuntimeException('De mailteksten ontbreken of hebben een ongeldig formaat.');
         }
-        foreach (['toelaten', 'uitnodigen', 'afwijzen', 'instrument_niet_nodig'] as $mailtype) {
+        foreach (['toelaten', 'uitnodigen', 'afwijzen', 'instrument_niet_nodig', 'vrijgekomen_plaats_bezet'] as $mailtype) {
             $ingediendeMailtekst = $ingediendeMailteksten[$mailtype] ?? null;
             if (!is_array($ingediendeMailtekst) || !is_string($ingediendeMailtekst['onderwerp'] ?? null) || !is_string($ingediendeMailtekst['tekst'] ?? null)) {
                 throw new RuntimeException('Mailtekst ' . $mailtype . ' heeft een ongeldig formaat.');
@@ -260,7 +268,9 @@ if (($_POST['actie'] ?? '') === 'mailteksten_opslaan') {
         $standaardAfwijzingsMail = $mailteksten['afwijzen']['tekst'];
         $instrumentNietNodigOnderwerp = $mailteksten['instrument_niet_nodig']['onderwerp'];
         $instrumentNietNodigMail = $mailteksten['instrument_niet_nodig']['tekst'];
-        $melding = 'De vier mailteksten zijn opgeslagen in JSON/' . $mailtekstenBestandsnaam . '.';
+        $vrijgekomenPlaatsBezetOnderwerp = $mailteksten['vrijgekomen_plaats_bezet']['onderwerp'];
+        $vrijgekomenPlaatsBezetMail = $mailteksten['vrijgekomen_plaats_bezet']['tekst'];
+        $melding = 'De vijf mailteksten zijn opgeslagen in JSON/' . $mailtekstenBestandsnaam . '.';
         if ($backupBestandsnaam !== null) {
             $melding .= ' De vorige versie staat in JSON/' . $backupBestandsnaam . '.';
         }
@@ -310,6 +320,14 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
         http_response_code(404);
         exit('Deze deelnemer is niet aan de gekozen activiteit gekoppeld.');
     }
+    if ($actie === 'vrijgekomen_plaats_bezet_met_mail') {
+        $stmt = $pdo->prepare("SELECT 1 FROM activiteit_deelnemers WHERE activiteit_id = ? AND deelnemer_id = ? AND status = 'misschien' AND uitnodiging_verstuurd_op IS NOT NULL");
+        $stmt->execute([$activiteitId, $deelnemerId]);
+        if (!$stmt->fetchColumn()) {
+            http_response_code(400);
+            exit('Deze actie is alleen beschikbaar voor deelnemers met een verstuurde uitnodiging.');
+        }
+    }
 
     if ($actie === 'status_opslaan') {
         if ($status === 'nee') {
@@ -342,7 +360,7 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
     }
 
     // Vul de gekozen mail in en pas de persoonlijke velden toe.
-    if (($actie === 'uitnodigen' && $status === 'misschien') || ($actie === 'afwijzen_met_mail' && in_array($status, ['ja', 'misschien'], true)) || ($actie === 'toelaten_met_mail' && in_array($status, ['ja', 'misschien'], true)) || ($actie === 'instrument_niet_nodig_met_mail' && in_array($status, ['ja', 'misschien'], true))) {
+    if (($actie === 'uitnodigen' && $status === 'misschien') || ($actie === 'afwijzen_met_mail' && in_array($status, ['ja', 'misschien'], true)) || ($actie === 'toelaten_met_mail' && in_array($status, ['ja', 'misschien'], true)) || ($actie === 'instrument_niet_nodig_met_mail' && in_array($status, ['ja', 'misschien'], true)) || $actie === 'vrijgekomen_plaats_bezet_met_mail') {
         $stmt = $pdo->prepare('SELECT d.voornaam, d.achternaam, d.email, a.datum, a.plaats, a.omschrijving, ad.partij, i.naam AS instrument FROM activiteit_deelnemers ad JOIN deelnemers d ON d.id = ad.deelnemer_id JOIN activiteiten a ON a.id = ad.activiteit_id LEFT JOIN instrumenten i ON i.id = ad.instrument_id WHERE ad.activiteit_id = ? AND ad.deelnemer_id = ?');
         $stmt->execute([$activiteitId, $deelnemerId]);
         $speler = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -353,12 +371,14 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
                 'toelaten_met_mail' => 'toelating',
                 'uitnodigen' => 'bevestiging',
                 'instrument_niet_nodig_met_mail' => 'instrument_niet_nodig',
+                'vrijgekomen_plaats_bezet_met_mail' => 'vrijgekomen_plaats_bezet',
                 default => 'afwijzing',
             };
             $naam = htmlspecialchars($speler['voornaam'], ENT_QUOTES, 'UTF-8');
             $datum = date('d-m-Y', strtotime($speler['datum']));
             $partij = $speler['partij'] ? ' Je speelt partij ' . htmlspecialchars($speler['partij'], ENT_QUOTES, 'UTF-8') . '.' : '';
             $partijTekst = $speler['partij'] ? '&nbsp;' . htmlspecialchars($speler['partij'], ENT_QUOTES, 'UTF-8') : '';
+            $uitnodigingAfgehandeld = true;
             $smtpDebug = [];
             $mailer = null;
             try {
@@ -404,12 +424,14 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
                     'toelating' => $toelatingsMail,
                     'bevestiging' => $standaardMail,
                     'instrument_niet_nodig' => $instrumentNietNodigMail,
+                    'vrijgekomen_plaats_bezet' => $vrijgekomenPlaatsBezetMail,
                     default => $standaardAfwijzingsMail,
                 };
                 $standaardOnderwerpVoorType = match ($mailtype) {
                     'toelating' => $toelatingsOnderwerp,
                     'bevestiging' => $standaardOnderwerp,
                     'instrument_niet_nodig' => $instrumentNietNodigOnderwerp,
+                    'vrijgekomen_plaats_bezet' => $vrijgekomenPlaatsBezetOnderwerp,
                     default => $standaardAfwijzingsOnderwerp,
                 };
                 $mailTekst = $ingevuldeMail ?: $standaardTekstVoorType;
@@ -452,6 +474,16 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
                     $mailer->AltBody = trim(html_entity_decode(strip_tags($mailTekstGeneriek), ENT_QUOTES, 'UTF-8'));
                     $mailer->send();
                 }
+                if ($actie === 'vrijgekomen_plaats_bezet_met_mail' && !$testModus) {
+                    try {
+                        $stmt = $pdo->prepare("UPDATE activiteit_deelnemers SET status = 'nee', toegelaten = 0 WHERE activiteit_id = ? AND deelnemer_id = ? AND status = 'misschien' AND uitnodiging_verstuurd_op IS NOT NULL");
+                        $stmt->execute([$activiteitId, $deelnemerId]);
+                        $uitnodigingAfgehandeld = $stmt->rowCount() === 1;
+                    } catch (PDOException $e) {
+                        error_log('Beschikbaarheid: mail verzonden, maar uitnodigingsstatus niet bijgewerkt: ' . $e->getMessage());
+                        $uitnodigingAfgehandeld = false;
+                    }
+                }
                 if ($actie === 'uitnodigen' && !$testModus) {
                     $stmt = $pdo->prepare('UPDATE activiteit_deelnemers SET uitnodiging_verstuurd_op = NOW() WHERE activiteit_id = ? AND deelnemer_id = ?');
                     $stmt->execute([$activiteitId, $deelnemerId]);
@@ -464,6 +496,12 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
                     $melding = 'Uitnodiging verstuurd met kopie naar Dirkjan; toelating blijft onbeoordeeld.';
                 } elseif ($actie === 'instrument_niet_nodig_met_mail') {
                     $melding = 'Mail over niet benodigd instrument verstuurd met kopie naar Dirkjan; toelating blijft ongewijzigd.';
+                } elseif ($actie === 'vrijgekomen_plaats_bezet_met_mail') {
+                    $melding = $testModus
+                        ? 'Testmail alleen naar dirkjan@pellegrina.net verstuurd; de deelnemersstatus is ongewijzigd.'
+                        : ($uitnodigingAfgehandeld
+                            ? 'Mail dat de vrijgekomen plaats alweer bezet is verstuurd met kopie naar Dirkjan; deelnemer is niet meer nodig.'
+                            : 'Mail verstuurd, maar de deelnemersstatus kon niet worden bijgewerkt. Controleer de status handmatig.');
                 } else {
                     $melding = 'Afwijzingsmail verstuurd met kopie naar Dirkjan; toelatingsstatus blijft ongewijzigd.';
                 }
@@ -508,6 +546,10 @@ if ($gekozenActiviteit) {
 $onbeoordeeldeDeelnemers = array_map('intval', array_column(array_filter($spelers, static fn (array $speler): bool => $speler['toegelaten'] === null), 'id'));
 $countToegeilaten = count(array_filter($spelers, static fn (array $speler): bool => (int) $speler['toegelaten'] === 1));
 $countJaMisschien = count($spelers);
+$uitgenodigdeDeelnemerIds = array_values(array_map(
+    'intval',
+    array_column(array_filter($spelers, static fn (array $speler): bool => $speler['status'] === 'misschien' && $speler['uitnodiging_verstuurd_op'] !== null), 'id')
+));
 $vulMailTemplate = static function (string $template, array $speler, array $activiteit): string {
     $voornaam = htmlspecialchars($speler['voornaam'] ?? '', ENT_QUOTES, 'UTF-8');
     $achternaam = htmlspecialchars($speler['achternaam'] ?? '', ENT_QUOTES, 'UTF-8');
@@ -671,6 +713,21 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    new Set(<?= json_encode($uitgenodigdeDeelnemerIds) ?>).forEach(function (deelnemerId) {
+        var rij = Array.from(document.querySelectorAll('.tabel-scroll tr')).find(function (kandidaat) {
+            return kandidaat.querySelector('input[name="deelnemer_id"]')?.value === String(deelnemerId);
+        });
+        var actieCel = rij?.querySelector('td:last-child');
+        if (!actieCel) return;
+        var knop = document.createElement('button');
+        knop.type = 'button';
+        knop.className = 'w3-button w3-orange w3-small mail-knop mail-modal-btn';
+        knop.dataset.modal = 'modal-vrijgekomen-plaats-bezet-' + deelnemerId;
+        knop.dataset.type = 'vrijgekomen_plaats_bezet';
+        knop.textContent = 'Niet meer nodig';
+        actieCel.appendChild(knop);
+    });
+
     document.querySelectorAll('.tabel-scroll tr').forEach(function (rij) {
         var naam = rij.querySelector('td:first-child');
         var deelnemer = rij.querySelector('input[name="deelnemer_id"]');
@@ -799,7 +856,7 @@ document.addEventListener('keydown', function (event) {
 <input type="hidden" name="actie" value="mailteksten_opslaan">
 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
 <p class="mailtekst-hulp">In onderwerp en mailtekst beschikbare invoegcodes: {{voornaam}}, {{achternaam}}, {{datum}}, {{plaats}}, {{instrument}}, {{partij_tekst}}, {{omschrijving}}, {{activiteit_url}} en {{aanmeldlink}}.</p>
-<?php foreach (['toelaten' => 'Toelaten', 'uitnodigen' => 'Uitnodigen', 'afwijzen' => 'Afwijzen', 'instrument_niet_nodig' => 'Instrument niet nodig'] as $mailtype => $mailtypeLabel): ?>
+<?php foreach (['toelaten' => 'Toelaten', 'uitnodigen' => 'Uitnodigen', 'afwijzen' => 'Afwijzen', 'instrument_niet_nodig' => 'Instrument niet nodig', 'vrijgekomen_plaats_bezet' => 'Vrijgekomen plaats alweer bezet'] as $mailtype => $mailtypeLabel): ?>
 <section class="mailtekst-sectie">
 <h4><?= $mailtypeLabel ?></h4>
 <label for="mailtekst-<?= $mailtype ?>-onderwerp">Onderwerp</label>
@@ -822,7 +879,7 @@ document.addEventListener('keydown', function (event) {
 
 <!-- Mail modals -->
 <?php foreach ($spelers as $speler): ?>
-<?php $popupToelating = $vulMailTemplate($toelatingsMail, $speler, $gekozenActiviteit); $popupBevestiging = $vulMailTemplate($standaardMail, $speler, $gekozenActiviteit); $popupAfwijzing = $vulMailTemplate($standaardAfwijzingsMail, $speler, $gekozenActiviteit); ?>
+<?php $popupToelating = $vulMailTemplate($toelatingsMail, $speler, $gekozenActiviteit); $popupBevestiging = $vulMailTemplate($standaardMail, $speler, $gekozenActiviteit); $popupAfwijzing = $vulMailTemplate($standaardAfwijzingsMail, $speler, $gekozenActiviteit); $popupVrijgekomenPlaatsBezet = $vulMailTemplate($vrijgekomenPlaatsBezetMail, $speler, $gekozenActiviteit); ?>
 <div id="modal-toelating-<?= (int) $speler['id'] ?>" class="mail-modal">
     <div class="mail-modal-content">
         <div class="mail-modal-header">
@@ -873,4 +930,22 @@ document.addEventListener('keydown', function (event) {
     </div>
   </div>
 </div>
+<?php if ($speler['status'] === 'misschien' && $speler['uitnodiging_verstuurd_op'] !== null): ?>
+<div id="modal-vrijgekomen-plaats-bezet-<?= (int) $speler['id'] ?>" class="mail-modal">
+  <div class="mail-modal-content">
+    <div class="mail-modal-header">
+      <h3>Mail dat de vrijgekomen plaats alweer bezet is voor <?= htmlspecialchars($speler['voornaam'] . ' ' . $speler['achternaam']) ?></h3>
+      <button class="mail-modal-close" type="button" title="Sluiten">✕</button>
+    </div>
+    <div class="mail-modal-body">
+      <input class="mail-modal-onderwerp" type="text" value="<?= htmlspecialchars($vrijgekomenPlaatsBezetOnderwerp) ?>" placeholder="Onderwerp">
+      <textarea class="mail-modal-tekst" id="mail-modal-tekst-vrijgekomen-plaats-bezet-<?= (int) $speler['id'] ?>" placeholder="Mailtekst"><?= htmlspecialchars($popupVrijgekomenPlaatsBezet) ?></textarea>
+    </div>
+    <div class="mail-modal-footer">
+      <button class="mail-modal-submit w3-orange" type="button" data-type="vrijgekomen_plaats_bezet" data-action="vrijgekomen_plaats_bezet_met_mail">Niet meer nodig</button>
+      <button class="mail-cancel" type="button">Annuleren</button>
+    </div>
+  </div>
+</div>
+<?php endif; ?>
 <?php endforeach; ?><?php else: ?><p>Er zijn geen toekomstige activiteiten.</p><?php endif; ?></div></body></html>
