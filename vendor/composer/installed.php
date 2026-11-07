@@ -3,7 +3,7 @@
         'name' => 'djh/autoload',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '66c55a507db332d1a3656c5f410c854bfa4bdb97',
+        'reference' => '472c5fd28c66a9cf00b210edc5ca8c8ce420a696',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -40,7 +40,7 @@
         'djh/autoload' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '66c55a507db332d1a3656c5f410c854bfa4bdb97',
+            'reference' => '472c5fd28c66a9cf00b210edc5ca8c8ce420a696',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
