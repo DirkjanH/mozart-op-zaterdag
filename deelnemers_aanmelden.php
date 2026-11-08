@@ -1,9 +1,22 @@
 <?php
+ini_set('session.use_strict_mode', '1');
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_set_cookie_params([
+        'httponly' => true,
+        'secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
+        'samesite' => 'Lax',
+    ]);
+    session_start();
+}
+
 require_once __DIR__ . '/connections/MozartopZaterdag.php';
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/includes/deelnemer_wijzigingsdatum.php';
+require_once __DIR__ . '/includes/mail_tracking.php';
+require_once __DIR__ . '/includes/aanmelding.inc.php';
 
 zorgVoorDeelnemerWijzigingsdatum($pdo);
+zorgVoorMailTrackingTabel($pdo);
 // Bewaart per formulierweergave een uniek token, zodat een pagina-refresh na versturen niet nogmaals een bevestigingsmail oplevert.
 $pdo->exec('CREATE TABLE IF NOT EXISTS aanmeldbevestiging_verzonden (token CHAR(32) NOT NULL PRIMARY KEY, verzonden_op DATETIME NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
 
@@ -90,6 +103,11 @@ function leesAanmeldMailInstellingen(): array
 
 $melding = '';
 $foutmelding = '';
+$captchaVraag = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !controleerAanmeldCaptcha($_POST['captcha_antwoord'] ?? null)) {
+    $foutmelding = 'Beantwoord de klassieke-muziekvraag correct voordat je je inschrijving opslaat.';
+}
+$captchaVraag = maakAanmeldCaptcha();
 $aanmeldbevestigingBestand = __DIR__ . '/JSON/aanmeldbevestiging.json';
 try {
     $aanmeldbevestigingMail = laadAanmeldbevestigingMail($aanmeldbevestigingBestand);
@@ -142,7 +160,7 @@ if ($pauken !== null) {
 $activiteiten = $pdo->query('SELECT id, datum, plaats, omschrijving FROM activiteiten WHERE datum >= CURDATE() ORDER BY datum')->fetchAll(PDO::FETCH_ASSOC);
 
 // Verwerk formulier
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $foutmelding === '') {
     try {
         // Validatie
         $voornaam = trim($_POST['voornaam'] ?? '');
@@ -176,59 +194,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception('Opmerkingen mogen maximaal 1000 tekens bevatten.');
         }
 
-        // Zoek bestaande deelnemer
-        $stmt = $pdo->prepare('SELECT id FROM deelnemers WHERE email = ?');
-        $stmt->execute([$email]);
-        $bestaande = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($bestaande) {
-            $deelnemerId = (int) $bestaande['id'];
-            // Update bestaande deelnemer
-            $stmt = $pdo->prepare('UPDATE deelnemers SET voornaam = ?, achternaam = ?, telefoon = ?, postcode = ?, plaats = ?, muzikale_ervaring = ?, opmerkingen = ?, op_de_hoogte_houden = ?, laatst_gewijzigd_op = NOW() WHERE id = ?');
-            $stmt->execute([$voornaam, $achternaam, $telefoon, $postcode, $plaats, $muzikaleErvaring, $opmerkingen, (int) $opDeHoogteHouden, $deelnemerId]);
-        } else {
-            // Maak nieuwe deelnemer
-            $stmt = $pdo->prepare('INSERT INTO deelnemers (voornaam, achternaam, email, telefoon, postcode, plaats, muzikale_ervaring, opmerkingen, op_de_hoogte_houden, laatst_gewijzigd_op) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())');
-            $stmt->execute([$voornaam, $achternaam, $email, $telefoon, $postcode, $plaats, $muzikaleErvaring, $opmerkingen, (int) $opDeHoogteHouden]);
-            $deelnemerId = (int) $pdo->lastInsertId();
-        }
-        $stmt = $pdo->prepare('INSERT INTO deelnemer_wijzigingen (deelnemer_id, gemarkeerd_op) VALUES (?, NOW()) ON DUPLICATE KEY UPDATE gemarkeerd_op = VALUES(gemarkeerd_op)');
-        $stmt->execute([$deelnemerId]);
-
-        // Verwijder oude instrumenten voor deze deelnemer
-        $stmt = $pdo->prepare('DELETE FROM deelnemer_instrumenten WHERE deelnemer_id = ?');
-        $stmt->execute([$deelnemerId]);
-
-        // Voeg nieuwe instrumenten toe
-        if (!empty($instrumenten_gekozen)) {
-            $stmt = $pdo->prepare('INSERT INTO deelnemer_instrumenten (deelnemer_id, instrument_id) VALUES (?, ?)');
-            foreach ($instrumenten_gekozen as $instrument_id) {
-                $stmt->execute([$deelnemerId, (int) $instrument_id]);
-            }
-        }
-
-        // Verwerk activiteitenstatussen
+        $beschikbaarheden = [];
         foreach ($activiteiten as $activiteit) {
             $status = trim($_POST['status_' . (int) $activiteit['id']] ?? 'nee');
             if (!in_array($status, ['ja', 'misschien', 'nee'], true)) {
                 $status = 'nee';
             }
-
-            // Zoek bestaande inschrijving
-            $stmt = $pdo->prepare('SELECT 1 FROM activiteit_deelnemers WHERE activiteit_id = ? AND deelnemer_id = ?');
-            $stmt->execute([(int) $activiteit['id'], $deelnemerId]);
-            $bestaande_inschrijving = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if ($bestaande_inschrijving) {
-                // Update alleen status; de toelatingsbeslissing blijft ongewijzigd.
-                $stmt = $pdo->prepare('UPDATE activiteit_deelnemers SET status = ? WHERE activiteit_id = ? AND deelnemer_id = ?');
-                $stmt->execute([$status, (int) $activiteit['id'], $deelnemerId]);
-            } else {
-                // Maak nieuwe inschrijving
-                $stmt = $pdo->prepare('INSERT INTO activiteit_deelnemers (activiteit_id, deelnemer_id, status) VALUES (?, ?, ?)');
-                $stmt->execute([(int) $activiteit['id'], $deelnemerId, $status]);
-            }
+            $beschikbaarheden[(int) $activiteit['id']] = $status;
         }
+
+        $verwerkteAanmelding = verwerkAanmelding(
+            $pdo,
+            [
+                'voornaam' => $voornaam,
+                'achternaam' => $achternaam,
+                'email' => $email,
+                'telefoon' => $telefoon,
+                'postcode' => $postcode,
+                'plaats' => $plaats,
+                'muzikale_ervaring' => $muzikaleErvaring,
+                'opmerkingen' => $opmerkingen,
+                'op_de_hoogte_houden' => (int) $opDeHoogteHouden,
+            ],
+            array_values($instrumenten_gekozen),
+            $beschikbaarheden
+        );
 
         $instrumentNamen = [];
         foreach ($instrumenten as $instrument) {
@@ -283,6 +273,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
+        $waarschuwingMislukt = false;
+        if ($verwerkteAanmelding['waarschuwingen'] !== []) {
+            try {
+                [$gmailGebruikersnaam, $gmailAppWachtwoord] = leesAanmeldMailInstellingen();
+                if ($gmailAppWachtwoord === '') {
+                    throw new RuntimeException('Gmail-app-wachtwoord ontbreekt in de configuratie.');
+                }
+                $waarschuwingMailer = new PHPMailer\PHPMailer\PHPMailer(true);
+                $waarschuwingMailer->isSMTP();
+                $waarschuwingMailer->Host = 'send.one.com';
+                $waarschuwingMailer->SMTPAuth = true;
+                $waarschuwingMailer->Username = $gmailGebruikersnaam;
+                $waarschuwingMailer->Password = $gmailAppWachtwoord;
+                $waarschuwingMailer->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
+                $waarschuwingMailer->Port = 465;
+                $waarschuwingMailer->Timeout = 5;
+                $waarschuwingMailer->CharSet = 'UTF-8';
+                $waarschuwingMailer->setFrom($gmailGebruikersnaam, 'Mozart op Zaterdag');
+                $waarschuwingMailer->addAddress('dirkjan@pellegrina.net', 'Mozart op Zaterdag');
+                $waarschuwingMailer->isHTML(true);
+                $waarschuwingMailer->Subject = 'Waarschuwing: beschikbaarheid ingedeelde deelnemer gewijzigd';
+                $waarschuwingRijen = [];
+                foreach ($verwerkteAanmelding['waarschuwingen'] as $waarschuwing) {
+                    $activiteitTekst = trim(
+                        (string) ($waarschuwing['omschrijving'] ?? '')
+                        . ' - '
+                        . (string) ($waarschuwing['plaats'] ?? ''),
+                        ' -'
+                    );
+                    $waarschuwingRijen[] = '<li>' . htmlspecialchars(
+                        nederlandseDatum(new DateTimeImmutable($waarschuwing['datum']))
+                        . ': ' . $activiteitTekst
+                        . ' (' . $waarschuwing['oude_status'] . ' naar ' . $waarschuwing['nieuwe_status'] . ')',
+                        ENT_QUOTES,
+                        'UTF-8'
+                    ) . '</li>';
+                }
+                $waarschuwingMailer->Body = '<p>' . htmlspecialchars(
+                    trim($voornaam . ' ' . $achternaam) . ' (' . $email . ')',
+                    ENT_QUOTES,
+                    'UTF-8'
+                ) . ' is niet langer zeker beschikbaar voor deze ingedeelde activiteit(en):</p><ul>'
+                    . implode('', $waarschuwingRijen) . '</ul>';
+                $waarschuwingMailer->AltBody = trim(html_entity_decode(
+                    strip_tags(str_replace(['</li>', '</p>'], "\n", $waarschuwingMailer->Body)),
+                    ENT_QUOTES,
+                    'UTF-8'
+                ));
+                $waarschuwingMailer->send();
+            } catch (Throwable $e) {
+                error_log('Aanmelding: waarschuwing over gewijzigde beschikbaarheid niet verstuurd: ' . $e->getMessage());
+                $waarschuwingMislukt = true;
+            }
+        }
+
         if ($mailAlEerderVerstuurd) {
             $melding = 'Gegevens succesvol opgeslagen. De bevestigingsmail was al eerder verstuurd.';
         } else {
@@ -318,6 +363,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             error_log('Aanmelding: bevestigingsmail niet verstuurd: ' . $e->getMessage());
             $melding = 'Gegevens succesvol opgeslagen, maar de bevestigingsmail kon niet worden verstuurd.';
         }
+        }
+        if ($waarschuwingMislukt) {
+            $melding .= ' De waarschuwing aan de organisatie kon niet worden verstuurd.';
+        } elseif ($verwerkteAanmelding['waarschuwingen'] !== []) {
+            $melding .= ' De organisatie is gewaarschuwd over gewijzigde beschikbaarheid.';
         }
 
     } catch (Exception $e) {
@@ -517,6 +567,14 @@ if (!empty($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL))
                 <?php if (empty($activiteiten)): ?>
                     <p style="color: #666;">Er zijn geen toekomstige activiteiten gepland.</p>
                 <?php endif; ?>
+            </div>
+
+            <div class="form-section">
+                <h3>Controle</h3>
+                <div class="form-group">
+                    <label for="captcha_antwoord"><?= htmlspecialchars($captchaVraag, ENT_QUOTES, 'UTF-8') ?></label>
+                    <input type="text" id="captcha_antwoord" name="captcha_antwoord" autocomplete="off" required>
+                </div>
             </div>
 
             <!-- Buttons -->
