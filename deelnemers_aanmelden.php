@@ -103,7 +103,8 @@ function leesAanmeldMailInstellingen(): array
 
 $melding = '';
 $foutmelding = '';
-$turnstileSiteKey = aanmeldTurnstileConfiguratie('MOZART_TURNSTILE_SITE_KEY');
+$turnstileSiteKey = aanmeldTurnstileConfiguratie('MOZART_TURNSTILE_SITE_KEY')
+    ?: '0x4AAAAAAF4kxodzADISxZLs';
 $turnstileSecretKey = aanmeldTurnstileConfiguratie('MOZART_TURNSTILE_SECRET_KEY');
 $turnstileBeschikbaar = $turnstileSiteKey !== ''
     && $turnstileSecretKey !== ''
