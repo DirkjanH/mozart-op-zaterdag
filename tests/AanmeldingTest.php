@@ -11,6 +11,18 @@ final class AanmeldingTest extends TestCase
         $_SESSION = [];
     }
 
+    public function testTurnstileConfiguratieKanUitServeromgevingWordenGelezen(): void
+    {
+        $naam = 'MOZART_TEST_TURNSTILE_CONFIG';
+        $oudeWaarde = getenv($naam);
+        putenv($naam . '=testwaarde');
+        try {
+            self::assertSame('testwaarde', aanmeldTurnstileConfiguratie($naam));
+        } finally {
+            putenv($oudeWaarde === false ? $naam : $naam . '=' . $oudeWaarde);
+        }
+    }
+
     public function testTurnstileVereistSuccesEnDeVerwachteHostnaam(): void
     {
         self::assertTrue(isAanmeldTurnstileResultaatGeldig([

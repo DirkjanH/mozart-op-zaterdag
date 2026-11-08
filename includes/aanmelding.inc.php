@@ -6,8 +6,30 @@ function aanmeldTurnstileConfiguratie(string $naam): string
     if ($waarde === false || trim($waarde) === '') {
         $waarde = $_SERVER[$naam] ?? $_ENV[$naam] ?? '';
     }
+    if (is_string($waarde) && trim($waarde) !== '') {
+        return trim($waarde);
+    }
 
-    return is_string($waarde) ? trim($waarde) : '';
+    static $lokaleConfiguratie = null;
+    if ($lokaleConfiguratie === null) {
+        $bestand = __DIR__ . '/turnstile-config.php';
+        if (!is_file($bestand)) {
+            $lokaleConfiguratie = [];
+        } else {
+            $configuratie = require $bestand;
+            if (!is_array($configuratie)) {
+                throw new RuntimeException('Het lokale Turnstile-configuratiebestand moet een array teruggeven.');
+            }
+            $lokaleConfiguratie = $configuratie;
+        }
+    }
+
+    $lokaleWaarde = $lokaleConfiguratie[$naam] ?? '';
+    if (!is_string($lokaleWaarde)) {
+        throw new RuntimeException('De lokale Turnstile-configuratie bevat een ongeldige waarde voor ' . $naam . '.');
+    }
+
+    return trim($lokaleWaarde);
 }
 
 function isAanmeldTurnstileResultaatGeldig(array $resultaat, string $hostnaam): bool
