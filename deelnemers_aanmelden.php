@@ -103,11 +103,31 @@ function leesAanmeldMailInstellingen(): array
 
 $melding = '';
 $foutmelding = '';
-$captchaVraag = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && !controleerAanmeldCaptcha($_POST['captcha_antwoord'] ?? null)) {
-    $foutmelding = 'Beantwoord de klassieke-muziekvraag correct voordat je je inschrijving opslaat.';
+$turnstileSiteKey = aanmeldTurnstileConfiguratie('MOZART_TURNSTILE_SITE_KEY');
+$turnstileSecretKey = aanmeldTurnstileConfiguratie('MOZART_TURNSTILE_SECRET_KEY');
+$turnstileBeschikbaar = $turnstileSiteKey !== ''
+    && $turnstileSecretKey !== ''
+    && function_exists('curl_init');
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
+        if (!$turnstileBeschikbaar) {
+            throw new RuntimeException('Turnstile-sleutels ontbreken of de PHP cURL-extensie is niet beschikbaar.');
+        }
+        $hostnaam = strtolower((string) parse_url('https://' . ($_SERVER['HTTP_HOST'] ?? ''), PHP_URL_HOST));
+        $captchaGeldig = controleerAanmeldTurnstile(
+            $_POST['cf-turnstile-response'] ?? null,
+            $turnstileSecretKey,
+            $hostnaam,
+            $_SERVER['REMOTE_ADDR'] ?? null
+        );
+        if (!$captchaGeldig) {
+            $foutmelding = 'De botcontrole is niet geslaagd of verlopen. Probeer het opnieuw.';
+        }
+    } catch (Throwable $e) {
+        error_log('Aanmelding: Turnstile-controle mislukt: ' . $e->getMessage());
+        $foutmelding = 'De botcontrole is tijdelijk niet beschikbaar. Probeer het later opnieuw.';
+    }
 }
-$captchaVraag = maakAanmeldCaptcha();
 $aanmeldbevestigingBestand = __DIR__ . '/JSON/aanmeldbevestiging.json';
 try {
     $aanmeldbevestigingMail = laadAanmeldbevestigingMail($aanmeldbevestigingBestand);
@@ -401,6 +421,18 @@ if (!empty($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL))
         }
     }
 }
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $foutmelding !== '') {
+    $hersteldFormulier = herstelAanmeldFormulier(
+        $gegevens,
+        $_POST,
+        array_column($instrumenten, 'id'),
+        array_map(static fn (array $activiteit): int => (int) $activiteit['id'], $activiteiten)
+    );
+    $gegevens = $hersteldFormulier['gegevens'];
+    $geselecteerde_instrumenten = $hersteldFormulier['instrumenten'];
+    $activiteit_statussen = $hersteldFormulier['statussen'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="nl">
@@ -410,6 +442,9 @@ if (!empty($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL))
     <title>Aanmelden Mozart op Zaterdag</title>
     <link href="/css/moz.css" rel="stylesheet" type="text/css">
     <link href="/css/w3.css" rel="stylesheet" type="text/css">
+    <?php if ($turnstileBeschikbaar): ?>
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <?php endif; ?>
     <style>
         .form-group { margin-bottom: 1.5em; }
         .form-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1em; }
@@ -570,16 +605,17 @@ if (!empty($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL))
             </div>
 
             <div class="form-section">
-                <h3>Controle</h3>
-                <div class="form-group">
-                    <label for="captcha_antwoord"><?= htmlspecialchars($captchaVraag, ENT_QUOTES, 'UTF-8') ?></label>
-                    <input type="text" id="captcha_antwoord" name="captcha_antwoord" autocomplete="off" required>
-                </div>
+                <h3>Controle of je een echt levend mens bent</h3>
+                <?php if ($turnstileBeschikbaar): ?>
+                    <div class="cf-turnstile" data-sitekey="<?= htmlspecialchars($turnstileSiteKey, ENT_QUOTES, 'UTF-8') ?>"></div>
+                <?php else: ?>
+                    <p class="melding fout">De botcontrole is niet geconfigureerd. Inschrijven is tijdelijk niet mogelijk.</p>
+                <?php endif; ?>
             </div>
 
             <!-- Buttons -->
             <div class="button-group">
-                <button type="submit" class="w3-button w3-green">Opslaan</button>
+                <button type="submit" class="w3-button w3-green" <?= $turnstileBeschikbaar ? '' : 'disabled' ?>>Opslaan</button>
                 <a href="/" class="w3-button w3-light-grey" style="text-decoration: none;">Annuleren</a>
             </div>
 

@@ -1,30 +1,118 @@
 <?php
 
-function maakAanmeldCaptcha(): string
+function aanmeldTurnstileConfiguratie(string $naam): string
 {
-    $vragen = [
-        ['vraag' => 'Welke componist schreef De vier jaargetijden?', 'antwoord' => 'vivaldi'],
-        ['vraag' => 'Wie componeerde de opera Die Zauberflöte (De toverfluit)?', 'antwoord' => 'mozart'],
-        ['vraag' => 'Welke componist schreef Für Elise?', 'antwoord' => 'beethoven'],
-        ['vraag' => 'Welk instrument bespeelde Frédéric Chopin vooral?', 'antwoord' => 'piano'],
-        ['vraag' => 'Hoeveel strijkers spelen er in een strijkkwartet?', 'antwoord' => '4'],
-    ];
-    $vraag = $vragen[random_int(0, count($vragen) - 1)];
-    $_SESSION['aanmeld_captcha_antwoord'] = $vraag['antwoord'];
-
-    return $vraag['vraag'];
-}
-
-function controleerAanmeldCaptcha(mixed $antwoord): bool
-{
-    $verwachtAntwoord = $_SESSION['aanmeld_captcha_antwoord'] ?? null;
-    unset($_SESSION['aanmeld_captcha_antwoord']);
-
-    if (!is_string($verwachtAntwoord) || !is_string($antwoord) || strlen($antwoord) > 80) {
-        return false;
+    $waarde = getenv($naam);
+    if ($waarde === false || trim($waarde) === '') {
+        $waarde = $_SERVER[$naam] ?? $_ENV[$naam] ?? '';
     }
 
-    return hash_equals($verwachtAntwoord, strtolower(trim($antwoord)));
+    return is_string($waarde) ? trim($waarde) : '';
+}
+
+function isAanmeldTurnstileResultaatGeldig(array $resultaat, string $hostnaam): bool
+{
+    $geverifieerdeHostnaam = $resultaat['hostname'] ?? null;
+
+    return ($resultaat['success'] ?? false) === true
+        && is_string($geverifieerdeHostnaam)
+        && hash_equals(strtolower($hostnaam), strtolower($geverifieerdeHostnaam));
+}
+
+function controleerAanmeldTurnstile(mixed $token, string $geheimeSleutel, string $hostnaam, ?string $ipAdres = null): bool
+{
+    if (!is_string($token) || $token === '' || strlen($token) > 2048) {
+        return false;
+    }
+    if ($geheimeSleutel === '' || $hostnaam === '') {
+        throw new RuntimeException('Cloudflare Turnstile is niet volledig geconfigureerd.');
+    }
+    if (!function_exists('curl_init')) {
+        throw new RuntimeException('De PHP cURL-extensie is nodig voor Cloudflare Turnstile.');
+    }
+
+    $velden = [
+        'secret' => $geheimeSleutel,
+        'response' => $token,
+    ];
+    if ($ipAdres !== null && $ipAdres !== '') {
+        $velden['remoteip'] = $ipAdres;
+    }
+
+    $curl = curl_init('https://challenges.cloudflare.com/turnstile/v0/siteverify');
+    if ($curl === false) {
+        throw new RuntimeException('Cloudflare Turnstile-verificatie kon niet worden gestart.');
+    }
+    curl_setopt_array($curl, [
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => http_build_query($velden),
+        CURLOPT_HTTPHEADER => ['Content-Type: application/x-www-form-urlencoded'],
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CONNECTTIMEOUT => 5,
+        CURLOPT_TIMEOUT => 10,
+    ]);
+
+    $antwoord = curl_exec($curl);
+    $curlFout = curl_error($curl);
+    $httpStatus = (int) curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    curl_close($curl);
+
+    if ($antwoord === false || $curlFout !== '') {
+        throw new RuntimeException('Cloudflare Turnstile-verificatie is niet bereikbaar.');
+    }
+    if ($httpStatus !== 200) {
+        throw new RuntimeException('Cloudflare Turnstile gaf een onverwachte HTTP-status terug.');
+    }
+
+    try {
+        $resultaat = json_decode($antwoord, true, 8, JSON_THROW_ON_ERROR);
+    } catch (JsonException $e) {
+        throw new RuntimeException('Cloudflare Turnstile gaf een ongeldig antwoord terug.', 0, $e);
+    }
+
+    return is_array($resultaat) && isAanmeldTurnstileResultaatGeldig($resultaat, $hostnaam);
+}
+
+function herstelAanmeldFormulier(
+    array $gegevens,
+    array $post,
+    array $geldigeInstrumentIds,
+    array $activiteitIds
+): array {
+    foreach (['voornaam', 'achternaam', 'email', 'telefoon', 'postcode', 'plaats', 'muzikale_ervaring', 'opmerkingen'] as $veld) {
+        if (is_string($post[$veld] ?? null)) {
+            $gegevens[$veld] = $post[$veld];
+        }
+    }
+    if (in_array($post['op_de_hoogte_houden'] ?? null, ['0', '1'], true)) {
+        $gegevens['op_de_hoogte_houden'] = (int) $post['op_de_hoogte_houden'];
+    }
+
+    $instrumenten = [];
+    if (is_array($post['instrumenten'] ?? null)) {
+        foreach ($post['instrumenten'] as $instrumentId) {
+            if (is_scalar($instrumentId) && ctype_digit((string) $instrumentId)) {
+                $instrumentId = (int) $instrumentId;
+                if (in_array($instrumentId, $geldigeInstrumentIds, true)) {
+                    $instrumenten[] = $instrumentId;
+                }
+            }
+        }
+    }
+
+    $statussen = [];
+    foreach ($activiteitIds as $activiteitId) {
+        $veld = 'status_' . $activiteitId;
+        if (in_array($post[$veld] ?? null, ['ja', 'misschien', 'nee'], true)) {
+            $statussen[$activiteitId] = $post[$veld];
+        }
+    }
+
+    return [
+        'gegevens' => $gegevens,
+        'instrumenten' => array_values(array_unique($instrumenten)),
+        'statussen' => $statussen,
+    ];
 }
 
 function verwerkAanmelding(

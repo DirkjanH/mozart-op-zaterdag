@@ -11,30 +11,52 @@ final class AanmeldingTest extends TestCase
         $_SESSION = [];
     }
 
-    public function testCaptchaAccepteertHetJuisteAntwoordEnKanNietWordenHerhaald(): void
+    public function testTurnstileVereistSuccesEnDeVerwachteHostnaam(): void
     {
-        $antwoordPerVraag = [
-            'Welke componist schreef De vier jaargetijden?' => 'Vivaldi',
-            'Wie componeerde de opera Die Zauberflöte (De toverfluit)?' => 'Mozart',
-            'Welke componist schreef Für Elise?' => 'Beethoven',
-            'Welk instrument bespeelde Frédéric Chopin vooral?' => 'piano',
-            'Hoeveel strijkers spelen er in een strijkkwartet?' => '4',
-        ];
-
-        $vraag = maakAanmeldCaptcha();
-        self::assertArrayHasKey($vraag, $antwoordPerVraag);
-        self::assertTrue(controleerAanmeldCaptcha('  ' . $antwoordPerVraag[$vraag] . '  '));
-        self::assertFalse(controleerAanmeldCaptcha($antwoordPerVraag[$vraag]));
+        self::assertTrue(isAanmeldTurnstileResultaatGeldig([
+            'success' => true,
+            'hostname' => 'mozartopzaterdag.nl',
+        ], 'mozartopzaterdag.nl'));
+        self::assertFalse(isAanmeldTurnstileResultaatGeldig([
+            'success' => false,
+            'hostname' => 'mozartopzaterdag.nl',
+        ], 'mozartopzaterdag.nl'));
+        self::assertFalse(isAanmeldTurnstileResultaatGeldig([
+            'success' => true,
+            'hostname' => 'anderedomein.nl',
+        ], 'mozartopzaterdag.nl'));
     }
 
-    public function testCaptchaVerwerptEenVerkeerdOfOngeldigAntwoord(): void
+    public function testTurnstileVerwerptOntbrekendeTokensEnConfiguratie(): void
     {
-        maakAanmeldCaptcha();
-        self::assertFalse(controleerAanmeldCaptcha('onjuist'));
-        self::assertFalse(controleerAanmeldCaptcha(['vivaldi']));
+        self::assertFalse(controleerAanmeldTurnstile('', 'secret', 'mozartopzaterdag.nl'));
+        self::assertFalse(controleerAanmeldTurnstile(str_repeat('x', 2049), 'secret', 'mozartopzaterdag.nl'));
+        $this->expectException(RuntimeException::class);
+        controleerAanmeldTurnstile('token', '', 'mozartopzaterdag.nl');
+    }
 
-        maakAanmeldCaptcha();
-        self::assertFalse(controleerAanmeldCaptcha(str_repeat('x', 81)));
+    public function testFormulierwaardenWordenHersteldEnAlleenBekendeKeuzesWordenOvergenomen(): void
+    {
+        $hersteld = herstelAanmeldFormulier(
+            ['voornaam' => 'Oude naam', 'op_de_hoogte_houden' => 1],
+            [
+                'voornaam' => 'Nieuwe naam',
+                'achternaam' => 'Speler',
+                'email' => 'speler@example.org',
+                'op_de_hoogte_houden' => '0',
+                'instrumenten' => ['2', '999', 'onjuist'],
+                'status_10' => 'misschien',
+                'status_11' => 'ongeldig',
+            ],
+            [2],
+            [10, 11]
+        );
+
+        self::assertSame('Nieuwe naam', $hersteld['gegevens']['voornaam']);
+        self::assertSame('Speler', $hersteld['gegevens']['achternaam']);
+        self::assertSame(0, $hersteld['gegevens']['op_de_hoogte_houden']);
+        self::assertSame([2], $hersteld['instrumenten']);
+        self::assertSame([10 => 'misschien'], $hersteld['statussen']);
     }
 
     public function testNieuweInschrijvingVoegtDeelnemerEnActiviteitenToe(): void
