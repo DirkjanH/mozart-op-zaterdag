@@ -2,12 +2,48 @@
 require_once __DIR__ . '/../includes/inloggen.php';
 require_once __DIR__ . '/../connections/MozartopZaterdag.php';
 require_once __DIR__ . '/../includes/deelnemer_wijzigingsdatum.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 zorgVoorDeelnemerWijzigingsdatum($pdo);
 
 $statussen = ['' => '(onbekend)', 'ja' => 'ja', 'nee' => 'nee', 'misschien' => 'misschien'];
 $melding = '';
 $foutmelding = '';
+
+function leesDeelnemerBewerkMailInstellingen(): array
+{
+    $gebruikersnaam = getenv('MOZART_GMAIL_USERNAME') ?: 'info@mozartopzaterdag.nl';
+    $wachtwoord = getenv('MOZART_GMAIL_APP_PASSWORD') ?: '';
+    $bestand = __DIR__ . '/../includes/_tst/MOZART_GMAIL_USERNAME.txt';
+    if ($wachtwoord !== '' || !is_readable($bestand)) {
+        return [$gebruikersnaam, preg_replace('/\s+/', '', $wachtwoord)];
+    }
+
+    $ongelabeldeRegels = [];
+    foreach (preg_split('/\r\n|\r|\n/', trim((string) file_get_contents($bestand))) as $regel) {
+        $regel = trim($regel);
+        if ($regel === '' || str_starts_with($regel, '#')) {
+            continue;
+        }
+        if (preg_match('/^([^:=]+)\s*[:=]\s*(.*)$/', $regel, $delen)) {
+            $naam = strtolower(trim($delen[1]));
+            $waarde = trim($delen[2]);
+            if (in_array($naam, ['username', 'gebruikersnaam', 'gmail_username', 'mozart_gmail_username'], true)) {
+                $gebruikersnaam = $waarde;
+            } elseif (in_array($naam, ['password', 'wachtwoord', 'app_password', 'gmail_app_password', 'mozart_gmail_app_password'], true)) {
+                $wachtwoord = preg_replace('/\s+/', '', $waarde);
+            }
+        } else {
+            $ongelabeldeRegels[] = $regel;
+        }
+    }
+    if ($wachtwoord === '' && isset($ongelabeldeRegels[1])) {
+        $gebruikersnaam = $ongelabeldeRegels[0];
+        $wachtwoord = preg_replace('/\s+/', '', $ongelabeldeRegels[1]);
+    }
+
+    return [$gebruikersnaam, $wachtwoord];
+}
 
 $id = (int) ($_GET['id'] ?? $_POST['id'] ?? 0);
 if ($id <= 0) {
@@ -36,6 +72,125 @@ if (isset($_POST['actie']) && $_POST['actie'] === 'verwijderen') {
     }
     header('Location: deelnemers_bewerken.php?melding=' . rawurlencode('Deelnemer volledig verwijderd.'));
     exit;
+}
+
+if (isset($_POST['actie']) && $_POST['actie'] === 'bevestiging_mail') {
+    try {
+        $stmt = $pdo->prepare('SELECT * FROM deelnemers WHERE id = ?');
+        $stmt->execute([$id]);
+        $deelnemerVoorMail = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($deelnemerVoorMail === false || !filter_var($deelnemerVoorMail['email'], FILTER_VALIDATE_EMAIL)) {
+            throw new RuntimeException('De deelnemer heeft geen geldig e-mailadres.');
+        }
+
+        [$mailGebruikersnaam, $mailWachtwoord] = leesDeelnemerBewerkMailInstellingen();
+        if ($mailWachtwoord === '') {
+            throw new RuntimeException('Het Gmail-app-wachtwoord ontbreekt in de configuratie.');
+        }
+
+        $mailbestand = __DIR__ . '/../JSON/aanmeldbevestiging.json';
+        $mailTemplate = json_decode((string) file_get_contents($mailbestand), true, 8, JSON_THROW_ON_ERROR);
+        if (!is_array($mailTemplate) || !is_string($mailTemplate['onderwerp'] ?? null) || !is_string($mailTemplate['tekst'] ?? null)) {
+            throw new RuntimeException('De bevestigingsmail heeft een ongeldig formaat.');
+        }
+
+        $stmt = $pdo->prepare(
+            'SELECT i.naam FROM deelnemer_instrumenten di
+             JOIN instrumenten i ON i.id = di.instrument_id
+             WHERE di.deelnemer_id = ? ORDER BY i.id'
+        );
+        $stmt->execute([$id]);
+        $instrumentNamen = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+        $stmt = $pdo->prepare(
+            'SELECT a.datum, a.omschrijving, ad.status
+             FROM activiteiten a
+             LEFT JOIN activiteit_deelnemers ad ON ad.activiteit_id = a.id AND ad.deelnemer_id = ?
+             WHERE a.datum >= CURDATE() ORDER BY a.datum'
+        );
+        $stmt->execute([$id]);
+        $beschikbaarheidRijen = [];
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $activiteit) {
+            $status = (string) ($activiteit['status'] ?? '');
+            $statusLabel = $statussen[$status] ?? '(onbekend)';
+            $statusKleur = match ($status) {
+                'ja' => '#198754',
+                'misschien' => '#ff9800',
+                'nee' => '#dc3545',
+                default => '#6c757d',
+            };
+            $beschikbaarheidRijen[] = '<tr><td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;">'
+                . htmlspecialchars(date('j-n-Y', strtotime($activiteit['datum'])), ENT_QUOTES, 'UTF-8')
+                . '</td><td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;">'
+                . htmlspecialchars($activiteit['omschrijving'] ?? '', ENT_QUOTES, 'UTF-8')
+                . '</td><td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;text-align:right;"><strong style="color:'
+                . $statusKleur . '">' . htmlspecialchars(ucfirst($statusLabel), ENT_QUOTES, 'UTF-8')
+                . '</strong></td></tr>';
+        }
+        $beschikbaarheidInhoud = $beschikbaarheidRijen !== []
+            ? '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;"><tr><td style="padding:8px 10px;border-bottom:2px solid #cbd5e1;font-weight:bold;">Datum</td><td style="padding:8px 10px;border-bottom:2px solid #cbd5e1;font-weight:bold;">Activiteit</td><td style="padding:8px 10px;border-bottom:2px solid #cbd5e1;font-weight:bold;text-align:right;">Status</td></tr>' . implode('', $beschikbaarheidRijen) . '</table>'
+            : '<p style="margin:0;">Geen toekomstige activiteiten opgegeven.</p>';
+        $opDeHoogteGehouden = (int) ($deelnemerVoorMail['op_de_hoogte_houden'] ?? 0) === 1;
+        $beschikbaarheidBlok = $opDeHoogteGehouden
+            ? '<tr><td style="padding:0 24px 24px;"><p style="margin:0 0 10px;font-size:16px;font-weight:bold;color:#273746;">Beschikbaarheid</p>' . $beschikbaarheidInhoud . '</td></tr>'
+            : '';
+        $waarden = [
+            '{{voornaam}}' => (string) $deelnemerVoorMail['voornaam'],
+            '{{achternaam}}' => (string) $deelnemerVoorMail['achternaam'],
+            '{{naam}}' => trim($deelnemerVoorMail['voornaam'] . ' ' . $deelnemerVoorMail['achternaam']),
+            '{{email}}' => (string) $deelnemerVoorMail['email'],
+            '{{telefoon}}' => (string) ($deelnemerVoorMail['telefoon'] ?? ''),
+            '{{postcode}}' => (string) ($deelnemerVoorMail['postcode'] ?? ''),
+            '{{plaats}}' => (string) ($deelnemerVoorMail['plaats'] ?? ''),
+            '{{instrumenten}}' => $instrumentNamen !== [] ? implode(', ', $instrumentNamen) : 'geen instrument opgegeven',
+            '{{beschikbaarheid}}' => $beschikbaarheidInhoud,
+            '{{beschikbaarheid_blok}}' => $beschikbaarheidBlok,
+            '{{op_de_hoogte_gehouden_antwoord}}' => $opDeHoogteGehouden
+                ? 'Ja'
+                : '<strong style="color:#d00">Nee. We zullen je gegevens uit ons bestand verwijderen.</strong>',
+            '{{aanmeldlink}}' => 'https://mozartopzaterdag.nl/deelnemers_aanmelden.php?email=' . rawurlencode($deelnemerVoorMail['email']),
+        ];
+        $renderTemplate = static function (string $template) use ($waarden): string {
+            $vervanging = [];
+            foreach ($waarden as $placeholder => $waarde) {
+                $vervanging[$placeholder] = in_array(
+                    $placeholder,
+                    ['{{beschikbaarheid}}', '{{beschikbaarheid_blok}}', '{{op_de_hoogte_gehouden_antwoord}}'],
+                    true
+                )
+                    ? $waarde
+                    : htmlspecialchars($waarde, ENT_QUOTES, 'UTF-8');
+            }
+
+            return str_replace(array_keys($vervanging), array_values($vervanging), $template);
+        };
+
+        $mailer = new PHPMailer\PHPMailer\PHPMailer(true);
+        $mailer->isSMTP();
+        $mailer->Host = 'send.one.com';
+        $mailer->SMTPAuth = true;
+        $mailer->Username = $mailGebruikersnaam;
+        $mailer->Password = $mailWachtwoord;
+        $mailer->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
+        $mailer->Port = 465;
+        $mailer->Timeout = 5;
+        $mailer->CharSet = 'UTF-8';
+        $mailer->setFrom($mailGebruikersnaam, 'Mozart op Zaterdag');
+        $mailer->addReplyTo($mailGebruikersnaam, 'Mozart op Zaterdag');
+        $mailer->addAddress($deelnemerVoorMail['email'], trim($deelnemerVoorMail['voornaam'] . ' ' . $deelnemerVoorMail['achternaam']));
+        if (strcasecmp($deelnemerVoorMail['email'], 'info@mozartopzaterdag.nl') !== 0) {
+            $mailer->addCC('info@mozartopzaterdag.nl', 'Mozart op Zaterdag');
+        }
+        $mailer->isHTML(true);
+        $mailer->Subject = str_replace(["\r", "\n"], '', html_entity_decode(strip_tags($renderTemplate($mailTemplate['onderwerp'])), ENT_QUOTES, 'UTF-8'));
+        $mailer->Body = $renderTemplate($mailTemplate['tekst']);
+        $mailer->AltBody = trim(html_entity_decode(strip_tags(str_replace(['</p>', '<br>', '<br/>', '<br />'], "\n", $mailer->Body)), ENT_QUOTES, 'UTF-8'));
+        $mailer->send();
+        $melding = 'De bevestigingsmail is verstuurd aan de deelnemer met info@mozartopzaterdag.nl in cc.';
+    } catch (Throwable $e) {
+        error_log('Deelnemer bewerken: bevestigingsmail niet verstuurd: ' . $e->getMessage());
+        $foutmelding = 'De bevestigingsmail kon niet worden verstuurd: ' . $e->getMessage();
+    }
 }
 
 if (isset($_POST['actie']) && $_POST['actie'] === 'opslaan') {
@@ -207,6 +362,10 @@ $statusPerActiviteit = array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'status',
         function bevestigVerwijderen() {
             return confirm('Weet je zeker dat je deze deelnemer helemaal wilt verwijderen? Dit kan niet ongedaan worden gemaakt.');
         }
+
+        function bevestigMailVersturen() {
+            return confirm('De opgeslagen inschrijving per e-mail bevestigen aan de deelnemer, met info@mozartopzaterdag.nl in cc?');
+        }
     </script>
 </head>
 
@@ -316,6 +475,12 @@ $statusPerActiviteit = array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'status',
             <input type="hidden" name="actie" value="verwijderen">
             <input type="hidden" name="id" value="<?= (int) $id ?>">
             <button class="w3-button w3-red" type="submit">Deelnemer verwijderen</button>
+        </form>
+
+        <form method="post" onsubmit="return bevestigMailVersturen();" style="margin-top:1em;">
+            <input type="hidden" name="actie" value="bevestiging_mail">
+            <input type="hidden" name="id" value="<?= (int) $id ?>">
+            <button class="w3-button w3-green" type="submit">Inschrijving per e-mail bevestigen</button>
         </form>
     </div>
 </body>
