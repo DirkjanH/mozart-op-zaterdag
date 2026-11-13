@@ -388,7 +388,7 @@ $statusPerActiviteit = array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'status',
             <p class="w3-panel w3-pale-red w3-leftbar w3-border-red"><?= htmlspecialchars($foutmelding) ?></p>
         <?php endif; ?>
 
-        <form method="post" onsubmit="return bevestigOpslaan();">
+        <form id="deelnemer-formulier" method="post" onsubmit="return bevestigOpslaan();">
             <input type="hidden" name="actie" value="opslaan">
             <input type="hidden" name="id" value="<?= (int) $id ?>">
 
@@ -466,22 +466,21 @@ $statusPerActiviteit = array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'status',
                 </div>
             <?php endforeach; ?>
 
-            <div class="knoppen">
-                <button class="w3-button w3-blue" type="submit">Wijzigingen opslaan</button>
-            </div>
         </form>
 
-        <form method="post" onsubmit="return bevestigVerwijderen();" style="margin-top:1em;">
-            <input type="hidden" name="actie" value="verwijderen">
-            <input type="hidden" name="id" value="<?= (int) $id ?>">
-            <button class="w3-button w3-red" type="submit">Deelnemer verwijderen</button>
-        </form>
-
-        <form method="post" onsubmit="return bevestigMailVersturen();" style="margin-top:1em;">
-            <input type="hidden" name="actie" value="bevestiging_mail">
-            <input type="hidden" name="id" value="<?= (int) $id ?>">
-            <button class="w3-button w3-green" type="submit">Inschrijving per e-mail bevestigen</button>
-        </form>
+        <div class="knoppen">
+            <button class="w3-button w3-blue" type="submit" form="deelnemer-formulier">Wijzigingen opslaan</button>
+            <form method="post" onsubmit="return bevestigVerwijderen();">
+                <input type="hidden" name="actie" value="verwijderen">
+                <input type="hidden" name="id" value="<?= (int) $id ?>">
+                <button class="w3-button w3-red" type="submit">Deelnemer verwijderen</button>
+            </form>
+            <form method="post" onsubmit="return bevestigMailVersturen();">
+                <input type="hidden" name="actie" value="bevestiging_mail">
+                <input type="hidden" name="id" value="<?= (int) $id ?>">
+                <button class="w3-button w3-green" type="submit">Inschrijving per e-mail bevestigen</button>
+            </form>
+        </div>
     </div>
 </body>
 
