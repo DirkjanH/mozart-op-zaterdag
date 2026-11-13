@@ -239,7 +239,7 @@ foreach ($deelnemers as $deelnemer) {
             }
 
             .actie-kolom {
-                width: 5.2em;
+                width: 7.5em;
                 white-space: nowrap;
             }
 
@@ -359,6 +359,10 @@ foreach ($deelnemers as $deelnemer) {
         function bevestigVerwijderen(event) {
             if (event.submitter && event.submitter.value === 'verwijderen') {
                 return confirm('Weet je zeker dat je deze deelnemer helemaal wilt verwijderen?');
+            }
+
+            if (event.submitter && event.submitter.value === 'bevestiging_mail') {
+                return confirm('De opgeslagen inschrijving per e-mail bevestigen aan de deelnemer, met info@mozartopzaterdag.nl in cc?');
             }
 
             return true;
@@ -494,7 +498,6 @@ foreach ($deelnemers as $deelnemer) {
                 <?php foreach ($deelnemers as $deelnemer): ?>
                     <?php $gekozenInstrumenten = $instrumentenPerDeelnemer[$deelnemer['id']] ?? []; ?>
                     <form method="post" onsubmit="return bevestigVerwijderen(event);">
-                        <input type="hidden" name="actie" value="opslaan">
                         <input type="hidden" name="id" value="<?= (int) $deelnemer['id'] ?>">
                         <tr data-families="<?= htmlspecialchars(implode(' ', $familiesPerDeelnemer[$deelnemer['id']])) ?>" data-search="<?= htmlspecialchars($zoekTekstPerDeelnemer[$deelnemer['id']], ENT_QUOTES, 'UTF-8') ?>">
                             <td style="min-width:20em;">
@@ -530,8 +533,9 @@ foreach ($deelnemers as $deelnemer) {
                                 </td>
                             <?php endforeach; ?>
                                 <td class="actie-kolom">
-                                    <button class="w3-button w3-blue actie-knop" type="submit" title="Deelnemer opslaan" aria-label="Deelnemer opslaan">&#10003;</button>
+                                <button class="w3-button w3-blue actie-knop" type="submit" name="actie" value="opslaan" title="Deelnemer opslaan" aria-label="Deelnemer opslaan">&#10003;</button>
                                     <button class="w3-button w3-red actie-knop" type="submit" name="actie" value="verwijderen" formnovalidate title="Deelnemer verwijderen" aria-label="Deelnemer verwijderen">&#10005;</button>
+                                <button class="w3-button w3-green actie-knop" type="submit" name="actie" value="bevestiging_mail" formaction="deelnemer_bewerken.php" title="Bevestigingsmail aan deelnemer sturen (cc aan info)" aria-label="Bevestigingsmail aan deelnemer sturen met info in cc">&#9993;</button>
                                 </td>
                         </tr>
                     </form>
@@ -582,7 +586,6 @@ foreach ($deelnemers as $deelnemer) {
                         <a href="deelnemer_bewerken.php?id=<?= (int) $deelnemer['id'] ?>" title="Alle gegevens bekijken en bewerken">&#128100;</a>
                     </summary>
                     <form method="post" onsubmit="return bevestigVerwijderen(event);">
-                        <input type="hidden" name="actie" value="opslaan">
                         <input type="hidden" name="id" value="<?= (int) $deelnemer['id'] ?>">
                         <label>Voornaam <input class="w3-input" type="text" name="voornaam" value="<?= htmlspecialchars($deelnemer['voornaam']) ?>" required></label>
                         <label>Achternaam <input class="w3-input" type="text" name="achternaam" value="<?= htmlspecialchars($deelnemer['achternaam']) ?>" required></label>
@@ -611,8 +614,9 @@ foreach ($deelnemers as $deelnemer) {
                             </label>
                         <?php endforeach; ?>
                         <div class="kaart-knoppen">
-                            <button class="w3-button w3-blue" type="submit" title="Deelnemer opslaan">Opslaan</button>
+                            <button class="w3-button w3-blue" type="submit" name="actie" value="opslaan" title="Deelnemer opslaan">Opslaan</button>
                             <button class="w3-button w3-red" type="submit" name="actie" value="verwijderen" formnovalidate title="Deelnemer verwijderen">Verwijderen</button>
+                            <button class="w3-button w3-green" type="submit" name="actie" value="bevestiging_mail" formaction="deelnemer_bewerken.php" title="Bevestigingsmail aan deelnemer sturen (cc aan info)">Bevestiging mailen</button>
                         </div>
                     </form>
                 </details>
