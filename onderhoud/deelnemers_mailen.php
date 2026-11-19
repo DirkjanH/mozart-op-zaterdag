@@ -61,10 +61,13 @@ foreach ($activiteiten as $activiteit) {
 
 // Activiteitsgebonden mails gebruiken de actuele indeling; overige doelgroepen komen uit deelnemersvoorkeuren.
 $doelgroep = $_POST['doelgroep'] ?? $_GET['doelgroep'] ?? 'toegelaten';
-$halfjaren = mailHalfjaren(new DateTimeImmutable('now', new DateTimeZone('Europe/Amsterdam')));
+$vandaag = new DateTimeImmutable('now', new DateTimeZone('Europe/Amsterdam'));
+$halfjaren = mailHalfjaren($vandaag);
+$volgendJaar = (int) $vandaag->format('Y') + 1;
 $doelgroepen = [
     'toegelaten' => 'Toegelaten deelnemers voor deze activiteit',
     'alle_deelnemers' => 'Alle deelnemers',
+    'beschikbaarheid_onbekend' => 'Beschikbaarheid voor alle activiteiten in ' . $volgendJaar . ' onbekend',
     'strijkers' => 'Strijkers',
     'houtblazers' => 'Houtblazers',
     'koperblazers' => 'Koperblazers',
@@ -148,6 +151,17 @@ if ($mailPeriode !== null) {
     $parameters = [];
     if ($doelgroep === 'alle_deelnemers') {
         $sql .= ' WHERE 1 = 1';
+    } elseif ($doelgroep === 'beschikbaarheid_onbekend') {
+        $sql .= " WHERE EXISTS (SELECT 1 FROM activiteiten a WHERE a.datum >= ? AND a.datum < ?)
+                  AND NOT EXISTS (
+                      SELECT 1 FROM activiteit_deelnemers ad
+                      JOIN activiteiten a ON a.id = ad.activiteit_id
+                      WHERE ad.deelnemer_id = d.id AND a.datum >= ? AND a.datum < ?
+                        AND ad.status IS NOT NULL AND ad.status <> ''
+                  )";
+        $start = $volgendJaar . '-01-01';
+        $einde = ($volgendJaar + 1) . '-01-01';
+        $parameters = [$start, $einde, $start, $einde];
     } elseif ($doelgroep === 'overig') {
         $plaatshouders = implode(',', array_fill(0, count($alleFamilieInstrumenten), '?'));
         $sql .= " WHERE NOT EXISTS (SELECT 1 FROM deelnemer_instrumenten di2 JOIN instrumenten i2 ON i2.id = di2.instrument_id WHERE di2.deelnemer_id = d.id AND LOWER(TRIM(i2.naam)) IN ($plaatshouders))";
@@ -850,6 +864,13 @@ if (is_array($wachtrij)) {
                 <code>{{plaatsing}}</code> toont per activiteit plaatsing in groen of afwijzing in rood; ‘nee’ wordt weggelaten.
                 Controleer de indeling vóór verzending: niet toegelaten geldt als afgewezen.
                 <?php if ($gekozenActiviteit === null): ?>Er zijn nog geen activiteiten in dit halfjaar.<?php endif; ?>
+            </p>
+        <?php endif; ?>
+
+        <?php if ($doelgroep === 'beschikbaarheid_onbekend'): ?>
+            <p class="w3-panel w3-pale-blue">
+                Deelnemers die voor geen enkele activiteit in <?= $volgendJaar ?> beschikbaarheid hebben ingevuld.
+                Als er nog geen activiteiten in <?= $volgendJaar ?> zijn, is deze doelgroep leeg.
             </p>
         <?php endif; ?>
 

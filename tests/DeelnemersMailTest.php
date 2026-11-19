@@ -5,6 +5,7 @@ use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 
 require_once __DIR__ . '/../includes/deelnemers_mail.inc.php';
+require_once __DIR__ . '/../includes/csrf.php';
 
 final class DeelnemersMailTest extends TestCase
 {
@@ -107,11 +108,62 @@ final class DeelnemersMailTest extends TestCase
         self::assertStringNotContainsString('id="mail-formulier"', $leeg);
     }
 
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testPaginaSelecteertAlleenDeelnemersZonderOpgaveVoorVolgendJaar(): void
+    {
+        $jaar = (int) (new DateTimeImmutable('now', new DateTimeZone('Europe/Amsterdam')))->format('Y') + 1;
+        $pdo = $this->database();
+        $vorigJaar = $jaar - 1;
+        $daaropvolgendJaar = $jaar + 1;
+        $pdo->exec("UPDATE activiteiten SET datum =
+            CASE SUBSTR(datum, 1, 4)
+                WHEN '2026' THEN '$vorigJaar' || SUBSTR(datum, 5)
+                WHEN '2027' THEN '$jaar' || SUBSTR(datum, 5)
+                WHEN '2028' THEN '$daaropvolgendJaar' || SUBSTR(datum, 5)
+            END");
+        $pdo->exec("INSERT INTO deelnemers VALUES
+                (4, 'Dee', 'D', 'dee@example.org'),
+                (5, 'Eef', 'E', 'eef@example.org'),
+                (6, 'Fie', 'F', 'fie@example.org'),
+                (7, 'Gijs', 'G', 'gijs@example.org'),
+                (8, 'Henk', 'H', 'henk@example.org');
+            INSERT INTO deelnemer_instrumenten VALUES (4, 1), (4, 2);
+            INSERT INTO activiteit_deelnemers VALUES
+                (5, 1, 'ja', 0, NULL, NULL),
+                (5, 6, 'nee', 0, NULL, NULL),
+                (6, 2, '', 0, NULL, NULL),
+                (6, 3, NULL, 0, NULL, NULL),
+                (7, 5, 'misschien', 0, NULL, NULL),
+                (8, 2, 'nee', 0, NULL, NULL)");
+
+        $html = $this->renderPagina($pdo, 'beschikbaarheid_onbekend');
+        self::assertStringContainsString('3 deelnemers: Beschikbaarheid voor alle activiteiten in ' . $jaar . ' onbekend', $html);
+        foreach (['Dee', 'Eef', 'Fie'] as $naam) {
+            self::assertStringContainsString($naam, $html);
+        }
+        foreach (['Ada', 'Bob', 'Cor', 'Gijs', 'Henk'] as $naam) {
+            self::assertStringNotContainsString($naam, $html);
+        }
+    }
+
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testOnbekendeBeschikbaarheidIsLeegZonderActiviteitenVolgendJaar(): void
+    {
+        $pdo = $this->database();
+        $pdo->exec("UPDATE activiteiten SET datum = '2000-01-01'");
+        $html = $this->renderPagina($pdo, 'beschikbaarheid_onbekend');
+        self::assertStringContainsString('0 deelnemers: Beschikbaarheid voor alle activiteiten', $html);
+        self::assertStringContainsString('is deze doelgroep leeg', $html);
+    }
+
     private function renderPagina(PDO $pdo, string $doelgroep): string
     {
         $bron = file_get_contents(__DIR__ . '/../onderhoud/deelnemers_mailen.php');
         $bron = preg_replace('/^require_once .*;\r?$/m', '', $bron);
         $bron = str_replace('zorgVoorMailTrackingTabel($pdo);', '', $bron);
+        $bron = str_replace("GROUP_CONCAT(DISTINCT i.naam ORDER BY i.naam SEPARATOR ', ')", "GROUP_CONCAT(DISTINCT i.naam)", $bron);
         $oudeGet = $_GET;
         $oudePost = $_POST;
         $oudeSession = $_SESSION ?? [];
@@ -136,9 +188,10 @@ final class DeelnemersMailTest extends TestCase
         $pdo->exec('CREATE TABLE deelnemers (id INTEGER, voornaam TEXT, achternaam TEXT, email TEXT);
             CREATE TABLE activiteiten (id INTEGER, datum TEXT, plaats TEXT, omschrijving TEXT);
             CREATE TABLE instrumenten (id INTEGER, naam TEXT);
+            CREATE TABLE deelnemer_instrumenten (deelnemer_id INTEGER, instrument_id INTEGER);
             CREATE TABLE activiteit_deelnemers (deelnemer_id INTEGER, activiteit_id INTEGER, status TEXT, toegelaten INTEGER, instrument_id INTEGER, partij TEXT);
             INSERT INTO deelnemers VALUES (1, "Ada", "A", "ada@example.org"), (2, "Bob", "B", "bob@example.org"), (3, "Cor", "C", "cor@example.org");
-            INSERT INTO instrumenten VALUES (1, "viool");
+            INSERT INTO instrumenten VALUES (1, "viool"), (2, "cello");
             INSERT INTO activiteiten VALUES
                 (1, "2026-12-31", "Stadsklooster", "Buiten periode"),
                 (2, "2027-01-01", "Stadsklooster", "<script>"),
