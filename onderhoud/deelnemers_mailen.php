@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../includes/inloggen.php';
+require_once __DIR__ . '/../includes/csrf.php';
 require_once __DIR__ . '/../connections/MozartopZaterdag.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../includes/mail_tracking.php';
@@ -10,6 +11,7 @@ zorgVoorMailTrackingTabel($pdo);
 $melding = '';
 $resultaten = [];
 $actie = $_POST['actie'] ?? '';
+$csrfToken = csrfTokenOphalen();
 
 if ($actie === 'json_laden') {
     $gevraagdeActiviteitId = (int) ($_POST['activiteit_id'] ?? 0);
@@ -207,7 +209,9 @@ function serverConceptBestand(array $activiteit, string $doelgroep, string $keuz
 {
     [$bron, $bestandsnaam] = array_pad(explode(':', $keuze, 2), 2, '');
     // Beperk bron en bestandsnaam voordat een pad wordt opgebouwd; een formulierwaarde mag geen willekeurig bestand kiezen.
-    if (!in_array($bron, ['json', 'activiteit'], true) || !preg_match('/^mozart-mailconcept(?:[ -].*)?\.json$/', $bestandsnaam)) {
+    if (!in_array($bron, ['json', 'activiteit'], true)
+        || preg_match('/[\/\\\\]/', $bestandsnaam)
+        || !preg_match('/^mozart-mailconcept(?:[ -].*)?\.json$/', $bestandsnaam)) {
         return null;
     }
     if ($doelgroep === 'toegelaten' && $bron !== 'activiteit') {
@@ -287,6 +291,24 @@ if ($actie === 'json_downloaden') {
         exit;
     } catch (Throwable $e) {
         $melding = 'Serverconcept niet gedownload: ' . $e->getMessage();
+    }
+}
+
+if ($actie === 'json_verwijderen') {
+    csrfValiderenOfAfwijzen();
+    try {
+        $conceptBestand = $gekozenActiviteit === null
+            ? null
+            : serverConceptBestand($gekozenActiviteit, $doelgroep, (string) ($_POST['server_concept'] ?? ''));
+        if ($conceptBestand === null || !is_file($conceptBestand)) {
+            throw new RuntimeException('Kies een geldig serverconcept om te verwijderen.');
+        }
+        if (!unlink($conceptBestand)) {
+            throw new RuntimeException('Het serverconcept kon niet van de server worden verwijderd.');
+        }
+        $melding = 'Serverconcept verwijderd.';
+    } catch (Throwable $e) {
+        $melding = 'Serverconcept niet verwijderd: ' . $e->getMessage();
     }
 }
 
@@ -756,6 +778,7 @@ if (is_array($wachtrij)) {
         <form method="post" enctype="multipart/form-data" class="w3-margin-bottom">
             <input type="hidden" name="activiteit_id" value="<?= $activiteitId ?>">
             <input type="hidden" name="doelgroep" value="<?= htmlspecialchars($doelgroep, ENT_QUOTES, 'UTF-8') ?>">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
             <?php $conceptMap = conceptMapVoorDoelgroep($gekozenActiviteit, $doelgroep); $serverConcepten = []; foreach (glob($conceptMap . '/mozart-mailconcept*.json') ?: [] as $concept) $serverConcepten['json:' . basename($concept)] = $concept; if ($doelgroep === 'toegelaten') { $serverConcepten = []; foreach (glob(dirname(__DIR__) . '/' . $gekozenActiviteit['datum'] . '/mozart-mailconcept*.json') ?: [] as $concept) $serverConcepten['activiteit:' . basename($concept)] = $concept; } else { foreach (glob(dirname(__DIR__) . '/' . $gekozenActiviteit['datum'] . '/mozart-mailconcept*.json') ?: [] as $concept) $serverConcepten['activiteit:' . basename($concept)] = $concept; } uksort($serverConcepten, static fn (string $eerste, string $tweede): int => strnatcmp($tweede, $eerste)); ?>
             <label for="server_concept"><strong>Serverconcept kiezen</strong></label>
             <select class="w3-select w3-border" id="server_concept" name="server_concept" <?= $serverConcepten === [] ? 'disabled' : '' ?>>
@@ -764,6 +787,7 @@ if (is_array($wachtrij)) {
             </select>
             <button class="w3-button w3-light-grey w3-margin-top" type="submit" name="actie" value="json_laden" <?= $serverConcepten === [] ? 'disabled' : '' ?>>Serverconcept laden</button>
             <button class="w3-button w3-light-grey w3-margin-top" type="submit" name="actie" value="json_downloaden" <?= $serverConcepten === [] ? 'disabled' : '' ?>>Serverconcept downloaden</button>
+            <button class="w3-button w3-red w3-margin-top" type="submit" name="actie" value="json_verwijderen" onclick="return confirm('Weet je zeker dat je dit serverconcept definitief wilt verwijderen?')" <?= $serverConcepten === [] ? 'disabled' : '' ?>>Serverconcept verwijderen</button>
         </form>
         <?php endif; ?>
 
