@@ -58,9 +58,17 @@ if ($activiteitId === 0 && $activiteiten !== []) {
 function partijLabel(string $bestand): string
 {
     $naam = pathinfo($bestand, PATHINFO_FILENAME);
-    $naam = preg_replace('/[_-]+/', ' ', $naam);
+    $naam = muziektitel($naam);
+    $naam = preg_replace('/-+/', ' ', $naam);
     $naam = preg_replace('/\s+/', ' ', $naam);
     return trim($naam);
+}
+
+function muziektitel(string $tekst): string
+{
+    $tekst = preg_replace('/[_.]+/', ' ', $tekst);
+    $tekst = preg_replace('/\s+/', ' ', $tekst);
+    return trim((string) $tekst);
 }
 
 function zonderPdfExtensie(string $label): string
@@ -117,17 +125,18 @@ function partijSorteerGegevens(string $bestand, array $instrumenten): array
         'iii' => 3,
         default => (int) $partijNummer,
     };
-    preg_match('/\b(?:kv?|k)\s*[_ .-]*(\d+)/i', $naam, $werk);
+    preg_match('/\b(?:kv?|k)\s*[_ .-]*(\d+\s*[a-z]*)(?:\b|$)/i', $naam, $werk);
+    $werkIdentiteit = strtolower(preg_replace('/\s+/', '', (string) ($werk[1] ?? '')));
     $werkTitel = '';
     if (isPartituur($bestand)) {
         preg_match('/\bpartituur\b\s*[-–—_:]*\s*(.+)$/iu', pathinfo($bestand, PATHINFO_FILENAME), $titelOvereenkomst);
-        $werkTitel = trim((string) ($titelOvereenkomst[1] ?? ''));
+        $werkTitel = muziektitel((string) ($titelOvereenkomst[1] ?? ''));
         $werkTitel = trim($werkTitel, " \t\n\r\0\x0B-_");
     }
     return [
         'instrument_volgorde' => isPartituur($bestand) ? 0 : $instrumentVolgorde,
         'partij_nummer' => $partijNummer,
-        'werk' => $werk[1] ?? '',
+        'werk' => $werkIdentiteit,
         'werk_titel' => $werkTitel,
         'partituur' => isPartituur($bestand),
     ];
