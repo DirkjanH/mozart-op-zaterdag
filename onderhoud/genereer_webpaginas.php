@@ -71,6 +71,13 @@ function muziektitel(string $tekst): string
     return trim((string) $tekst);
 }
 
+function kvWerkIdentiteit(string $bestand): string
+{
+    $naam = strtolower(pathinfo($bestand, PATHINFO_FILENAME));
+    preg_match('/(?<![a-z0-9])(?:kv|k)[\s_.-]*(\d+[a-z]?)(?![a-z0-9])/iu', $naam, $werk);
+    return strtolower(preg_replace('/\s+/', '', (string) ($werk[1] ?? '')));
+}
+
 function zonderPdfExtensie(string $label): string
 {
     return trim((string) preg_replace('/\.pdf$/i', '', trim($label)));
@@ -107,7 +114,6 @@ function instrumentZoektermen(string $instrument): array
 function partijSorteerGegevens(string $bestand, array $instrumenten): array
 {
     $naam = strtolower(pathinfo($bestand, PATHINFO_FILENAME));
-    $naam = preg_replace('/\b(kv|k)\s*[-_.]*\s*(?=\d)/iu', '$1', $naam);
     $instrumentVolgorde = count($instrumenten) + 1;
     $langsteOvereenkomst = 0;
     foreach ($instrumenten as $volgorde => $instrument) {
@@ -126,8 +132,7 @@ function partijSorteerGegevens(string $bestand, array $instrumenten): array
         'iii' => 3,
         default => (int) $partijNummer,
     };
-    preg_match('/\b(?:kv|k)[_ .-]*(\d+\s*[a-z]*)(?:\b|$)/i', $naam, $werk);
-    $werkIdentiteit = strtolower(preg_replace('/\s+/', '', (string) ($werk[1] ?? '')));
+    $werkIdentiteit = kvWerkIdentiteit($bestand);
     $werkTitel = '';
     if (isPartituur($bestand)) {
         preg_match('/\bpartituur\b\s*[-–—_:]*\s*(.+)$/iu', pathinfo($bestand, PATHINFO_FILENAME), $titelOvereenkomst);

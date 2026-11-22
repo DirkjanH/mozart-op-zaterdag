@@ -64,12 +64,22 @@ final class GenereerWebpaginasTest extends TestCase
     {
         $bron = file_get_contents(__DIR__ . '/../onderhoud/genereer_webpaginas.php');
         self::assertNotFalse($bron);
-        self::assertStringContainsString("/\\b(kv|k)\\s*[-_.]*\\s*(?=\\d)/iu", $bron);
-        self::assertStringContainsString('\d+\s*[a-z]*', $bron);
+        self::assertStringContainsString('function kvWerkIdentiteit(string $bestand): string', $bron);
+        self::assertStringContainsString("(?<![a-z0-9])(?:kv|k)[\\s_.-]*(\\d+[a-z]?)(?![a-z0-9])", $bron);
         self::assertStringContainsString('function muziektitel(string $tekst): string', $bron);
         self::assertStringContainsString("preg_replace('/[_.]+/', ' ', \$tekst)", $bron);
         self::assertStringContainsString('$werkTitel = muziektitel(', $bron);
         self::assertStringContainsString('$naam = muziektitel($naam);', $bron);
+
+        $patroon = '/(?<![a-z0-9])(?:kv|k)[\s_.-]*(\d+[a-z]?)(?![a-z0-9])/iu';
+        $namen = [
+            'partituur Mozart_Sinfonia_Concertante_KV297b',
+            'KV 297b Viool 1',
+        ];
+        foreach ($namen as $naam) {
+            self::assertSame(1, preg_match($patroon, strtolower($naam), $werk));
+            self::assertSame('297b', strtolower($werk[1]));
+        }
     }
 
     public function testOntbrekendeStrijkersWordenAlsRodeVacaturesGetoond(): void
