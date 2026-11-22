@@ -35,6 +35,20 @@ final class GenereerWebpaginasTest extends TestCase
         self::assertStringNotContainsString('column-count: 3', $bron);
     }
 
+    public function testPartijenWordenBijInitiëleLadingEnRegeneratieOpBestandsnaamGesorteerd(): void
+    {
+        $bron = file_get_contents(__DIR__ . '/../onderhoud/genereer_webpaginas.php');
+        self::assertNotFalse($bron);
+        self::assertStringContainsString('function sorteerPartijenOpBestandsnaam(array $partijen): array', $bron);
+        self::assertStringContainsString("strcasecmp(\$eersteNaam, \$tweedeNaam)", $bron);
+        self::assertStringContainsString("substr(\$eersteNaam, 0, 10)", $bron);
+        self::assertStringContainsString("substr(\$tweedeNaam, 0, 10)", $bron);
+        self::assertStringContainsString("\$eerste['sortering']['instrument_volgorde']", $bron);
+        self::assertStringContainsString('$partijen = sorteerPartijenOpBestandsnaam($partijen);', $bron);
+        self::assertStringContainsString('maakAlfabetischePartijConfiguratie($partijen, $partijConfiguratie)', $bron);
+        self::assertStringContainsString('if ($herbouwPartijen || $genereerPagina)', $bron);
+    }
+
     public function testOntbrekendeStrijkersWordenAlsRodeVacaturesGetoond(): void
     {
         $html = $this->renderDeelnemers('0000-0000-21111', [

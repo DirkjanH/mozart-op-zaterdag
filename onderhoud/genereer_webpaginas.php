@@ -141,12 +141,51 @@ function leesPartijen(string $map, array $instrumenten = []): array
     }
     unset($partituur);
 
+    $partijen = sorteerPartijenOpBestandsnaam($partijen);
+    return $partijen;
+}
+
+function sorteerPartijenOpBestandsnaam(array $partijen): array
+{
     usort($partijen, static function (array $eerste, array $tweede): int {
-        $a = $eerste['sortering'];
-        $b = $tweede['sortering'];
-        return [$a['instrument_volgorde'], $a['partij_nummer'], $eerste['label']] <=> [$b['instrument_volgorde'], $b['partij_nummer'], $tweede['label']];
+        $eersteNaam = strtolower($eerste['bestand']);
+        $tweedeNaam = strtolower($tweede['bestand']);
+        $eerstePrefix = substr($eersteNaam, 0, 10);
+        $tweedePrefix = substr($tweedeNaam, 0, 10);
+
+        if ($eerstePrefix === $tweedePrefix) {
+            return [
+                $eerste['sortering']['instrument_volgorde'],
+                $eerste['sortering']['partij_nummer'],
+                $eersteNaam,
+            ] <=> [
+                $tweede['sortering']['instrument_volgorde'],
+                $tweede['sortering']['partij_nummer'],
+                $tweedeNaam,
+            ];
+        }
+
+        $vergelijking = strcasecmp($eersteNaam, $tweedeNaam);
+        return $vergelijking !== 0
+            ? $vergelijking
+            : strcmp($eersteNaam, $tweedeNaam);
     });
     return $partijen;
+}
+
+function maakAlfabetischePartijConfiguratie(array $partijen, array $bestaandeConfiguratie): array
+{
+    $alfabetischePartijen = sorteerPartijenOpBestandsnaam($partijen);
+    $configuratie = [];
+    foreach ($alfabetischePartijen as $index => $partij) {
+        $bestaand = $bestaandeConfiguratie[$partij['bestand']] ?? [];
+        $configuratie[$partij['bestand']] = [
+            'label' => zonderPdfExtensie((string) ($bestaand['label'] ?? $partij['label'])),
+            'volgorde' => $index + 1,
+            'betekend' => !empty($bestaand['betekend']) || (!isset($bestaandeConfiguratie[$partij['bestand']]) && preg_match('/betekend/i', $partij['bestand'])),
+        ];
+    }
+    return $configuratie;
 }
 
 function partijenPerWerk(array $partijen): array
@@ -161,6 +200,17 @@ function partijenPerWerk(array $partijen): array
 
 function sorteerPartijenVolgensConfiguratie(array $partijen, array $configuratie): array
 {
+    $heeftVolgorde = false;
+    foreach ($partijen as $partij) {
+        if ((int) ($configuratie[$partij['bestand']]['volgorde'] ?? 0) > 0) {
+            $heeftVolgorde = true;
+            break;
+        }
+    }
+    if (!$heeftVolgorde) {
+        return sorteerPartijenOpBestandsnaam($partijen);
+    }
+
     usort($partijen, static function (array $eerste, array $tweede) use ($configuratie): int {
         $eersteVolgorde = (int) ($configuratie[$eerste['bestand']]['volgorde'] ?? 0);
         $tweedeVolgorde = (int) ($configuratie[$tweede['bestand']]['volgorde'] ?? 0);
@@ -169,12 +219,12 @@ function sorteerPartijenVolgensConfiguratie(array $partijen, array $configuratie
                 $eersteVolgorde === 0 ? PHP_INT_MAX : $eersteVolgorde,
                 $eerste['sortering']['instrument_volgorde'],
                 $eerste['sortering']['partij_nummer'],
-                $eerste['label'],
+                $eerste['bestand'],
             ] <=> [
                 $tweedeVolgorde === 0 ? PHP_INT_MAX : $tweedeVolgorde,
                 $tweede['sortering']['instrument_volgorde'],
                 $tweede['sortering']['partij_nummer'],
-                $tweede['label'],
+                $tweede['bestand'],
             ];
         }
         return [
@@ -283,6 +333,9 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
                 ];
             }
             $partijConfiguratie = array_intersect_key($partijConfiguratie, array_flip(array_column($partijen, 'bestand')));
+            if ($herbouwPartijen || $genereerPagina) {
+                $partijConfiguratie = maakAlfabetischePartijConfiguratie($partijen, $partijConfiguratie);
+            }
             $partijen = sorteerPartijenVolgensConfiguratie($partijen, $partijConfiguratie);
             $versie = $resetVersie ? 1 : max(0, (int) ($paginaConfiguratie['versie'] ?? 0)) + ($genereerPagina ? 1 : 0);
             $paginaConfiguratie = [
@@ -618,7 +671,7 @@ if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
                                 <input type="checkbox" name="verwijder[]" value="<?= html($partij['bestand']) ?>">
                                 Wissen
                             </label>
-                            <input type="hidden" name="partijen[<?= $index ?>][volgorde]" value="<?= (int) ($instellingen['volgorde'] ?? 0) ?>">
+                            <input type="hidden" name="partijen[<?= $index ?>][volgorde]" value="<?= (int) ($instellingen['volgorde'] ?? (!isset($paginaConfiguratie['partijen']) || $paginaConfiguratie['partijen'] === [] ? $index + 1 : 0)) ?>">
                             <label>
                                 Tekst
                                 <input class="w3-input" type="text" name="partijen[<?= $index ?>][label]" value="<?= html(zonderPdfExtensie((string) ($instellingen['label'] ?? $partij['label']))) ?>" style="display:inline-block; width:36em;">
