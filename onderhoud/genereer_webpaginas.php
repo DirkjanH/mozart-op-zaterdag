@@ -397,7 +397,7 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
                 ];
             }
             $partijConfiguratie = array_intersect_key($partijConfiguratie, array_flip(array_column($partijen, 'bestand')));
-            if ($herbouwPartijen || $genereerPagina) {
+            if ($herbouwPartijen) {
                 $partijConfiguratie = maakAlfabetischePartijConfiguratie($partijen, $partijConfiguratie);
             }
             $partijen = sorteerPartijenVolgensConfiguratie($partijen, $partijConfiguratie);
@@ -640,6 +640,14 @@ if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
 
             document.querySelectorAll('.partijen-lijst').forEach(function (lijst) {
                 var gesleeptItem = null;
+                var werkVolgordeBij = function () {
+                    lijst.querySelectorAll('.partij-item').forEach(function (rij, index) {
+                        var volgorde = rij.querySelector('[name$="[volgorde]"]');
+                        if (volgorde) {
+                            volgorde.value = index + 1;
+                        }
+                    });
+                };
                 lijst.querySelectorAll('.partij-item').forEach(function (item) {
                     item.addEventListener('dragstart', function () {
                         gesleeptItem = item;
@@ -648,18 +656,18 @@ if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
                     item.addEventListener('dragend', function () {
                         item.classList.remove('slepen');
                         gesleeptItem = null;
-                        lijst.querySelectorAll('.partij-item').forEach(function (rij, index) {
-                            rij.querySelector('[name$="[volgorde]"]').value = index + 1;
-                        });
+                        werkVolgordeBij();
                     });
                     item.addEventListener('dragover', function (event) {
                         event.preventDefault();
                         if (gesleeptItem && gesleeptItem !== item) {
                             var midden = item.getBoundingClientRect().top + item.getBoundingClientRect().height / 2;
                             lijst.insertBefore(gesleeptItem, event.clientY < midden ? item : item.nextSibling);
+                            werkVolgordeBij();
                         }
                     });
                 });
+                lijst.closest('form').addEventListener('submit', werkVolgordeBij);
             });
         });
 

@@ -20,6 +20,16 @@ final class GenereerWebpaginasTest extends TestCase
         );
     }
 
+    public function testHandmatigeVolgordeBlijftBijGenererenBehouden(): void
+    {
+        $bron = file_get_contents(__DIR__ . '/../onderhoud/genereer_webpaginas.php');
+        self::assertNotFalse($bron);
+        self::assertStringContainsString('var werkVolgordeBij = function ()', $bron);
+        self::assertStringContainsString("lijst.closest('form').addEventListener('submit', werkVolgordeBij)", $bron);
+        self::assertStringContainsString('if ($herbouwPartijen)', $bron);
+        self::assertStringNotContainsString('$herbouwPartijen || $genereerPagina', $bron);
+    }
+
     public function testActiviteitenkeuzeToontAlleenVandaagEnLater(): void
     {
         $bron = file_get_contents(__DIR__ . '/../onderhoud/genereer_webpaginas.php');
@@ -60,7 +70,7 @@ final class GenereerWebpaginasTest extends TestCase
         self::assertStringContainsString("\$eerste['sortering']['instrument_volgorde']", $bron);
         self::assertStringContainsString('$partijen = sorteerPartijenOpBestandsnaam($partijen);', $bron);
         self::assertStringContainsString('maakAlfabetischePartijConfiguratie($partijen, $partijConfiguratie)', $bron);
-        self::assertStringContainsString('if ($herbouwPartijen || $genereerPagina)', $bron);
+        self::assertStringContainsString('if ($herbouwPartijen)', $bron);
     }
 
     public function testPartituurTitelEnFluitVolgordeWordenGebruikt(): void
