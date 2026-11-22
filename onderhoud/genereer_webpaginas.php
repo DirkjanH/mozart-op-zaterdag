@@ -83,6 +83,26 @@ function zonderPdfExtensie(string $label): string
     return trim((string) preg_replace('/\.pdf$/i', '', trim($label)));
 }
 
+function nederlandseDatum(string $datum): string
+{
+    $maanden = [
+        1 => 'januari',
+        2 => 'februari',
+        3 => 'maart',
+        4 => 'april',
+        5 => 'mei',
+        6 => 'juni',
+        7 => 'juli',
+        8 => 'augustus',
+        9 => 'september',
+        10 => 'oktober',
+        11 => 'november',
+        12 => 'december',
+    ];
+    $datumObject = new DateTimeImmutable($datum);
+    return $datumObject->format('d') . ' ' . $maanden[(int) $datumObject->format('n')] . ' ' . $datumObject->format('Y');
+}
+
 function isStrijkerPartij(string $bestand): bool
 {
     return (bool) preg_match('/viool|violin|altviool|viola|cello|contrabas|double.?bass|strijk/i', $bestand);
@@ -514,7 +534,7 @@ PHP
             $gegenereerd .= "    <style>\n        .partijen-kolommen { column-count: 2; }\n        @media (max-width: 600px) { .partijen-kolommen { column-count: 1; } }\n    </style>\n</head>\n<body>\n";
             $gegenereerd .= "    <div class=\"w3-content w3-white w3-panel\" style=\"padding-bottom: 3em;\">\n";
             $gegenereerd .= "        <?php require_once '../navigatie.htm'; ?>\n";
-            $gegenereerd .= '        <h3>Mozart op Zaterdag op ' . date('d F Y', strtotime($datum)) . ":</h3>\n";
+            $gegenereerd .= '        <h3>Mozart op Zaterdag op ' . nederlandseDatum($datum) . ":</h3>\n";
             $gegenereerd .= '        <h1>' . html($titel) . "</h1>\n";
             $gegenereerd .= '        <p><small>Versie ' . $versie . ', gegenereerd op ' . $gegenereerdOp . "</small></p>\n";
             $gegenereerd .= $omschrijvingHtml;

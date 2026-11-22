@@ -6,6 +6,20 @@ require_once __DIR__ . '/../includes/bezetting.inc.php';
 
 final class GenereerWebpaginasTest extends TestCase
 {
+    public function testDatumInKoppaginaWordtNederlandsGetoond(): void
+    {
+        $bron = file_get_contents(__DIR__ . '/../onderhoud/genereer_webpaginas.php');
+        self::assertNotFalse($bron);
+        self::assertStringContainsString("'februari'", $bron);
+        self::assertStringContainsString('nederlandseDatum($datum)', $bron);
+        self::assertStringNotContainsString("date('d F Y', strtotime(\$datum))", $bron);
+
+        self::assertSame(
+            '27 februari 2027',
+            (new DateTimeImmutable('2027-02-27'))->format('d') . ' februari ' . (new DateTimeImmutable('2027-02-27'))->format('Y')
+        );
+    }
+
     public function testActiviteitenkeuzeToontAlleenVandaagEnLater(): void
     {
         $bron = file_get_contents(__DIR__ . '/../onderhoud/genereer_webpaginas.php');
