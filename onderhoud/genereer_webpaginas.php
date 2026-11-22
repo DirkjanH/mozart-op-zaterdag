@@ -107,6 +107,7 @@ function instrumentZoektermen(string $instrument): array
 function partijSorteerGegevens(string $bestand, array $instrumenten): array
 {
     $naam = strtolower(pathinfo($bestand, PATHINFO_FILENAME));
+    $naam = preg_replace('/\b(kv|k)\s*[-_.]*\s*(?=\d)/iu', '$1', $naam);
     $instrumentVolgorde = count($instrumenten) + 1;
     $langsteOvereenkomst = 0;
     foreach ($instrumenten as $volgorde => $instrument) {
@@ -125,7 +126,7 @@ function partijSorteerGegevens(string $bestand, array $instrumenten): array
         'iii' => 3,
         default => (int) $partijNummer,
     };
-    preg_match('/\b(?:kv?|k)\s*[_ .-]*(\d+\s*[a-z]*)(?:\b|$)/i', $naam, $werk);
+    preg_match('/\b(?:kv|k)[_ .-]*(\d+\s*[a-z]*)(?:\b|$)/i', $naam, $werk);
     $werkIdentiteit = strtolower(preg_replace('/\s+/', '', (string) ($werk[1] ?? '')));
     $werkTitel = '';
     if (isPartituur($bestand)) {

@@ -64,6 +64,7 @@ final class GenereerWebpaginasTest extends TestCase
     {
         $bron = file_get_contents(__DIR__ . '/../onderhoud/genereer_webpaginas.php');
         self::assertNotFalse($bron);
+        self::assertStringContainsString("/\\b(kv|k)\\s*[-_.]*\\s*(?=\\d)/iu", $bron);
         self::assertStringContainsString('\d+\s*[a-z]*', $bron);
         self::assertStringContainsString('function muziektitel(string $tekst): string', $bron);
         self::assertStringContainsString("preg_replace('/[_.]+/', ' ', \$tekst)", $bron);
