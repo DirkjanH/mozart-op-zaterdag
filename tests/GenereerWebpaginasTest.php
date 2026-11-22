@@ -49,6 +49,17 @@ final class GenereerWebpaginasTest extends TestCase
         self::assertStringContainsString('if ($herbouwPartijen || $genereerPagina)', $bron);
     }
 
+    public function testPartituurTitelEnFluitVolgordeWordenGebruikt(): void
+    {
+        $bron = file_get_contents(__DIR__ . '/../onderhoud/genereer_webpaginas.php');
+        self::assertNotFalse($bron);
+        self::assertStringContainsString('\bpartituur\b', $bron);
+        self::assertStringContainsString('werk_titel', $bron);
+        self::assertStringContainsString("str_contains(\$naam, 'fluit')", $bron);
+        self::assertStringContainsString("str_contains(\$naam, 'flute')", $bron);
+        self::assertStringContainsString('$hoboInvoegPositie', $bron);
+    }
+
     public function testOntbrekendeStrijkersWordenAlsRodeVacaturesGetoond(): void
     {
         $html = $this->renderDeelnemers('0000-0000-21111', [

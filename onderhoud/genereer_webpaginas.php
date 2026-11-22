@@ -10,6 +10,25 @@ $activiteiten = $pdo->query(
     'SELECT id, datum, plaats, omschrijving FROM activiteiten WHERE datum >= CURDATE() ORDER BY datum'
 )->fetchAll(PDO::FETCH_ASSOC);
 $instrumenten = $pdo->query("SELECT id, naam FROM instrumenten ORDER BY CASE WHEN LOWER(TRIM(naam)) = 'pauken' THEN COALESCE((SELECT MIN(i2.id) FROM instrumenten i2 WHERE LOWER(TRIM(i2.naam)) LIKE 'trompet%'), id) ELSE id END, CASE WHEN LOWER(TRIM(naam)) = 'pauken' THEN 1 ELSE 0 END, id")->fetchAll(PDO::FETCH_ASSOC);
+$fluiten = array_values(array_filter($instrumenten, static function (array $instrument): bool {
+    $naam = strtolower(trim($instrument['naam']));
+    return str_contains($naam, 'fluit') || str_contains($naam, 'flute');
+}));
+$instrumenten = array_values(array_filter($instrumenten, static function (array $instrument): bool {
+    $naam = strtolower(trim($instrument['naam']));
+    return !str_contains($naam, 'fluit') && !str_contains($naam, 'flute');
+}));
+$hoboInvoegPositie = null;
+foreach ($instrumenten as $index => $instrument) {
+    $naam = strtolower(trim($instrument['naam']));
+    if ($naam === 'hobo' || $naam === 'oboe' || str_starts_with($naam, 'hobo ') || str_starts_with($naam, 'oboe ')) {
+        $hoboInvoegPositie = $index;
+        break;
+    }
+}
+if ($fluiten !== [] && $hoboInvoegPositie !== null) {
+    array_splice($instrumenten, $hoboInvoegPositie, 0, $fluiten);
+}
 $hoorns = array_values(array_filter($instrumenten, static fn (array $instrument): bool => strtolower(trim($instrument['naam'])) === 'hoorn'));
 $instrumenten = array_values(array_filter($instrumenten, static fn (array $instrument): bool => strtolower(trim($instrument['naam'])) !== 'hoorn'));
 if ($hoorns !== []) {
@@ -56,7 +75,7 @@ function isStrijkerPartij(string $bestand): bool
 
 function isPartituur(string $bestand): bool
 {
-    return str_starts_with(strtolower(pathinfo($bestand, PATHINFO_FILENAME)), 'partituur ');
+    return (bool) preg_match('/(?:^|[\s_-])partituur(?:[\s_-]|$)/i', pathinfo($bestand, PATHINFO_FILENAME));
 }
 
 function instrumentZoektermen(string $instrument): array
@@ -67,6 +86,9 @@ function instrumentZoektermen(string $instrument): array
         'altviool' => ['viola'],
         'cello-bas' => ['cello'],
         'hobo' => ['oboe'],
+        'fluit' => ['flute', 'dwarsfluit'],
+        'dwarsfluit' => ['flute', 'fluit'],
+        'flute' => ['fluit', 'dwarsfluit'],
         'hoorn' => ['corno', 'horn'],
         'fagot' => ['bassoon'],
         'contrabas' => ['double bass'],
@@ -87,7 +109,7 @@ function partijSorteerGegevens(string $bestand, array $instrumenten): array
             }
         }
     }
-    preg_match('/(?:viool|violin|oboe|hobo|corno|hoorn|viola|altviool|cello|fagot|bassoon)\s*[_ .-]*(\d+|i{1,3})/i', $naam, $nummer);
+    preg_match('/(?:viool|violin|oboe|hobo|fluit|flute|dwarsfluit|corno|hoorn|viola|altviool|cello|fagot|bassoon)\s*[_ .-]*(\d+|i{1,3})/i', $naam, $nummer);
     $partijNummer = strtolower($nummer[1] ?? '0');
     $partijNummer = match ($partijNummer) {
         'i' => 1,
@@ -96,10 +118,17 @@ function partijSorteerGegevens(string $bestand, array $instrumenten): array
         default => (int) $partijNummer,
     };
     preg_match('/\b(?:kv?|k)\s*[_ .-]*(\d+)/i', $naam, $werk);
+    $werkTitel = '';
+    if (isPartituur($bestand)) {
+        preg_match('/\bpartituur\b\s*[-–—_:]*\s*(.+)$/iu', pathinfo($bestand, PATHINFO_FILENAME), $titelOvereenkomst);
+        $werkTitel = trim((string) ($titelOvereenkomst[1] ?? ''));
+        $werkTitel = trim($werkTitel, " \t\n\r\0\x0B-_");
+    }
     return [
         'instrument_volgorde' => isPartituur($bestand) ? 0 : $instrumentVolgorde,
         'partij_nummer' => $partijNummer,
         'werk' => $werk[1] ?? '',
+        'werk_titel' => $werkTitel,
         'partituur' => isPartituur($bestand),
     ];
 }
@@ -375,7 +404,17 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
                         $werkPartijenHtml .= $item;
                     }
                 }
-                $titel = $kvNummer === 'overig' ? 'Partituur' : 'Partituur KV ' . $kvNummer;
+                $titel = '';
+                foreach ($werkPartijen as $partij) {
+                    $werkTitel = trim((string) ($partij['sortering']['werk_titel'] ?? ''));
+                    if ($werkTitel !== '') {
+                        $titel = $werkTitel;
+                        break;
+                    }
+                }
+                if ($titel === '') {
+                    $titel = $kvNummer === 'overig' ? 'Partituur' : 'Partituur KV ' . $kvNummer;
+                }
                 $partijenHtml .= '        <h4>' . html($titel) . "</h4>\n";
                 $partijenHtml .= $partiturenHtml === '' ? "        <p>Nog niet beschikbaar.</p>\n" : "        <ul>\n" . $partiturenHtml . "        </ul>\n";
                 $partijenHtml .= $werkPartijenHtml === '' ? "        <p>[partijen nog niet beschikbaar]</p>\n" : "        <ul class=\"partijen-kolommen\">\n" . $werkPartijenHtml . "        </ul>\n";
