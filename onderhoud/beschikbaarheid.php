@@ -377,6 +377,11 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
                 'vrijgekomen_plaats_bezet_met_mail' => 'vrijgekomen_plaats_bezet',
                 default => 'afwijzing',
             };
+            $mailTrackingtype = match ($actie) {
+                'toelaten_met_mail' => 'bevestiging',
+                'afwijzen_met_mail' => 'afwijzing',
+                default => null,
+            };
             $naam = htmlspecialchars($speler['voornaam'], ENT_QUOTES, 'UTF-8');
             $datum = nederlandseDatumZonderJaar((string) $speler['datum']);
             $partij = $speler['partij'] ? ' Je speelt partij ' . htmlspecialchars($speler['partij'], ENT_QUOTES, 'UTF-8') . '.' : '';
@@ -384,6 +389,7 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
             $uitnodigingAfgehandeld = true;
             $smtpDebug = [];
             $mailer = null;
+            $mailTrackingFout = false;
             try {
                 if ($gmailAppWachtwoord === '') {
                     throw new RuntimeException('Gmail-app-wachtwoord ontbreekt in de configuratie.');
@@ -468,6 +474,14 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
                     throw new RuntimeException('Aan ' . $ontvangerEmail . ' is in de afgelopen vijf minuten al een mail verzonden.');
                 }
                 $mailer->send();
+                if (!$testModus && $mailTrackingtype !== null) {
+                    try {
+                        markeerMailtype($pdo, $trackingToken, $mailTrackingtype);
+                    } catch (Throwable $e) {
+                        error_log('Beschikbaarheid: mail verzonden, maar mailtype niet geregistreerd: ' . $e->getMessage());
+                        $mailTrackingFout = true;
+                    }
+                }
                 if (!$testModus && strcasecmp($speler['email'], 'dirkjan@pellegrina.net') !== 0) {
                     $mailer->clearAddresses();
                     $mailer->clearAttachments();
@@ -508,6 +522,9 @@ if (isset($_POST['actie'], $_POST['deelnemer_id'], $_POST['activiteit_id'])) {
                 } else {
                     $melding = 'Afwijzingsmail verstuurd met kopie naar Dirkjan; toelatingsstatus blijft ongewijzigd.';
                 }
+                if ($mailTrackingFout) {
+                    $melding .= ' De mailindicator kon niet worden geregistreerd.';
+                }
             } catch (PHPMailer\PHPMailer\Exception $e) {
                 $smtpFout = $mailer instanceof PHPMailer\PHPMailer\PHPMailer ? $mailer->ErrorInfo : implode(' | ', $smtpDebug);
                 error_log('Beschikbaarheid: PHPMailer-fout: ' . $e->getMessage() . ' SMTP: ' . $smtpFout);
@@ -545,6 +562,30 @@ if ($gekozenActiviteit) {
     }
     $stmt->execute([$activiteitId]);
     $spelers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+$mailtypesPerDeelnemer = [];
+if ($gekozenActiviteit && $spelers !== []) {
+    $deelnemerIds = array_values(array_map('intval', array_column($spelers, 'id')));
+    $placeholders = implode(',', array_fill(0, count($deelnemerIds), '?'));
+    $stmt = $pdo->prepare(
+        "SELECT mt.deelnemer_id, mt.mailtype, mp.toegelaten AS halfjaar_toegelaten
+         FROM mail_tracking mt
+         LEFT JOIN mail_tracking_plaatsingen mp ON mp.token = mt.token AND mp.activiteit_id = ?
+         WHERE mt.deelnemer_id IN ($placeholders)
+           AND mt.verzonden_op IS NOT NULL
+           AND (
+               (mt.activiteit_id = ? AND mt.mailtype IN ('bevestiging', 'afwijzing'))
+               OR (mt.mailtype = 'halfjaar_plaatsingen' AND mp.token IS NOT NULL)
+           )"
+    );
+    $stmt->execute([$activiteitId, ...$deelnemerIds, $activiteitId]);
+    foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $mailTracking) {
+        $mailtype = $mailTracking['mailtype'];
+        if ($mailtype === 'halfjaar_plaatsingen') {
+            $mailtype = (int) $mailTracking['halfjaar_toegelaten'] === 1 ? 'bevestiging' : 'afwijzing';
+        }
+        $mailtypesPerDeelnemer[(int) $mailTracking['deelnemer_id']][$mailtype] = true;
+    }
 }
 $onbeoordeeldeDeelnemers = array_map('intval', array_column(array_filter($spelers, static fn (array $speler): bool => $speler['toegelaten'] === null), 'id'));
 $countToegeilaten = count(array_filter($spelers, static fn (array $speler): bool => (int) $speler['toegelaten'] === 1));
@@ -878,7 +919,7 @@ document.addEventListener('keydown', function (event) {
 <?php $toggleWaarde = $toonModus === 'toegelaten' ? 'ja_misschien' : 'toegelaten'; $toggleTekst = $toonModus === 'toegelaten' ? 'Toon: ja/misschien (alle) (' . $countJaMisschien . ')' : 'Toon: alleen toegelaten (' . $countToegeilaten . ')'; $toggleButtonClass = $toonModus === 'toegelaten' ? 'w3-button w3-small w3-border w3-green' : 'w3-button w3-small w3-border w3-light-grey'; ?>
 <form method="get" style="margin:0 0 12px"><input type="hidden" name="activiteit_id" value="<?= (int) $activiteitId ?>"><button class="<?= $toggleButtonClass ?>" type="submit" name="toon" value="<?= htmlspecialchars($toggleWaarde, ENT_QUOTES, 'UTF-8') ?>" title="<?= $toonModus === 'toegelaten' ? 'Klik om alle ja/misschien deelnemers te tonen' : 'Klik om alleen toegelaten deelnemers te tonen' ?>"><?= htmlspecialchars($toggleTekst) ?></button></form>
     <div class="tabel-scroll"><table class="w3-table w3-bordered w3-striped w3-small"><tr><th>Speler</th><th>Instrument</th><th>Status</th><th>Partij</th><th>Acties</th></tr>
-<?php foreach ($spelers as $speler): ?><tr><form method="post"><input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>"><input type="hidden" name="activiteit_id" value="<?= $activiteitId ?>"><input type="hidden" name="deelnemer_id" value="<?= (int) $speler['id'] ?>"><td><span class="deelnemer-id"><?= (int) $speler['id'] ?></span><?= htmlspecialchars($speler['voornaam'] . ' ' . $speler['achternaam']) ?><?php if ((int) $speler['toegelaten'] === 1): ?><span class="toegelaten-vinkje" title="Toegelaten" aria-label="Toegelaten">&#10003;</span><?php elseif (in_array($speler['toegelaten'], [0, '0'], true)): ?><span class="afgewezen-kruis" title="Afgewezen" aria-label="Afgewezen">&#10005;</span><?php endif; ?><?php if ($speler['status'] === 'misschien' && $speler['uitnodiging_verstuurd_op'] !== null): ?><span class="onbeoordeeld-vraagteken" title="Uitnodiging verstuurd" aria-label="Uitnodiging verstuurd">?</span><?php endif; ?></td><td><select class="w3-select" name="instrument_id"><option value="0">(onbekend)</option><?php foreach ($instrumenten as $instrument): ?><option value="<?= (int) $instrument['id'] ?>" <?= (int) $speler['instrument_id'] === (int) $instrument['id'] ? 'selected' : '' ?>><?= htmlspecialchars($instrument['naam']) ?></option><?php endforeach; ?></select></td><td><select class="w3-select status-selectie" name="status" data-huidige-status="<?= htmlspecialchars($speler['status'], ENT_QUOTES, 'UTF-8') ?>"><?php foreach (['ja', 'misschien', 'nee'] as $status): ?><option value="<?= $status ?>" <?= $speler['status'] === $status ? 'selected' : '' ?>><?= $status ?></option><?php endforeach; ?></select></td><td><input class="w3-input" type="text" name="partij" value="<?= htmlspecialchars($speler['partij'] ?? '') ?>" maxlength="100" placeholder="bijv. 1" style="width:8em"></td><td><button class="status-opslaan-knop" type="submit" name="actie" value="status_opslaan" hidden></button><button class="w3-button w3-green w3-small mail-knop" type="submit" name="actie" value="toelaten" formnovalidate <?= $speler['status'] !== 'ja' ? 'disabled title="Alleen beschikbaar voor spelers met status ja"' : '' ?>>Toelaten</button><button class="w3-button w3-red w3-small mail-knop" type="submit" name="actie" value="afwijzen" formnovalidate>Afwijzen</button><button class="w3-button w3-green w3-small mail-knop mail-modal-btn" type="button" data-modal="modal-toelating-<?= (int) $speler['id'] ?>" data-type="toelating">Bevestigingsmail</button><button class="w3-button w3-red w3-small mail-knop mail-modal-btn" type="button" data-modal="modal-afwijzing-<?= (int) $speler['id'] ?>" data-type="afwijzing">Afwijzingsmail</button><?php if ($speler['status'] === 'misschien'): ?><button class="w3-button w3-small mail-knop mail-modal-btn" type="button" data-modal="modal-bevestiging-<?= (int) $speler['id'] ?>" data-type="bevestiging" style="background:#6c757d;color:white">Uitnodigingsmail</button><?php endif; ?></td></form></tr><?php endforeach; ?></table></div>
+<?php foreach ($spelers as $speler): ?><tr><form method="post"><input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>"><input type="hidden" name="activiteit_id" value="<?= $activiteitId ?>"><input type="hidden" name="deelnemer_id" value="<?= (int) $speler['id'] ?>"><td><span class="deelnemer-id"><?= (int) $speler['id'] ?></span><?= htmlspecialchars($speler['voornaam'] . ' ' . $speler['achternaam']) ?><?php if ((int) $speler['toegelaten'] === 1): ?><span class="toegelaten-vinkje" title="Toegelaten" aria-label="Toegelaten">&#10003;</span><?php if (isset($mailtypesPerDeelnemer[(int) $speler['id']]['bevestiging']) || isset($mailtypesPerDeelnemer[(int) $speler['id']]['halfjaar_plaatsingen'])): ?><span title="Bevestigingsmail verstuurd" aria-label="Bevestigingsmail verstuurd" style="color:#198754;margin-left:.25em;font-size:1.15em">&#9993;</span><?php endif; ?><?php elseif (in_array($speler['toegelaten'], [0, '0'], true)): ?><span class="afgewezen-kruis" title="Afgewezen" aria-label="Afgewezen">&#10005;</span><?php if (isset($mailtypesPerDeelnemer[(int) $speler['id']]['afwijzing']) || isset($mailtypesPerDeelnemer[(int) $speler['id']]['halfjaar_plaatsingen'])): ?><span title="Afwijzingsmail verstuurd" aria-label="Afwijzingsmail verstuurd" style="color:#198754;margin-left:.25em;font-size:1.15em">&#9993;</span><?php endif; ?><?php endif; ?><?php if ($speler['status'] === 'misschien' && $speler['uitnodiging_verstuurd_op'] !== null): ?><span class="onbeoordeeld-vraagteken" title="Uitnodiging verstuurd" aria-label="Uitnodiging verstuurd">?</span><?php endif; ?></td><td><select class="w3-select" name="instrument_id"><option value="0">(onbekend)</option><?php foreach ($instrumenten as $instrument): ?><option value="<?= (int) $instrument['id'] ?>" <?= (int) $speler['instrument_id'] === (int) $instrument['id'] ? 'selected' : '' ?>><?= htmlspecialchars($instrument['naam']) ?></option><?php endforeach; ?></select></td><td><select class="w3-select status-selectie" name="status" data-huidige-status="<?= htmlspecialchars($speler['status'], ENT_QUOTES, 'UTF-8') ?>"><?php foreach (['ja', 'misschien', 'nee'] as $status): ?><option value="<?= $status ?>" <?= $speler['status'] === $status ? 'selected' : '' ?>><?= $status ?></option><?php endforeach; ?></select></td><td><input class="w3-input" type="text" name="partij" value="<?= htmlspecialchars($speler['partij'] ?? '') ?>" maxlength="100" placeholder="bijv. 1" style="width:8em"></td><td><button class="status-opslaan-knop" type="submit" name="actie" value="status_opslaan" hidden></button><button class="w3-button w3-green w3-small mail-knop" type="submit" name="actie" value="toelaten" formnovalidate <?= $speler['status'] !== 'ja' ? 'disabled title="Alleen beschikbaar voor spelers met status ja"' : '' ?>>Toelaten</button><button class="w3-button w3-red w3-small mail-knop" type="submit" name="actie" value="afwijzen" formnovalidate>Afwijzen</button><button class="w3-button w3-green w3-small mail-knop mail-modal-btn" type="button" data-modal="modal-toelating-<?= (int) $speler['id'] ?>" data-type="toelating">Bevestigingsmail</button><button class="w3-button w3-red w3-small mail-knop mail-modal-btn" type="button" data-modal="modal-afwijzing-<?= (int) $speler['id'] ?>" data-type="afwijzing">Afwijzingsmail</button><?php if ($speler['status'] === 'misschien'): ?><button class="w3-button w3-small mail-knop mail-modal-btn" type="button" data-modal="modal-bevestiging-<?= (int) $speler['id'] ?>" data-type="bevestiging" style="background:#6c757d;color:white">Uitnodigingsmail</button><?php endif; ?></td></form></tr><?php endforeach; ?></table></div>
 
 <!-- Mail modals -->
 <?php foreach ($spelers as $speler): ?>

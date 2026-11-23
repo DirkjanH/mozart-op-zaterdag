@@ -466,6 +466,9 @@ if ($actie === 'versturen') {
             'doelgroep_label' => $mailPeriode['label'] ?? (date('d-m-Y', strtotime($gekozenActiviteit['datum'])) . ' - ' . $gekozenActiviteit['plaats']),
             'onderwerp' => $onderwerp,
             'bericht' => $bericht,
+            'mailtype' => $mailPeriode !== null && str_contains($bericht, '{{plaatsing}}')
+                ? 'halfjaar_plaatsingen'
+                : null,
             'aangemaakt_op' => date(DATE_ATOM),
             'volgende_pluk_op' => time(),
             'ontvangers' => array_map(static function (array $deelnemer): array {
@@ -545,6 +548,7 @@ if ($actie === 'verwerk_pluk' && is_array($wachtrij)) {
                     $ontvanger = &$wachtrij['ontvangers'][$index];
                     $naam = trim($ontvanger['voornaam'] . ' ' . $ontvanger['achternaam']);
                     $ontvanger['pogingen']++;
+                    $mailTrackingFout = false;
                     try {
                         if (!filter_var($ontvanger['email'], FILTER_VALIDATE_EMAIL)) {
                             throw new RuntimeException('Ongeldig e-mailadres');
@@ -566,9 +570,31 @@ if ($actie === 'verwerk_pluk' && is_array($wachtrij)) {
                             $resultaten[] = ['gelukt' => false, 'naam' => $naam, 'bericht' => $ontvanger['fout']];
                         } else {
                             $mailer->send();
+                            if (is_string($wachtrij['mailtype'] ?? null)) {
+                                try {
+                                    if ($wachtrij['mailtype'] === 'halfjaar_plaatsingen') {
+                                        markeerHalfjaarMailVerzonden(
+                                            $pdo,
+                                            $ontvanger['tracking_token'],
+                                            $ontvanger['plaatsingen'] ?? []
+                                        );
+                                    } else {
+                                        markeerMailtype($pdo, $ontvanger['tracking_token'], $wachtrij['mailtype']);
+                                    }
+                                } catch (Throwable $e) {
+                                    error_log('Deelnemers mailen: mail verzonden, maar mailtype niet geregistreerd: ' . $e->getMessage());
+                                    $mailTrackingFout = true;
+                                }
+                            }
                             $ontvanger['status'] = 'verzonden';
                             $ontvanger['verzonden_op'] = date(DATE_ATOM);
-                            $resultaten[] = ['gelukt' => true, 'naam' => $naam, 'bericht' => $ontvanger['email']];
+                            $resultaten[] = [
+                                'gelukt' => true,
+                                'naam' => $naam,
+                                'bericht' => $mailTrackingFout
+                                    ? 'Verzonden; mailindicator kon niet worden geregistreerd.'
+                                    : $ontvanger['email'],
+                            ];
                         }
                     } catch (Throwable $e) {
                         $ontvanger['status'] = 'mislukt';

@@ -41,7 +41,7 @@ function nederlandseDatumZonderJaar(string $datum): string
 function laadHalfjaarMailDeelnemers(PDO $pdo, array $periode): array
 {
     $stmt = $pdo->prepare(
-        "SELECT d.id, d.voornaam, d.achternaam, d.email,
+        "SELECT d.id, d.voornaam, d.achternaam, d.email, a.id AS activiteit_id,
                 a.datum, a.plaats, a.omschrijving, ad.toegelaten, ad.partij, i.naam AS instrument
          FROM activiteit_deelnemers ad
          JOIN deelnemers d ON d.id = ad.deelnemer_id

@@ -5,6 +5,7 @@ use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 
 require_once __DIR__ . '/../includes/deelnemers_mail.inc.php';
+require_once __DIR__ . '/../includes/mail_tracking.php';
 require_once __DIR__ . '/../includes/csrf.php';
 
 final class DeelnemersMailTest extends TestCase
@@ -27,6 +28,7 @@ final class DeelnemersMailTest extends TestCase
         $eerste = laadHalfjaarMailDeelnemers($pdo, $halfjaren['plaatsing_2027_1']);
         self::assertSame([1, 2], array_column($eerste, 'id'));
         self::assertSame(['2027-01-01', '2027-06-30'], array_column($eerste[0]['plaatsingen'], 'datum'));
+        self::assertSame([2, 3], array_column($eerste[0]['plaatsingen'], 'activiteit_id'));
         self::assertSame('viool', $eerste[0]['instrument']);
         self::assertCount(1, $eerste[1]['plaatsingen']);
         self::assertSame([0], array_column($eerste[1]['plaatsingen'], 'toegelaten'));
@@ -35,6 +37,33 @@ final class DeelnemersMailTest extends TestCase
         self::assertSame([1, 3], array_column($tweede, 'id'));
         self::assertSame(['2027-07-01'], array_column($tweede[0]['plaatsingen'], 'datum'));
         self::assertSame(['2027-12-31'], array_column($tweede[1]['plaatsingen'], 'datum'));
+    }
+
+    public function testHalfjaarMailregistreertDeOpgenomenPlaatsingen(): void
+    {
+        $pdo = new PDO('sqlite::memory:');
+        $pdo->exec(
+            'CREATE TABLE mail_tracking (token TEXT PRIMARY KEY, mailtype TEXT);
+             CREATE TABLE mail_tracking_plaatsingen (
+                 token TEXT, activiteit_id INTEGER, toegelaten INTEGER,
+                 PRIMARY KEY (token, activiteit_id)
+             );
+             INSERT INTO mail_tracking VALUES ("token", NULL);'
+        );
+
+        markeerHalfjaarMailVerzonden($pdo, 'token', [
+            ['activiteit_id' => 12, 'toegelaten' => 1],
+            ['activiteit_id' => 13, 'toegelaten' => 0],
+        ]);
+
+        self::assertSame(
+            'halfjaar_plaatsingen',
+            $pdo->query('SELECT mailtype FROM mail_tracking WHERE token = "token"')->fetchColumn()
+        );
+        self::assertSame(
+            [['activiteit_id' => 12, 'toegelaten' => 1], ['activiteit_id' => 13, 'toegelaten' => 0]],
+            $pdo->query('SELECT activiteit_id, toegelaten FROM mail_tracking_plaatsingen ORDER BY activiteit_id')->fetchAll(PDO::FETCH_ASSOC)
+        );
     }
 
     public function testPlaatsingGeeftGroenRoodPartijEnVeiligHtml(): void
