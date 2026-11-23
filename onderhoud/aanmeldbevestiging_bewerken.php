@@ -87,7 +87,7 @@ try {
             <input class="w3-input w3-border w3-margin-bottom" id="onderwerp" name="onderwerp" value="<?= htmlspecialchars($mailtekst['onderwerp'], ENT_QUOTES, 'UTF-8') ?>" maxlength="255" required>
             <label for="tekst"><strong>Mailtekst</strong></label>
             <textarea id="tekst" name="tekst" required><?= htmlspecialchars($mailtekst['tekst'], ENT_QUOTES, 'UTF-8') ?></textarea>
-            <p class="w3-small">Beschikbare velden: {{voornaam}}, {{achternaam}}, {{naam}}, {{email}}, {{telefoon}}, {{postcode}}, {{plaats}}, {{instrumenten}}, {{beschikbaarheid}} en {{aanmeldlink}}.</p>
+            <p class="w3-small">Beschikbare velden: {{voornaam}}, {{achternaam}}, {{naam}}, {{email}}, {{telefoon}}, {{postcode}}, {{plaats}}, {{instrumenten}}, {{beschikbaarheid}} en {{aanmeldlink}}. Gebruik {{opmerkingen_blok}} om eventuele opmerkingen onderaan de mail te tonen.</p>
             <button class="w3-button w3-blue w3-margin-bottom" type="submit">Opslaan in JSON</button>
         </form>
     </main>

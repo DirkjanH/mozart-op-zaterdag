@@ -137,6 +137,18 @@ function herstelAanmeldFormulier(
     ];
 }
 
+function aanmeldOpmerkingenBlok(string $opmerkingen): string
+{
+    $opmerkingen = trim($opmerkingen);
+    if ($opmerkingen === '') {
+        return '';
+    }
+
+    return '<tr><td style="padding:0 24px 18px;font-size:15px;line-height:1.6;"><p style="margin:0 0 8px;font-weight:bold;">Opmerkingen</p><p style="margin:0;">'
+        . nl2br(htmlspecialchars($opmerkingen, ENT_QUOTES, 'UTF-8'))
+        . '</p></td></tr>';
+}
+
 function verwerkAanmelding(
     PDO $pdo,
     array $gegevens,

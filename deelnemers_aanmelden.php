@@ -33,7 +33,7 @@ function laadAanmeldbevestigingMail(string $bestand): array
 function vulAanmeldbevestigingTemplate(string $template, array $waarden): string
 {
     $htmlWaarden = [];
-    foreach (['{{beschikbaarheid}}', '{{beschikbaarheid_blok}}', '{{op_de_hoogte_gehouden_antwoord}}'] as $placeholder) {
+    foreach (['{{beschikbaarheid}}', '{{beschikbaarheid_blok}}', '{{op_de_hoogte_gehouden_antwoord}}', '{{opmerkingen_blok}}'] as $placeholder) {
         $htmlWaarden[$placeholder] = $waarden[$placeholder] ?? '';
         unset($waarden[$placeholder]);
     }
@@ -136,7 +136,7 @@ try {
     error_log('Aanmelding: bevestigingsmail kon niet worden geladen: ' . $e->getMessage());
     $aanmeldbevestigingMail = [
         'onderwerp' => 'Bevestiging aanmelding Mozart op Zaterdag',
-        'tekst' => '<p>Beste {{voornaam}},</p><p>Dank voor je aanmelding bij Mozart op Zaterdag.</p><p>Naam: {{naam}}</p><p>Wil je op de hoogte gehouden worden? {{op_de_hoogte_gehouden_antwoord}}</p>{{beschikbaarheid_blok}}<p>Hartelijke groet,<br>Dirkjan Horringa</p><p>P.S. Als je je gegevens of je beschikbaarheid wilt wijzigen, <a href="{{aanmeldlink}}">vul dan even dit formulier in</a>. Je bestaande gegevens staan daar alvast ingevuld.</p>',
+        'tekst' => '<p>Beste {{voornaam}},</p><p>Dank voor je aanmelding bij Mozart op Zaterdag.</p><p>Naam: {{naam}}</p><p>Wil je op de hoogte gehouden worden? {{op_de_hoogte_gehouden_antwoord}}</p>{{beschikbaarheid_blok}}{{opmerkingen_blok}}<p>Hartelijke groet,<br>Dirkjan Horringa</p><p>P.S. Als je je gegevens of je beschikbaarheid wilt wijzigen, <a href="{{aanmeldlink}}">vul dan even dit formulier in</a>. Je bestaande gegevens staan daar alvast ingevuld.</p>',
     ];
 }
 
@@ -268,6 +268,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $foutmelding === '') {
         $beschikbaarheidBlok = $wilOpDeHoogteGehoudenWorden
             ? '<tr><td style="padding:0 24px 24px;"><p style="margin:0 0 10px;font-size:16px;font-weight:bold;color:#273746;">Beschikbaarheid</p>' . $beschikbaarheidInhoud . '</td></tr>'
             : '';
+        $opmerkingenBlok = aanmeldOpmerkingenBlok($opmerkingen);
         $templateWaarden = [
             '{{voornaam}}' => $voornaam,
             '{{achternaam}}' => $achternaam,
@@ -279,6 +280,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $foutmelding === '') {
             '{{instrumenten}}' => $instrumentNamen !== [] ? implode(', ', $instrumentNamen) : 'geen instrument opgegeven',
             '{{beschikbaarheid}}' => $beschikbaarheidInhoud,
             '{{beschikbaarheid_blok}}' => $beschikbaarheidBlok,
+            '{{opmerkingen_blok}}' => $opmerkingenBlok,
             '{{op_de_hoogte_gehouden_antwoord}}' => $opDeHoogteGehoudenAntwoord,
             '{{aanmeldlink}}' => 'https://mozartopzaterdag.nl/deelnemers_aanmelden.php?email=' . rawurlencode($email),
         ];

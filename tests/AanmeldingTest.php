@@ -71,6 +71,16 @@ final class AanmeldingTest extends TestCase
         self::assertSame([10 => 'misschien'], $hersteld['statussen']);
     }
 
+    public function testOpmerkingenWordenVeiligAlsMailblokWeergegeven(): void
+    {
+        self::assertSame('', aanmeldOpmerkingenBlok(" \n "));
+        $blok = aanmeldOpmerkingenBlok("<script>alert('x')</script>\nTweede regel");
+
+        self::assertStringContainsString('&lt;script&gt;alert(&#039;x&#039;)&lt;/script&gt;<br />', $blok);
+        self::assertStringContainsString('Tweede regel', $blok);
+        self::assertStringNotContainsString('<script>', $blok);
+    }
+
     public function testNieuweInschrijvingVoegtDeelnemerEnActiviteitenToe(): void
     {
         $pdo = $this->database();
