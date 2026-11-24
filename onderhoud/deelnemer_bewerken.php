@@ -213,46 +213,60 @@ if (isset($_POST['actie']) && $_POST['actie'] === 'opslaan') {
     $voorkeuren = trim($_POST['voorkeuren'] ?? '');
     $voorkeuren = $voorkeuren === '' ? null : $voorkeuren;
 
-    $stmt = $pdo->prepare('SELECT 1 FROM deelnemers WHERE email = ? AND id <> ? LIMIT 1');
-    $stmt->execute([$email, $id]);
-    $emailInGebruik = (bool) $stmt->fetchColumn();
+    $opslagStap = 'e-mailadres controleren';
+    try {
+        $stmt = $pdo->prepare('SELECT 1 FROM deelnemers WHERE email = ? AND id <> ? LIMIT 1');
+        $stmt->execute([$email, $id]);
+        $emailInGebruik = (bool) $stmt->fetchColumn();
 
-    if ($voornaam === '' || $achternaam === '' || $email === '') {
-        $foutmelding = 'Voornaam, achternaam en e-mail zijn verplicht.';
-    } elseif ($emailInGebruik) {
-        $foutmelding = 'Dit e-mailadres is al in gebruik bij een andere deelnemer.';
-    } else {
-        $stmt = $pdo->prepare(
-            'UPDATE deelnemers SET voornaam = ?, achternaam = ?, email = ?, telefoon = ?, postcode = ?, plaats = ?, muzikale_ervaring = ?, opmerkingen = ?, op_de_hoogte_houden = ?, laatst_gewijzigd_op = NOW() WHERE id = ?'
-        );
-        $stmt->execute([$voornaam, $achternaam, $email, $telefoon, $postcode, $plaats, $muzikaleErvaring, $opmerkingen, $opDeHoogteHouden, $id]);
-        $pdo->prepare('DELETE FROM deelnemer_wijzigingen WHERE deelnemer_id = ?')->execute([$id]);
+        if ($voornaam === '' || $achternaam === '' || $email === '') {
+            $foutmelding = 'Voornaam, achternaam en e-mail zijn verplicht.';
+        } elseif ($emailInGebruik) {
+            $foutmelding = 'Dit e-mailadres is al in gebruik bij een andere deelnemer.';
+        } else {
+            $opslagStap = 'transactie starten';
+            $pdo->beginTransaction();
+            $opslagStap = 'deelnemersgegevens opslaan';
+            $stmt = $pdo->prepare(
+                'UPDATE deelnemers SET voornaam = ?, achternaam = ?, email = ?, telefoon = ?, postcode = ?, plaats = ?, muzikale_ervaring = ?, opmerkingen = ?, op_de_hoogte_houden = ?, laatst_gewijzigd_op = NOW() WHERE id = ?'
+            );
+            $stmt->execute([$voornaam, $achternaam, $email, $telefoon, $postcode, $plaats, $muzikaleErvaring, $opmerkingen, $opDeHoogteHouden, $id]);
+            $pdo->prepare('DELETE FROM deelnemer_wijzigingen WHERE deelnemer_id = ?')->execute([$id]);
 
-        // Instrumenten: bestaande koppelingen vervangen door de nu aangevinkte selectie.
-        $pdo->prepare('DELETE FROM deelnemer_instrumenten WHERE deelnemer_id = ?')->execute([$id]);
-        if ($instrument_ids !== []) {
-            $stmt = $pdo->prepare('INSERT INTO deelnemer_instrumenten (deelnemer_id, instrument_id, voorkeuren) VALUES (?, ?, ?)');
-            foreach ($instrument_ids as $instrument_id) {
-                $stmt->execute([$id, $instrument_id, $voorkeuren]);
+            $opslagStap = 'instrumenten opslaan';
+            $pdo->prepare('DELETE FROM deelnemer_instrumenten WHERE deelnemer_id = ?')->execute([$id]);
+            if ($instrument_ids !== []) {
+                $stmt = $pdo->prepare('INSERT INTO deelnemer_instrumenten (deelnemer_id, instrument_id, voorkeuren) VALUES (?, ?, ?)');
+                foreach ($instrument_ids as $instrument_id) {
+                    $stmt->execute([$id, $instrument_id, $voorkeuren]);
+                }
             }
-        }
 
-        // Beschikbaarheid per komende activiteit; leeg = geen opgave (rij wordt verwijderd).
-        foreach ($activiteiten as $activiteit) {
-            $veld = 'status_' . $activiteit['id'];
-            $status = $_POST[$veld] ?? '';
-            if ($status === '') {
-                $pdo->prepare('DELETE FROM activiteit_deelnemers WHERE activiteit_id = ? AND deelnemer_id = ?')
-                    ->execute([$activiteit['id'], $id]);
-            } else {
-                $pdo->prepare(
-                    'INSERT INTO activiteit_deelnemers (activiteit_id, deelnemer_id, status) VALUES (?, ?, ?)
-                     ON DUPLICATE KEY UPDATE status = VALUES(status)'
-                )->execute([$activiteit['id'], $id, $status]);
+            $opslagStap = 'beschikbaarheid opslaan';
+            foreach ($activiteiten as $activiteit) {
+                $veld = 'status_' . $activiteit['id'];
+                $status = $_POST[$veld] ?? '';
+                if ($status === '') {
+                    $pdo->prepare('DELETE FROM activiteit_deelnemers WHERE activiteit_id = ? AND deelnemer_id = ?')
+                        ->execute([$activiteit['id'], $id]);
+                } else {
+                    $pdo->prepare(
+                        'INSERT INTO activiteit_deelnemers (activiteit_id, deelnemer_id, status) VALUES (?, ?, ?)
+                         ON DUPLICATE KEY UPDATE status = VALUES(status)'
+                    )->execute([$activiteit['id'], $id, $status]);
+                }
             }
-        }
 
-        $melding = 'Deelnemer opgeslagen.';
+            $opslagStap = 'transactie afronden';
+            $pdo->commit();
+            $melding = 'Deelnemer opgeslagen.';
+        }
+    } catch (Throwable $e) {
+        if ($pdo->inTransaction()) {
+            $pdo->rollBack();
+        }
+        error_log('Deelnemer bewerken: fout bij ' . $opslagStap . ': ' . $e);
+        $foutmelding = 'Opslaan mislukt bij ' . $opslagStap . ': ' . $e->getMessage();
     }
 }
 
@@ -278,6 +292,21 @@ foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $rij) {
 $stmt = $pdo->prepare('SELECT activiteit_id, status FROM activiteit_deelnemers WHERE deelnemer_id = ?');
 $stmt->execute([$id]);
 $statusPerActiviteit = array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'status', 'activiteit_id');
+if (($_POST['actie'] ?? '') === 'opslaan' && $foutmelding !== '') {
+    foreach (['voornaam', 'achternaam', 'email', 'telefoon', 'postcode', 'plaats', 'muzikale_ervaring', 'opmerkingen', 'op_de_hoogte_houden'] as $veld) {
+        if (is_string($_POST[$veld] ?? null)) {
+            $deelnemer[$veld] = $_POST[$veld];
+        }
+    }
+    $gekozenInstrumenten = $instrument_ids;
+    $voorkeuren = (string) ($_POST['voorkeuren'] ?? '');
+    foreach ($activiteiten as $activiteit) {
+        $veld = 'status_' . $activiteit['id'];
+        if (is_string($_POST[$veld] ?? null) && array_key_exists($_POST[$veld], $statussen)) {
+            $statusPerActiviteit[$activiteit['id']] = $_POST[$veld];
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="nl">

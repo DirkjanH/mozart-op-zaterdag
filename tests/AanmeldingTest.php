@@ -81,6 +81,44 @@ final class AanmeldingTest extends TestCase
         self::assertStringNotContainsString('<script>', $blok);
     }
 
+    public function testDeelnemerBewerkenDraaitWijzigingenTerugBijOpslagfout(): void
+    {
+        $pdo = $this->database();
+        $pdo->sqliteCreateFunction('NOW', static fn (): string => '2026-01-01');
+        $pdo->exec(
+            "ALTER TABLE deelnemer_instrumenten ADD COLUMN voorkeuren TEXT;
+             INSERT INTO deelnemers VALUES
+                (1, 'Ada', 'Speler', 'ada@example.org', NULL, NULL, NULL, NULL, 'oud', 1, '2026-01-01');
+             INSERT INTO deelnemer_instrumenten (deelnemer_id, instrument_id) VALUES (1, 2);
+             INSERT INTO activiteit_deelnemers (activiteit_id, deelnemer_id, status) VALUES (1, 1, 'ja');"
+        );
+        $id = 1;
+        $activiteiten = [['id' => 1]];
+        $melding = '';
+        $foutmelding = '';
+        $oudePost = $_POST;
+        $_POST = [
+            'actie' => 'opslaan', 'voornaam' => 'Ada', 'achternaam' => 'Speler',
+            'email' => 'ada@example.org', 'opmerkingen' => 'nieuw',
+            'op_de_hoogte_houden' => '1', 'instrumenten' => ['3'], 'status_1' => 'nee',
+        ];
+        $bron = file_get_contents(__DIR__ . '/../onderhoud/deelnemer_bewerken.php');
+        $begin = strpos($bron, "if (isset(\$_POST['actie']) && \$_POST['actie'] === 'opslaan') {");
+        $einde = strpos($bron, "\$stmt = \$pdo->prepare('SELECT * FROM deelnemers WHERE id = ?');", $begin);
+
+        try {
+            eval(substr($bron, $begin, $einde - $begin));
+        } finally {
+            $_POST = $oudePost;
+        }
+
+        self::assertStringContainsString('Opslaan mislukt bij beschikbaarheid opslaan:', $foutmelding);
+        self::assertSame('', $melding);
+        self::assertSame('oud', $pdo->query('SELECT opmerkingen FROM deelnemers WHERE id = 1')->fetchColumn());
+        self::assertSame(2, (int) $pdo->query('SELECT instrument_id FROM deelnemer_instrumenten WHERE deelnemer_id = 1')->fetchColumn());
+        self::assertSame('ja', $pdo->query('SELECT status FROM activiteit_deelnemers WHERE deelnemer_id = 1 AND activiteit_id = 1')->fetchColumn());
+    }
+
     public function testNieuweInschrijvingVoegtDeelnemerEnActiviteitenToe(): void
     {
         $pdo = $this->database();
