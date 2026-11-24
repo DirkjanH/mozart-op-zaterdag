@@ -1,5 +1,7 @@
 <?php
 require_once __DIR__ . '/../includes/inloggen.php';
+// Tijdelijk ook fouten buiten de opslagafhandeling tonen, uitsluitend na aanmelding.
+ini_set('display_errors', '1');
 require_once __DIR__ . '/../connections/MozartopZaterdag.php';
 require_once __DIR__ . '/../includes/deelnemer_wijzigingsdatum.php';
 require_once __DIR__ . '/../vendor/autoload.php';
