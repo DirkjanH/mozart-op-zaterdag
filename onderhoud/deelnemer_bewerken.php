@@ -1,7 +1,5 @@
 <?php
 require_once __DIR__ . '/../includes/inloggen.php';
-// Tijdelijk ook fouten buiten de opslagafhandeling tonen, uitsluitend na aanmelding.
-ini_set('display_errors', '1');
 require_once __DIR__ . '/../connections/MozartopZaterdag.php';
 require_once __DIR__ . '/../includes/deelnemer_wijzigingsdatum.php';
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -206,7 +204,6 @@ if (isset($_POST['actie']) && $_POST['actie'] === 'opslaan') {
     $plaats = trim($_POST['plaats'] ?? '');
     $plaats = $plaats === '' ? null : $plaats;
     $muzikaleErvaring = trim($_POST['muzikale_ervaring'] ?? '');
-    $muzikaleErvaring = $muzikaleErvaring === '' ? null : $muzikaleErvaring;
     $opmerkingen = trim($_POST['opmerkingen'] ?? '');
     $opmerkingen = $opmerkingen === '' ? null : $opmerkingen;
     $opDeHoogteHouden = $_POST['op_de_hoogte_houden'] ?? '';
