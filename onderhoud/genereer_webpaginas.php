@@ -191,6 +191,8 @@ function leesPartijen(string $map, array $instrumenten = []): array
         ];
     }
 
+    // Een partituur met hetzelfde KV-nummer krijgt de instrumentvolgorde van een partij
+    // en partijnummer -1, zodat deze bij de automatische sortering daarvoor komt.
     foreach ($partijen as &$partituur) {
         if (!$partituur['partituur']) {
             continue;
@@ -217,6 +219,8 @@ function sorteerPartijenOpBestandsnaam(array $partijen): array
         $eerstePrefix = substr($eersteNaam, 0, 10);
         $tweedePrefix = substr($tweedeNaam, 0, 10);
 
+        // Alleen bij gelijke eerste tien tekens wordt binnen de bestandsnaamgroep
+        // eerst op instrument en partijnummer gesorteerd; anders op de volledige naam.
         if ($eerstePrefix === $tweedePrefix) {
             return [
                 $eerste['sortering']['instrument_volgorde'],
@@ -275,6 +279,8 @@ function sorteerPartijenVolgensConfiguratie(array $partijen, array $configuratie
         return sorteerPartijenOpBestandsnaam($partijen);
     }
 
+    // Een opgeslagen volgnummer gaat voor de automatische sortering. Bestanden zonder
+    // volgnummer komen daarna; bij gelijke nummers bepalen instrument en partij de volgorde.
     usort($partijen, static function (array $eerste, array $tweede) use ($configuratie): int {
         $eersteVolgorde = (int) ($configuratie[$eerste['bestand']]['volgorde'] ?? 0);
         $tweedeVolgorde = (int) ($configuratie[$tweede['bestand']]['volgorde'] ?? 0);
@@ -311,6 +317,8 @@ function html(string $waarde): string
 
 function leesPaginaConfiguratie(string $map): array
 {
+    // De configuratie staat verborgen naast de PDF's en de gegenereerde index.php,
+    // in de map met de datum van de activiteit.
     $bestand = $map . '/.mozart-webpagina.json';
     if (!is_file($bestand)) {
         return [];
@@ -383,6 +391,8 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
                 $partijen,
                 static fn (array $partij): bool => !in_array($partij['bestand'], $verwijderdePartijen, true)
             ));
+            // De bestandsnaam is de sleutel: de JSON bewaart per bestaande PDF het
+            // aangepaste label, volgnummer en de markering 'betekend', niet de PDF zelf.
             $partijConfiguratie = $paginaConfiguratie['partijen'] ?? [];
             $beschikbareBestanden = array_flip(array_column($partijen, 'bestand'));
             foreach ($_POST['partijen'] ?? [] as $partij) {
@@ -398,6 +408,8 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
             }
             $partijConfiguratie = array_intersect_key($partijConfiguratie, array_flip(array_column($partijen, 'bestand')));
             if ($herbouwPartijen) {
+                // Herbouwen vervangt de handmatige volgnummers door de automatische
+                // bestandsnaamsortering, maar behoudt bestaande labels en markeringen.
                 $partijConfiguratie = maakAlfabetischePartijConfiguratie($partijen, $partijConfiguratie);
             }
             $partijen = sorteerPartijenVolgensConfiguratie($partijen, $partijConfiguratie);
@@ -422,6 +434,8 @@ if (isset($_POST['actie']) && in_array($_POST['actie'], ['opslaan', 'herbouw_par
                 $melding = 'Pagina-inhoud opgeslagen.';
             } else {
             $partijenHtml = '';
+            // Groepering volgt de eerste voorkomens in de gesorteerde lijst; binnen
+            // ieder werk verschijnen partituren apart en vóór de overige partijen.
             foreach (partijenPerWerk($partijen) as $kvNummer => $werkPartijen) {
                 $partiturenHtml = '';
                 $werkPartijenHtml = '';
@@ -640,6 +654,8 @@ if ($gekozenActiviteit !== null && $voorbeeldPartijen === []) {
 
             document.querySelectorAll('.partijen-lijst').forEach(function (lijst) {
                 var gesleeptItem = null;
+                // Leg de huidige zichtbare sleepvolgorde vast in de verborgen velden
+                // voordat het formulier de partijconfiguratie naar de server stuurt.
                 var werkVolgordeBij = function () {
                     lijst.querySelectorAll('.partij-item').forEach(function (rij, index) {
                         var volgorde = rij.querySelector('[name$="[volgorde]"]');
